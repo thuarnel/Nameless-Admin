@@ -15094,9 +15094,6 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
  
- -- all this does is print i dont know why i made it a loadstring
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/asd"))();
- 
  -- never used this lol
  function Destroy(guiObject)
 	 if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
