@@ -3419,6 +3419,35 @@ print(Time)
 	-- [[ should be patched ]] --
  loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/CloVR"))();
  end)
+
+cmd.add({"antilag", "boostfps"}, {"antilag (boostfps)", "Low Graphics"}, function()
+_G.Settings = {
+    Players = {
+        ["Ignore Me"] = true,
+        ["Ignore Others"] = true
+    },
+    Meshes = {
+        Destroy = true,
+        LowDetail = true
+    },
+    Images = {
+        Invisible = true,
+        LowDetail = true,
+        Destroy = true,
+    },
+    Other = {
+        ["No Particles"] = true,
+        ["No Camera Effects"] = true,
+        ["No Explosions"] = true,
+        ["No Clothes"] = true,
+        ["Low Water Graphics"] = true,
+        ["No Shadows"] = true,
+        ["Low Rendering"] = true,
+        ["Low Quality Parts"] = true
+    }
+}
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/low%20detail"))()
+ end)
  
  cmd.add({"flash"}, {"flash <player>", "Flashes the targets screen"}, function(...)
 			 local oldCF = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -5329,11 +5358,20 @@ until npcfollowloop == false
 		end
 	end
 cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enable shiftlock"}, function()
-	EnableShiftlock()	
+if game.UserInputService.KeyboardEnabled then
+EnableShiftlock()
+else
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
+end
 end)
  
 cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock if you're on mobile"}, function()
-	DisableShiftlock()
+if game.UserInputService.KeyboardEnabled then
+DisableShiftlock()
+else
+jj=game.CoreGui:FindFirstChild("shiftlockk")
+jj:Destroy()
+end
 end)
 
 cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift lock if you press Control"}, function()
@@ -6009,11 +6047,11 @@ end
  end)
  
  
- cmd.add({"Frakture"}, {"FraktureSS", "Scans for any backdoors using FraktureSS"}, function()
+ cmd.add({"Frakture", "FraktureSS"}, {"Frakture (FraktureSS)", "Scans for any backdoors using FraktureSS"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
  end)
 
- cmd.add({"backdoor", "backdoorscan"}, {"backdoorEXE", "Scans for any backdoors using backdoor.exe by iK4oS"}, function()
+ cmd.add({"backdoor", "backdoorscan"}, {"backdoor (backdoorscan)", "Scans for any backdoors using backdoor.exe by iK4oS"}, function()
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua'),true))()
  end)
  
@@ -6055,8 +6093,8 @@ end
 				 end
 				 if #SomeSRVS > 0 then
 				 Notify({
- Description = "Searched, please wait while we are teleporting you";
- Title = "Nameless Admin";
+ Description = "Teleporting...";
+ Title = "Searched!";
  Duration = 5;
  
  });
