@@ -8,13 +8,24 @@
 --]]
 
  -- Waits until game is loaded
- local game = game
  local GetService = game.GetService
  if (not game.IsLoaded(game)) then
 	 local Loaded = game.Loaded
 	 Loaded.Wait(Loaded);
 	 wait(1.5)
  end
+
+spawn(function()
+print([[
+╭━╮╱╭╮╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╭╮
+┃┃╰╮┃┃╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱┃┃
+┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃╱┃┣━╯┣╮╭┳┳━╮
+┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮
+┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
+╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
+]])
+print("re-uploaded by @maxype\nsay goodbye to the fake ass byfron UI\n\nall loadstrings have been replaced in case FilteringEnabled decides to change them and troll\nmaybe new commands may be added ^-^")
+end)
  
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
@@ -622,11 +633,11 @@
  end)
  
  cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/executor"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/executor"))()
  end)
  
  cmd.add({"scripthub"}, {"scripthub", "Thanks to scriptblox api"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/ScriptHub"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/script%20hub"))()
  end)
  
  cmd.add({"stand"}, {"stand <player>", "Makes a player your stand"}, function(...)
@@ -739,7 +750,7 @@
  end)
  
  cmd.add({"plugins"}, {"plugins", "Check what kind of plugins you have, add plugins using a gui, delete a plugin."}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/NamelessAdminPlugin"))();
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminPlugin"))();
  end)
  
  cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(...)
@@ -2908,7 +2919,7 @@ print(Time)
  end)
  
  cmd.add({"punch"}, {"punch", "punch tool that flings"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/punch",true))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/punch",true))()
  end)
  
  cmd.add({"vfly", "vehiclefly"}, {"vehiclefly (vfly)", "be able to fly vehicles"}, function(...)
@@ -3325,7 +3336,7 @@ print(Time)
  end
  end
  Noclipping = RunService.Stepped:Connect(NoclipLoop)
- loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+ loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
  end)
 
  
@@ -3406,7 +3417,7 @@ print(Time)
  
  cmd.add({"vr", "clovr", "vrscript", "fevr"}, {"vr (clovr, vrscript, fevr)", "FE VR SCRIPT AKA CLOVR"}, function()
 	-- [[ should be patched ]] --
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/CloVR"))();
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/CloVR"))();
  end)
  
  cmd.add({"flash"}, {"flash <player>", "Flashes the targets screen"}, function(...)
@@ -4381,7 +4392,7 @@ print(Time)
  cmd.add({"dupetools"}, {"dupetools [amount]", "Probably the fastest tool duping method"}, function(...)
  _G.ammount = (...)
  for i=1,_G.ammount do
- loadstring(game:HttpGet("https://raw.githubusercontent.com/joshclark756/joshclark756-s-scripts/main/dupetools.lua",true))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dupe%20tools",true))()
  end
  end)
  
@@ -4393,7 +4404,7 @@ print(Time)
  
  });
 	
-loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/Comet"))();
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/comet"))();
 			 end)
  
 			 cmd.add({"triggerbot", "tbot"}, {"triggerbot (tbot)", "Executes a script that automatically clicks the mouse when the mouse is on a player"}, function()
@@ -4803,7 +4814,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/m
  
  cmd.add({"dex"}, {"dex", "Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."}, function()
 	-- thanks to moon for this dex / best dex out there
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
  end)
 		 
 			 cmd.add({"antikill"}, {"antikill", "Makes exploiters not be able to kill you"}, function()
@@ -4919,7 +4930,7 @@ end
 				Duration = 5;
 				
 });
-				 loadstring(game:HttpGet("https://raw.githubusercontent.com/qipurblx/Script/main/Gravity%20Gun"))()
+				 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/gravity%20gun"))()
 			 end)
  
 			 cmd.add({"flingnpcs"}, {"flingnpcs", "Flings NPCs"}, function()
@@ -5924,7 +5935,7 @@ end
  
  cmd.add({"2016"}, {"2016", "2016 CORE GUI"}, function()
 	-- [[ PLAYERBOARD IS BUGGED BUT WILL TRY TO FIX. ]] --
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/2016MODE"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/2016%20mode"))()
  end)
  
  cmd.add({"removedn", "nodn", "nodpn"}, {"removedn (nodn, nodpn)", "Removes all display names"}, function()
@@ -5998,9 +6009,12 @@ end
  end)
  
  
- cmd.add({"backdoorscan", "backdoor"}, {"backdoorscan (backdoor)", "Scans for any backdoors using FraktureSS"}, function()
--- [[ THANKS TO LIGHTING BOLT FOR THIS ]] --
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/L1ghtingBolt/FraktureSS/master/unobfuscated.lua"))()
+ cmd.add({"Frakture"}, {"FraktureSS", "Scans for any backdoors using FraktureSS"}, function()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
+ end)
+
+ cmd.add({"backdoor", "backdoorscan"}, {"backdoorEXE", "Scans for any backdoors using backdoor.exe by iK4oS"}, function()
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua'),true))()
  end)
  
  cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
@@ -7198,14 +7212,6 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
  
  cmd.add({"aimbot", "aimbotui", "aimbotgui"}, {"aimbot (aimbotui, aimbotgui)", "aimbot and yeah"}, function()
  loadstring(game:HttpGet('https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua'))()
- end)
- 
- cmd.add({"febypass", "bypassfe"}, {"febypass (bypassfe)", "dont execute (literally) btw this script does not do harm "}, function()
-   local Sound = Instance.new("Sound",game:GetService("SoundService"))
- Sound.SoundId = "rbxassetid://9043346594"
- Sound:Play()
- Sound.Looped = true
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/specowos/specs-scripts/main/scripts/LOLHOO%20(fd).lua"))()
  end)
  
  cmd.add({"checkgrabber"}, {"checkgrabber", "Checks if anyone is using a grab tools script"}, function()
@@ -8499,7 +8505,7 @@ print(Time)
 		 wait(0.3)
 		 script.Parent.Parent:TweenPosition(UDim2.new(0.355, 0,1.291, 0), "Out", "Quint",1,true)
 		 wait(0.9)
-		 local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/notificationtest"))();
+		 local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 		 local Notify = AkaliNotif.Notify;
 		 Notify({
 			 Description = "Anti chat log has been ran.";
@@ -9209,7 +9215,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  end)
  
  cmd.add({"pp", "penis"}, {"penis (pp)", "benis :flushed:"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/pp"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/p3n1s"))()
  end)
  
  cmd.add({"stealaudio", "getaudio", "steal", "logaudio"}, {"stealaudio <player> (getaudio, logaudio, steal)", "Save all sounds a player is playing to a file  -Cyrus"}, function(p)
@@ -9363,7 +9369,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 Duration = 5;
 	 
  });
-	 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/x114/RobloxScripts/main/UpdatedChatTranslator"))()
+	 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/translatoooor"))()
  end)
  
  cmd.add({"freeze", "thaw", "anchor"}, {"freeze (thaw, anchor)", "Freezes your character"}, function()
@@ -9711,7 +9717,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 
  });
  game.Players.LocalPlayer.Character.Animate.Disabled = true
-	 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+	 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
  end)
  
  cmd.add({"fat", "nikocadoavocado"}, {"fat (nikocadoavocado)", "fat"}, function()
@@ -10796,10 +10802,10 @@ until glueloop == false
  
 			 repeat wait(1)
 			 if Target == "all" or Target == "others" then
-									 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+									 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
  print("Patched")
 			 else
-					 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+					 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 			 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 						 local Character = Player.Character        
 						 local PlayerGui = Player:waitForChild("PlayerGui")
@@ -11040,10 +11046,10 @@ until glueloop == false
  
 			 repeat wait()
 			 if Target == "all" or Target == "others" then
-									 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+									 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 				 print("Patched")
 			 else
-					 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+					 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 			 local function Kill()
 						 if not getPlr(Target) then
 						 end
@@ -11145,7 +11151,7 @@ until glueloop == false
 			 Target = (...)
 			 repeat wait(1)
 			 Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,-642,0)
-								 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+								 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
  local Character = Player.Character
  local PlayerGui = Player:waitForChild("PlayerGui")
  local Backpack = Player:waitForChild("Backpack")
@@ -11214,7 +11220,7 @@ until glueloop == false
 		 cmd.add({"lvoid", "legvoid"}, {"lvoid <player> (legvoid)", "Leg resize void"}, function(...)
 				 Target = (...)
 				 Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,-633,0)
-									 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+									 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 						 local Character = Player.Character
 						 local PlayerGui = Player:waitForChild("PlayerGui")
 						 local Backpack = Player:waitForChild("Backpack")
@@ -11284,10 +11290,10 @@ until glueloop == false
 			 Target = (...)
  
 			 if Target == "all" or Target == "others" then
-									 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+									 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
  print("Patched")
 			 else
-					 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+					 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 			 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 						 local Character = Player.Character        
 						 local PlayerGui = Player:waitForChild("PlayerGui")
@@ -11346,10 +11352,10 @@ until glueloop == false
 			 Target = (...)
  
 			 if Target == "all" or Target == "others" then
-									 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+									 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 				 print("Patched")
 			 else
-					 loadstring(game:HttpGet('https://raw.githubusercontent.com/DigitalityScripts/roblox-scripts/main/Leg%20Resize'))()
+					 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 			 local function Kill()
 						 if not getPlr(Target) then
 						 end
@@ -11951,7 +11957,7 @@ until glueloop == false
 				 end)
 				 
 								 cmd.add({"nameless"}, {"nameless", "Makes your hats visible but not your name or your body"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/nameless"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/namelesss"))()
  end)
  
  
@@ -12198,11 +12204,11 @@ until glueloop == false
  end)
  
  cmd.add({"notepad"}, {"notepad", "notepad for making scripts / etc"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Notepad"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notepade"))()
  end)
  
  cmd.add({"rc7"}, {"rc7", "RC7 Internal UI"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/rc7"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/rc%20sexy%207"))()
  end)
  
  cmd.add({"scriptviewer", "viewscripts"}, {"scriptviewer (viewscripts)", "Can view scripts made by 0866"}, function()
@@ -12230,6 +12236,7 @@ until glueloop == false
  end)
  
  cmd.add({"hydroxide"}, {"hydroxide", "executes hydroxide"}, function()
+	if game.UserInputService.KeyboardEnabled then
 	 local owner = "Upbolt"
  local branch = "revision"
  
@@ -12239,10 +12246,22 @@ until glueloop == false
  
  webImport("init")
  webImport("ui/main")
+else
+--mobile supported hydroxide
+local owner = "Hosvile"
+local branch = "revision"
+
+local function webImport(file)
+    return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
+end
+
+webImport("init")
+webImport("ui/main")
+end
  end)
  
  cmd.add({"remotespy", "simplespy"}, {"remotespy (simplespy)", "executes simplespy v3"}, function()
- loadstring(game:HttpGet("https://github.com/exxtremestuffs/SimpleSpySource/raw/master/SimpleSpy.lua"))()
+ loadstring(game:HttpGet("https://.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
  end)
  
  cmd.add({"gravity", "grav"}, {"gravity <amount> (grav)", "sets game gravity to whatever u want"}, function(...)
@@ -12779,7 +12798,7 @@ end)
 	 Duration = 5;
 	 
  });
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/PastebinScraperScript"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
 	 game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency = 0.5
 	 game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text = "             ⭐ Pastebin Post Scraper ⭐"
 	 game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText = "Search for a post here..."
@@ -12993,7 +13012,7 @@ end)
  end)
  
  cmd.add({"givehat", "givehatui"}, {"givehat (givehatui)", "Executes a hat giver gui check in console for hat names"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/GiveHat"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Gimme%20That%20Hat"))()
  end)
  
  cmd.add({"fireproximityprompts", "fpp"}, {"fireproximityprompts (fpp)", "Fires every Touch Interest that's in workspace"}, function()
@@ -13540,7 +13559,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 	 end)
 
  cmd.add({"2016anims"}, {"2016anims", "2016 animations"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/2016anims"))()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/2016%20anims"))()
  end)
  
  cmd.add({"oganims"}, {"oganims", "Old animations from 2007"}, function()
@@ -13559,7 +13578,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
  end)
  
  cmd.add({"fakechat"}, {"fakechat", "Fake a chat gui"}, function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/FE/main/fakechat"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/fake%20chatte"))()
  end)
  
  cmd.add({"fpscap"}, {"fpscap <number>", "Sets the fps cap to whatever you want"}, function(...)
@@ -14570,7 +14589,7 @@ end)
  end)
  
  cmd.add({"httpspy"}, {"httspy", "HTTP Spy"}, function()
-	 loadstring(game:HttpGet('https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/HttpSpy'))()
+	 loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/HTTP%20spy'))()
  end)
  
  cmd.add({"keystroke"}, {"keystroke", "Executes a keystroke ui script"}, function()
@@ -15093,6 +15112,14 @@ end
 	 chatLogs.CanvasSize = UDim2.new(0, 0, 0, chatLogs.UIListLayout.AbsoluteContentSize.Y)
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
+
+spawn(function()
+Notify({
+ Description = "backup of Nameless Admin due to the owner trolling with fake byfron UI";
+ Title = "message from @maxype";
+ Duration = 5;					 
+ });
+end)
  
  -- never used this lol
  function Destroy(guiObject)
