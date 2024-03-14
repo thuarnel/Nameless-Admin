@@ -12272,7 +12272,7 @@ until glueloop == false
  });
  end)
  
- cmd.add({"hydroxide"}, {"hydroxide", "executes hydroxide"}, function()
+ cmd.add({"hydroxide", "hydro"}, {"hydroxide (hydro)", "executes hydroxide"}, function()
 	 local owner = "Upbolt"
  local branch = "revision"
  
@@ -12284,7 +12284,7 @@ until glueloop == false
  webImport("ui/main")
  end)
 
-cmd.add({"mobilehydroxide", "mhydroxide}, {"mobilehydroxide (mhydroxide)", "executes hydroxide for mobile"}, function()
+cmd.add({"mobilehydroxide", "mhydroxide"}, {"mobilehydroxide (mhydroxide)", "executes hydroxide for mobile"}, function()
 	 local owner = "Hosvile"
 local branch = "revision"
 
