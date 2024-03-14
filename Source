@@ -5357,20 +5357,24 @@ until npcfollowloop == false
 			DisableShiftlock()
 		end
 	end
-cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enable shiftlock"}, function()
-if game.UserInputService.KeyboardEnabled then
+cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enables shiftlock"}, function()
 EnableShiftlock()
-else
+end)
+
+cmd.add({"mobileshiftlock", "msl"}, {"mobileshiftlock (msl)", "Enables shiftlock for mobie"}, function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
-end
 end)
  
-cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock if you're on mobile"}, function()
-if game.UserInputService.KeyboardEnabled then
+cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock"}, function()
 DisableShiftlock()
-else
+end)
+
+cmd.add({"unmobileshiftlock", "unmsl"}, {"unmobileshiftlock (unmsl)", "Disables shiftlock for mobile"}, function()
+if game.CoreGui:FindFirstChild("shiftlockk") then
 jj=game.CoreGui:FindFirstChild("shiftlockk")
 jj:Destroy()
+else
+warn("no shiftlock button found")
 end
 end)
 
@@ -12274,7 +12278,6 @@ until glueloop == false
  end)
  
  cmd.add({"hydroxide"}, {"hydroxide", "executes hydroxide"}, function()
-	if game.UserInputService.KeyboardEnabled then
 	 local owner = "Upbolt"
  local branch = "revision"
  
@@ -12284,9 +12287,10 @@ until glueloop == false
  
  webImport("init")
  webImport("ui/main")
-else
---mobile supported hydroxide
-local owner = "Hosvile"
+ end)
+
+cmd.add({"mobilehydroxide", "mhydroxide}, {"mobilehydroxide (mhydroxide)", "executes hydroxide for mobile"}, function()
+	 local owner = "Hosvile"
 local branch = "revision"
 
 local function webImport(file)
@@ -12298,7 +12302,7 @@ webImport("ui/main")
 end
  end)
  
- cmd.add({"remotespy", "simplespy"}, {"remotespy (simplespy)", "executes simplespy v3"}, function()
+ cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy (advanced one) [supports both pc and mobile]"}, function()
  loadstring(game:HttpGet("https://.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
  end)
  
