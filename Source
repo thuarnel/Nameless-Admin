@@ -5370,12 +5370,7 @@ DisableShiftlock()
 end)
 
 cmd.add({"unmobileshiftlock", "unmsl"}, {"unmobileshiftlock (unmsl)", "Disables shiftlock for mobile"}, function()
-if game.CoreGui:FindFirstChild("shiftlockk") then
-jj=game.CoreGui:FindFirstChild("shiftlockk")
-jj:Destroy()
-else
-warn("no shiftlock button found")
-end
+game.CoreGui.shiftlockk:Destroy()
 end)
 
 cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift lock if you press Control"}, function()
@@ -12299,10 +12294,9 @@ end
 
 webImport("init")
 webImport("ui/main")
-end
  end)
  
- cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy (advanced one) [supports both pc and mobile]"}, function()
+ cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy that supports both pc and mobile"}, function()
  loadstring(game:HttpGet("https://.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
  end)
  
