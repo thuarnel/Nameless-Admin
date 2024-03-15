@@ -12350,7 +12350,7 @@ webImport("ui/main")
 	 game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(HTTP.text,"All")
  end)
  
- cmd.add({"fireclickdetectors", "fcd"}, {"fireclickdetectors (fcd)", "Fires every click detector that's in workspace"}, function()
+ cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, firecd)", "Fires every click detector that's in workspace"}, function()
  local ccamount = 0
  
 	 for i,v in pairs(game:GetDescendants()) do
@@ -13051,13 +13051,13 @@ end)
  loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Gimme%20That%20Hat"))()
  end)
  
- cmd.add({"fireproximityprompts", "fpp"}, {"fireproximityprompts (fpp)", "Fires every Touch Interest that's in workspace"}, function()
+ cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, firepp)", "Fires every Proximity Prompt that's in workspace"}, function()
  fppamount = 0
  
  for i,v in pairs(game.Workspace:GetDescendants()) do
-		 if v:IsA("Part") and v.Name == "BanditClick" then
+		 if v:IsA("ProximityPrompt") then
 			 fppamount = fppamount + 1
-			 fireproximityprompt(v.Proximity)
+			 fireproximityprompt(v)
 		 end
  end
   
