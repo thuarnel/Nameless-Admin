@@ -1,7 +1,3 @@
---[[
- ☄️ Welcome to Comet ☄️
-Feel free to look at the source
-]]
 local CometGUI = Instance.new("ScreenGui")
 local Comet = Instance.new("Frame")
 local ForTheGUI = Instance.new("Folder")
