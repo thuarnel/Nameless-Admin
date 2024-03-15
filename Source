@@ -6871,7 +6871,7 @@ end
 			 dir.q = false
 		 end
 	 end))]]
-	 if not game.Players.LocalPlayer:FindFirstChild("Freecam") than
+	 if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Freecam") than
 	 local Freecam = Instance.new("ScreenGui")
 
 Freecam.Name = "Freecam"
