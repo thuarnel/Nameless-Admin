@@ -24,7 +24,6 @@ print([[
 ┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
 ]])
-print'mixalispantidos12 is sus'
 end)
  
  -- Notification library
@@ -53,18 +52,18 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'), -- If player's executor has the custom file function support it reads the prefix file to get prefix
-	 tupleSeparator = ',',	-- ;ff me,others,all | ;ff me/others/all
-	 ui = {					-- never did anything with this
+	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	 tupleSeparator = ',',
+	 ui = {					
 		 
 	 },
-	 keybinds = {			-- never did anything with this
+	 keybinds = {			
 		 
 	 },
  }
  
  -- [[ Version ]] -- 
- currentversion = 1.13
+ currentversion = 2.0
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -78,7 +77,7 @@ end)
  local SoundService = game:GetService("SoundService")
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
- local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
+ local IYLOADED = false
  local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
  local Character = game.Players.LocalPlayer.Character
  local Clicked = true
@@ -632,11 +631,11 @@ end)
 	 loadstring(game:HttpGet(source))()
  end)
  
- cmd.add({"executor"}, {"executor", "Very simple executor"}, function()
+ cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/executor"))()
  end)
  
- cmd.add({"scripthub"}, {"scripthub", "Thanks to scriptblox api"}, function()
+ cmd.add({"scripthub", "hub"}, {"scripthub (hub)", "Thanks to scriptblox api"}, function()
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/script%20hub"))()
  end)
  
@@ -881,7 +880,6 @@ end)
 		 local hats = {}
 	 
 		 if Target then
-			 -- Loop through each hat in the target player's character
 			 local character = Target
 			 for _, hat in ipairs(character:GetChildren()) do
 				 if hat:IsA("Accessory") then
@@ -2434,10 +2432,7 @@ print(Time)
  CF = Player.Character.HumanoidRootPart.CFrame
  player.CharacterAdded:wait(1):waitForChild("HumanoidRootPart").CFrame = CF
  
- -- Teleport the first player to the position next to the second player
  getChar().HumanoidRootPart.CFrame = CFrame.new(gripPosition) + Vector3.new(0, 3, 0)
- 
- -- Tween the first player to the second player's position
  local tween = game:GetService("TweenService"):Create(getChar().HumanoidRootPart, TweenInfo.new(1), {CFrame = target2.Character.HumanoidRootPart.CFrame})
  tween:Play()
  
@@ -4847,8 +4842,66 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Namele
 					 end)
  
  cmd.add({"dex"}, {"dex", "Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."}, function()
-	-- thanks to moon for this dex / best dex out there
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
+ end)
+ cmd.add({"SynapseDex", "sdex"}, {"SynapseDex (sdex)", "Loads SynapseX's dex explorer."}, function()
+	 local rng = Random.new()
+
+local charset = {}
+for i = 48,  57 do table.insert(charset, string.char(i)) end
+for i = 65,  90 do table.insert(charset, string.char(i)) end
+for i = 97, 122 do table.insert(charset, string.char(i)) end
+local function RandomCharacters(length)
+  if length > 0 then
+    return RandomCharacters(length - 1) .. charset[rng:NextInteger(1, #charset)]
+  else
+    return ""
+  end
+end
+
+local Dex = game:GetObjects("rbxassetid://9553291002")[1]
+Dex.Name = RandomCharacters(rng:NextInteger(5, 20))
+Dex.Parent = game:GetService("CoreGui")
+    
+local function Load(Obj, Url)
+local function GiveOwnGlobals(Func, Script)
+    local Fenv = {}
+    local RealFenv = {script = Script}
+    local FenvMt = {}
+    FenvMt.__index = function(a,b)
+        if RealFenv[b] == nil then
+            return getfenv()[b]
+        else
+            return RealFenv[b]
+        end
+    end
+    FenvMt.__newindex = function(a, b, c)
+        if RealFenv[b] == nil then
+            getfenv()[b] = c
+        else
+            RealFenv[b] = c
+        end
+    end
+    setmetatable(Fenv, FenvMt)
+    setfenv(Func, Fenv)
+    return Func
+end
+
+local function LoadScripts(Script)
+    if Script.ClassName == "Script" or Script.ClassName == "LocalScript" then
+        spawn(function()
+            GiveOwnGlobals(loadstring(Script.Source, "=" .. Script:GetFullName()), Script)()
+        end)
+    end
+    for i,v in pairs(Script:GetChildren()) do
+        LoadScripts(v)
+    end
+end
+
+LoadScripts(Obj)
+end
+
+Load(Dex)
  end)
 		 
 			 cmd.add({"antikill"}, {"antikill", "Makes exploiters not be able to kill you"}, function()
@@ -5035,6 +5088,30 @@ until npcfollowloop == false
 
  cmd.add({"unloopnpcfollow"}, {"unloopnpcfollow", "Makes NPCS not follow you in a loop"}, function()
 	npcfollowloop = false
+ end)
+
+followpart = false
+ cmd.add({"loopfollowpart", "lfollowpart"}, {"loopfollowpart {partname} (lfollowpart)", "Makes you follow a specific part"}, function(...)
+followpart = true
+
+	repeat wait(0.1)
+	local parts = game.Workspace:GetChildren()
+local targetParts = {}
+
+for i, child in pairs(parts) do
+    if child.Name == (...) then
+        table.insert(targetParts, child)
+    end
+end
+
+    for _, part in ipairs(targetParts) do
+        game.Players.LocalPlayer.Character:MoveTo(part.Position)
+    end
+until followpart == false
+ end)
+
+ cmd.add({"unloopfollowpart", "unlfollowpart"}, {"unloopnpcfollow (unlfollowpart)", "Makes you stop following the specific part"}, function()
+	followpart = false
  end)
 
  cmd.add({"sitnpcs"}, {"sitnpcs", "Makes NPCS sit"}, function()
@@ -5922,7 +5999,7 @@ end
  Control = false
  end)
  
- cmd.add({"reset"}, {"reset", "Makes your health be 0"}, function()
+ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	 game.Players.LocalPlayer.Character.Humanoid.Health = 0
  end)
  
@@ -6554,7 +6631,6 @@ end
 		 Duration = 5;
 		 });
 		 
-	 -- creates a button that u can toggle if you're flying or not
 	 local ScreenGui = Instance.new("ScreenGui")
 	 local TextButton = Instance.new("TextButton")
 	 local UICorner = Instance.new("UICorner")
@@ -6719,77 +6795,105 @@ end
  end)
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
-	 if not speed then speed = 5 end
-	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
-	 local dir = {w = false, a = false, s = false, d = false}
-	 local cf = Instance.new("CFrameValue")
-	 local camPart = Instance.new("Part")
-	 camPart.Transparency = 1
-	 camPart.Anchored = true
-	 camPart.CFrame = camera.CFrame
-	 wrap(function()
-		 character.PrimaryPart.Anchored = true
-	 end)
-	 
-	 lib.connect("freecam", RunService.RenderStepped:Connect(function()
-		 local primaryPart = camPart
-		 camera.CameraSubject = primaryPart
-		 
-		 local x, y, z = 0, 0, 0
-		 if dir.w then z = -1 * speed end
-		 if dir.a then x = -1 * speed end
-		 if dir.s then z = 1 * speed end
-		 if dir.d then x = 1 * speed end
-		 if dir.q then y = 1 * speed end
-		 if dir.e then y = -1 * speed end
-		 
-		 primaryPart.CFrame = CFrame.new(
-			 primaryPart.CFrame.p,
-			 (camera.CFrame * CFrame.new(0, 0, -100)).p
-		 )
-		 
-		 local moveDir = CFrame.new(x,y,z)
-		 cf.Value = cf.Value:lerp(moveDir, 0.2)
-		 primaryPart.CFrame = primaryPart.CFrame:lerp(primaryPart.CFrame * cf.Value, 0.2)
-	 end))
-	 lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
-		 if event then return end
-		 local code, codes = input.KeyCode, Enum.KeyCode
-		 if code == codes.W then
-			 dir.w = true
-		 elseif code == codes.A then
-			 dir.a = true
-		 elseif code == codes.S then
-			 dir.s = true
-		 elseif code == codes.D then
-			 dir.d = true
-		 elseif code == codes.Q then
-			 dir.q = true
-		 elseif code == codes.E then
-			 dir.e = true
-		 elseif code == codes.Space then
-			 dir.q = true
-		 end
-	 end))
-	 lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
-		 if event then return end
-		 local code, codes = input.KeyCode, Enum.KeyCode
-		 if code == codes.W then
-			 dir.w = false
-		 elseif code == codes.A then
-			 dir.a = false
-		 elseif code == codes.S then
-			 dir.s = false
-		 elseif code == codes.D then
-			 dir.d = false
-		 elseif code == codes.Q then
-			 dir.q = false
-		 elseif code == codes.E then
-			 dir.e = false
-		 elseif code == codes.Space then
-			 dir.q = false
-		 end
-	 end))
+	if not speed then speed = 5 end
+
+local dir = {w = false, a = false, s = false, d = false, q = false, e = false}
+local cf = Instance.new("CFrameValue")
+local camPart = Instance.new("Part")
+camPart.Transparency = 1
+camPart.Anchored = true
+camPart.CFrame = camera.CFrame
+wrap(function()
+	character.PrimaryPart.Anchored = true
+end)
+
+local touchControls = {
+	forward = false,
+	backward = false,
+	left = false,
+	right = false,
+}
+
+local function updateTouchMovement(input)
+	local delta = input.Delta
+	local sensitivity = 0.01
+
+	local x = delta.X * sensitivity
+	local y = delta.Y * sensitivity
+
+	touchControls.left = x < 0
+	touchControls.right = x > 0
+	touchControls.forward = y < 0
+	touchControls.backward = y > 0
+end
+
+UserInputService.TouchMoved:Connect(updateTouchMovement)
+UserInputService.TouchEnded:Connect(function()
+	touchControls.forward = false
+	touchControls.backward = false
+	touchControls.left = false
+	touchControls.right = false
+end)
+
+local function updateMovement()
+	local x, y, z = 0, 0, 0
+	if dir.w or touchControls.forward then z = -1 * speed end
+	if dir.a or touchControls.left then x = -1 * speed end
+	if dir.s or touchControls.backward then z = 1 * speed end
+	if dir.d or touchControls.right then x = 1 * speed end
+	if dir.q then y = 1 * speed end
+	if dir.e then y = -1 * speed end
+
+	local moveDir = CFrame.new(x, y, z)
+	cf.Value = cf.Value:lerp(moveDir, 0.2)
+	camPart.CFrame = camPart.CFrame:lerp(camPart.CFrame * cf.Value, 0.2)
+end
+
+lib.connect("freecam", RunService.RenderStepped:Connect(function()
+	local primaryPart = camPart
+	camera.CameraSubject = primaryPart
+	updateMovement()
+end))
+
+lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
+	if event then return end
+	local code, codes = input.KeyCode, Enum.KeyCode
+	if code == codes.W then
+		dir.w = true
+	elseif code == codes.A then
+		dir.a = true
+	elseif code == codes.S then
+		dir.s = true
+	elseif code == codes.D then
+		dir.d = true
+	elseif code == codes.Q then
+		dir.q = true
+	elseif code == codes.E then
+		dir.e = true
+	elseif code == codes.Space then
+		dir.q = true
+	end
+end))
+
+lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
+	if event then return end
+	local code, codes = input.KeyCode, Enum.KeyCode
+	if code == codes.W then
+		dir.w = false
+	elseif code == codes.A then
+		dir.a = false
+	elseif code == codes.S then
+		dir.s = false
+	elseif code == codes.D then
+		dir.d = false
+	elseif code == codes.Q then
+		dir.q = false
+	elseif code == codes.E then
+		dir.e = false
+	elseif code == codes.Space then
+		dir.q = false
+	end
+end))
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
@@ -8188,24 +8292,10 @@ print(text)
  
  UICorner_5.Parent = TextButton_2
  
- -- Scripts:
- 
  local function CPNQ_fake_script() -- TextButton.LocalScript 
 	 local script = Instance.new('LocalScript', TextButton)
  
 	 script.Parent.MouseButton1Click:Connect(function()
-		 -- This basically makes roblox unable to log your chat messages sent in-game. Meaning if you get reported for saying something bad, you won't get banned!
-		 -- Store in autoexec folder
-		 -- Credits: AnthonyIsntHere and ArianBlaack
-	 
-	 --[[
-		 Change-logs:
-		 8/22/2022 - Fixed Chat gui glitching on some games such as Prison Life.
-		 9/30/2022 - Fixed chat gui glitching AGAIN... (added better checks too)
-		 10/10/2022 - Added gethui() function and fix for Synapse v3.
-		 11/11/2022 - Idk what happened but it stopped working... I fixed it though.
-	 ]]--
-	 
 		 local ACL_LoadTime = tick()
 	 
 		 local ChatChanged = false
@@ -12407,21 +12497,48 @@ webImport("ui/main")
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
 	 local parts = game.Workspace:GetChildren()
-	 local targetParts = {}
-	 for i, child in pairs(parts) do
-	 if child.Name == (...) then
-	 table.insert(targetParts, child)
-	 end
-	 end
-	 
-	 local index = 1
-	 game:GetService("RunService").Stepped:Connect(function()
-	 if targetParts[index] then
-	 game.Players.LocalPlayer.Character:MoveTo(targetParts[index].Position)
-	 index = index + 1
-	 wait(0.4)
-	 end
-	 end)
+local targetParts = {}
+for i, child in pairs(parts) do
+    if child.Name == (...) then
+        table.insert(targetParts, child)
+    end
+end
+
+if #targetParts == 1 then
+    game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetParts[1].CFrame)
+else
+    local index = 1
+    game:GetService("RunService").Stepped:Connect(function()
+        if targetParts[index] then
+            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetParts[index].CFrame)
+            index = index + 1
+            wait(0.4)
+        end
+    end)
+end
+ end)
+
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "brings the part directly to you"}, function(...)
+	 local parts = game.Workspace:GetChildren()
+local targetParts = {}
+for i, child in pairs(parts) do
+	if child.Name == (...) then
+		table.insert(targetParts, child)
+	end
+end
+
+if #targetParts == 1 then
+	targetParts[1].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+else
+	local index = 1
+	game:GetService("RunService").Stepped:Connect(function()
+		if targetParts[index] then
+			targetParts[index].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+			index = index + 1
+			wait(0.4)
+		end
+	end)
+end
  end)
  
  
@@ -12474,57 +12591,64 @@ webImport("ui/main")
  
  cmd.add({"esppart", "partesp"}, {"esppart {partname} (partesp)", "Makes you be able to see any part"}, function(...)
 	 local parts = game.Workspace:GetChildren()
-	 local targetParts = {}
-	 for i, child in pairs(parts) do
-	 if child.Name == (...) then
-	 table.insert(targetParts, child)
-	 end
-	 end
-	 
-	 for i, part in ipairs(targetParts) do
-	 -- Create a new BoxHandleAdornment
-	 local adornment = Instance.new("BoxHandleAdornment")
-	 adornment.Adornee = part
-	 adornment.ZIndex = 5
-	 adornment.AlwaysOnTop = true
-	 adornment.Transparency = 0.5
-	 adornment.Color3 = Color3.new(1, 0, 0)
-	 
-	 adornment.Parent = part.Parent
-	 end
+local targetParts = {}
+for i, child in pairs(parts) do
+	if child.Name == (...) then
+		table.insert(targetParts, child)
+	end
+end
+
+for i, part in ipairs(targetParts) do
+	local adornment = Instance.new("Highlight")
+	adornment.Name="iamhighlight"
+	adornment.Adornee = part
+	adornment.OutlineTransparency = 0
+	adornment.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	adornment.FillTransparency = 0.5
+	adornment.FillColor = Color3.new(1, 0, 0)
+
+	adornment.Parent = part
+end
  end)
  
  cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
 	 local parts = game.Workspace:GetChildren()
- 
-	 for i, part in ipairs(parts) do
-	 if part:IsA("BoxHandleAdornment") then
-	 part:Destroy()
-	 end
-	 end
+
+for i, part in ipairs(parts) do
+	if part:IsA("Highlight") and part.Name=="iamhighlight" then
+		part:Destroy()
+	end
+end
  end)
  
  cmd.add({"viewpart", "viewp"}, {"viewpart {partname} (vpart)", "Views a part"}, function(...)
 	 local parts = game.Workspace:GetChildren()
-	 local partList = {}
-	 for i, child in pairs(parts) do
-		 if child.Name == (...) then
-			 table.insert(partList, child)
-		 end
-	 end
-	 
-	 local camera = game.Workspace.CurrentCamera
-	 camera.CameraType = "Scriptable"
-	 
-	 local index = 1
-	 while true do
-		 camera.CoordinateFrame = partList[index].CFrame
-		 index = index + 1
-		 if index > #partList then
-			 index = 1
-		 end
-		 wait(0.7)
-	 end
+local partList = {}
+
+for i, child in ipairs(parts) do
+	if child.Name == (...) then
+		table.insert(partList, child)
+	end
+end
+
+if #partList == 0 then
+	print("No parts found with the given name.")
+	return
+end
+
+local camera = game.Workspace.CurrentCamera
+camera.CameraType = Enum.CameraType.Scriptable
+
+local index = 1
+
+while true do
+	camera.CFrame = partList[index].CFrame
+	index = index + 1
+	if index > #partList then
+		index = 1
+	end
+	wait(0.7)
+end
  end)
  
  cmd.add({"unviewpart", "unviewp"}, {"unviewpart (unviewp)", "Unviews the part"}, function()
@@ -15155,9 +15279,18 @@ end
  end)
 
 spawn(function()
+local display = game.Players.LocalPlayer.DisplayName
+local name = game.Players.LocalPlayer.Name
+local hh
+if display == name then
+	hh = "@"..name..""
+else
+	hh = ""..display.." (@"..name..")"
+end
+
 Notify({
- Description = "backup of Nameless Admin due to the owner trolling with fake byfron UI";
- Title = "message from @maxype";
+ Description = "Welcome to Nameless Admin V"..currentversion.."";
+ Title = "Hello "..hh.."!";
  Duration = 5;					 
  });
 end)
