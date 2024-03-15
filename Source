@@ -24,7 +24,6 @@ print([[
 ┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
 ]])
-print("re-uploaded by @maxype\nsay goodbye to the fake ass byfron UI\n\nall loadstrings have been replaced in case FilteringEnabled decides to change them and troll\nmaybe new commands may be added ^-^")
 end)
  
  -- Notification library
