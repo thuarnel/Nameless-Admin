@@ -14747,19 +14747,23 @@ end)
  
  -- [[ PLUGINS LOADED NOTIFICATION ]] --
  if PluginsErrored == 0 then
+ --[[
 	 Notify({
 			 Description = "Loaded " .. PluginsLoaded .. " plugins";
 			 Title = "Nameless Admin";
 			 Duration = 3;
 			 
 			 });
+ ]]
  else
+ --[[
 	 Notify({
 	 Description = "Loaded " .. PluginsLoaded .. " plugins, although " .. PluginsErrored .. " plugins have errored";
 	 Title = "Nameless Admin";
 			 Duration = 3;
 			 
 			 });
+ ]]
  end
  end
 
@@ -15223,7 +15227,7 @@ else
 end
 
 Notify({
-  Description = "Welcome to Nameless Admin V"..currentversion.."";
+ Description = "Welcome to Nameless Admin V"..currentversion.."";
  Title = "Hey "..hh.."";
  Duration = 5;					 
  });
@@ -15254,7 +15258,7 @@ end)
  TextClickButton.Position = UDim2.new(0.418, 0,0, 0)
  TextClickButton.Size = UDim2.new(0, 2, 0, 33)
  TextClickButton.Font = Enum.Font.SourceSansBold
- TextClickButton.Text = "Nameless Admin " .. currentversion .. ""
+ TextClickButton.Text = "Nameless Admin V" .. currentversion .. ""
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
