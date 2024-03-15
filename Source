@@ -12297,7 +12297,7 @@ webImport("ui/main")
  end)
  
  cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy that supports both pc and mobile"}, function()
- loadstring(game:HttpGet("https://.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
  end)
  
  cmd.add({"gravity", "grav"}, {"gravity <amount> (grav)", "sets game gravity to whatever u want"}, function(...)
