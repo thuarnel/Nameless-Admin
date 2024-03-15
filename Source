@@ -5096,17 +5096,21 @@ followpart = true
 
 	repeat wait(0.1)
 	local parts = game.Workspace:GetChildren()
-local targetParts = {}
+	 local targetParts = {}
+	 for i, child in pairs(parts) do
+	 if child.Name == (...) then
+	 table.insert(targetParts, child)
+	 end
+	 end
 
-for i, child in pairs(parts) do
-    if child.Name == (...) then
-        table.insert(targetParts, child)
-    end
-end
-
-    for _, part in ipairs(targetParts) do
-        game.Players.LocalPlayer.Character:MoveTo(part.Position)
-    end
+	 local index = 1
+	 game:GetService("RunService").Stepped:Connect(function()
+	 if targetParts[index] then
+	 game.Players.LocalPlayer.Character.Humanoid.WalkToPoint = targetParts[index].CFrame
+	 index = index + 1
+	 wait(0.4)
+	 end
+	 end)
 until followpart == false
  end)
 
@@ -6795,7 +6799,7 @@ end
  end)
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
-	if not speed then speed = 5 end
+	local speed = 5
 
 local dir = {w = false, a = false, s = false, d = false, q = false, e = false}
 local cf = Instance.new("CFrameValue")
@@ -6803,96 +6807,102 @@ local camPart = Instance.new("Part")
 camPart.Transparency = 1
 camPart.Anchored = true
 camPart.CFrame = camera.CFrame
-wrap(function()
-	character.PrimaryPart.Anchored = true
-end)
 
 local touchControls = {
-	forward = false,
-	backward = false,
-	left = false,
-	right = false,
+    deltaX = 0,
+    deltaY = 0
 }
 
 local function updateTouchMovement(input)
-	local delta = input.Delta
-	local sensitivity = 0.01
+    local delta = input.Delta
+    local sensitivity = 0.01
 
-	local x = delta.X * sensitivity
-	local y = delta.Y * sensitivity
+    touchControls.deltaX = delta.X * sensitivity
+    touchControls.deltaY = delta.Y * sensitivity
+end
 
-	touchControls.left = x < 0
-	touchControls.right = x > 0
-	touchControls.forward = y < 0
-	touchControls.backward = y > 0
+local function updateMovement()
+    local x, y, z = 0, 0, 0
+
+    if dir.w then
+        z = -1
+    elseif dir.s then
+        z = 1
+    end
+
+    if dir.a then
+        x = -1
+    elseif dir.d then
+        x = 1
+    end
+
+    if dir.q then
+        y = 1
+    elseif dir.e then
+        y = -1
+    end
+
+    x = x + touchControls.deltaX
+    z = z + touchControls.deltaY
+
+    local moveDir = CFrame.new(x, y, z) * CFrame.new(0, 0, -speed)
+
+    cf.Value = cf.Value:lerp(moveDir, 0.2)
+    camPart.CFrame = camPart.CFrame:lerp(camPart.CFrame * cf.Value, 0.2)
+end
+
+local function onTouchEnded()
+    touchControls.deltaX = 0
+    touchControls.deltaY = 0
 end
 
 UserInputService.TouchMoved:Connect(updateTouchMovement)
-UserInputService.TouchEnded:Connect(function()
-	touchControls.forward = false
-	touchControls.backward = false
-	touchControls.left = false
-	touchControls.right = false
+UserInputService.TouchEnded:Connect(onTouchEnded)
+
+UserInputService.InputBegan:Connect(function(input, event)
+    if event then return end
+    local code, codes = input.KeyCode, Enum.KeyCode
+    if code == codes.W then
+        dir.w = true
+    elseif code == codes.A then
+        dir.a = true
+    elseif code == codes.S then
+        dir.s = true
+    elseif code == codes.D then
+        dir.d = true
+    elseif code == codes.Q then
+        dir.q = true
+    elseif code == codes.E then
+        dir.e = true
+    elseif code == codes.Space then
+        dir.q = true
+    end
 end)
 
-local function updateMovement()
-	local x, y, z = 0, 0, 0
-	if dir.w or touchControls.forward then z = -1 * speed end
-	if dir.a or touchControls.left then x = -1 * speed end
-	if dir.s or touchControls.backward then z = 1 * speed end
-	if dir.d or touchControls.right then x = 1 * speed end
-	if dir.q then y = 1 * speed end
-	if dir.e then y = -1 * speed end
-
-	local moveDir = CFrame.new(x, y, z)
-	cf.Value = cf.Value:lerp(moveDir, 0.2)
-	camPart.CFrame = camPart.CFrame:lerp(camPart.CFrame * cf.Value, 0.2)
-end
+UserInputService.InputEnded:Connect(function(input, event)
+    if event then return end
+    local code, codes = input.KeyCode, Enum.KeyCode
+    if code == codes.W then
+        dir.w = false
+    elseif code == codes.A then
+        dir.a = false
+    elseif code == codes.S then
+        dir.s = false
+    elseif code == codes.D then
+        dir.d = false
+    elseif code == codes.Q then
+        dir.q = false
+    elseif code == codes.E then
+        dir.e = false
+    elseif code == codes.Space then
+        dir.q = false
+    end
+end)
 
 lib.connect("freecam", RunService.RenderStepped:Connect(function()
-	local primaryPart = camPart
-	camera.CameraSubject = primaryPart
-	updateMovement()
-end))
-
-lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
-	if event then return end
-	local code, codes = input.KeyCode, Enum.KeyCode
-	if code == codes.W then
-		dir.w = true
-	elseif code == codes.A then
-		dir.a = true
-	elseif code == codes.S then
-		dir.s = true
-	elseif code == codes.D then
-		dir.d = true
-	elseif code == codes.Q then
-		dir.q = true
-	elseif code == codes.E then
-		dir.e = true
-	elseif code == codes.Space then
-		dir.q = true
-	end
-end))
-
-lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
-	if event then return end
-	local code, codes = input.KeyCode, Enum.KeyCode
-	if code == codes.W then
-		dir.w = false
-	elseif code == codes.A then
-		dir.a = false
-	elseif code == codes.S then
-		dir.s = false
-	elseif code == codes.D then
-		dir.d = false
-	elseif code == codes.Q then
-		dir.q = false
-	elseif code == codes.E then
-		dir.e = false
-	elseif code == codes.Space then
-		dir.q = false
-	end
+    local primaryPart = camPart
+    camera.CameraSubject = primaryPart
+    updateMovement()
 end))
  end)
  
@@ -12498,47 +12508,39 @@ webImport("ui/main")
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
 	 local parts = game.Workspace:GetChildren()
 local targetParts = {}
-for i, child in pairs(parts) do
-    if child.Name == (...) then
-        table.insert(targetParts, child)
-    end
-end
+	 for i, child in pairs(parts) do
+	 if child.Name == (...) then
+	 table.insert(targetParts, child)
+	 end
+	 end
 
-if #targetParts == 1 then
-    game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetParts[1].CFrame)
-else
-    local index = 1
-    game:GetService("RunService").Stepped:Connect(function()
-        if targetParts[index] then
-            game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(targetParts[index].CFrame)
-            index = index + 1
-            wait(0.4)
-        end
-    end)
-end
+	 local index = 1
+	 game:GetService("RunService").Stepped:Connect(function()
+	 if targetParts[index] then
+	 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetParts[index].CFrame + Vector3.new(0,0.3,0)
+	 index = index + 1
+	 wait(0.4)
+	 end
+	 end)
  end)
 
  cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "brings the part directly to you"}, function(...)
 	 local parts = game.Workspace:GetChildren()
-local targetParts = {}
-for i, child in pairs(parts) do
-	if child.Name == (...) then
-		table.insert(targetParts, child)
-	end
-end
+	 local targetParts = {}
+	 for i, child in pairs(parts) do
+	 if child.Name == (...) then
+	 table.insert(targetParts, child)
+	 end
+	 end
 
-if #targetParts == 1 then
-	targetParts[1].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-else
-	local index = 1
-	game:GetService("RunService").Stepped:Connect(function()
-		if targetParts[index] then
-			targetParts[index].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-			index = index + 1
-			wait(0.4)
-		end
-	end)
-end
+	 local index = 1
+	 game:GetService("RunService").Stepped:Connect(function()
+	 if targetParts[index] then
+	 targetParts[index].CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+	 index = index + 1
+	 wait(0.4)
+	 end
+	 end)
  end)
  
  
@@ -12591,31 +12593,31 @@ end
  
  cmd.add({"esppart", "partesp"}, {"esppart {partname} (partesp)", "Makes you be able to see any part"}, function(...)
 	 local parts = game.Workspace:GetChildren()
-local targetParts = {}
-for i, child in pairs(parts) do
-	if child.Name == (...) then
-		table.insert(targetParts, child)
-	end
-end
-
-for i, part in ipairs(targetParts) do
-	local adornment = Instance.new("Highlight")
-	adornment.Name="iamhighlight"
-	adornment.Adornee = part
-	adornment.OutlineTransparency = 0
-	adornment.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-	adornment.FillTransparency = 0.5
-	adornment.FillColor = Color3.new(1, 0, 0)
-
-	adornment.Parent = part
-end
+	 local targetParts = {}
+	 for i, child in pairs(parts) do
+	 if child.Name == (...) then
+	 table.insert(targetParts, child)
+	 end
+	 end
+	 
+	 for i, part in ipairs(targetParts) do
+	 local adornment = Instance.new("BoxHandleAdornment")
+	 adornment.Adornee = part
+	 adornment.ZIndex = 5
+	 adornment.AlwaysOnTop = true
+	 adornment.Transparency = 0.5
+	 adornment.Size = part.Size
+	 adornment.Color3 = Color3.new(1, 0, 0)
+	 
+	 adornment.Parent = part.Parent
+	 end
  end)
  
  cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
 	 local parts = game.Workspace:GetChildren()
 
 for i, part in ipairs(parts) do
-	if part:IsA("Highlight") and part.Name=="iamhighlight" then
+	if part:IsA("BoxHandleAdornment") then
 		part:Destroy()
 	end
 end
@@ -12624,31 +12626,24 @@ end
  cmd.add({"viewpart", "viewp"}, {"viewpart {partname} (vpart)", "Views a part"}, function(...)
 	 local parts = game.Workspace:GetChildren()
 local partList = {}
+	 for i, child in pairs(parts) do
+		 if child.Name == (...) then
+			 table.insert(partList, child)
+		 end
+	 end
 
-for i, child in ipairs(parts) do
-	if child.Name == (...) then
-		table.insert(partList, child)
-	end
-end
+	 local camera = game.Workspace.CurrentCamera
+	 camera.CameraType = "Scriptable"
 
-if #partList == 0 then
-	print("No parts found with the given name.")
-	return
-end
-
-local camera = game.Workspace.CurrentCamera
-camera.CameraType = Enum.CameraType.Scriptable
-
-local index = 1
-
-while true do
-	camera.CFrame = partList[index].CFrame
-	index = index + 1
-	if index > #partList then
-		index = 1
-	end
-	wait(0.7)
-end
+	 local index = 1
+	 while true do
+		 camera.CoordinateFrame = partList[index].CFrame
+		 index = index + 1
+		 if index > #partList then
+			 index = 1
+		 end
+		 wait(0.7)
+	 end
  end)
  
  cmd.add({"unviewpart", "unviewp"}, {"unviewpart (unviewp)", "Unviews the part"}, function()
@@ -13751,7 +13746,6 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
  end)
  
  cmd.add({"holdhat"}, {"holdhat", "Can make you hold your hats execute the command and you will have them in your inventory"}, function(...)
- --made by Nightmare#0930
  local lp = game.Players.LocalPlayer
  local char = lp.Character
  
