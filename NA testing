@@ -12464,7 +12464,7 @@ webImport("ui/main")
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	 local args = {...}
+	local args = {...}
     local player = game:GetService("Players").LocalPlayer
     
     local partName = args[1]
@@ -12479,8 +12479,8 @@ webImport("ui/main")
                     wait(0.1)
                 end
                 character:SetPrimaryPartCFrame(descendant.CFrame)
+                wait(0.1)
             end
-            return
         end
     end
  end)
