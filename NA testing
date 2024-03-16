@@ -12463,8 +12463,10 @@ webImport("ui/main")
    
  end)
  
- cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(args, speaker)
-	  local partName = table.concat(args, " ")
+ cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
+	 local args = {...}
+    local speaker = args[#args]
+    local partName = table.concat(args, " ", 1, #args - 1)
 
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
