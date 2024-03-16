@@ -304,6 +304,7 @@ end)
 	 Signal1:Disconnect()
 	 Signal2:Disconnect()
  end
+
  
  function x(v)
 	 if v then
@@ -12464,23 +12465,64 @@ webImport("ui/main")
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	 local parts = game.Workspace:GetChildren()
-	 local targetParts = {}
-	 for i, child in pairs(parts) do
-	 if child.Name == (...) then
-	 table.insert(targetParts, child)
-	 end
-	 end
-	 
-	 local index = 1
-	 game:GetService("RunService").Stepped:Connect(function()
-	 if targetParts[index] then
-	 game.Players.LocalPlayer.Character:MoveTo(targetParts[index].Position)
-	 index = index + 1
-	 wait(0.4)
-	 end
-	 end)
+	local args = {...}
+    
+    local partName = args[1]
+
+    for _, descendant in pairs(game.Workspace:GetDescendants()) do
+        if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
+            local character = Player.Character
+            if character and character:FindFirstChildOfClass("Humanoid") then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                if humanoid.SeatPart then
+                    humanoid.Sit = false
+                    wait(0.1)
+                end
+                character:SetPrimaryPartCFrame(descendant.CFrame)
+                wait(0.15)
+            end
+        end
+    end
  end)
+
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
+    local args = {...}
+
+local partName = args[1]
+
+for _, descendant in pairs(game.Workspace:GetDescendants()) do
+	if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
+		local character = Player.Character
+		if character and character:FindFirstChildOfClass("Humanoid") then
+			local humanoid = character:FindFirstChildOfClass("Humanoid")
+			if humanoid.SeatPart then
+				humanoid.Sit = false
+				wait(0.1)
+			end
+			descendant.CFrame = character.HumanoidRootPart.CFrame
+		end
+	end
+end
+end)
+
+cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function(...)
+    local args = {...}
+
+local argname = args[1]
+
+for _, h in pairs(game.Workspace:GetDescendants()) do
+	if h:IsA("Model") and h.Name:lower() == argname:lower() then
+		local rngIndex = math.random(1, #h:GetChildren())
+		local rng = h:GetChildren()[rngIndex]
+
+		local hum = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		if hum then
+			hum.CFrame = rng.CFrame
+		end
+		break
+	end
+end
+end)
  
  
  cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
@@ -12531,75 +12573,46 @@ webImport("ui/main")
  end)
  
  cmd.add({"esppart", "partesp"}, {"esppart {partname} (partesp)", "Makes you be able to see any part"}, function(...)
-	 local parts = game.Workspace:GetChildren()
-	 local targetParts = {}
-	 for i, child in pairs(parts) do
-	 if child.Name == (...) then
-	 table.insert(targetParts, child)
-	 end
-	 end
 	 
-	 for i, part in ipairs(targetParts) do
-	 -- Create a new BoxHandleAdornment
-	 local adornment = Instance.new("BoxHandleAdornment")
-	 adornment.Adornee = part
-	 adornment.ZIndex = 5
-	 adornment.AlwaysOnTop = true
-	 adornment.Transparency = 0.5
-	 adornment.Color3 = Color3.new(1, 0, 0)
-	 
-	 adornment.Parent = part.Parent
-	 end
  end)
  
  cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
-	 local parts = game.Workspace:GetChildren()
- 
-	 for i, part in ipairs(parts) do
-	 if part:IsA("BoxHandleAdornment") then
-	 part:Destroy()
-	 end
-	 end
+	 local parts = game.Workspace:GetDescendants()
+
+for i, part in ipairs(parts) do
+	if part:IsA("BoxHandleAdornment") and part.Name == "NAprtesp" then
+		part:Destroy()
+	end
+end
  end)
  
- cmd.add({"viewpart", "viewp"}, {"viewpart {partname} (vpart)", "Views a part"}, function(...)
-	 local parts = game.Workspace:GetChildren()
-	 local partList = {}
-	 for i, child in pairs(parts) do
-		 if child.Name == (...) then
-			 table.insert(partList, child)
-		 end
-	 end
-	 
-	 local camera = game.Workspace.CurrentCamera
-	 camera.CameraType = "Scriptable"
-	 
-	 local index = 1
-	 while true do
-		 camera.CoordinateFrame = partList[index].CFrame
-		 index = index + 1
-		 if index > #partList then
-			 index = 1
-		 end
-		 wait(0.7)
-	 end
+ cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
+	 local argss = {...}
+
+local pertnaem = argss[1]
+
+for _,v in pairs(game.Workspace:GetDescendants()) do
+	local lwr = v.Name:lower()
+	if lwr == pertnaem:lower() then
+		if v:IsA("BasePart") then
+			wait(0.1)
+			game.Workspace.CurrentCamera.CameraSubject = v
+		elseif v:IsA("Model") then
+			for _, j in ipairs(v:GetDescendants()) do
+				if j:IsA("BasePart") then
+					wait(0.1)
+					game.Workspace.CurrentCamera.CameraSubject = j
+					break
+				end
+			end
+		end
+	end
+end
  end)
  
  cmd.add({"unviewpart", "unviewp"}, {"unviewpart (unviewp)", "Unviews the part"}, function()
-	 local camera = game.Workspace.CurrentCamera
-	 camera.CameraType = "Custom"	
-	 wait(0.2)
-	 local workspace = game.Workspace
- Players = game:GetService("Players")
- local speaker = Players.LocalPlayer
- workspace.CurrentCamera:remove()
-	 wait(.1)
-	 workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA('Humanoid')
-	 workspace.CurrentCamera.CameraType = "Custom"
-	 speaker.CameraMinZoomDistance = 0.5
-	 speaker.CameraMaxZoomDistance = 400
-	 speaker.CameraMode = "Classic"
-	 speaker.Character.Head.Anchored = false
+	 cam = game.Workspace.CurrentCamera
+	 cam.CameraSubject=Player.Character
  end)
  
  cmd.add({"console"}, {"console", "Opens developer console"}, function()
@@ -15290,6 +15303,4 @@ end)
 
  --[[
 	End of the source code.
-	Join the discord for updates or give command ideas, that could be added.
-	https://discord.gg/ACk4JyVJ6x
 --]]
