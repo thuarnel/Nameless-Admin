@@ -12464,9 +12464,10 @@ webImport("ui/main")
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	local args = {...}
+	 local args = {...}
     local player = game:GetService("Players").LocalPlayer
-    local partName = table.concat(args, " ", 1, #args - 1)
+    
+    local partName = args[1]
 
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
