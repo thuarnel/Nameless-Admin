@@ -304,6 +304,7 @@ end)
 	 Signal1:Disconnect()
 	 Signal2:Disconnect()
  end
+
  
  function x(v)
 	 if v then
@@ -12572,37 +12573,7 @@ end)
  end)
  
  cmd.add({"esppart", "partesp"}, {"esppart {partname} (partesp)", "Makes you be able to see any part"}, function(...)
-	 local arg = {...}
-local objects = game.Workspace:GetDescendants()
-local prtname = arg[1]
-local trparts = {}
-
-for _, obj in ipairs(objects) do
-	local objlower = obj.Name:lower()
-	if (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == prtname:lower() then
-		if obj:IsA("BasePart") then
-			table.insert(trparts, obj)
-		elseif obj:IsA("Model") then
-			local mod = obj:GetDescendants()
-			for _, descendant in ipairs(mod) do
-				if descendant:IsA("BasePart") and descendant.Name:lower() == prtname:lower() then
-					table.insert(trparts, descendant)
-				end
-			end
-		end
-	end
-end
-
-for _, part in ipairs(trparts) do
-	local adornment = Instance.new("BoxHandleAdornment")
-	adornment.Name = "NAprtesp"
-	adornment.Adornee = part
-	adornment.ZIndex = 5
-	adornment.AlwaysOnTop = true
-	adornment.Transparency = 0.5
-	adornment.Color3 = Color3.new(1, 0, 0)
-	adornment.Parent = part
-end
+	 
  end)
  
  cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
@@ -12615,44 +12586,33 @@ for i, part in ipairs(parts) do
 end
  end)
  
- cmd.add({"viewpart", "viewp"}, {"viewpart {partname} (vpart)", "Views a part"}, function(...)
-	 local parts = game.Workspace:GetChildren()
-	 local partList = {}
-	 for i, child in pairs(parts) do
-		 if child.Name == (...) then
-			 table.insert(partList, child)
-		 end
-	 end
-	 
-	 local camera = game.Workspace.CurrentCamera
-	 camera.CameraType = "Scriptable"
-	 
-	 local index = 1
-	 while true do
-		 camera.CoordinateFrame = partList[index].CFrame
-		 index = index + 1
-		 if index > #partList then
-			 index = 1
-		 end
-		 wait(0.7)
-	 end
+ cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
+	 local argss = {...}
+
+local pertnaem = argss[1]
+
+for _,v in pairs(game.Workspace:GetDescendants()) do
+	local lwr = v.Name:lower()
+	if lwr == pertnaem:lower() then
+		if v:IsA("BasePart") then
+			wait(0.1)
+			game.Workspace.CurrentCamera.CameraSubject = v
+		elseif v:IsA("Model") then
+			for _, j in ipairs(v:GetDescendants()) do
+				if j:IsA("BasePart") then
+					wait(0.1)
+					game.Workspace.CurrentCamera.CameraSubject = j
+					break
+				end
+			end
+		end
+	end
+end
  end)
  
  cmd.add({"unviewpart", "unviewp"}, {"unviewpart (unviewp)", "Unviews the part"}, function()
-	 local camera = game.Workspace.CurrentCamera
-	 camera.CameraType = "Custom"	
-	 wait(0.2)
-	 local workspace = game.Workspace
- Players = game:GetService("Players")
- local speaker = Players.LocalPlayer
- workspace.CurrentCamera:remove()
-	 wait(.1)
-	 workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA('Humanoid')
-	 workspace.CurrentCamera.CameraType = "Custom"
-	 speaker.CameraMinZoomDistance = 0.5
-	 speaker.CameraMaxZoomDistance = 400
-	 speaker.CameraMode = "Classic"
-	 speaker.Character.Head.Anchored = false
+	 cam = game.Workspace.CurrentCamera
+	 cam.CameraSubject=Player.Character
  end)
  
  cmd.add({"console"}, {"console", "Opens developer console"}, function()
