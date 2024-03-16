@@ -12572,8 +12572,39 @@ end)
 	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
  end)
  
- cmd.add({"esppart", "partesp"}, {"esppart {partname} (partesp)", "Makes you be able to see any part"}, function(...)
-	 
+ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
+	 local arg = {...}
+local objects = game.Workspace:GetDescendants()
+local prtname = arg[1]
+local trparts = {}
+
+for _, obj in ipairs(objects) do
+	local objlower = obj.Name:lower()
+	if (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == prtname:lower() then
+		if obj:IsA("BasePart") then
+			table.insert(trparts, obj)
+		elseif obj:IsA("Model") or obj:IsA("Folder") then
+			local mod = obj:GetDescendants()
+			for _, thej in ipairs(mod) do
+				if thej:IsA("BasePart") and obj.Name:lower() == prtname:lower() then
+					table.insert(trparts, thej)
+				end
+			end
+		end
+	end
+end
+
+for _, part in ipairs(trparts) do
+	local adornment = Instance.new("BoxHandleAdornment")
+	adornment.Name = "NAprtesp"
+	adornment.Adornee = part
+	adornment.ZIndex = 5
+	adornment.AlwaysOnTop = true
+	adornment.Transparency = 0.5
+	adornment.Size = part.Size
+	adornment.Color3 = Color3.new(1, 0, 0)
+	adornment.Parent = part
+end
  end)
  
  cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
@@ -12597,7 +12628,7 @@ for _,v in pairs(game.Workspace:GetDescendants()) do
 		if v:IsA("BasePart") then
 			wait(0.1)
 			game.Workspace.CurrentCamera.CameraSubject = v
-		elseif v:IsA("Model") then
+		elseif v:IsA("Model") or v:IsA("Folder") then
 			for _, j in ipairs(v:GetDescendants()) do
 				if j:IsA("BasePart") then
 					wait(0.1)
@@ -15303,4 +15334,6 @@ end)
 
  --[[
 	End of the source code.
+	Join the discord for updates or give command ideas, that could be added.
+	https://discord.gg/ACk4JyVJ6x
 --]]
