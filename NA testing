@@ -12484,6 +12484,59 @@ webImport("ui/main")
         end
     end
  end)
+
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
+    local args = {...}
+    local plr = game:GetService("Players").LocalPlayer
+    
+    local partName = args[1]
+
+    for _, descendant in pairs(workspace:GetDescendants()) do
+        if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
+            local character = plr.Character
+            if character then
+                descendant.CFrame = character.PrimaryPart.CFrame
+            end
+        end
+    end
+end)
+
+cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the center of the specified model"}, function(...)
+    local args = {...}
+    local player = game:GetService("Players").LocalPlayer
+    
+    local modelName = args[1]
+
+    for _, model in ipairs(workspace:GetChildren()) do
+        if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+            local center = model:GetModelCFrame().Position
+            player.Character:SetPrimaryPartCFrame(CFrame.new(center))
+            return
+        end
+    end
+end)
+
+cmd.add({"bringmodel", "brmodel"}, {"bringmodel {modelname} (brmodel)", "Brings the model to you"}, function(...)
+    local args = {...}
+    local player = game:GetService("Players").LocalPlayer
+    
+    local modelName = args[1]
+
+    for _, model in ipairs(workspace:GetChildren()) do
+        if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+            local playerPos = player.Character:GetPrimaryPartCFrame().Position
+            local modelCenter = model:GetModelCFrame().Position
+            local offset = playerPos - modelCenter
+            
+            for _, part in ipairs(model:GetDescendants()) do
+                if part:IsA("BasePart") then
+                    part.Position = part.Position + offset
+                end
+            end
+            return
+        end
+    end
+end)
  
  
  cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
