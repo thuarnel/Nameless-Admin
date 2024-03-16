@@ -12463,23 +12463,22 @@ webImport("ui/main")
    
  end)
  
- cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	 local parts = game.Workspace:GetChildren()
-	 local targetParts = {}
-	 for i, child in pairs(parts) do
-	 if child.Name == (...) then
-	 table.insert(targetParts, child)
-	 end
-	 end
-	 
-	 local index = 1
-	 game:GetService("RunService").Stepped:Connect(function()
-	 if targetParts[index] then
-	 game.Players.LocalPlayer.Character:MoveTo(targetParts[index].Position)
-	 index = index + 1
-	 wait(0.4)
-	 end
-	 end)
+ cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(args, speaker)
+	  local partName = table.concat(args, " ")
+
+    for _, descendant in pairs(workspace:GetDescendants()) do
+        if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
+            if speaker.Character and speaker.Character:FindFirstChildOfClass("Humanoid") then
+                local humanoid = speaker.Character:FindFirstChildOfClass("Humanoid")
+                if humanoid.SeatPart then
+                    humanoid.Sit = false
+                    wait(0.1)
+                end
+                speaker.Character:SetPrimaryPartCFrame(descendant.CFrame)
+            end
+            return
+        end
+    end
  end)
  
  
