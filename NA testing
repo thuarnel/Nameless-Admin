@@ -12605,11 +12605,13 @@ local function theparts(obj)
 end
 
 for _, obj in ipairs(objects) do
-	theparts(obj)
 	if obj:IsA("Model") or obj:IsA("Folder") then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
 			theparts(thej)
+		end
+		elseif obj:IsA("BasePart") then
+		theparts(obj)
 		end
 	end
 end
