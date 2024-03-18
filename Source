@@ -12512,8 +12512,8 @@ local argname = args[1]
 
 for _, h in pairs(game.Workspace:GetDescendants()) do
 	if h:IsA("Model") and h.Name:lower() == argname:lower() then
-		local rngIndex = math.random(1, #h:GetChildren())
-		local rng = h:GetChildren()[rngIndex]
+		local rngIndex = math.random(1, #h:GetDescendants())
+		local rng = h:GetDescendants()[rngIndex]
 
 		local hum = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 		if hum then
