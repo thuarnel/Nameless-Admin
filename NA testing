@@ -6794,84 +6794,77 @@ end
  local fcpro
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
-	 if not speed then speed = 5 end
-if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character wrap(function() character.PrimaryPart.Anchored = false end) end
-local dir = {w = false, a = false, s = false, d = false}
-local cf = Instance.new("CFrameValue")
-local camPart = Instance.new("Part")
-camPart.Transparency = 1
-camPart.Anchored = true
-camPart.CFrame = camera.CFrame
-wrap(function()
-    character.PrimaryPart.Anchored = true
-end)
-
-
-fcpro = game:GetService("RunService").RenderStepped:Connect(function()
-    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-    
-        game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
-        game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
-        
-        game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
-        local direction = controlModule:GetMoveVector()
-        game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
-        if direction.X > 0 then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
-        end
-        if direction.X < 0 then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
-        end
-        if direction.Z > 0 then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
-        end
-        if direction.Z < 0 then
-            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
-        end
-    end
-end)
-
-lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
-fcpro:Disconnect()
-    if event then return end
-    local code, codes = input.KeyCode, Enum.KeyCode
-    if code == codes.W then
-        dir.w = true
-    elseif code == codes.A then
-        dir.a = true
-    elseif code == codes.S then
-        dir.s = true
-    elseif code == codes.D then
-        dir.d = true
-    elseif code == codes.Q then
-        dir.q = true
-    elseif code == codes.E then
-        dir.e = true
-    elseif code == codes.Space then
-        dir.q = true
-    end
-end))
-
-lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
-    if event then return end
-    local code, codes = input.KeyCode, Enum.KeyCode
-    if code == codes.W then
-        dir.w = false
-    elseif code == codes.A then
-        dir.a = false
-    elseif code == codes.S then
-        dir.s = false
-    elseif code == codes.D then
-        dir.d = false
-    elseif code == codes.Q then
-        dir.q = false
-    elseif code == codes.E then
-        dir.e = false
-    elseif code == codes.Space then
-        dir.q = false
-    end
-end))
+	if not speed then speed = 5 end
+	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
+	 local dir = {w = false, a = false, s = false, d = false}
+	 local cf = Instance.new("CFrameValue")
+	 local camPart = Instance.new("Part")
+	 camPart.Transparency = 1
+	 camPart.Anchored = true
+	 camPart.CFrame = camera.CFrame
+	 wrap(function()
+		 character.PrimaryPart.Anchored = true
+	 end)
+	 
+	 lib.connect("freecam", RunService.RenderStepped:Connect(function()
+		 local primaryPart = camPart
+		 camera.CameraSubject = primaryPart
+		 
+		 local x, y, z = 0, 0, 0
+		 if dir.w then z = -1 * speed end
+		 if dir.a then x = -1 * speed end
+		 if dir.s then z = 1 * speed end
+		 if dir.d then x = 1 * speed end
+		 if dir.q then y = 1 * speed end
+		 if dir.e then y = -1 * speed end
+		 
+		 primaryPart.CFrame = CFrame.new(
+			 primaryPart.CFrame.p,
+			 (camera.CFrame * CFrame.new(0, 0, -100)).p
+		 )
+		 
+		 local moveDir = CFrame.new(x,y,z)
+		 cf.Value = cf.Value:lerp(moveDir, 0.2)
+		 primaryPart.CFrame = primaryPart.CFrame:lerp(primaryPart.CFrame * cf.Value, 0.2)
+	 end))
+	 lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
+		 if event then return end
+		 local code, codes = input.KeyCode, Enum.KeyCode
+		 if code == codes.W then
+			 dir.w = true
+		 elseif code == codes.A then
+			 dir.a = true
+		 elseif code == codes.S then
+			 dir.s = true
+		 elseif code == codes.D then
+			 dir.d = true
+		 elseif code == codes.Q then
+			 dir.q = true
+		 elseif code == codes.E then
+			 dir.e = true
+		 elseif code == codes.Space then
+			 dir.q = true
+		 end
+	 end))
+	 lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
+		 if event then return end
+		 local code, codes = input.KeyCode, Enum.KeyCode
+		 if code == codes.W then
+			 dir.w = false
+		 elseif code == codes.A then
+			 dir.a = false
+		 elseif code == codes.S then
+			 dir.s = false
+		 elseif code == codes.D then
+			 dir.d = false
+		 elseif code == codes.Q then
+			 dir.q = false
+		 elseif code == codes.E then
+			 dir.e = false
+		 elseif code == codes.Space then
+			 dir.q = false
+		 end
+	 end))
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
