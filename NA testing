@@ -99,7 +99,6 @@ end)
  Loopmute = false
  Loopglitch = false
  Watch = false
- gotopertDelay = 0.2
  local Admin = {}
  
  -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
@@ -12568,7 +12567,7 @@ webImport("ui/main")
                     wait(0.1)
                 end
                 character:SetPrimaryPartCFrame(descendant.CFrame)
-                wait(gotopertDelay)
+                wait(0.2)
             end
         end
     end
@@ -12605,23 +12604,12 @@ for i,v in pairs(workspace:GetDescendants()) do
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
-			wait(gotopertDelay)
+			wait(0.2)
 			getRoot(Player.Character).CFrame = v:GetModelCFrame()
 		end
 	end
 end)
 
-cmd.add({"gotopartdelay", "gotopartd"}, {"gotopartdelay <number> (gotopartd)", "Adjusts how quickly you teleport to each part"}, function(...)
-local arg = {...}
-local viper = arg[1]
-if viper == nil then
-viper = 0.2
-else
-end
- gotopertDelay = viper or 0.2
- end)
-
- 
  cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
  speaker = game.Players.LocalPlayer
  game.Workspace.Gravity = 0
