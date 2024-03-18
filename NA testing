@@ -99,7 +99,7 @@ end)
  Loopmute = false
  Loopglitch = false
  Watch = false
- gotopartDelay = 0.2
+ gotopertDelay = 0.2
  local Admin = {}
  
  -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
@@ -12415,18 +12415,12 @@ webImport("ui/main")
  end
  
  workspace.DescendantAdded:Connect(function(part)
-	 if part:IsA("Part") and part.Anchored == false then
-		 if not (part:IsDescendantOf(game.Players.LocalPlayer.Character)) then
-			 zeroGrav(part)
-		 end
-	 end
- end)
- end)
- 
- cmd.add({"funfact"}, {"funfact", "Says a random fun fact"}, function()
- local GetURL = game:HttpGet("https://uselessfacts.jsph.pl/random.json?language=en")
-	 local HTTP = game:GetService("HttpService"):JSONDecode(GetURL)
-	 game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(HTTP.text,"All")
+		if part:IsA("Part") and part.Anchored == false then
+			 if not (part:IsDescendantOf(game.Players.LocalPlayer.Character)) then
+			 	zeroGrav(part)
+		 	end
+	 	end
+ 	end)
  end)
  
  cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, firecd)", "Fires every click detector that's in workspace"}, function()
@@ -12477,7 +12471,7 @@ webImport("ui/main")
    
  end)
 
- cmd.add({"delete", "remove"}, {"delete (remove)", "Removes any part with a certain name from the workspace"}, function(...)
+ cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
  local delcount = 0
  local grr = {...}
  local HH = grr[1]
@@ -12487,6 +12481,10 @@ webImport("ui/main")
 			delcount = delcount + 1
 		end
 	end
+
+	wait();
+
+	
 	Notify({
  Description = "Deleted over "..delcount.." parts named: "..HH.."";
  Title = "Nameless Admin";
@@ -12494,7 +12492,7 @@ webImport("ui/main")
  });
  end)
 
- cmd.add({"deleteclass", "removeclass"}, {"deleteclass (removeclass)", "Removes any part with a certain classname from the workspace"}, function(...)
+ cmd.add({"deleteclass", "removeclass"}, {"deleteclass {ClassName} (removeclass)", "Removes any part with a certain classname from the workspace"}, function(...)
  local delclass = 0
  local grr = {...}
  local JJ = grr[1]
@@ -12504,6 +12502,10 @@ webImport("ui/main")
 			delclass = delclass + 1
 		end
 	end
+
+	wait();
+
+	
 	Notify({
  Description = "Deleted over "..delclass.." parts with ClassName of: "..JJ.."";
  Title = "Nameless Admin";
@@ -12511,7 +12513,7 @@ webImport("ui/main")
  });
  end)
 
- cmd.add({"chardelete", "charremove"}, {"chardelete (charremove)", "Removes any part with a certain name from your character"}, function(...)
+ cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
  local chardelprt = 0
  local grr = {...}
  local poop = grr[1]
@@ -12522,6 +12524,8 @@ webImport("ui/main")
 		end
 	end
 
+	wait();
+
 	Notify({
  Description = "Deleted over "..chardelprt.." parts inside the character with name: "..poop.."";
  Title = "Nameless Admin";
@@ -12529,7 +12533,7 @@ webImport("ui/main")
  });
  end)
 
- cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname"}, {"chardeleteclass (charremoveclass, chardeleteclassname)", "Removes any part with a certain classname from your character"}, function(...)
+ cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname"}, {"chardeleteclass {ClassName} (charremoveclass, chardeleteclassname)", "Removes any part with a certain classname from your character"}, function(...)
  local charclass = 0
  local grr = {...}
  local poopy = grr[1]
@@ -12539,6 +12543,8 @@ webImport("ui/main")
 			charclass = charclass + 1
 		end
 	end
+
+	wait();
 
 	Notify({
  Description = "Deleted over "..charclass.." parts inside the character with ClassName of: "..poopy.."";
@@ -12562,7 +12568,7 @@ webImport("ui/main")
                     wait(0.1)
                 end
                 character:SetPrimaryPartCFrame(descendant.CFrame)
-                wait(gotopartDelay)
+                wait(gotopertDelay)
             end
         end
     end
@@ -12599,19 +12605,20 @@ for i,v in pairs(workspace:GetDescendants()) do
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
 			end
-			wait(gotopartDelay)
+			wait(gotopertDelay)
 			getRoot(Player.Character).CFrame = v:GetModelCFrame()
 		end
 	end
 end)
 
-cmd.add({"gotopartdelay", "gotopartd"}, {"gotopartdelay [number] (gotopartd)", "Adjusts how quickly you teleport to each part (default is 0.2)"}, function(...)
-viper = (...)
+cmd.add({"gotopartdelay", "gotopartd"}, {"gotopartdelay <number> (gotopartd)", "Adjusts how quickly you teleport to each part"}, function(...)
+local arg = {...}
+local viper = arg[1]
 if viper == nil then
 viper = 0.2
 else
 end
- gotopartDelay = viper
+ gotopertDelay = viper or 0.2
  end)
 
  
