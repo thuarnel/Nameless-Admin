@@ -52,12 +52,12 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'), -- If player's executor has the custom file function support it reads the prefix file to get prefix
-	 tupleSeparator = ',',	-- ;ff me,others,all | ;ff me/others/all
-	 ui = {					-- never did anything with this
+	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	 tupleSeparator = ',',
+	 ui = {					
 		 
 	 },
-	 keybinds = {			-- never did anything with this
+	 keybinds = {			
 		 
 	 },
  }
@@ -99,6 +99,7 @@ end)
  Loopmute = false
  Loopglitch = false
  Watch = false
+ gotopartDelay = 0.2
  local Admin = {}
  
  -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
@@ -5096,6 +5097,22 @@ until npcfollowloop == false
 	npcfollowloop = false
  end)
 
+ cmd.add({"lockws", "lockworkspace"}, {"lockws (lockworkspace)", "Locks the whole workspace"}, function()
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Locked == true or v.Locked == false then
+			v.Locked = true
+		end
+	end
+ end)
+
+ cmd.add({"unlockws", "unlockworkspace"}, {"unlockws (unlockworkspace)", "Unlocks the whole workspace"}, function()
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Locked == true or v.Locked == false then
+			v.Locked = false
+		end
+	end
+ end)
+
  cmd.add({"sitnpcs"}, {"sitnpcs", "Makes NPCS sit"}, function()
 	 local npcs = {}
  
@@ -6596,7 +6613,6 @@ end
  on = false
  cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
  on = true
- -- kind of bad mobile fly but it works after the reject character deletions enabling
  speed = (...)
  
 	 if speed == nil then
@@ -6613,7 +6629,6 @@ end
 		 Duration = 5;
 		 });
 		 
-	 -- creates a button that u can toggle if you're flying or not
 	 local ScreenGui = Instance.new("ScreenGui")
 	 local TextButton = Instance.new("TextButton")
 	 local UICorner = Instance.new("UICorner")
@@ -6776,79 +6791,88 @@ end
  });
  end
  end)
+
+ local fcpro
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
 	 if not speed then speed = 5 end
-	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
-	 local dir = {w = false, a = false, s = false, d = false}
-	 local cf = Instance.new("CFrameValue")
-	 local camPart = Instance.new("Part")
-	 camPart.Transparency = 1
-	 camPart.Anchored = true
-	 camPart.CFrame = camera.CFrame
-	 wrap(function()
-		 character.PrimaryPart.Anchored = true
-	 end)
-	 
-	 lib.connect("freecam", RunService.RenderStepped:Connect(function()
-		 local primaryPart = camPart
-		 camera.CameraSubject = primaryPart
-		 
-		 local x, y, z = 0, 0, 0
-		 if dir.w then z = -1 * speed end
-		 if dir.a then x = -1 * speed end
-		 if dir.s then z = 1 * speed end
-		 if dir.d then x = 1 * speed end
-		 if dir.q then y = 1 * speed end
-		 if dir.e then y = -1 * speed end
-		 
-		 primaryPart.CFrame = CFrame.new(
-			 primaryPart.CFrame.p,
-			 (camera.CFrame * CFrame.new(0, 0, -100)).p
-		 )
-		 
-		 local moveDir = CFrame.new(x,y,z)
-		 cf.Value = cf.Value:lerp(moveDir, 0.2)
-		 primaryPart.CFrame = primaryPart.CFrame:lerp(primaryPart.CFrame * cf.Value, 0.2)
-	 end))
-	 lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
-		 if event then return end
-		 local code, codes = input.KeyCode, Enum.KeyCode
-		 if code == codes.W then
-			 dir.w = true
-		 elseif code == codes.A then
-			 dir.a = true
-		 elseif code == codes.S then
-			 dir.s = true
-		 elseif code == codes.D then
-			 dir.d = true
-		 elseif code == codes.Q then
-			 dir.q = true
-		 elseif code == codes.E then
-			 dir.e = true
-		 elseif code == codes.Space then
-			 dir.q = true
-		 end
-	 end))
-	 lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
-		 if event then return end
-		 local code, codes = input.KeyCode, Enum.KeyCode
-		 if code == codes.W then
-			 dir.w = false
-		 elseif code == codes.A then
-			 dir.a = false
-		 elseif code == codes.S then
-			 dir.s = false
-		 elseif code == codes.D then
-			 dir.d = false
-		 elseif code == codes.Q then
-			 dir.q = false
-		 elseif code == codes.E then
-			 dir.e = false
-		 elseif code == codes.Space then
-			 dir.q = false
-		 end
-	 end))
+if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character wrap(function() character.PrimaryPart.Anchored = false end) end
+local dir = {w = false, a = false, s = false, d = false}
+local cf = Instance.new("CFrameValue")
+local camPart = Instance.new("Part")
+camPart.Transparency = 1
+camPart.Anchored = true
+camPart.CFrame = camera.CFrame
+wrap(function()
+    character.PrimaryPart.Anchored = true
+end)
+
+
+fcpro = game:GetService("RunService").RenderStepped:Connect(function()
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+    
+        game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+        game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+        game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+        
+        game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
+        local direction = controlModule:GetMoveVector()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+        if direction.X > 0 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+        end
+        if direction.X < 0 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+        end
+        if direction.Z > 0 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+        end
+        if direction.Z < 0 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+        end
+    end
+end)
+
+lib.connect("freecam", UserInputService.InputBegan:Connect(function(input, event)
+fcpro:Disconnect()
+    if event then return end
+    local code, codes = input.KeyCode, Enum.KeyCode
+    if code == codes.W then
+        dir.w = true
+    elseif code == codes.A then
+        dir.a = true
+    elseif code == codes.S then
+        dir.s = true
+    elseif code == codes.D then
+        dir.d = true
+    elseif code == codes.Q then
+        dir.q = true
+    elseif code == codes.E then
+        dir.e = true
+    elseif code == codes.Space then
+        dir.q = true
+    end
+end))
+
+lib.connect("freecam", UserInputService.InputEnded:Connect(function(input, event)
+    if event then return end
+    local code, codes = input.KeyCode, Enum.KeyCode
+    if code == codes.W then
+        dir.w = false
+    elseif code == codes.A then
+        dir.a = false
+    elseif code == codes.S then
+        dir.s = false
+    elseif code == codes.D then
+        dir.d = false
+    elseif code == codes.Q then
+        dir.q = false
+    elseif code == codes.E then
+        dir.e = false
+    elseif code == codes.Space then
+        dir.q = false
+    end
+end))
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
@@ -8159,10 +8183,6 @@ print(text)
  end)
  
  cmd.add({"antichatlogger", "acl"}, {"antichatlogger (acl)", "Anti chat logger"}, function()
- -- Gui to Lua
- -- Version: 3.2
- 
- -- Instances:
  
  local ScreenGui = Instance.new("ScreenGui")
  local Frame = Instance.new("Frame")
@@ -8247,15 +8267,10 @@ print(text)
  
  UICorner_5.Parent = TextButton_2
  
- -- Scripts:
- 
  local function CPNQ_fake_script()
 	 local script = Instance.new('LocalScript', TextButton)
  
 	 script.Parent.MouseButton1Click:Connect(function()
-		 -- This basically makes roblox unable to log your chat messages sent in-game. Meaning if you get reported for saying something bad, you won't get banned!
-		 -- Store in autoexec folder
-		 -- Credits: AnthonyIsntHere and ArianBlaack
 	 
 	 --[[
 		 Change-logs:
@@ -12442,13 +12457,11 @@ webImport("ui/main")
  local UserInputService = game:GetService("UserInputService")
  local TweenService = game:GetService("TweenService")
  
- -- function to teleport the player to the camera's position using tweening
  local function teleportPlayer()
 	 local character = player.Character or player.CharacterAdded:wait(1)
 	 local camera = game.Workspace.CurrentCamera
 	 local cameraPosition = camera.CFrame.Position
 	 
-	 -- create a new tween that moves the player's primary part to the camera position
 	 local tween = TweenService:Create(character.PrimaryPart, TweenInfo.new(2), {
 		 CFrame = CFrame.new(cameraPosition)
 	 })
@@ -12462,6 +12475,76 @@ webImport("ui/main")
  
 		 teleportPlayer()
    
+ end)
+
+ cmd.add({"delete", "remove"}, {"delete (remove)", "Removes any part with a certain name from the workspace"}, function(...)
+ local delcount = 0
+ local grr = {...}
+ local HH = grr[1]
+	for _,v in pairs(workspace:GetDescendants()) do
+		if v.Name:lower() == HH:lower() then
+			v:Destroy()
+			delcount = delcount + 1
+		end
+	end
+	Notify({
+ Description = "Deleted over "..delcount.." parts named: "..HH.."";
+ Title = "Nameless Admin";
+ Duration = 4;
+ });
+ end)
+
+ cmd.add({"deleteclass", "removeclass"}, {"deleteclass (removeclass)", "Removes any part with a certain classname from the workspace"}, function(...)
+ local delclass = 0
+ local grr = {...}
+ local JJ = grr[1]
+	for _,v in pairs(workspace:GetDescendants()) do
+		if v.ClassName:lower() == JJ:lower() then
+			v:Destroy()
+			delclass = delclass + 1
+		end
+	end
+	Notify({
+ Description = "Deleted over "..delclass.." parts with ClassName of: "..JJ.."";
+ Title = "Nameless Admin";
+ Duration = 4;
+ });
+ end)
+
+ cmd.add({"chardelete", "charremove"}, {"chardelete (charremove)", "Removes any part with a certain name from your character"}, function(...)
+ local chardelprt = 0
+ local grr = {...}
+ local poop = grr[1]
+	for i,v in pairs(Player.Character:GetDescendants()) do
+		if v.Name:lower() == poop:lower() then
+			v:Destroy()
+			chardelprt = chardelprt + 1
+		end
+	end
+
+	Notify({
+ Description = "Deleted over "..chardelprt.." parts inside the character with name: "..poop.."";
+ Title = "Nameless Admin";
+ Duration = 4;
+ });
+ end)
+
+ cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname"}, {"chardeleteclass (charremoveclass, chardeleteclassname)", "Removes any part with a certain classname from your character"}, function(...)
+ local charclass = 0
+ local grr = {...}
+ local poopy = grr[1]
+	for i,v in pairs(Player.Character:GetDescendants()) do
+		if v.ClassName:lower() == poopy:lower() then
+			v:Destroy()
+			charclass = charclass + 1
+		end
+	end
+
+	Notify({
+ Description = "Deleted over "..charclass.." parts inside the character with ClassName of: "..poopy.."";
+ Title = "Nameless Admin";
+ Duration = 4;
+ });
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
@@ -12479,7 +12562,7 @@ webImport("ui/main")
                     wait(0.1)
                 end
                 character:SetPrimaryPartCFrame(descendant.CFrame)
-                wait(0.15)
+                wait(gotopartDelay)
             end
         end
     end
@@ -12510,20 +12593,27 @@ cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports
 
 local argname = args[1]
 
-for _, h in pairs(game.Workspace:GetDescendants()) do
-	if h:IsA("Model") and h.Name:lower() == argname:lower() then
-		local rngIndex = math.random(1, #h:GetDescendants())
-		local rng = h:GetDescendants()[rngIndex]
-
-		local hum = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-		if hum then
-			hum.CFrame = rng.CFrame
+for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name:lower() == argname:lower() and v:IsA("Model") then
+			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
+				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
+				wait(.1)
+			end
+			wait(gotopartDelay)
+			getRoot(Player.Character).CFrame = v:GetModelCFrame()
 		end
-		break
 	end
-end
 end)
- 
+
+cmd.add({"gotopartdelay", "gotopartd"}, {"gotopartdelay [number] (gotopartd)", "Adjusts how quickly you teleport to each part (default is 0.2)"}, function(...)
+viper = (...)
+if viper == nil then
+viper = 0.2
+else
+end
+ gotopartDelay = viper
+ end)
+
  
  cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
  speaker = game.Players.LocalPlayer
@@ -12627,7 +12717,7 @@ end)
 	 local parts = game:GetDescendants()
 
 for i, part in ipairs(parts) do
-	if part:IsA("BoxHandleAdornment") and part.Name == "NAprtesp" then
+	if part:IsA("BoxHandleAdornment") then
 		part:Destroy()
 	end
 end
