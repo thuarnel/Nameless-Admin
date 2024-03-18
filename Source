@@ -6378,7 +6378,7 @@ end
 	 
 	 -- Scripts:
 	 
-	 local function AKIHDI_fake_script() -- Main.Main 
+	 local function AKIHDI_fake_script()
 		 local script = Instance.new('LocalScript', Main)
 	 
 		 _G.functionspy = {
@@ -6510,7 +6510,7 @@ end
 		 
 	 end
 	 coroutine.wrap(AKIHDI_fake_script)()
-	 local function KVVJTK_fake_script() -- FakeTitle.DragScript 
+	 local function KVVJTK_fake_script()
 		 local script = Instance.new('LocalScript', FakeTitle)
 		 
 		 local UIS = game:GetService('UserInputService')
@@ -6550,7 +6550,7 @@ end
 		 
 	 end
 	 coroutine.wrap(KVVJTK_fake_script)()
-	 local function BIPVKVC_fake_script() -- FakeTitle.LocalScript 
+	 local function BIPVKVC_fake_script()
 		 local script = Instance.new('LocalScript', FakeTitle)
 	 
 		 table.insert(_G.functionspy.connections, script.Parent.MouseEnter:Connect(function()
@@ -6583,7 +6583,7 @@ end
 		 end))
 	 end
 	 coroutine.wrap(BIPVKVC_fake_script)()
-	 local function PRML_fake_script() -- clear.LocalScript 
+	 local function PRML_fake_script()
 		 local script = Instance.new('LocalScript', clear)
 	 
 		 script.Parent.MouseButton1Click:Connect(function()
@@ -6642,7 +6642,7 @@ end
 	 UIAspectRatioConstraint.Parent = TextButton
 	 UIAspectRatioConstraint.AspectRatio = 1.060
  
-	 local function FEPVI_fake_script() -- TextButton.LocalScript 
+	 local function FEPVI_fake_script()
 		 local script = Instance.new('LocalScript', TextButton)
 			 script.Parent.MouseButton1Click:Connect(function()
 	   if on == false then
@@ -8249,7 +8249,7 @@ print(text)
  
  -- Scripts:
  
- local function CPNQ_fake_script() -- TextButton.LocalScript 
+ local function CPNQ_fake_script()
 	 local script = Instance.new('LocalScript', TextButton)
  
 	 script.Parent.MouseButton1Click:Connect(function()
@@ -8616,7 +8616,7 @@ print(Time)
 	 end)
  end
  coroutine.wrap(CPNQ_fake_script)()
- local function OZEERJ_fake_script() -- TextButton_2.LocalScript 
+ local function OZEERJ_fake_script()
 	 local script = Instance.new('LocalScript', TextButton_2)
  
 	 script.Parent.MouseButton1Click:Connect(function()
@@ -8626,7 +8626,7 @@ print(Time)
 		 end)
  end
  coroutine.wrap(OZEERJ_fake_script)()
- local function ELJBIKO_fake_script() -- Frame.LocalScript 
+ local function ELJBIKO_fake_script()
 	 local script = Instance.new('LocalScript', Frame)
  
 	 script.Parent.Position = UDim2.new(0.355, 0,-1.291, 0)
@@ -12572,43 +12572,59 @@ end)
 	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
  end)
  
+ local iamesp
+
  cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
 	 local arg = {...}
-local objects = game.Workspace:GetDescendants()
+local objects = game:GetDescendants()
 local prtname = arg[1]
 local trparts = {}
 
-for _, obj in ipairs(objects) do
-	local objlower = obj.Name:lower()
-	if (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == prtname:lower() then
-		if obj:IsA("BasePart") then
-			table.insert(trparts, obj)
-		elseif obj:IsA("Model") or obj:IsA("Folder") then
-			local mod = obj:GetDescendants()
-			for _, thej in ipairs(mod) do
-				if thej:IsA("BasePart") and obj.Name:lower() == prtname:lower() then
-					table.insert(trparts, thej)
-				end
-			end
-		end
+local function omg(part)
+	if part:FindFirstChild("NAprtesp") == nil then
+		local adornment = Instance.new("BoxHandleAdornment")
+		adornment.Name = "NAprtesp"
+		adornment.Adornee = part
+		adornment.ZIndex = 5
+		adornment.AlwaysOnTop = true
+		adornment.Transparency = 0.5
+		adornment.Size = part.Size
+		adornment.Color3 = Color3.new(1, 0, 0)
+		adornment.Parent = part
 	end
 end
 
-for _, part in ipairs(trparts) do
-	local adornment = Instance.new("BoxHandleAdornment")
-	adornment.Name = "NAprtesp"
-	adornment.Adornee = part
-	adornment.ZIndex = 5
-	adornment.AlwaysOnTop = true
-	adornment.Transparency = 0.5
-	adornment.Size = part.Size
-	adornment.Color3 = Color3.new(1, 0, 0)
-	adornment.Parent = part
+local function check(obj)
+	local objlower = obj.Name:lower()
+	return (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == prtname:lower()
 end
+
+local function pert(obj)
+	if check(obj) then
+		table.insert(trparts, obj)
+		omg(obj)
+	end
+end
+
+for _, obj in ipairs(objects) do
+	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == prtname:lower() then
+		local mod = obj:GetDescendants()
+		for _, thej in ipairs(mod) do
+			pert(thej)
+		end
+	elseif obj:IsA("BasePart") and obj.Name:lower() == prtname:lower() then
+		pert(obj)
+	end
+end
+
+iamesp = game.DescendantAdded:Connect(function(hh)
+	pert(hh)
+end)
  end)
  
- cmd.add({"unesppart", "unpartesp"}, {"unesppart (unpartesp)", "Removes the esp from the parts"}, function(...)
-	 local parts = game.Workspace:GetDescendants()
+ cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function(...)
+ iamesp:Disconnect()
+	 local parts = game:GetDescendants()
 
 for i, part in ipairs(parts) do
 	if part:IsA("BoxHandleAdornment") and part.Name == "NAprtesp" then
@@ -14132,7 +14148,7 @@ end)
  
  -- Scripts:
  
- local function FEPVI_fake_script() -- TextButton.LocalScript 
+ local function FEPVI_fake_script()
 	 local script = Instance.new('LocalScript', TextButton)
  
 	 IsInvis = false
@@ -15310,7 +15326,7 @@ end)
  UICorner.CornerRadius = UDim.new(1, 0)
  UICorner.Parent = TextClickButton
  
- local function PZORYLB_fake_script() -- TextClickButton.LocalScript 
+ local function PZORYLB_fake_script()
 	 local script = Instance.new('LocalScript', TextClickButton)
 	 textclickbutton = script.Parent
 	 textclickbutton.Size = UDim2.new(0, 2,0, 33)
@@ -15334,6 +15350,4 @@ end)
 
  --[[
 	End of the source code.
-	Join the discord for updates or give command ideas, that could be added.
-	https://discord.gg/ACk4JyVJ6x
 --]]
