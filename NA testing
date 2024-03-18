@@ -12580,44 +12580,45 @@ local objects = game:GetDescendants()
 local prtname = arg[1]
 local trparts = {}
 
-local function mej(part)
-	local adornment = Instance.new("BoxHandleAdornment")
-	adornment.Name = "NAprtesp"
-	adornment.Adornee = part
-	adornment.ZIndex = 5
-	adornment.AlwaysOnTop = true
-	adornment.Transparency = 0.5
-	adornment.Size = part.Size
-	adornment.Color3 = Color3.new(1, 0, 0)
-	adornment.Parent = part
+local function omg(part)
+	if part:FindFirstChild("NAprtesp") == nil then
+		local adornment = Instance.new("BoxHandleAdornment")
+		adornment.Name = "NAprtesp"
+		adornment.Adornee = part
+		adornment.ZIndex = 5
+		adornment.AlwaysOnTop = true
+		adornment.Transparency = 0.5
+		adornment.Size = part.Size
+		adornment.Color3 = Color3.new(1, 0, 0)
+		adornment.Parent = part
+	end
 end
 
-local function checkPart(obj)
+local function check(obj)
 	local objlower = obj.Name:lower()
 	return (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == prtname:lower()
 end
 
-local function theparts(obj)
-	if checkPart(obj) then
+local function pert(obj)
+	if check(obj) then
 		table.insert(trparts, obj)
-		mej(obj)
+		omg(obj)
 	end
 end
 
 for _, obj in ipairs(objects) do
-	if obj:IsA("Model") or obj:IsA("Folder") then
+	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == prtname:lower() then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
-			theparts(thej)
+			pert(thej)
 		end
-		elseif obj:IsA("BasePart") then
-		theparts(obj)
-		end
+	elseif obj:IsA("BasePart") and obj.Name:lower() == prtname:lower() then
+		pert(obj)
 	end
 end
 
 iamesp = game.DescendantAdded:Connect(function(hh)
-	theparts(hh)
+	pert(hh)
 end)
  end)
  
