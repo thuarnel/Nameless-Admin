@@ -9366,30 +9366,6 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 end
  setclipboard(audios)
  end)
-
- cmd.add({"age"}, {"age <player>", "Tells you the age of a player"}, function(...)
-	 local plrage
-	 Username = (...)
- 
-	 local target = getPlr(Username)
-
-	 plrage = target.AccountAge
-	 wait();
-if target then
-	 Notify({
-	 Description = ""..target.."'s age is "..plrage.."";
-	 Title = "Nameless Admin";
-	 Duration = 5;
-	 
- });
- else
-	 Notify({
-	 Description = "please provide a player's username";
-	 Title = "Nameless Admin";
-	 Duration = 3;
- });
- end
- end)
  
  cmd.add({"follow", "stalk", "walk"}, {"follow <player>", "Follow a player wherever they go"}, function(p)
 	 lib.disconnect("follow")
