@@ -9812,49 +9812,6 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  task.wait();
  vim:SendKeyEvent(false, keycodex, 0, game)
  end)
-
-local iamchar = nil
-local nohuman = nil
-local animloopspeed = nil
-
- cmd.add({"animationspeed", "animspeed"}, {"animationspeed {number} (animspeed)", "changes your character's animation speed"}, function(...)
- local sped = (...)
- if animloopspeed then
- animloopspeed:Disconnect()
- end
-if animloopspeed == nil then
- Player.Character:WaitForChild("Humanoid").Died:Connect(function()
-animloopspeed:Disconnect()
-end)
-end
-
-animloopspeed = RunService.Heartbeat:Connect(function()
-	if not Player then return end
-
-	iamchar = iamchar or Player.Character or Player.CharacterAdded:wait()
-	nohuman = nohuman or iamchar:FindFirstChildOfClass("Humanoid") or iamchar:FindFirstChildOfClass("AnimationController")
-
-	if not nohuman or not iamchar then return end
-
-	for _, track in ipairs(nohuman:GetPlayingAnimationTracks()) do
-		track:AdjustSpeed(sped or 1)
-	end
-end)
- end)
-
- cmd.add({"unanimationspeed", "unanimspeed"}, {"unanimationspeed (unanimspeed)", "changes your character's animation speed"}, function()
- animloopspeed:Disconnect()
- if not Player then return end
-
-	iamchar = iamchar or Player.Character or Player.CharacterAdded:wait()
-	nohuman = nohuman or iamchar:FindFirstChildOfClass("Humanoid") or iamchar:FindFirstChildOfClass("AnimationController")
-
-	if not nohuman or not iamchar then return end
-
-	for _, track in ipairs(nohuman:GetPlayingAnimationTracks()) do
-		track:AdjustSpeed(1)
-	end
- end)
  
  cmd.add({"legresize"}, {"legresize", "Makes your legs very big r15 only"}, function()
 	 
