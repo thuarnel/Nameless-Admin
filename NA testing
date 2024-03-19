@@ -12443,8 +12443,7 @@ webImport("ui/main")
  
  cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, firecd)", "Fires every click detector that's in workspace"}, function(...)
  local ccamount = 0
- local naem = {...}
- local pro = naem[1]
+ local pro = (...)
  if pro then
 	 for _,j in pairs(workspace:GetDescendants()) do
 		 if j:IsA("ClickDetector") and j.Name:lower() == pro:lower() or j:IsA("ClickDetector") and j.Parent.Name:lower() == pro:lower() then
@@ -12500,14 +12499,15 @@ local PromptButtonHoldBegan = nil
 	PromptButtonHoldBegan = nil
  end)
 
- cmd.add({"light"}, {"light", "Gives your player dynamic light"}, function(args)
+ cmd.add({"light"}, {"light", "Gives your player dynamic light"}, function(...)
+ local bruh = (...)
  	local light = Instance.new("PointLight")
 	light.Parent = getRoot(Player.Character)
 	light.Range = 30
 	light.Brightness = 5
-	if args[1] then
-		light.Brightness = args[2]
-		light.Range = args[1]
+	if bruh[1] then
+		light.Brightness = bruh[2]
+		light.Range = bruh[1]
 	else
 		light.Brightness = 5
 	end
@@ -12548,7 +12548,7 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
  local delcount = 0
- local HH = {...}
+ local HH = (...)
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == HH:lower() then
 			v:Destroy()
@@ -12589,8 +12589,7 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
  local chardelprt = 0
- local grr = {...}
- local poop = grr[1]
+ local poop = (...)
 	for i,v in pairs(Player.Character:GetDescendants()) do
 		if v.Name:lower() == poop:lower() then
 			v:Destroy()
@@ -12628,7 +12627,7 @@ local PromptButtonHoldBegan = nil
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	local partName = {...}
+	local partName = (...)
 
     for _, descendant in pairs(game.Workspace:GetDescendants()) do
         if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
@@ -12664,7 +12663,7 @@ local PromptButtonHoldBegan = nil
  end)
 
  cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
-    local partName = {...}
+    local partName = (...)
 
 for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == partName:lower() and v:IsA("BasePart") then
@@ -12674,7 +12673,7 @@ for i,v in pairs(workspace:GetDescendants()) do
 end)
 
 cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function(...)
-    local argname = {...}
+    local argname = (...)
 
 for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == argname:lower() and v:IsA("Model") then
@@ -12738,9 +12737,8 @@ end)
  local iamesp
 
  cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
-	 local arg = {...}
+	 local prtname = (...)
 local objects = game:GetDescendants()
-local prtname = arg[1]
 local trparts = {}
 
 local function omg(part)
@@ -12797,9 +12795,7 @@ end
  end)
  
  cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
-	 local argss = {...}
-
-local pertnaem = argss[1]
+	 local pertnaem = (...)
 
 for _,v in pairs(game.Workspace:GetDescendants()) do
 	local lwr = v.Name:lower()
@@ -13398,7 +13394,7 @@ local brightLoop = nil
  
  cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, firepp)", "Fires every Proximity Prompt that's in workspace"}, function(...)
  fppamount = 0
- local fppname = {...}
+ local fppname = (...)
  if fppname then
 	local name = fppname
 			for _, firedapp in ipairs(workspace:GetDescendants()) do
