@@ -12547,7 +12547,7 @@ local PromptButtonHoldBegan = nil
    
  end)
 
- cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(prt)
+ cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
  local delcount = 0
  local HH = (...)
 	for _,v in pairs(workspace:GetDescendants()) do
