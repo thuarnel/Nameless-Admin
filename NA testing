@@ -12549,7 +12549,13 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(prt)
  local delcount = 0
- local HH = table.concat(prt, " ")
+ local HH = ""
+    for i, part in ipairs(prt) do
+        if i > 1 then
+            HH = HH .. " "
+        end
+        HH = HH .. part
+    end
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == HH:lower() then
 			v:Destroy()
