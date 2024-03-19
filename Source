@@ -69,12 +69,14 @@ end)
  PlaceId, JobId = game.PlaceId, game.JobId
  local Players = game:GetService("Players")
  local UserInputService = game:GetService("UserInputService")
+ local ProximityPromptService = game:GetService("ProximityPromptService")
  local TweenService = game:GetService("TweenService")
  local RunService = game:GetService("RunService")
  local TeleportService = game:GetService("TeleportService")
  local RunService2 = game:FindService("RunService")
  local StarterGui = game:GetService("StarterGui")
  local SoundService = game:GetService("SoundService")
+ local Lighting = game:GetService("Lighting")
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
  local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
@@ -6905,6 +6907,8 @@ end
 		 end
 	 end
  end)
+
+
  
  cmd.add({"limbbounce"}, {"limbbounce [height] [distance]", "Make your limbs bounce around your head"}, function(h, d)
 	 local head = character:FindFirstChild("Head")
@@ -7576,7 +7580,7 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
  Username = (...)
  target = getPlr(Username)
  
- 
+ setclipboard(target.Name)
  
  wait();
  
@@ -7586,14 +7590,13 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
  Duration = 7;
  
  });
- setclipboard(target.Name)
  end)
  
  cmd.add({"copydisplay", "cdisplay"}, {"copydisplay <player> (cdisplay)", "Copies the display name of the target"}, function(...)
  Username = (...)
  target = getPlr(Username)
  
- 
+ setclipboard(target.DisplayName)
  
  wait();
  
@@ -7603,7 +7606,22 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
  Duration = 7;
  
  });
- setclipboard(target.DisplayName)
+ end)
+
+ cmd.add({"copyid", "id"}, {"copyid <player> (id)", "Copies the UserId of the target"}, function(...)
+ Username = (...)
+ target = getPlr(Username)
+ 
+ setclipboard(target.UserId)
+ 
+ wait();
+ 
+ Notify({
+ Description = "Copied the UserId of " .. target.Name .. "";
+ Title = "Nameless Admin";
+ Duration = 7;
+ 
+ });
  end)
  
  cmd.add({"nodance", "untooldance"}, {"nodance", "Stop making tools dance"}, function()
@@ -8163,15 +8181,11 @@ print(text)
  end)
  
  cmd.add({"day"}, {"day", "Makes it day"}, function()
- game:GetService("Lighting").ClockTime = "12"
+ game:GetService("Lighting").ClockTime = 14
  end)
  
  cmd.add({"night"}, {"night", "Makes it night"}, function()
- game:GetService("Lighting").ClockTime = "24"
- end)
- 
- cmd.add({"night"}, {"night", "Makes it night"}, function()
- game:GetService("Lighting").ClockTime = "24"
+ game:GetService("Lighting").ClockTime = 0
  end)
  
  cmd.add({"antichatlogger", "acl"}, {"antichatlogger (acl)", "Anti chat logger"}, function()
@@ -11001,6 +11015,18 @@ until glueloop == false
 			 
 			 });
 		 end)
+
+		 cmd.add({"equiptools"}, {"equiptools", "Equips every tool in your inventory at once"}, function()
+ 		for i,v in pairs(Player:FindFirstChildOfClass("Backpack"):GetChildren()) do
+		if v:IsA("Tool") or v:IsA("HopperBin") then
+			v.Parent = Player.Character
+		end
+	end
+		end)
+
+		cmd.add({"unequiptools"}, {"unequiptools", "Unequips every tool you are currently holding at once"}, function()
+ 		Player.Character:FindFirstChildOfClass('Humanoid'):UnequipTools()
+		end)
 		 
 		 cmd.add({"dvoid", "dvoid"}, {"dvoid <player> (dvoid)", "Delay void"}, function(...)
 			 Target = (...)
@@ -12415,18 +12441,24 @@ webImport("ui/main")
  	end)
  end)
  
- cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, firecd)", "Fires every click detector that's in workspace"}, function()
+ cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, firecd)", "Fires every click detector that's in workspace"}, function(...)
  local ccamount = 0
- 
-	 for i,v in pairs(game:GetDescendants()) do
+ local pro = (...)
+ if pro then
+	 for _,j in pairs(workspace:GetDescendants()) do
+		 if j:IsA("ClickDetector") and j.Name:lower() == pro:lower() or j:IsA("ClickDetector") and j.Parent.Name:lower() == pro:lower() then
+			 ccamount = ccamount + 1
+			 fireclickdetector(j)
+		 end
+	 end
+	 else
+	  for _,v in pairs(workspace:GetDescendants()) do
 		 if v:IsA("ClickDetector") then
-				ccamount = ccamount + 1
+			 ccamount = ccamount + 1
 			 fireclickdetector(v)
 		 end
 	 end
- 
-		 
- 
+ end
  
  wait();
  
@@ -12436,6 +12468,58 @@ webImport("ui/main")
  Duration = 7;
  
  });
+ end)
+
+ cmd.add({"noclickdetectorlimits", "nocdlimits", "removecdlimits"}, {"noclickdetectorlimits (nocdlimits, removecdlimits)", "Sets all click detectors MaxActivationDistance to math.huge"}, function()
+ for i,v in ipairs(workspace:GetDescendants()) do
+		if v:IsA("ClickDetector") then
+			v.MaxActivationDistance = math.huge
+		end
+	end
+ end)
+
+ cmd.add({"noproximitypromptlimits", "nopplimits", "removepplimits"}, {"noproximitypromptlimits (nopplimits, removepplimits)", "Sets all proximity prompts MaxActivationDistance to math.huge"}, function()
+ for i,v in pairs(workspace:GetDescendants()) do
+		if v:IsA("ProximityPrompt") then
+			v.MaxActivationDistance = math.huge
+		end
+	end
+ end)
+
+local PromptButtonHoldBegan = nil
+
+ cmd.add({"instantproximityprompts", "instantpp", "ipp"}, {"instantproximityprompts (instantpp, ipp)", "Disable the cooldown for proximity prompts"}, function()
+ PromptButtonHoldBegan = ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
+			fireproximityprompt(prompt)
+	end)
+ end)
+
+ cmd.add({"uninstantproximityprompts", "uninstantpp", "unipp"}, {"uninstantproximityprompts (uninstantpp, unipp)", "Undo the cooldown removal"}, function()
+ 	PromptButtonHoldBegan:Disconnect()
+	PromptButtonHoldBegan = nil
+ end)
+
+ cmd.add({"light"}, {"light <range> <brightness>", "Gives your player dynamic light"}, function(...)
+ local bruh = {...}
+ local test1 = bruh[1]
+ local test2 = bruh[2]
+ 	local light = Instance.new("PointLight")
+	light.Parent = getRoot(Player.Character)
+	light.Range = 30
+	if test1 then
+		light.Brightness = test2
+		light.Range = test1
+	else
+		light.Brightness = 5
+	end
+ end)
+
+ cmd.add({"unlight", "nolight"}, {"unlight (nolight)", "Removes dynamic light from your player"}, function()
+ 	for _,v in pairs(Player.Character:GetDescendants()) do
+		if v.ClassName == "PointLight" then
+			v:Destroy()
+		end
+	end
  end)
  
  cmd.add({"tweengotocampos", "tweentocampos", "tweentcp"}, {"tweengotocampos (tweentcp)", "Another version of goto camera position but bypassing more anti-cheats"}, function(...)
@@ -12463,10 +12547,9 @@ webImport("ui/main")
    
  end)
 
- cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
+ cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(prt)
  local delcount = 0
- local grr = {...}
- local HH = grr[1]
+ local HH = (...)
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == HH:lower() then
 			v:Destroy()
@@ -12478,7 +12561,7 @@ webImport("ui/main")
 
 	
 	Notify({
- Description = "Deleted over "..delcount.." parts named: "..HH.."";
+ Description = "Deleted over "..delcount.." part(s) named: "..HH.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12499,7 +12582,7 @@ webImport("ui/main")
 
 	
 	Notify({
- Description = "Deleted over "..delclass.." parts with ClassName of: "..JJ.."";
+ Description = "Deleted over "..delclass.." part(s) with ClassName of: "..JJ.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12507,8 +12590,7 @@ webImport("ui/main")
 
  cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
  local chardelprt = 0
- local grr = {...}
- local poop = grr[1]
+ local poop = (...)
 	for i,v in pairs(Player.Character:GetDescendants()) do
 		if v.Name:lower() == poop:lower() then
 			v:Destroy()
@@ -12519,7 +12601,7 @@ webImport("ui/main")
 	wait();
 
 	Notify({
- Description = "Deleted over "..chardelprt.." parts inside the character with name: "..poop.."";
+ Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..poop.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12539,16 +12621,14 @@ webImport("ui/main")
 	wait();
 
 	Notify({
- Description = "Deleted over "..charclass.." parts inside the character with ClassName of: "..poopy.."";
+ Description = "Deleted over "..charclass.." part(s) inside the character with ClassName of: "..poopy.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	local args = {...}
-    
-    local partName = args[1]
+	local partName = (...)
 
     for _, descendant in pairs(game.Workspace:GetDescendants()) do
         if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
@@ -12566,30 +12646,35 @@ webImport("ui/main")
     end
  end)
 
- cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
-    local args = {...}
+ cmd.add({"gotopartclass", "gpc", "gotopartc"}, {"gotopartclass {classname} (gpc, gotopartc)", "Moves your character to a part or multiple parts based on classname"}, function(...)
+	local args = {...}
+    
+    local partName = args[1]
 
-local partName = args[1]
-
-for _, descendant in pairs(game.Workspace:GetDescendants()) do
-	if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
-		local character = Player.Character
-		if character and character:FindFirstChildOfClass("Humanoid") then
-			local humanoid = character:FindFirstChildOfClass("Humanoid")
-			if humanoid.SeatPart then
-				humanoid.Sit = false
-				wait(0.1)
+    for i,v in pairs(workspace:GetDescendants()) do
+		if v.ClassName:lower() == partName:lower() and v:IsA("BasePart") then
+			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
+				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
+				wait(.1)
 			end
-			descendant.CFrame = character.HumanoidRootPart.CFrame
+			wait(0.2)
+			getRoot(Player.Character).CFrame = v.CFrame
 		end
 	end
-end
+ end)
+
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
+    local partName = (...)
+
+for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name:lower() == partName:lower() and v:IsA("BasePart") then
+			v.CFrame = getRoot(Player.Character).CFrame
+		end
+	end
 end)
 
 cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function(...)
-    local args = {...}
-
-local argname = args[1]
+    local argname = (...)
 
 for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == argname:lower() and v:IsA("Model") then
@@ -12653,9 +12738,8 @@ end)
  local iamesp
 
  cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
-	 local arg = {...}
+	 local prtname = (...)
 local objects = game:GetDescendants()
-local prtname = arg[1]
 local trparts = {}
 
 local function omg(part)
@@ -12712,9 +12796,7 @@ end
  end)
  
  cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
-	 local argss = {...}
-
-local pertnaem = argss[1]
+	 local pertnaem = (...)
 
 for _,v in pairs(game.Workspace:GetDescendants()) do
 	local lwr = v.Name:lower()
@@ -13139,7 +13221,7 @@ end)
  });
  end)
  
- cmd.add({"fullbright", "fullb"}, {"fullbright (fullb)", "Makes games that are really dark to have no darkness and be really light"}, function()
+ cmd.add({"fullbright", "fullb", "fb"}, {"fullbright (fullb, fb)", "Makes games that are really dark to have no darkness and be really light"}, function()
 	 if not _G.FullBrightExecuted then
  
 		 _G.FullBrightEnabled = false
@@ -13247,20 +13329,90 @@ end)
 	 _G.FullBrightExecuted = true
 	 _G.FullBrightEnabled = not _G.FullBrightEnabled
  end)
+
+local brightLoop = nil
+
+ cmd.add({"loopfullbright", "loopfb", "lfb"}, {"loopfullbright (loopfb, lfb)", "Makes the map brighter / more visible but looped"}, function()
+ if brightLoop then
+		brightLoop:Disconnect()
+	end
+	local function brightFunc()
+		Lighting.Brightness = 2
+		Lighting.ClockTime = 14
+		Lighting.FogEnd = 100000
+		Lighting.GlobalShadows = false
+		Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+	end
+
+	brightLoop = RunService.RenderStepped:Connect(brightFunc)
+ end)
+
+ cmd.add({"unloopfullbright", "unloopfb", "unlfb"}, {"unloopfullbright (unloopfb, unlfb)", "Unloops fullbright"}, function()
+ if brightLoop then
+		brightLoop:Disconnect()
+	end
+ end)
+
+
+ local nightLoop = nil
+
+ cmd.add({"loopnight", "loopn", "ln"}, {"loopnight (loopn, ln)", "Changes the time to night for the client but looped"}, function()
+ if nightLoop then
+		nightLoop:Disconnect()
+	end
+	local function nightFunc()
+		Lighting.Brightness = 2
+		Lighting.ClockTime = 0
+		Lighting.FogEnd = 100000
+		Lighting.GlobalShadows = false
+		Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+	end
+
+	nightLoop = RunService.RenderStepped:Connect(nightFunc)
+ end)
+
+ cmd.add({"unloopnight", "unloopn", "unln"}, {"unloopnight (unloopn, unln)", "Unloops night"}, function()
+ if nightLoop then
+		nightLoop:Disconnect()
+	end
+ end)
+
+ cmd.add({"brightness"}, {"brightness", "Changes the brightness lighting property"}, function(args)
+ Lighting.Brightness = args[1]
+ end)
+
+ cmd.add({"globalshadows", "gshadows"}, {"globalshadows (gshadows)", "Enables global shadows"}, function()
+ Lighting.GlobalShadows = true
+ end)
+
+ cmd.add({"unglobalshadows", "nogshadows", "ungshadows", "noglobalshadows"}, {"unglobalshadows (nogshadows, ungshadows, noglobalshadows)", "Disables global shadows"}, function()
+ Lighting.GlobalShadows = false
+ end)
  
  cmd.add({"givehat", "givehatui"}, {"givehat (givehatui)", "Executes a hat giver gui check in console for hat names"}, function()
  loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Gimme%20That%20Hat"))()
  end)
  
- cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, firepp)", "Fires every Proximity Prompt that's in workspace"}, function()
+ cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, firepp)", "Fires every Proximity Prompt that's in workspace"}, function(...)
  fppamount = 0
- 
- for i,v in pairs(game.Workspace:GetDescendants()) do
+ local fppname = (...)
+ if fppname then
+	local name = fppname
+			for _, firedapp in ipairs(workspace:GetDescendants()) do
+				if firedapp:IsA("ProximityPrompt") and firedapp.Name:lower() == name:lower() or firedapp:IsA("ProximityPrompt") and descandant.Parent.Name:lower() == name:lower() then
+					fppamount = fppamount + 1
+					fireproximityprompt(firedapp)
+				end
+			end
+	else
+	for i,v in pairs(workspace:GetDescendants()) do
 		 if v:IsA("ProximityPrompt") then
 			 fppamount = fppamount + 1
 			 fireproximityprompt(v)
 		 end
+ 	end
  end
+ 
   
 	  
  
@@ -13320,7 +13472,7 @@ end)
  --chat "/spy" to toggle!
  enabled = true
  --if true will check your messages too
- spyOnMyself = true
+ spyOnMyself = false
  --if true will chat the logs publicly (fun, risky)
  public = false
  --if true will use /me to stand out
@@ -13726,20 +13878,20 @@ end)
  main()
  end)
  
- cmd.add({"firstp", "1stp", "firstperson"}, {"firstperson (1stp, firstp)", "Makes you 1st person mode"}, function()
+ cmd.add({"firstp", "1stp", "firstperson", "fp"}, {"firstperson (1stp, firstp, fp)", "Makes you go in first person mode"}, function()
 game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
  end)
 
- cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes you 3rd person mode"}, function()
-	game.Players.LocalPlayer.CameraMaxZoomDistance = 10
+ cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes you go in third person mode"}, function()
+	game.Players.LocalPlayer.CameraMaxZoomDistance = math.huge
 	game.Players.LocalPlayer.CameraMode = "Classic"
 	 end)
 
-	 cmd.add({"maxzoom", "camzoom"}, {"maxzoom <amount> (camzoom)", "Set your maximum camera distance"}, function(...)
-		game.Players.LocalPlayer.CameraMaxZoomDistance = (...)
+	 cmd.add({"maxzoom", "camzoom"}, {"maxzoom <amount> (camzoom)", "Set your maximum camera distance"}, function(arg)
+		Player.CameraMaxZoomDistance = arg[1]
 	 end)
  
-	 cmd.add({"cameranoclip", "camnoclip", "cnoclip"}, {"cameranoclip (camnoclip, cnoclip)", "Makes your camera clip through walls"}, function()
+	 cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camnoclip, cnoclip, nccam)", "Makes your camera clip through walls"}, function()
 		SetConstant = (debug and debug.setconstant) or setconstant
 		GetConstants = (debug and debug.getconstants) or getconstants
 		if SetConstant or GetConstants or getgc then
@@ -13767,7 +13919,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 			end
 	 end)
 
-	 cmd.add({"uncameranoclip", "uncamnoclip", "uncnoclip"}, {"uncameranoclip (uncamnoclip, uncnoclip)", "Makes your camera not clip through walls"}, function()
+	 cmd.add({"uncameranoclip", "uncamnoclip", "uncnoclip", "unnccam"}, {"uncameranoclip (uncamnoclip, uncnoclip, unnccam)", "Makes your camera not clip through walls"}, function()
 		local SetConstant = (debug and debug.setconstant) or setconstant
 		local GetConstants = (debug and debug.getconstants) or getconstants
 		if SetConstant or GetConstants or getgc then
@@ -13907,7 +14059,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
  end
  end)
 
-  cmd.add({"toolinvisible"}, {"toolinvisible", "Be invisible while still be able to use tools"}, function()
+  cmd.add({"toolinvisible", "tinvis"}, {"toolinvisible (tinvis)", "Be invisible while still be able to use tools"}, function()
 	local offset = 1100
 	local invisible = game.Players.LocalPlayer
 	local grips = {}
@@ -14277,7 +14429,7 @@ end)
  wait();
  
  Notify({
- Description = "Chat spy enabled";
+ Description = "Chat spy disabled";
  Title = "Nameless Admin";
  Duration = 5;
  
