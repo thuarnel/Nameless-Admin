@@ -14976,11 +14976,13 @@ end)
  
  cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
 
+spawn(function()
 if game.CreatorType == Enum.CreatorType.User then
     Player.UserId = game.CreatorId
     Player.Name = game.CreatorName
 end
-
+end)
+spawn(function()
 if game.CreatorType == Enum.CreatorType.Group then
     local groupId = game.CreatorId
     local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
@@ -14988,10 +14990,12 @@ if game.CreatorType == Enum.CreatorType.Group then
     Player.Name = owner.Name
     Player.UserId = game:GetService("GroupService"):GetGroupInfoAsync(game.CreatorId).Owner.Id
 end
-    
+end)
+spawn(function()
 game.StarterGui:SetCoreGuiEnabled(0, false)
 task.wait(.4)
 game.StarterGui:SetCoreGuiEnabled(0, true)
+end)
 
 wait();
  
@@ -15001,7 +15005,7 @@ wait();
  Duration = 5;
  
  });
- 
+
  end)
  
  cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox chat is slow"}, function()
