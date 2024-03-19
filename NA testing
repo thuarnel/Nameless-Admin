@@ -9819,6 +9819,9 @@ local animloopspeed = nil
 
  cmd.add({"animationspeed", "animspeed"}, {"animationspeed {number} (animspeed)", "changes your character's animation speed"}, function(...)
  local sped = (...)
+ if animloopspeed then
+ animloopspeed:Disconnect()
+ end
 
 animloopspeed = RunService.Heartbeat:Connect(function()
 	if not Player then return end
