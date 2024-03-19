@@ -14993,7 +14993,7 @@ end
 end)
 spawn(function()
 game.StarterGui:SetCoreGuiEnabled(0, false)
-task.wait(.4)
+wait(1);
 game.StarterGui:SetCoreGuiEnabled(0, true)
 end)
 
