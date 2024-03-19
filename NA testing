@@ -63,7 +63,7 @@ end)
  }
  
  -- [[ Version ]] -- 
- currentversion = 2.0
+ currentversion = 2.1
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -197,6 +197,8 @@ end)
  local getPlr = function(Name)
 	 if Name:lower() == "random" then
 		 return Players:GetPlayers()[math.random(#Players:GetPlayers())]
+	 elseif Name:lower() == "me" then
+		return Player
 	 else
 		 Name = Name:lower():gsub("%s", "")
 		 for _, x in next, Players:GetPlayers() do
