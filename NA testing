@@ -12499,15 +12499,16 @@ local PromptButtonHoldBegan = nil
 	PromptButtonHoldBegan = nil
  end)
 
- cmd.add({"light"}, {"light", "Gives your player dynamic light"}, function(...)
- local bruh = (...)
+ cmd.add({"light"}, {"light <range> <brightness>", "Gives your player dynamic light"}, function(...)
+ local bruh = {...}
+ local test1 = bruh[1]
+ local test2 = bruh[2]
  	local light = Instance.new("PointLight")
 	light.Parent = getRoot(Player.Character)
 	light.Range = 30
-	light.Brightness = 5
-	if bruh[1] then
-		light.Brightness = bruh[2]
-		light.Range = bruh[1]
+	if test1 then
+		light.Brightness = test2
+		light.Range = test1
 	else
 		light.Brightness = 5
 	end
