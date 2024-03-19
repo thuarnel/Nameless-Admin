@@ -9822,6 +9822,11 @@ local animloopspeed = nil
  if animloopspeed then
  animloopspeed:Disconnect()
  end
+if animloopspeed == nil then
+ Player.Character:WaitForChild("Humanoid").Died:Connect(function()
+animloopspeed:Disconnect()
+end)
+end
 
 animloopspeed = RunService.Heartbeat:Connect(function()
 	if not Player then return end
