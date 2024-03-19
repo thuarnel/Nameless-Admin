@@ -14975,15 +14975,6 @@ end)
  end)
  
  cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
- wait();
- 
- Notify({
- Description = "Set local player id to the owner id";
- Title = "Nameless Admin";
- Duration = 5;
- 
- });
-
 
 if game.CreatorType == Enum.CreatorType.User then
     Player.UserId = game.CreatorId
@@ -14998,8 +14989,19 @@ if game.CreatorType == Enum.CreatorType.Group then
     Player.UserId = game:GetService("GroupService"):GetGroupInfoAsync(game.CreatorId).Owner.Id
 end
     
-wait(0.5)
-game.StarterGui:SetCoreGuiEnabled(0, false) 
+game.StarterGui:SetCoreGuiEnabled(0, false)
+task.wait(.4)
+game.StarterGui:SetCoreGuiEnabled(0, true)
+
+wait();
+ 
+ Notify({
+ Description = "Set local player id to the owner id";
+ Title = "Nameless Admin";
+ Duration = 5;
+ 
+ });
+ 
  end)
  
  cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox chat is slow"}, function()
