@@ -12492,7 +12492,7 @@ local PromptButtonHoldBegan = nil
 	light.Parent = getRoot(Player.Character)
 	light.Range = 30
 	if test1 then
-		light.Brightness = test2
+		light.Brightness = test2 or 1
 		light.Range = test1
 	else
 		light.Brightness = 5
@@ -12533,10 +12533,11 @@ local PromptButtonHoldBegan = nil
  end)
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
- local delcount = 0
- local HH = (...)
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+	local _, indexx = cmdtxtbar:find("%s")
+	local thecode = cmdtxtbar:sub(indexx + 1)
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == HH:lower() then
+		if v.Name:lower() == thecode:lower() then
 			v:Destroy()
 			delcount = delcount + 1
 		end
@@ -12546,7 +12547,7 @@ local PromptButtonHoldBegan = nil
 
 	
 	Notify({
- Description = "Deleted over "..delcount.." part(s) named: "..HH.."";
+ Description = "Deleted over "..delcount.." part(s) named: "..thecode.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12573,20 +12574,21 @@ local PromptButtonHoldBegan = nil
  });
  end)
 
- cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
- local chardelprt = 0
- local poop = (...)
+ cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function()
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+	local _, indexx = cmdtxtbar:find("%s")
+	local thecode = cmdtxtbar:sub(indexx + 1)
 	for i,v in pairs(Player.Character:GetDescendants()) do
-		if v.Name:lower() == poop:lower() then
-			v:Destroy()
+		if v.Name:lower() == thecode:lower() then
 			chardelprt = chardelprt + 1
+			v:Destroy()
 		end
 	end
 
 	wait();
 
 	Notify({
- Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..poop.."";
+ Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..thecode.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12612,11 +12614,13 @@ local PromptButtonHoldBegan = nil
  });
  end)
  
- cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
-	local partName = (...)
+ cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function()
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+local _, indexx = cmdtxtbar:find("%s")
+local thecode = cmdtxtbar:sub(indexx + 1)
 
     for _, descendant in pairs(game.Workspace:GetDescendants()) do
-        if descendant:IsA("BasePart") and descendant.Name:lower() == partName:lower() then
+        if descendant:IsA("BasePart") and descendant.Name:lower() == thecode:lower() then
             local character = Player.Character
             if character and character:FindFirstChildOfClass("Humanoid") then
                 local humanoid = character:FindFirstChildOfClass("Humanoid")
@@ -12648,21 +12652,25 @@ local PromptButtonHoldBegan = nil
 	end
  end)
 
- cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
-    local partName = (...)
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function()
+    local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+local _, indexx = cmdtxtbar:find("%s")
+local thecode = cmdtxtbar:sub(indexx + 1)
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == partName:lower() and v:IsA("BasePart") then
+		if v.Name:lower() == thecode:lower() and v:IsA("BasePart") then
 			v.CFrame = getRoot(Player.Character).CFrame
 		end
 	end
 end)
 
-cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function(...)
-    local argname = (...)
+cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function()
+    local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+local _, indexx = cmdtxtbar:find("%s")
+local thecode = cmdtxtbar:sub(indexx + 1)
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == argname:lower() and v:IsA("Model") then
+		if v.Name:lower() == thecode:lower() and v:IsA("Model") then
 			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
