@@ -1,4 +1,4 @@
-local ScreenGui = Instance.new("ScreenGui")
+local Notepad = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local Container = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
@@ -18,17 +18,18 @@ local Title = Instance.new("TextLabel")
 local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 
-ScreenGui.Name="Notepad"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Notepad.Name = "Notepad"
+Notepad.Parent = game.CoreGui
+Notepad.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Main.Name = "Main"
-Main.Parent = ScreenGui
+Main.Parent = Notepad
 Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Main.BackgroundTransparency = 0.140
 Main.BorderColor3 = Color3.fromRGB(139, 139, 139)
 Main.BorderSizePixel = 0
-Main.Position = UDim2.new(0.636001766, 0, 0.461804599, 0)
+Main.ClipsDescendants = true
+Main.Position = UDim2.new(0.307999998, 0, 1.26199996, 0)
 Main.Size = UDim2.new(0, 402, 0, 235)
 
 Container.Name = "Container"
@@ -39,8 +40,8 @@ Container.BackgroundTransparency = 0.500
 Container.BorderColor3 = Color3.fromRGB(255, 255, 255)
 Container.BorderSizePixel = 0
 Container.ClipsDescendants = true
-Container.Position = UDim2.new(0.5, 0, 0.996153831, -5)
-Container.Size = UDim2.new(1, -10, 1.00769234, -30)
+Container.Position = UDim2.new(0.5, 0, 0.995999992, -5)
+Container.Size = UDim2.new(1, -10, 1.00800002, -30)
 
 UICorner.CornerRadius = UDim.new(0, 9)
 UICorner.Parent = Container
@@ -56,7 +57,6 @@ ScrollingFrame.BorderSizePixel = 0
 ScrollingFrame.Position = UDim2.new(-1.55701926e-07, 0, 0, 0)
 ScrollingFrame.Size = UDim2.new(0, 386, 0, 202)
 ScrollingFrame.ScrollBarThickness = 3
-ScrollingFrame.AutomaticCanvasSize = "XY"
 
 TextBox.Parent = ScrollingFrame
 TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -72,7 +72,6 @@ TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextBox.TextSize = 18.000
 TextBox.TextXAlignment = Enum.TextXAlignment.Left
 TextBox.TextYAlignment = Enum.TextYAlignment.Top
-TextBox.AutomaticSize = "XY"
 
 Topbar.Name = "Topbar"
 Topbar.Parent = Main
@@ -177,19 +176,42 @@ UICorner_2.Parent = Main
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
 UIGradient_2.Parent = Main
 
-local function exite() -- Exit.LocalScript 
+local function exitbtn()
 	local script = Instance.new('LocalScript', Exit)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent:Destroy()
 	end)
+	
 end
-coroutine.wrap(exite)()
-local function uhhmain() -- Main.LocalScript 
+coroutine.wrap(exitbtn)()
+local function minimizetoggl()
+	local script = Instance.new('LocalScript', Minimize)
+
+	p = false
+	script.Parent.MouseButton1Click:Connect(function()
+		if not p then
+			p = not p
+			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+		else
+			p = not p
+			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 235), "Out", "Quint", 1, true)
+		end
+	end)
+end
+coroutine.wrap(minimizetoggl)()
+local function uifuncs()
 	local script = Instance.new('LocalScript', Main)
 
 	script.Parent.Active = true
 	script.Parent.Parent.ResetOnSpawn = false
 	script.Parent.Draggable = true
+	
 end
-coroutine.wrap(uhhmain)()
+coroutine.wrap(uifuncs)()
+local function iappear()
+	local script = Instance.new('LocalScript', Main)
+
+	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+end
+coroutine.wrap(iappear)()
