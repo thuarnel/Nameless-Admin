@@ -12533,6 +12533,7 @@ local PromptButtonHoldBegan = nil
  end)
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
+	local delcount = 0
 	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
 	local _, indexx = cmdtxtbar:find("%s")
 	local thecode = cmdtxtbar:sub(indexx + 1)
@@ -12575,6 +12576,7 @@ local PromptButtonHoldBegan = nil
  end)
 
  cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function()
+	local chardelprt = 0
 	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
 	local _, indexx = cmdtxtbar:find("%s")
 	local thecode = cmdtxtbar:sub(indexx + 1)
