@@ -1,9 +1,13 @@
-local ScreenGui = Instance.new("ScreenGui")
+local realCodex = Instance.new("ScreenGui")
 local Executor = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
 local TopBar = Instance.new("TextLabel")
 local UICorner_2 = Instance.new("UICorner")
 local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+local Exit = Instance.new("TextButton")
+local ImageLabel = Instance.new("ImageLabel")
+local Minimize = Instance.new("TextButton")
+local ImageLabel_2 = Instance.new("ImageLabel")
 local Down = Instance.new("Frame")
 local UICorner_3 = Instance.new("UICorner")
 local UIAspectRatioConstraint_2 = Instance.new("UIAspectRatioConstraint")
@@ -23,16 +27,17 @@ local UIAspectRatioConstraint_7 = Instance.new("UIAspectRatioConstraint")
 local Save = Instance.new("TextButton")
 local UICorner_7 = Instance.new("UICorner")
 local UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
-local UIAspectRatioConstraint_9 = Instance.new("UIAspectRatioConstraint")
 
-ScreenGui.Parent = game.CoreGui
-ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+realCodex.Name = "realCodex"
+realCodex.Parent = game.CoreGui
+realCodex.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Executor.Name = "Executor"
-Executor.Parent = ScreenGui
+Executor.Parent = realCodex
 Executor.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 Executor.BackgroundTransparency = 0.120
 Executor.BorderColor3 = Color3.fromRGB(27, 42, 53)
+Executor.ClipsDescendants = true
 Executor.Position = UDim2.new(0.307999998, 0, 1.26199996, 0)
 Executor.Size = UDim2.new(0, 481, 0, 287)
 
@@ -52,6 +57,48 @@ UICorner_2.Parent = TopBar
 
 UIAspectRatioConstraint.Parent = TopBar
 UIAspectRatioConstraint.AspectRatio = 13.743
+
+Exit.Name = "Exit"
+Exit.Parent = TopBar
+Exit.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
+Exit.BackgroundTransparency = 0.500
+Exit.BorderSizePixel = 0
+Exit.Position = UDim2.new(0.869999945, 0, 0.0857151747, 0)
+Exit.Size = UDim2.new(0.0138690183, 40, 0.842997849, -10)
+Exit.Font = Enum.Font.Gotham
+Exit.Text = "X"
+Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
+Exit.TextSize = 13.000
+
+ImageLabel.Parent = Exit
+ImageLabel.BackgroundColor3 = Color3.fromRGB(36, 36, 36)
+ImageLabel.BackgroundTransparency = 1.000
+ImageLabel.Position = UDim2.new(0.999998331, 0, 0, 0)
+ImageLabel.Size = UDim2.new(0, 9, 0, 16)
+ImageLabel.Image = "http://www.roblox.com/asset/?id=8650484523"
+ImageLabel.ImageColor3 = Color3.fromRGB(12, 4, 20)
+ImageLabel.ImageTransparency = 0.500
+
+Minimize.Name = "Minimize"
+Minimize.Parent = TopBar
+Minimize.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
+Minimize.BackgroundTransparency = 0.500
+Minimize.BorderSizePixel = 0
+Minimize.Position = UDim2.new(0.781519771, 0, -4.35969923e-07, 0)
+Minimize.Size = UDim2.new(0.0194963068, 27, 0.928713143, -10)
+Minimize.Font = Enum.Font.Gotham
+Minimize.Text = "-"
+Minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
+Minimize.TextSize = 18.000
+
+ImageLabel_2.Parent = Minimize
+ImageLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ImageLabel_2.BackgroundTransparency = 1.000
+ImageLabel_2.Position = UDim2.new(-0.441000015, 0, 0, 0)
+ImageLabel_2.Size = UDim2.new(0, 12, 0, 16)
+ImageLabel_2.Image = "http://www.roblox.com/asset/?id=10555881849"
+ImageLabel_2.ImageColor3 = Color3.fromRGB(12, 4, 20)
+ImageLabel_2.ImageTransparency = 0.500
 
 Down.Name = "Down"
 Down.Parent = Executor
@@ -74,7 +121,6 @@ EditorScroller.BorderSizePixel = 0
 EditorScroller.Position = UDim2.new(0, 9, 0, 47)
 EditorScroller.Size = UDim2.new(0, 367, 0, 191)
 EditorScroller.ScrollBarThickness = 5
-EditorScroller.AutomaticCanvasSize = "XY"
 
 Editor.Name = "Editor"
 Editor.Parent = EditorScroller
@@ -87,9 +133,9 @@ Editor.MultiLine = true
 Editor.Text = ""
 Editor.TextColor3 = Color3.fromRGB(255, 255, 255)
 Editor.TextSize = 20.000
+Editor.TextWrapped = true
 Editor.TextXAlignment = Enum.TextXAlignment.Left
 Editor.TextYAlignment = Enum.TextYAlignment.Top
-Editor.AutomaticSize = "XY"
 
 UIAspectRatioConstraint_3.Parent = Editor
 UIAspectRatioConstraint_3.AspectRatio = 1.916
@@ -157,26 +203,42 @@ UICorner_7.Parent = Save
 UIAspectRatioConstraint_8.Parent = Save
 UIAspectRatioConstraint_8.AspectRatio = 4.080
 
-UIAspectRatioConstraint_9.Parent = Executor
-UIAspectRatioConstraint_9.AspectRatio = 1.676
+local function closebtn()
+	local script = Instance.new('LocalScript', Exit)
 
--- Scripts:
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Parent.Parent:Destroy()
+	end)
+	
+end
+coroutine.wrap(closebtn)()
+local function minbtn()
+	local script = Instance.new('LocalScript', Minimize)
 
-local function QDVHE_fake_script() -- Execute.LocalScript 
+	p = false
+	script.Parent.MouseButton1Click:Connect(function()
+		if not p then
+			p = not p
+			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 35), "Out", "Quint", 1, true)
+		else
+			p = not p
+			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 287), "Out", "Quint", 1, true)
+		end
+	end)
+end
+coroutine.wrap(minbtn)()
+local function execbtn()
 	local script = Instance.new('LocalScript', Execute)
 
 	local execute = script.Parent
 	Editor = script.Parent.Parent.EditorScroller.Editor
-
-	execute.MouseButton1Click:Connect(
-		function()
-			assert(loadstring(Editor.Text))()
-		end
-	)
-
+	
+	execute.MouseButton1Click:Connect(function()
+		assert(loadstring(Editor.Text))()
+	end)
 end
-coroutine.wrap(QDVHE_fake_script)()
-local function MLYQ_fake_script() -- Clear.LocalScript 
+coroutine.wrap(execbtn)()
+local function clrbtn()
 	local script = Instance.new('LocalScript', Clear)
 
 	Clear = script.Parent
@@ -184,18 +246,18 @@ local function MLYQ_fake_script() -- Clear.LocalScript
 		script.Parent.Parent.EditorScroller.Editor.Text = ""
 	end)
 end
-coroutine.wrap(MLYQ_fake_script)()
-local function ORCKN_fake_script() -- Executor.LocalScript 
+coroutine.wrap(clrbtn)()
+local function uistuff()
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 	script.Parent.Parent.ResetOnSpawn = false
 end
-coroutine.wrap(ORCKN_fake_script)()
-local function JPWI_fake_script() -- Executor.LocalScript 
+coroutine.wrap(uistuff)()
+local function appearlol()
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
-coroutine.wrap(JPWI_fake_script)()
+coroutine.wrap(appearlol)()
