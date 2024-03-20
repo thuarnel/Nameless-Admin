@@ -181,7 +181,7 @@ UICorner_2.Parent = Main
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
 UIGradient_2.Parent = Main
 
-local function grabs()
+local function HTYRRRR_fake_script() -- grab.LocalScript 
 	local script = Instance.new('LocalScript', grab)
 
 	local cmdtxtbar = script.Parent.Parent.Found
@@ -191,48 +191,9 @@ local function grabs()
 	
 	setclipboard(thecode)
 end
-coroutine.wrap(grabs)()
-local function exitbtn()
-	local script = Instance.new('LocalScript', Exit)
-
-		script.Parent.MouseButton1Click:Connect(function()
-			script.Parent.Parent.Parent.Parent:Destroy()
-		end)
-		
-end
-coroutine.wrap(exitbtn)()
-local function minbtn() 
-	local script = Instance.new('LocalScript', Minimize)
-
-		p = false
-		script.Parent.MouseButton1Click:Connect(function()
-			if not p then
-				p = not p
-				script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
-			else
-				p = not p
-				script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
-			end
-		end)
-		
-end
-coroutine.wrap(minbtn)()
-local function stuffidk()
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent.Active = true
-	script.Parent.Parent.ResetOnSpawn = false
-	script.Parent.Draggable = true
-end
-coroutine.wrap(stuffidk)()
-local function lolol()
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
-end
-coroutine.wrap(lolol)()
-local function grabthepart()
-	local script = Instance.new('LocalScript', Main)
+coroutine.wrap(HTYRRRR_fake_script)()
+local function QNKBTZ_fake_script() -- Found.LocalScript 
+	local script = Instance.new('LocalScript', Found)
 
 	local Players = game:GetService("Players")
 	local player = Players.LocalPlayer
@@ -240,7 +201,7 @@ local function grabthepart()
 	
 	local function prt()
 		if mouse.Target then
-			script.Parent.Container.Found.Text = "Path: ".. mouse.Target:GetFullName()
+			script.Parent.Text = "Path: ".. mouse.Target:GetFullName()
 		else
 			warn("error while getting path")
 		end
@@ -248,4 +209,42 @@ local function grabthepart()
 	
 	mouse.Button1Down:Connect(prt)
 end
-coroutine.wrap(grabthepart)()
+coroutine.wrap(QNKBTZ_fake_script)()
+local function FYBS_fake_script() -- Exit.LocalScript 
+	local script = Instance.new('LocalScript', Exit)
+
+	script.Parent.MouseButton1Click:Connect(function()
+		script.Parent.Parent.Parent.Parent:Destroy()
+	end)
+end
+coroutine.wrap(FYBS_fake_script)()
+local function LBBR_fake_script() -- Minimize.LocalScript 
+	local script = Instance.new('LocalScript', Minimize)
+
+			p = false
+			script.Parent.MouseButton1Click:Connect(function()
+				if not p then
+					p = not p
+					script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+				else
+					p = not p
+					script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
+				end
+			end)
+			
+end
+coroutine.wrap(LBBR_fake_script)()
+local function ZDGHFU_fake_script() -- Main.LocalScript 
+	local script = Instance.new('LocalScript', Main)
+
+	script.Parent.Active = true
+	script.Parent.Parent.ResetOnSpawn = false
+	script.Parent.Draggable = true
+end
+coroutine.wrap(ZDGHFU_fake_script)()
+local function ILQI_fake_script() -- Main.LocalScript 
+	local script = Instance.new('LocalScript', Main)
+
+	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+end
+coroutine.wrap(ILQI_fake_script)()
