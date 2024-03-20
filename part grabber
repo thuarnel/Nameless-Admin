@@ -199,7 +199,7 @@ local function BLBPRD_fake_script() -- Found.LocalScript
 	
 	local function prt()
 		if mouse.Target then
-			script.Parent.Text = "Path: ".. mouse.Target:GetFullName()..""
+			script.Parent.Text = mouse.Target:GetFullName()
 		else
 			warn("error while getting path")
 		end
@@ -211,12 +211,8 @@ coroutine.wrap(BLBPRD_fake_script)()
 local function UUVHNZD_fake_script() -- Found.LocalScript 
 	local script = Instance.new('LocalScript', Found)
 
-	local cmdtxtbar = script.Parent.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
-	
 	script.Parent.Parent.grab.MouseButton1Click:Connect(function()
-		setclipboard(thecode)
+		setclipboard(script.Parent.Text)
 	end)
 end
 coroutine.wrap(UUVHNZD_fake_script)()
