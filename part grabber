@@ -1,3 +1,8 @@
+-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
 local prtGrab = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local Container = Instance.new("Frame")
@@ -17,6 +22,8 @@ local ImageLabel_4 = Instance.new("ImageLabel")
 local Title = Instance.new("TextLabel")
 local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
+
+--Properties:
 
 prtGrab.Name = "prtGrab"
 prtGrab.Parent = game.CoreGui
@@ -181,18 +188,9 @@ UICorner_2.Parent = Main
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
 UIGradient_2.Parent = Main
 
-local function HTYRRRR_fake_script() -- grab.LocalScript 
-	local script = Instance.new('LocalScript', grab)
+-- Scripts:
 
-	local cmdtxtbar = script.Parent.Parent.Found
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
-	
-	
-	setclipboard(thecode)
-end
-coroutine.wrap(HTYRRRR_fake_script)()
-local function QNKBTZ_fake_script() -- Found.LocalScript 
+local function BLBPRD_fake_script() -- Found.LocalScript 
 	local script = Instance.new('LocalScript', Found)
 
 	local Players = game:GetService("Players")
@@ -201,7 +199,7 @@ local function QNKBTZ_fake_script() -- Found.LocalScript
 	
 	local function prt()
 		if mouse.Target then
-			script.Parent.Text = "Path: ".. mouse.Target:GetFullName()
+			script.Parent.Text = "Path: ".. mouse.Target:GetFullName()..""
 		else
 			warn("error while getting path")
 		end
@@ -209,16 +207,28 @@ local function QNKBTZ_fake_script() -- Found.LocalScript
 	
 	mouse.Button1Down:Connect(prt)
 end
-coroutine.wrap(QNKBTZ_fake_script)()
-local function FYBS_fake_script() -- Exit.LocalScript 
+coroutine.wrap(BLBPRD_fake_script)()
+local function UUVHNZD_fake_script() -- Found.LocalScript 
+	local script = Instance.new('LocalScript', Found)
+
+	local cmdtxtbar = script.Parent.Text
+	local _, indexx = cmdtxtbar:find("%s")
+	local thecode = cmdtxtbar:sub(indexx + 1)
+	
+	script.Parent.Parent.grab.MouseButton1Click:Connect(function()
+		setclipboard(thecode)
+	end)
+end
+coroutine.wrap(UUVHNZD_fake_script)()
+local function AUPMILR_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
-coroutine.wrap(FYBS_fake_script)()
-local function LBBR_fake_script() -- Minimize.LocalScript 
+coroutine.wrap(AUPMILR_fake_script)()
+local function XOURFQ_fake_script() -- Minimize.LocalScript 
 	local script = Instance.new('LocalScript', Minimize)
 
 			p = false
@@ -233,18 +243,18 @@ local function LBBR_fake_script() -- Minimize.LocalScript
 			end)
 			
 end
-coroutine.wrap(LBBR_fake_script)()
-local function ZDGHFU_fake_script() -- Main.LocalScript 
+coroutine.wrap(XOURFQ_fake_script)()
+local function PLFU_fake_script() -- Main.LocalScript 
 	local script = Instance.new('LocalScript', Main)
 
 	script.Parent.Active = true
 	script.Parent.Parent.ResetOnSpawn = false
 	script.Parent.Draggable = true
 end
-coroutine.wrap(ZDGHFU_fake_script)()
-local function ILQI_fake_script() -- Main.LocalScript 
+coroutine.wrap(PLFU_fake_script)()
+local function BSHNZC_fake_script() -- Main.LocalScript 
 	local script = Instance.new('LocalScript', Main)
 
 	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
-coroutine.wrap(ILQI_fake_script)()
+coroutine.wrap(BSHNZC_fake_script)()
