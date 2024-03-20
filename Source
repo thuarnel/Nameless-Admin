@@ -1,12 +1,3 @@
---[[
-╭━╮╱╭╮╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╭╮            |
-┃┃╰╮┃┃╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱┃┃            |
-┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃╱┃┣━╯┣╮╭┳┳━╮     | Welcome to the Nameless Admin source, feel free to take a look around.
-┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮    | Enjoy.
-┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃    |
-╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯    |
---]]
-
  -- Waits until game is loaded
  local GetService = game.GetService
  if (not game.IsLoaded(game)) then
@@ -13324,12 +13315,12 @@ local brightLoop = nil
 		brightLoop:Disconnect()
 	end
 	local function brightFunc()
-		Lighting.Brightness = 2
 		Lighting.ClockTime = 14
 		Lighting.FogEnd = 100000
 		Lighting.GlobalShadows = false
 		Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
 	end
+Lighting.Brightness = 3
 
 	brightLoop = RunService.RenderStepped:Connect(brightFunc)
  end)
@@ -13348,12 +13339,12 @@ local brightLoop = nil
 		nightLoop:Disconnect()
 	end
 	local function nightFunc()
-		Lighting.Brightness = 2
 		Lighting.ClockTime = 0
 		Lighting.FogEnd = 100000
 		Lighting.GlobalShadows = false
 		Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
 	end
+Lighting.Brightness = 0
 
 	nightLoop = RunService.RenderStepped:Connect(nightFunc)
  end)
@@ -13364,8 +13355,8 @@ local brightLoop = nil
 	end
  end)
 
- cmd.add({"brightness"}, {"brightness", "Changes the brightness lighting property"}, function(args)
- Lighting.Brightness = args[1]
+ cmd.add({"brightness"}, {"brightness", "Changes the brightness lighting property"}, function(...)
+ Lighting.Brightness = (...)
  end)
 
  cmd.add({"globalshadows", "gshadows"}, {"globalshadows (gshadows)", "Enables global shadows"}, function()
