@@ -3428,7 +3428,7 @@ _G.Settings = {
         ["Ignore Others"] = true
     },
     Meshes = {
-        Destroy = true,
+        Destroy = false,
         LowDetail = true
     },
     Images = {
