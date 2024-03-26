@@ -441,31 +441,31 @@ local function VVCQ_fake_script()
 			RightShift = 0,
 		}
 	
-		script.Parent.MobileControls.Movement.forward.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.forward.TextButton.MouseButton1Down:Connect(function()
 			keyboard["W"] = 1
 		end)
-		script.Parent.MobileControls.Movement.forward.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.forward.TextButton.MouseLeave:Connect(function()
 			keyboard["W"] = 0
 		end)
 	
-		script.Parent.MobileControls.Movement.back.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.back.TextButton.MouseButton1Down:Connect(function()
 			keyboard["S"] = 1
 		end)
-		script.Parent.MobileControls.Movement.back.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.back.TextButton.MouseLeave:Connect(function()
 			keyboard["S"] = 0
 		end)
 	
-		script.Parent.MobileControls.Movement.right.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.right.TextButton.MouseButton1Down:Connect(function()
 			keyboard["D"] = 1
 		end)
-		script.Parent.MobileControls.Movement.right.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.right.TextButton.MouseLeave:Connect(function()
 			keyboard["D"] = 0
 		end)
 	
-		script.Parent.MobileControls.Movement.left.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.left.TextButton.MouseButton1Down:Connect(function()
 			keyboard["A"] = 1
 		end)
-		script.Parent.MobileControls.Movement.left.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").Movement.left.TextButton.MouseLeave:Connect(function()
 			keyboard["A"] = 0
 		end)
 	
@@ -476,25 +476,25 @@ local function VVCQ_fake_script()
 	
 		local zoomingOut = false
 		local zoomingIn = false
-		script.Parent.MobileControls.zoomIn.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").zoomIn.TextButton.MouseButton1Down:Connect(function()
 			zoomingIn = true
 			while zoomingIn do
 				wait()
 				mouse.MouseWheel -= 0.5
 			end
 		end)
-		script.Parent.MobileControls.zoomIn.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").zoomIn.TextButton.MouseLeave:Connect(function()
 			zoomingIn = false
 		end)
 	
-		script.Parent.MobileControls.zoomOut.TextButton.MouseButton1Down:Connect(function()
+		script.Parent:WaitForChild("MobileControls").zoomOut.TextButton.MouseButton1Down:Connect(function()
 			zoomingOut = true
 			while zoomingOut do
 				wait()
 				mouse.MouseWheel += 0.5
 			end
 		end)
-		script.Parent.MobileControls.zoomOut.TextButton.MouseLeave:Connect(function()
+		script.Parent:WaitForChild("MobileControls").zoomOut.TextButton.MouseLeave:Connect(function()
 			zoomingOut = false
 		end)
 	
@@ -828,30 +828,30 @@ local function VVCQ_fake_script()
 			enabled = not state
 			if enabled then
 				Controls:Enable()
-				script.Parent.hidecontrols.Visible = false
-				script.Parent.MobileControls.Visible = false
+				script.Parent:WaitForChild("hidecontrols").Visible = false
+				script.Parent:WaitForChild("MobileControls").Visible = false
 			else
 				hidden = false
-				script.Parent.hidecontrols.Visible = true
-				script.Parent.hidecontrols.shown.Visible = true
-				script.Parent.hidecontrols.hidden.Visible = false
-				script.Parent.MobileControls.Visible = true
+				script.Parent:WaitForChild("hidecontrols").Visible = true
+				script.Parent:WaitForChild("hidecontrols").shown.Visible = true
+				script.Parent:WaitForChild("hidecontrols").hidden.Visible = false
+				script.Parent:WaitForChild("MobileControls").Visible = true
 				Controls:Disable()
 			end
 			ToggleFreecam()
 		end)
 	
-		script.Parent.hidecontrols.TextButton.MouseButton1Click:Connect(function()
+		script.Parent:WaitForChild("hidecontrols").TextButton.MouseButton1Click:Connect(function()
 			if hidden then
 				hidden = false
-				script.Parent.hidecontrols.shown.Visible = true
-				script.Parent.hidecontrols.hidden.Visible = false
-				script.Parent.MobileControls.Visible = true
+				script.Parent:WaitForChild("hidecontrols").shown.Visible = true
+				script.Parent:WaitForChild("hidecontrols").hidden.Visible = false
+				script.Parent:WaitForChild("MobileControls").Visible = true
 			else
 				hidden = true
-				script.Parent.hidecontrols.shown.Visible = false
-				script.Parent.hidecontrols.hidden.Visible = true
-				script.Parent.MobileControls.Visible = false
+				script.Parent:WaitForChild("hidecontrols").shown.Visible = false
+				script.Parent:WaitForChild("hidecontrols").hidden.Visible = true
+				script.Parent:WaitForChild("MobileControls").Visible = false
 			end
 		end)
 	end
