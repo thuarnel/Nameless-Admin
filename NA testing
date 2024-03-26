@@ -15156,33 +15156,32 @@ end)
  end)
  
  cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
-local ownId = "unknown"
-local ownUser = "unknown"
-spawn(function()
-if game.CreatorType == Enum.CreatorType.User then
-    Player.UserId = game.CreatorId
-    Player.Name = game.CreatorName
-	ownId = game.CreatorId
-	ownUser = game.CreatorName
-end
-end)
-spawn(function()
-if game.CreatorType == Enum.CreatorType.Group then
-    local groupId = game.CreatorId
-    local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
-    local owner = groupInfo.Owner
-    Player.Name = owner.Name
-    Player.UserId = owner.Id
-	ownId = owner.Id
-	ownUser = owner.Name
-end
-end)
-spawn(function()
-task.wait(1);
-game.StarterGui:SetCoreGuiEnabled(0, false)
-wait(3);
-game.StarterGui:SetCoreGuiEnabled(0, true)
-end)
+	local ownId = "unknown"
+	local ownUser = "unknown"
+	
+	spawn(function()
+		if game.CreatorType == Enum.CreatorType.User then
+			Player.UserId = game.CreatorId
+			Player.Name = game.CreatorName
+			ownId = game.CreatorId
+			ownUser = game.CreatorName
+		elseif game.CreatorType == Enum.CreatorType.Group then
+			local groupId = game.CreatorId
+			local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
+			local owner = groupInfo.Owner
+			Player.Name = owner.Name
+			Player.UserId = owner.Id
+			ownId = owner.Id
+			ownUser = owner.Name
+		end
+	end)
+	
+	spawn(function()
+		task.wait(1)
+		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+		wait(3)
+		game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+	end)
 
 wait(.2);
  
