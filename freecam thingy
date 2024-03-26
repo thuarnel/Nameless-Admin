@@ -292,9 +292,7 @@ FCbutton.Image = "rbxassetid://6790558611"
 UICorner_7.CornerRadius = UDim.new(1, 0)
 UICorner_7.Parent = FCbutton
 
--- Scripts:
-
-local function VVCQ_fake_script() -- ScreenGui.FreecamScript 
+local function VVCQ_fake_script() 
 	local script = Instance.new('LocalScript', ScreenGui)
 
 	local pi    = math.pi
@@ -859,7 +857,7 @@ local function VVCQ_fake_script() -- ScreenGui.FreecamScript
 	end
 end
 coroutine.wrap(VVCQ_fake_script)()
-local function IQCEZD_fake_script() -- FCbutton.uiappear 
+local function IQCEZD_fake_script()
 	local script = Instance.new('LocalScript', FCbutton)
 
 	namelessFC = script.Parent
@@ -877,7 +875,7 @@ local function IQCEZD_fake_script() -- FCbutton.uiappear
 	gui.draggable(namelessFC)
 end
 coroutine.wrap(IQCEZD_fake_script)()
-local function QHPZFU_fake_script() -- FCbutton.toggles 
+local function QHPZFU_fake_script()
 	local script = Instance.new('LocalScript', FCbutton)
 
 	no = false
