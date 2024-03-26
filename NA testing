@@ -6910,6 +6910,7 @@ end)
  local fcpro
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
+	if not IsOnMobile then
 	if not speed then speed = 5 end
 	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
 	 local dir = {w = false, a = false, s = false, d = false}
@@ -6981,6 +6982,16 @@ end)
 			 dir.q = false
 		 end
 	 end))
+	else
+		wait();
+	 
+	 Notify({
+	 Description = "Freecam command isn't supported for mobile users consider using the Freecam button";
+	 Title = "Nameless Admin";
+	 Duration = 5;
+	 
+ });
+	end
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
@@ -15715,14 +15726,6 @@ Notify({
  Duration = 4;					 
  });
 end)
-
-
---executes freecam for mobile users
-spawn(function()
-	if IsOnMobile then
-
-	end
-end)
  
  function Destroy(guiObject)
 	 if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
@@ -15733,11 +15736,11 @@ end)
  wait(0.2)
  
  -- [[ COMMAND BAR BUTTON ]] --
+ if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
  local ScreenGui = Instance.new("ScreenGui")
  local TextClickButton = Instance.new("TextButton")
  local UICorner = Instance.new("UICorner")
  local TextFCButton = Instance.new("ImageButton")
- local idksomething = Instance.new("BindableEvent")
  
  ScreenGui.Parent = game.CoreGui
  ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
@@ -15783,4 +15786,9 @@ end)
 		 cmdInput.Text = ''
 		 cmdInput:CaptureFocus()
  end)
- 
+
+--executes freecam for mobile users
+spawn(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/freecam%20thingy"))()
+end)
+end
