@@ -54,7 +54,7 @@ end)
  }
  
  -- [[ Version ]] -- 
- currentversion = 2.1
+ currentversion = 2.12
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -12885,20 +12885,6 @@ local function omg(part)
 	end
 end
 
-local function omgmodel(part)
-	if part:FindFirstChild("NAprtesp") == nil then
-		local adornment = Instance.new("BoxHandleAdornment")
-		adornment.Name = "NAprtesp"
-		adornment.Adornee = part
-		adornment.ZIndex = 5
-		adornment.AlwaysOnTop = true
-		adornment.Transparency = 0.5
-		adornment.Size = part.Size
-		adornment.Color3 = Color3.new(0, 0, 1)
-		adornment.Parent = part
-	end
-end
-
 local function check(obj)
 	local objlower = obj.Name:lower()
 	return (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == thecode:lower()
@@ -12911,18 +12897,11 @@ local function pert(obj)
 	end
 end
 
-local function medel(obj)
-	if check(obj) then
-		table.insert(modeprts, obj)
-		omgmodel(obj)
-	end
-end
-
 for _, obj in ipairs(objects) do
 	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == thecode:lower() then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
-			medel(thej)
+			pert(thej)
 		end
 	elseif obj:IsA("BasePart") and obj.Name:lower() == thecode:lower() then
 		pert(obj)
@@ -12933,7 +12912,7 @@ iamesp = game.DescendantAdded:Connect(function(hh)
 	if (hh:IsA("Model") or hh:IsA("Folder")) then
 		for _,checkpert in ipairs(hh:GetDescendants()) do
 			if checkpert:IsA("BasePart") then
-				medel(checkpert)
+				pert(checkpert)
 			end
 		end
 	else
@@ -12944,9 +12923,8 @@ end)
  
  cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function()
  iamesp:Disconnect()
-	 local parts = game:GetDescendants()
 
-for i, part in ipairs(parts) do
+for i, part in ipairs(game:GetDescendants()) do
 	if part:IsA("BoxHandleAdornment") then
 		part:Destroy()
 	end
