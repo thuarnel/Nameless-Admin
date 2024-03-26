@@ -34,7 +34,7 @@ local UICorner_7 = Instance.new("UICorner")
 local thetoggle = Instance.new("BindableEvent")
 
 NamelessFreeCam.Name = "NamelessFreeCam"
-NamelessFreeCam.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+NamelessFreeCam.Parent = game.CoreGui
 NamelessFreeCam.ResetOnSpawn = false
 
 thetoggle=NamelessFreeCam
