@@ -356,7 +356,7 @@ local function ZQEQYF_fake_script() -- NamelessFreeCam_2.LocalScript
 	gui.draggable(uhhfcbtn)
 end
 coroutine.wrap(ZQEQYF_fake_script)()
-local function FXQSVRE_fake_script() -- NamelessFreeCam_2.FreecamScript 
+local function FXQSVRE_fake_script()
 	local script = Instance.new('LocalScript', NamelessFreeCam_2)
 
 	local pi    = math.pi
