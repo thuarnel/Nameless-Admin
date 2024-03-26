@@ -10620,6 +10620,15 @@ for i = 1, math.huge do
 end
 end
  AirWalk()
+
+wait();
+ 
+ Notify({
+ Description = "Airwalk: On";
+ Title = "Nameless Admin";
+ Duration = 5;
+ 
+ });
  end)
  
  cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
