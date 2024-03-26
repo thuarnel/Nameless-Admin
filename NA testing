@@ -69,7 +69,6 @@ end)
  local StarterGui = game:GetService("StarterGui")
  local SoundService = game:GetService("SoundService")
  local Lighting = game:GetService("Lighting")
- local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
  local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
@@ -5546,23 +5545,19 @@ until npcfollowloop == false
 		end
 	end
 cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enables shiftlock"}, function()
-	if IsOnMobile then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
-	else
-		EnableShiftlock()
-	end
+EnableShiftlock()
+end)
+
+cmd.add({"mobileshiftlock", "msl"}, {"mobileshiftlock (msl)", "Enables shiftlock for mobie"}, function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
 end)
  
 cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock"}, function()
-	if IsOnMobile then
-		for _,lol in ipairs(game.CoreGui:GetChildren()) do
-			if lol.Name == "shiftlockk" then
-				lol:Destroy()
-			end
-		end
-	else
-		DisableShiftlock()
-	end
+DisableShiftlock()
+end)
+
+cmd.add({"unmobileshiftlock", "unmsl"}, {"unmobileshiftlock (unmsl)", "Disables shiftlock for mobile"}, function()
+game.CoreGui.shiftlockk:Destroy()
 end)
 
 cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift lock if you press Control"}, function()
@@ -10519,6 +10514,18 @@ end
 					 getRoot(game.Players.LocalPlayer.Character).CFrame = otherRoot.CFrame * bangOffet
 				 end)
 			 end)
+ 
+			 
+			 
+			 
+			 wait();
+			 
+			 Notify({
+			 Description = "Banging player...";
+			 Title = "Nameless Admin";
+			 Duration = 5;
+			 
+			 });
  end)
  
  glueloop = false
@@ -10586,16 +10593,11 @@ until glueloop == false
 		 bangDied:Disconnect()
  end
  end)
-
- local awdetect
- local isAirWalk=false
  
- cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
+ cmd.add({"unairwalk", "unaw"}, {"unairwalk (unaw)", "Stops the airwalk command"}, function()
 	 for i, v in pairs(workspace:GetChildren()) do
-		 if v:IsA("BasePart") and v:GetAttribute("NamelessWalk") then
-			awdetect:Disconnect()
-			isAirWalk = false
-			v:Destroy()
+		 if tostring(v) == "Airwalk" then
+			 v:Destroy()
  wait();
  
  Notify({
@@ -10608,9 +10610,8 @@ until glueloop == false
  end
  
  end)
-
  
- cmd.add({"airwalk", "aw", "float"}, {"airwalk (aw, float)", "Press space to go up, unairwalk to stop"}, function()
+ cmd.add({"airwalk", "aw"}, {"airwalk (aw)", "Press space to go up, unairwalk to stop"}, function()
  wait();
  
  Notify({
@@ -10620,30 +10621,24 @@ until glueloop == false
  
  });
  
- isAirWalk = true
-local function AirWalk()
-local AirWPart = Instance.new("Part", workspace)
-AirWPart.Size = Vector3.new(7, 2, 3)
-AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-AirWPart.Transparency = 1
-AirWPart.Anchored = true
-AirWPart.Name = "Airwalk"
-AirWPart:SetAttribute("NamelessWalk", true)
-for i = 1, math.huge do
-	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-	 task.wait(.1)
-end
-awdetect = Player.Character.Humanoid.Died:Connect(function()
-	if isAirWalk == true then
-wait(game.Players.RespawnTime + 0.4)
-for i = 1, math.huge do
-	AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-	task.wait(.1)
-end
-	end
-end)
-end
- AirWalk()
+ local Chat = game:GetService('Players').LocalPlayer.Chatted
+				 local function AirWalk()
+ 
+					 local AirWPart = Instance.new("Part", workspace)
+					 local crtl = true
+					 local Mouse = game.Players.LocalPlayer:GetMouse()
+					 AirWPart.Size = Vector3.new(7, 2, 3)
+					 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+					 AirWPart.Transparency = 1
+					 AirWPart.Anchored = true
+					 AirWPart.Name = "Airwalk"
+					 for i = 1, math.huge do
+						 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+						 wait (.1)
+					 end
+				 end
+				 AirWalk()
+				 
  end)
  
  cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -10662,12 +10657,12 @@ end
 	 if Username == "all" or Username == "others" then
 		 bringc = game:GetService("RunService").RenderStepped:Connect(function()
 			 for i, target in pairs(game:GetService("Players"):GetChildren()) do
-			 	if target.Name == game.Players.LocalPlayer.Name then
-			else
-			 	target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 5
+			 if target.Name == game.Players.LocalPlayer.Name then
+			 else
+			 target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 5
 			 end
-			end
-		end)
+			 end
+			 end)
 	 else
 	 target = getPlr(Username)
 	 
@@ -12475,17 +12470,6 @@ end
  end)
  
  cmd.add({"hydroxide", "hydro"}, {"hydroxide (hydro)", "executes hydroxide"}, function()
-	if IsOnMobile then
-		local owner = "Hosvile"
-		local branch = "revision"
-		
-		local function webImport(file)
-			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
-		end
-		
-		webImport("init")
-		webImport("ui/main")
-	else
 	 local owner = "Upbolt"
  local branch = "revision"
  
@@ -12495,7 +12479,18 @@ end
  
  webImport("init")
  webImport("ui/main")
+ end)
+
+cmd.add({"mobilehydroxide", "mhydroxide"}, {"mobilehydroxide (mhydroxide)", "executes hydroxide for mobile"}, function()
+	 local owner = "Hosvile"
+local branch = "revision"
+
+local function webImport(file)
+    return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
 end
+
+webImport("init")
+webImport("ui/main")
  end)
  
  cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy that supports both pc and mobile"}, function()
@@ -12512,7 +12507,7 @@ end
 	 Notify({
 	 Description = "Made unanchored parts have no gravity";
 	 Title = "Nameless Admin";
-	 Duration = 3;
+	 Duration = 5;
 	 
  });
  spawn(function()
@@ -12689,7 +12684,7 @@ local PromptButtonHoldBegan = nil
 
 	
 	Notify({
- Description = "Deleted over "..delclass.." "..JJ.."(s)";
+ Description = "Deleted over "..delclass.." part(s) with ClassName of: "..JJ.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12730,7 +12725,7 @@ local PromptButtonHoldBegan = nil
 	wait();
 
 	Notify({
- Description = "Deleted over "..charclass.." "..poopy.."(s) inside the character";
+ Description = "Deleted over "..charclass.." part(s) inside the character with ClassName of: "..poopy.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12858,7 +12853,6 @@ end)
 	local thecode = cmdtxtbar:sub(indexx + 1)
 local objects = game:GetDescendants()
 local trparts = {}
-local modeprts = {}
 
 local function omg(part)
 	if part:FindFirstChild("NAprtesp") == nil then
@@ -12870,20 +12864,6 @@ local function omg(part)
 		adornment.Transparency = 0.5
 		adornment.Size = part.Size
 		adornment.Color3 = Color3.new(1, 0, 0)
-		adornment.Parent = part
-	end
-end
-
-local function omgmodel(part)
-	if part:FindFirstChild("NAprtesp") == nil then
-		local adornment = Instance.new("BoxHandleAdornment")
-		adornment.Name = "NAprtesp"
-		adornment.Adornee = part
-		adornment.ZIndex = 5
-		adornment.AlwaysOnTop = true
-		adornment.Transparency = 0.5
-		adornment.Size = part.Size
-		adornment.Color3 = Color3.new(0, 0, 1)
 		adornment.Parent = part
 	end
 end
@@ -12900,18 +12880,11 @@ local function pert(obj)
 	end
 end
 
-local function medel(obj)
-	if check(obj) then
-		table.insert(modeprts, obj)
-		omgmodel(obj)
-	end
-end
-
 for _, obj in ipairs(objects) do
 	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == thecode:lower() then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
-			medel(thej)
+			pert(thej)
 		end
 	elseif obj:IsA("BasePart") and obj.Name:lower() == thecode:lower() then
 		pert(obj)
@@ -12919,15 +12892,7 @@ for _, obj in ipairs(objects) do
 end
 
 iamesp = game.DescendantAdded:Connect(function(hh)
-	if (hh:IsA("Model") or hh:IsA("Folder")) then
-		for _,checkpert in ipairs(hh:GetDescendants()) do
-			if checkpert:IsA("BasePart") then
-				medel(checkpert)
-			end
-		end
-	else
 	pert(hh)
-	end
 end)
  end)
  
@@ -15156,14 +15121,11 @@ end)
  end)
  
  cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
-local ownId = "unknown"
-local ownUser = "unknown"
+
 spawn(function()
 if game.CreatorType == Enum.CreatorType.User then
     Player.UserId = game.CreatorId
     Player.Name = game.CreatorName
-	ownId = game.CreatorId
-	ownUser = game.CreatorName
 end
 end)
 spawn(function()
@@ -15172,24 +15134,21 @@ if game.CreatorType == Enum.CreatorType.Group then
     local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
     local owner = groupInfo.Owner
     Player.Name = owner.Name
-    Player.UserId = owner.Id
-	ownId = owner.Id
-	ownUser = owner.Name
+    Player.UserId = game:GetService("GroupService"):GetGroupInfoAsync(game.CreatorId).Owner.Id
 end
 end)
 spawn(function()
-task.wait(1);
 game.StarterGui:SetCoreGuiEnabled(0, false)
-wait(3);
+wait(1);
 game.StarterGui:SetCoreGuiEnabled(0, true)
 end)
 
-wait(.2);
+wait();
  
  Notify({
- Description = "Your Username & UserId has been set to: (Username: @"..ownUser.." | UserId: "..ownId..")";
+ Description = "Set local player id to the owner id";
  Title = "Nameless Admin";
- Duration = 4;
+ Duration = 5;
  
  });
 
@@ -15712,18 +15671,11 @@ end
 Notify({
  Description = "Welcome to Nameless Admin V"..currentversion.."";
  Title = "Hey "..hh.."";
- Duration = 4;					 
+ Duration = 5;					 
  });
 end)
-
-
---executes freecam for mobile users
-spawn(function()
-	if IsOnMobile then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/freecam%20thingy"))()
-	end
-end)
  
+ -- never used this lol
  function Destroy(guiObject)
 	 if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
 		 guiObject.Parent = nil
@@ -15738,7 +15690,6 @@ end)
  local UICorner = Instance.new("UICorner")
  
  ScreenGui.Parent = game.CoreGui
- ScreenGui.Name = math.random(1,999999999999)
  ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
  ScreenGui.ResetOnSpawn = true
  
