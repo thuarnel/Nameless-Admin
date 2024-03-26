@@ -54,7 +54,7 @@ end)
  }
  
  -- [[ Version ]] -- 
- currentversion = 2.1
+ currentversion = 2.12
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -6910,6 +6910,7 @@ end)
  local fcpro
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
+	if not IsOnMobile then
 	if not speed then speed = 5 end
 	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
 	 local dir = {w = false, a = false, s = false, d = false}
@@ -6981,6 +6982,16 @@ end)
 			 dir.q = false
 		 end
 	 end))
+	else
+		wait();
+	 
+	 Notify({
+	 Description = "Freecam command isn't supported for mobile users consider using the Freecam button";
+	 Title = "Nameless Admin";
+	 Duration = 5;
+	 
+ });
+	end
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
@@ -10586,15 +10597,15 @@ until glueloop == false
 		 bangDied:Disconnect()
  end
  end)
+
  
- cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
-for i, v in ipairs(workspace:GetDescendants()) do
+ cmd.add({"unairwalk", "unaw"}, {"unairwalk (unaw)", "Stops the airwalk command"}, function()
+	 for i, v in pairs(workspace:GetChildren()) do
 		 if v:IsA("BasePart") and v.Name == "Airwalk" then
 			v:Destroy()
 	 end
  end
-
-wait();
+ wait();
  
  Notify({
  Description = "Airwalk: OFF";
@@ -10602,26 +10613,12 @@ wait();
  Duration = 5;
  
  });
-
+ 
  end)
 
  
- cmd.add({"airwalk", "aw", "float"}, {"airwalk (aw, float)", "Press space to go up, unairwalk to stop"}, function()
-local function AirWalk()
-local AirWPart = Instance.new("Part", workspace)
-AirWPart.Size = Vector3.new(7, 2, 3)
-AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-AirWPart.Transparency = 1
-AirWPart.Anchored = true
-AirWPart.Name = "Airwalk"
-for i = 1, math.huge do
-	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-	 task.wait(.1)
-end
-end
- AirWalk()
-
-wait();
+ cmd.add({"airwalk", "aw"}, {"airwalk (aw)", "Press space to go up, unairwalk to stop"}, function()
+ wait();
  
  Notify({
  Description = "Airwalk: On";
@@ -10629,6 +10626,21 @@ wait();
  Duration = 5;
  
  });
+ 
+local function AirWalk()
+local AirWPart = Instance.new("Part", workspace)
+AirWPart.Size = Vector3.new(7, 2, 3)
+AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
+AirWPart.Transparency = 1
+AirWPart.Anchored = true
+AirWPart.Name = "Airwalk"
+AirWPart:SetAttribute("NamelessWalk", true)
+for i = 1, math.huge do
+	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
+	 task.wait(.1)
+end
+end
+ AirWalk()
  end)
  
  cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -12859,20 +12871,6 @@ local function omg(part)
 	end
 end
 
-local function omgmodel(part)
-	if part:FindFirstChild("NAprtesp") == nil then
-		local adornment = Instance.new("BoxHandleAdornment")
-		adornment.Name = "NAprtesp"
-		adornment.Adornee = part
-		adornment.ZIndex = 5
-		adornment.AlwaysOnTop = true
-		adornment.Transparency = 0.5
-		adornment.Size = part.Size
-		adornment.Color3 = Color3.new(0, 0, 1)
-		adornment.Parent = part
-	end
-end
-
 local function check(obj)
 	local objlower = obj.Name:lower()
 	return (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == thecode:lower()
@@ -12885,18 +12883,11 @@ local function pert(obj)
 	end
 end
 
-local function medel(obj)
-	if check(obj) then
-		table.insert(modeprts, obj)
-		omgmodel(obj)
-	end
-end
-
 for _, obj in ipairs(objects) do
 	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == thecode:lower() then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
-			medel(thej)
+			pert(thej)
 		end
 	elseif obj:IsA("BasePart") and obj.Name:lower() == thecode:lower() then
 		pert(obj)
@@ -12907,7 +12898,7 @@ iamesp = game.DescendantAdded:Connect(function(hh)
 	if (hh:IsA("Model") or hh:IsA("Folder")) then
 		for _,checkpert in ipairs(hh:GetDescendants()) do
 			if checkpert:IsA("BasePart") then
-				medel(checkpert)
+				pert(checkpert)
 			end
 		end
 	else
@@ -12918,9 +12909,8 @@ end)
  
  cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function()
  iamesp:Disconnect()
-	 local parts = game:GetDescendants()
 
-for i, part in ipairs(parts) do
+for i, part in ipairs(game:GetDescendants()) do
 	if part:IsA("BoxHandleAdornment") then
 		part:Destroy()
 	end
@@ -15700,14 +15690,6 @@ Notify({
  Duration = 4;					 
  });
 end)
-
-
---executes freecam for mobile users
-spawn(function()
-	if IsOnMobile then
-
-	end
-end)
  
  function Destroy(guiObject)
 	 if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
@@ -15718,11 +15700,11 @@ end)
  wait(0.2)
  
  -- [[ COMMAND BAR BUTTON ]] --
+ if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
  local ScreenGui = Instance.new("ScreenGui")
  local TextClickButton = Instance.new("TextButton")
  local UICorner = Instance.new("UICorner")
  local TextFCButton = Instance.new("ImageButton")
- local idksomething = Instance.new("BindableEvent")
  
  ScreenGui.Parent = game.CoreGui
  ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
@@ -15768,4 +15750,9 @@ end)
 		 cmdInput.Text = ''
 		 cmdInput:CaptureFocus()
  end)
- 
+
+--executes freecam for mobile users
+spawn(function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/freecam%20thingy"))()
+end)
+end
