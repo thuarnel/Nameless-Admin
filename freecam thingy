@@ -32,9 +32,10 @@ local TextButton_7 = Instance.new("TextButton")
 local FCbutton = Instance.new("ImageButton")
 local UICorner_7 = Instance.new("UICorner")
 
-ScreenGui.Parent = game.CoreGui
+ScreenGui.Parent = game.Players.LocalPlayer.PlayerGui
 ScreenGui.Name="NamelessFC"
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ScreenGui.ResetOnSpawn=false
 
 MobileControls.Name = "MobileControls"
 MobileControls.Parent = ScreenGui
