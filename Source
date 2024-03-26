@@ -10586,19 +10586,13 @@ until glueloop == false
 		 bangDied:Disconnect()
  end
  end)
-
- local awdetect
- local isAirWalk=false
  
  cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
-	 for i, v in pairs(workspace:GetChildren()) do
-		 if v.Name == "NAAirwalk" then
+for i, v in ipairs(workspace:GetDescendants()) do
+		 if v:IsA("BasePart") and v.Name == "Airwalk" then
 			v:Destroy()
 	 end
  end
-
-awdetect:Disconnect()
-isAirWalk = false
 
 wait();
  
@@ -10613,36 +10607,17 @@ wait();
 
  
  cmd.add({"airwalk", "aw", "float"}, {"airwalk (aw, float)", "Press space to go up, unairwalk to stop"}, function()
- wait();
- 
- Notify({
- Description = "Airwalk: On";
- Title = "Nameless Admin";
- Duration = 5;
- 
- });
- 
- isAirWalk = true
 local function AirWalk()
 local AirWPart = Instance.new("Part", workspace)
 AirWPart.Size = Vector3.new(7, 2, 3)
 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
 AirWPart.Transparency = 1
 AirWPart.Anchored = true
-AirWPart.Name = "NAAirwalk"
+AirWPart.Name = "Airwalk"
 for i = 1, math.huge do
 	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
 	 task.wait(.1)
 end
-awdetect = Player.Character.Humanoid.Died:Connect(function()
-	if isAirWalk == true then
-wait(game.Players.RespawnTime + 0.4)
-for i = 1, math.huge do
-	AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-	task.wait(.1)
-end
-	end
-end)
 end
  AirWalk()
  end)
