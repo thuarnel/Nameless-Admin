@@ -10592,7 +10592,7 @@ until glueloop == false
  
  cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
 	 for i, v in pairs(workspace:GetChildren()) do
-		 if v:IsA("BasePart") and v:GetAttribute("NamelessWalk") then
+		 if v.Name == "NAAirwalk" then
 			awdetect:Disconnect()
 			isAirWalk = false
 			v:Destroy()
@@ -10627,8 +10627,7 @@ AirWPart.Size = Vector3.new(7, 2, 3)
 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
 AirWPart.Transparency = 1
 AirWPart.Anchored = true
-AirWPart.Name = "Airwalk"
-AirWPart:SetAttribute("NamelessWalk", true)
+AirWPart.Name = "NAAirwalk"
 for i = 1, math.huge do
 	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
 	 task.wait(.1)
