@@ -69,6 +69,7 @@ end)
  local StarterGui = game:GetService("StarterGui")
  local SoundService = game:GetService("SoundService")
  local Lighting = game:GetService("Lighting")
+ local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
  local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
@@ -5545,19 +5546,23 @@ until npcfollowloop == false
 		end
 	end
 cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enables shiftlock"}, function()
-EnableShiftlock()
-end)
-
-cmd.add({"mobileshiftlock", "msl"}, {"mobileshiftlock (msl)", "Enables shiftlock for mobie"}, function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
+	if IsOnMobile then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
+	else
+		EnableShiftlock()
+	end
 end)
  
 cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock"}, function()
-DisableShiftlock()
-end)
-
-cmd.add({"unmobileshiftlock", "unmsl"}, {"unmobileshiftlock (unmsl)", "Disables shiftlock for mobile"}, function()
-game.CoreGui.shiftlockk:Destroy()
+	if IsOnMobile then
+		for _,lol in ipairs(game.CoreGui:GetChildren()) do
+			if lol.Name == "shiftlockk" then
+				lol:Destroy()
+			end
+		end
+	else
+		DisableShiftlock()
+	end
 end)
 
 cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift lock if you press Control"}, function()
@@ -10514,18 +10519,6 @@ end
 					 getRoot(game.Players.LocalPlayer.Character).CFrame = otherRoot.CFrame * bangOffet
 				 end)
 			 end)
- 
-			 
-			 
-			 
-			 wait();
-			 
-			 Notify({
-			 Description = "Banging player...";
-			 Title = "Nameless Admin";
-			 Duration = 5;
-			 
-			 });
  end)
  
  glueloop = false
@@ -10593,11 +10586,16 @@ until glueloop == false
 		 bangDied:Disconnect()
  end
  end)
+
+ local awdetect
+ local isAirWalk=false
  
- cmd.add({"unairwalk", "unaw"}, {"unairwalk (unaw)", "Stops the airwalk command"}, function()
+ cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
 	 for i, v in pairs(workspace:GetChildren()) do
-		 if tostring(v) == "Airwalk" then
-			 v:Destroy()
+		 if v:IsA("BasePart") and v:GetAttribute("NamelessWalk") then
+			awdetect:Disconnect()
+			isAirWalk = false
+			v:Destroy()
  wait();
  
  Notify({
@@ -10610,8 +10608,9 @@ until glueloop == false
  end
  
  end)
+
  
- cmd.add({"airwalk", "aw"}, {"airwalk (aw)", "Press space to go up, unairwalk to stop"}, function()
+ cmd.add({"airwalk", "aw", "float"}, {"airwalk (aw, float)", "Press space to go up, unairwalk to stop"}, function()
  wait();
  
  Notify({
@@ -10621,24 +10620,30 @@ until glueloop == false
  
  });
  
- local Chat = game:GetService('Players').LocalPlayer.Chatted
-				 local function AirWalk()
- 
-					 local AirWPart = Instance.new("Part", workspace)
-					 local crtl = true
-					 local Mouse = game.Players.LocalPlayer:GetMouse()
-					 AirWPart.Size = Vector3.new(7, 2, 3)
-					 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
-					 AirWPart.Transparency = 1
-					 AirWPart.Anchored = true
-					 AirWPart.Name = "Airwalk"
-					 for i = 1, math.huge do
-						 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
-						 wait (.1)
-					 end
-				 end
-				 AirWalk()
-				 
+ isAirWalk = true
+local function AirWalk()
+local AirWPart = Instance.new("Part", workspace)
+AirWPart.Size = Vector3.new(7, 2, 3)
+AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
+AirWPart.Transparency = 1
+AirWPart.Anchored = true
+AirWPart.Name = "Airwalk"
+AirWPart:SetAttribute("NamelessWalk", true)
+for i = 1, math.huge do
+	 AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
+	 task.wait(.1)
+end
+awdetect = Player.Character.Humanoid.Died:Connect(function()
+	if isAirWalk == true then
+wait(game.Players.RespawnTime + 0.4)
+for i = 1, math.huge do
+	AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
+	task.wait(.1)
+end
+	end
+end)
+end
+ AirWalk()
  end)
  
  cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -10657,12 +10662,12 @@ until glueloop == false
 	 if Username == "all" or Username == "others" then
 		 bringc = game:GetService("RunService").RenderStepped:Connect(function()
 			 for i, target in pairs(game:GetService("Players"):GetChildren()) do
-			 if target.Name == game.Players.LocalPlayer.Name then
-			 else
-			 target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 5
+			 	if target.Name == game.Players.LocalPlayer.Name then
+			else
+			 	target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 5
 			 end
-			 end
-			 end)
+			end
+		end)
 	 else
 	 target = getPlr(Username)
 	 
@@ -12470,6 +12475,17 @@ until glueloop == false
  end)
  
  cmd.add({"hydroxide", "hydro"}, {"hydroxide (hydro)", "executes hydroxide"}, function()
+	if IsOnMobile then
+		local owner = "Hosvile"
+		local branch = "revision"
+		
+		local function webImport(file)
+			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
+		end
+		
+		webImport("init")
+		webImport("ui/main")
+	else
 	 local owner = "Upbolt"
  local branch = "revision"
  
@@ -12479,18 +12495,7 @@ until glueloop == false
  
  webImport("init")
  webImport("ui/main")
- end)
-
-cmd.add({"mobilehydroxide", "mhydroxide"}, {"mobilehydroxide (mhydroxide)", "executes hydroxide for mobile"}, function()
-	 local owner = "Hosvile"
-local branch = "revision"
-
-local function webImport(file)
-    return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
 end
-
-webImport("init")
-webImport("ui/main")
  end)
  
  cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy that supports both pc and mobile"}, function()
@@ -12507,7 +12512,7 @@ webImport("ui/main")
 	 Notify({
 	 Description = "Made unanchored parts have no gravity";
 	 Title = "Nameless Admin";
-	 Duration = 5;
+	 Duration = 3;
 	 
  });
  spawn(function()
@@ -12684,7 +12689,7 @@ local PromptButtonHoldBegan = nil
 
 	
 	Notify({
- Description = "Deleted over "..delclass.." part(s) with ClassName of: "..JJ.."";
+ Description = "Deleted over "..delclass.." "..JJ.."(s)";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12725,7 +12730,7 @@ local PromptButtonHoldBegan = nil
 	wait();
 
 	Notify({
- Description = "Deleted over "..charclass.." part(s) inside the character with ClassName of: "..poopy.."";
+ Description = "Deleted over "..charclass.." "..poopy.."(s) inside the character";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12853,6 +12858,7 @@ end)
 	local thecode = cmdtxtbar:sub(indexx + 1)
 local objects = game:GetDescendants()
 local trparts = {}
+local modeprts = {}
 
 local function omg(part)
 	if part:FindFirstChild("NAprtesp") == nil then
@@ -12864,6 +12870,20 @@ local function omg(part)
 		adornment.Transparency = 0.5
 		adornment.Size = part.Size
 		adornment.Color3 = Color3.new(1, 0, 0)
+		adornment.Parent = part
+	end
+end
+
+local function omgmodel(part)
+	if part:FindFirstChild("NAprtesp") == nil then
+		local adornment = Instance.new("BoxHandleAdornment")
+		adornment.Name = "NAprtesp"
+		adornment.Adornee = part
+		adornment.ZIndex = 5
+		adornment.AlwaysOnTop = true
+		adornment.Transparency = 0.5
+		adornment.Size = part.Size
+		adornment.Color3 = Color3.new(0, 0, 1)
 		adornment.Parent = part
 	end
 end
@@ -12880,11 +12900,18 @@ local function pert(obj)
 	end
 end
 
+local function medel(obj)
+	if check(obj) then
+		table.insert(modeprts, obj)
+		omgmodel(obj)
+	end
+end
+
 for _, obj in ipairs(objects) do
 	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == thecode:lower() then
 		local mod = obj:GetDescendants()
 		for _, thej in ipairs(mod) do
-			pert(thej)
+			medel(thej)
 		end
 	elseif obj:IsA("BasePart") and obj.Name:lower() == thecode:lower() then
 		pert(obj)
@@ -12892,7 +12919,15 @@ for _, obj in ipairs(objects) do
 end
 
 iamesp = game.DescendantAdded:Connect(function(hh)
+	if (hh:IsA("Model") or hh:IsA("Folder")) then
+		for _,checkpert in ipairs(hh:GetDescendants()) do
+			if checkpert:IsA("BasePart") then
+				medel(checkpert)
+			end
+		end
+	else
 	pert(hh)
+	end
 end)
  end)
  
@@ -15121,11 +15156,14 @@ end)
  end)
  
  cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
-
+local ownId = "unknown"
+local ownUser = "unknown"
 spawn(function()
 if game.CreatorType == Enum.CreatorType.User then
     Player.UserId = game.CreatorId
     Player.Name = game.CreatorName
+	ownId = game.CreatorId
+	ownUser = game.CreatorName
 end
 end)
 spawn(function()
@@ -15134,21 +15172,24 @@ if game.CreatorType == Enum.CreatorType.Group then
     local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
     local owner = groupInfo.Owner
     Player.Name = owner.Name
-    Player.UserId = game:GetService("GroupService"):GetGroupInfoAsync(game.CreatorId).Owner.Id
+    Player.UserId = owner.Id
+	ownId = owner.Id
+	ownUser = owner.Name
 end
 end)
 spawn(function()
+task.wait(1);
 game.StarterGui:SetCoreGuiEnabled(0, false)
-wait(1);
+wait(3);
 game.StarterGui:SetCoreGuiEnabled(0, true)
 end)
 
-wait();
+wait(.2);
  
  Notify({
- Description = "Set local player id to the owner id";
+ Description = "Your Username & UserId has been set to: (Username: @"..ownUser.." | UserId: "..ownId..")";
  Title = "Nameless Admin";
- Duration = 5;
+ Duration = 4;
  
  });
 
@@ -15671,11 +15712,18 @@ end
 Notify({
  Description = "Welcome to Nameless Admin V"..currentversion.."";
  Title = "Hey "..hh.."";
- Duration = 5;					 
+ Duration = 4;					 
  });
 end)
+
+
+--executes freecam for mobile users
+spawn(function()
+	if IsOnMobile then
+
+	end
+end)
  
- -- never used this lol
  function Destroy(guiObject)
 	 if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
 		 guiObject.Parent = nil
@@ -15688,8 +15736,12 @@ end)
  local ScreenGui = Instance.new("ScreenGui")
  local TextClickButton = Instance.new("TextButton")
  local UICorner = Instance.new("UICorner")
+ local UICorner2 = Instance.new("UICorner")
+ local TextFCButton = Instance.new("ImageButton")
+ local idksomething = Instance.new("BindableEvent")
  
  ScreenGui.Parent = game.CoreGui
+ ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
  ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
  ScreenGui.ResetOnSpawn = true
  
@@ -15704,11 +15756,25 @@ end)
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
+ TextClickButton.ZIndex=1
+
+ TextFCButton.Name = "NamelessFreeCam"
+ TextFCButton.Parent = ScreenGui
+ TextFCButton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
+ TextFCButton.BackgroundTransparency = 1.000
+ TextFCButton.Position = UDim2.new(0.418, 0,0, 0)
+ TextFCButton.Size = UDim2.new(0, 32, 0, 33)
+ TextFCButton.Image = "rbxassetid://6790558611"
+ TextFCButton.ImageColor3 = Color3.new(1,1,1)
+ TextFCButton.ZIndex=0
+
  
  UICorner.CornerRadius = UDim.new(1, 0)
  UICorner.Parent = TextClickButton
+ UICorner2.CornerRadius = UDim.new(1, 0)
+ UICorner2.Parent = TextFCButton
  
- local function PZORYLB_fake_script()
+ local function mainNameless()
 	 local script = Instance.new('LocalScript', TextClickButton)
 	 textclickbutton = script.Parent
 	 textclickbutton.Size = UDim2.new(0, 2,0, 33)
@@ -15720,9 +15786,595 @@ end)
 	 wait(0.4)
 	 textclickbutton.Text = "NA"
 	 textclickbutton.Active = true
- gui.draggable(textclickbutton)
+ 	gui.draggable(textclickbutton)
  end
- coroutine.wrap(PZORYLB_fake_script)()
+ coroutine.wrap(mainNameless)()
+
+ local function RWLEYI_fake_script()
+	local script = Instance.new('LocalScript', TextFCButton)
+
+	uhhfcbtn = script.Parent
+	uhhfcbtn.Visible = false
+	uhhfcbtn.Size = UDim2.new(0, 2,0, 33)
+	uhhfcbtn.BackgroundTransparency = 0.14
+	uhhfcbtn:TweenSize(UDim2.new(0, 251,0, 33), "Out", "Quint",1,true)
+	wait(2)
+	uhhfcbtn.Visible=true
+	uhhfcbtn:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
+	uhhfcbtn:TweenPosition(UDim2.new(0.48909232, 0, 0.06, 0), "Out", "Quint",1,true)
+	wait(0.4)
+	uhhfcbtn.Active = true
+	gui.draggable(uhhfcbtn)
+end
+coroutine.wrap(RWLEYI_fake_script)()
+local function ITYLOBB_fake_script()
+	local script = Instance.new('LocalScript', TextFCButton)
+
+	local pi    = math.pi
+	local abs   = math.abs
+	local clamp = math.clamp
+	local exp   = math.exp
+	local rad   = math.rad
+	local sign  = math.sign
+	local sqrt  = math.sqrt
+	local tan   = math.tan
+	
+	local ContextActionService = game:GetService("ContextActionService")
+	local Players = game:GetService("Players")
+	local RunService = game:GetService("RunService")
+	local StarterGui = game:GetService("StarterGui")
+	local UserInputService = game:GetService("UserInputService")
+	local UIS = game:GetService("UserInputService")
+	local GuiService = game:GetService("GuiService")
+	local Workspace = game:GetService("Workspace")
+	
+	local LocalPlayer = Players.LocalPlayer
+	if not LocalPlayer then
+		Players:GetPropertyChangedSignal("LocalPlayer"):Wait()
+		LocalPlayer = Players.LocalPlayer
+	end
+	
+	local Camera = Workspace.CurrentCamera
+	Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
+		local newCamera = Workspace.CurrentCamera
+		if newCamera then
+			Camera = newCamera
+		end
+	end)
+	
+	local TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value
+	local INPUT_PRIORITY = Enum.ContextActionPriority.High.Value
+	local FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift, Enum.KeyCode.P}
+	
+	local NAV_GAIN = Vector3.new(1, 1, 1)*64
+	local PAN_GAIN = Vector2.new(0.75, 1)*8
+	local FOV_GAIN = 300
+	
+	local PITCH_LIMIT = rad(90)
+	
+	local VEL_STIFFNESS = 1.5
+	local PAN_STIFFNESS = 1.0
+	local FOV_STIFFNESS = 4.0
+	
+	local Spring = {} do
+		Spring.__index = Spring
+	
+		function Spring.new(freq, pos)
+			local self = setmetatable({}, Spring)
+			self.f = freq
+			self.p = pos
+			self.v = pos*0
+			return self
+		end
+	
+		function Spring:Update(dt, goal)
+			local f = self.f*2*pi
+			local p0 = self.p
+			local v0 = self.v
+	
+			local offset = goal - p0
+			local decay = exp(-f*dt)
+	
+			local p1 = goal + (v0*dt - offset*(f*dt + 1))*decay
+			local v1 = (f*dt*(offset*f - v0) + v0)*decay
+	
+			self.p = p1
+			self.v = v1
+	
+			return p1
+		end
+	
+		function Spring:Reset(pos)
+			self.p = pos
+			self.v = pos*0
+		end
+	end
+	
+	local cameraPos = Vector3.new()
+	local cameraRot = Vector2.new()
+	local cameraFov = 0
+	
+	local velSpring = Spring.new(VEL_STIFFNESS, Vector3.new())
+	local panSpring = Spring.new(PAN_STIFFNESS, Vector2.new())
+	local fovSpring = Spring.new(FOV_STIFFNESS, 0)
+	
+	local Input = {} do
+		local thumbstickCurve do
+			local K_CURVATURE = 2.0
+			local K_DEADZONE = 0.15
+	
+			local function fCurve(x)
+				return (exp(K_CURVATURE*x) - 1)/(exp(K_CURVATURE) - 1)
+			end
+	
+			local function fDeadzone(x)
+				return fCurve((x - K_DEADZONE)/(1 - K_DEADZONE))
+			end
+	
+			function thumbstickCurve(x)
+				return sign(x)*clamp(fDeadzone(abs(x)), 0, 1)
+			end
+		end
+	
+		local gamepad = {
+			ButtonX = 0,
+			ButtonY = 0,
+			DPadDown = 0,
+			DPadUp = 0,
+			ButtonL2 = 0,
+			ButtonR2 = 0,
+			Thumbstick1 = Vector2.new(),
+			Thumbstick2 = Vector2.new(),
+		}
+	
+		local keyboard = {
+			W = 0,
+			A = 0,
+			S = 0,
+			D = 0,
+			E = 0,
+			Q = 0,
+			U = 0,
+			H = 0,
+			J = 0,
+			K = 0,
+			I = 0,
+			Y = 0,
+			Up = 0,
+			Down = 0,
+			LeftShift = 0,
+			RightShift = 0,
+		}
+	
+		script.Parent.MobileControls.Movement.forward.TextButton.MouseButton1Down:Connect(function()
+			keyboard["W"] = 1
+		end)
+		script.Parent.MobileControls.Movement.forward.TextButton.MouseLeave:Connect(function()
+			keyboard["W"] = 0
+		end)
+	
+		script.Parent.MobileControls.Movement.back.TextButton.MouseButton1Down:Connect(function()
+			keyboard["S"] = 1
+		end)
+		script.Parent.MobileControls.Movement.back.TextButton.MouseLeave:Connect(function()
+			keyboard["S"] = 0
+		end)
+	
+		script.Parent.MobileControls.Movement.right.TextButton.MouseButton1Down:Connect(function()
+			keyboard["D"] = 1
+		end)
+		script.Parent.MobileControls.Movement.right.TextButton.MouseLeave:Connect(function()
+			keyboard["D"] = 0
+		end)
+	
+		script.Parent.MobileControls.Movement.left.TextButton.MouseButton1Down:Connect(function()
+			keyboard["A"] = 1
+		end)
+		script.Parent.MobileControls.Movement.left.TextButton.MouseLeave:Connect(function()
+			keyboard["A"] = 0
+		end)
+	
+		local mouse = {
+			Delta = Vector2.new(),
+			MouseWheel = 0,
+		}
+	
+		local zoomingOut = false
+		local zoomingIn = false
+		script.Parent.MobileControls.zoomIn.TextButton.MouseButton1Down:Connect(function()
+			zoomingIn = true
+			while zoomingIn do
+				wait()
+				mouse.MouseWheel -= 0.5
+			end
+		end)
+		script.Parent.MobileControls.zoomIn.TextButton.MouseLeave:Connect(function()
+			zoomingIn = false
+		end)
+	
+		script.Parent.MobileControls.zoomOut.TextButton.MouseButton1Down:Connect(function()
+			zoomingOut = true
+			while zoomingOut do
+				wait()
+				mouse.MouseWheel += 0.5
+			end
+		end)
+		script.Parent.MobileControls.zoomOut.TextButton.MouseLeave:Connect(function()
+			zoomingOut = false
+		end)
+	
+		local NAV_GAMEPAD_SPEED  = Vector3.new(1, 1, 1)
+		local NAV_KEYBOARD_SPEED = Vector3.new(1, 1, 1)
+		local PAN_MOUSE_SPEED    = Vector2.new(1, 1)*(pi/64)
+		local PAN_GAMEPAD_SPEED  = Vector2.new(1, 1)*(pi/8)
+		local FOV_WHEEL_SPEED    = 1.0
+		local FOV_GAMEPAD_SPEED  = 0.25
+		local NAV_ADJ_SPEED      = 0.75
+		local NAV_SHIFT_MUL      = 0.25
+	
+		local navSpeed = 1
+	
+		function Input.Vel(dt)
+			navSpeed = clamp(navSpeed + dt*(keyboard.Up - keyboard.Down)*NAV_ADJ_SPEED, 0.01, 4)
+	
+			local kGamepad = Vector3.new(
+				thumbstickCurve(gamepad.Thumbstick1.X),
+				thumbstickCurve(gamepad.ButtonR2) - thumbstickCurve(gamepad.ButtonL2),
+				thumbstickCurve(-gamepad.Thumbstick1.Y)
+			)*NAV_GAMEPAD_SPEED
+	
+			local kKeyboard = Vector3.new(
+				keyboard.D - keyboard.A + keyboard.K - keyboard.H,
+				keyboard.E - keyboard.Q + keyboard.I - keyboard.Y,
+				keyboard.S - keyboard.W + keyboard.J - keyboard.U
+			)*NAV_KEYBOARD_SPEED
+	
+			local shift = UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) or UserInputService:IsKeyDown(Enum.KeyCode.RightShift)
+	
+			return (kGamepad + kKeyboard)*(navSpeed*(shift and NAV_SHIFT_MUL or 1))
+		end
+	
+		function Input.Pan(dt)
+			if UIS.TouchEnabled and not UIS.KeyboardEnabled and not UIS.MouseEnabled
+				and not UIS.GamepadEnabled and not GuiService:IsTenFootInterface() then
+				local x = -UserInputService:GetMouseDelta().X
+				local y = -UserInputService:GetMouseDelta().Y
+				local delta = Vector2.new(y, x)
+				mouse.Delta = delta
+			end
+			local kGamepad = Vector2.new(
+				thumbstickCurve(gamepad.Thumbstick2.Y),
+				thumbstickCurve(-gamepad.Thumbstick2.X)
+			)*PAN_GAMEPAD_SPEED
+			local kMouse = mouse.Delta*PAN_MOUSE_SPEED
+			mouse.Delta = Vector2.new()
+			return kGamepad + kMouse
+		end
+	
+		function Input.Fov(dt)
+			local kGamepad = (gamepad.ButtonX - gamepad.ButtonY)*FOV_GAMEPAD_SPEED
+			local kMouse = mouse.MouseWheel*FOV_WHEEL_SPEED
+			mouse.MouseWheel = 0
+			return kGamepad + kMouse
+		end
+	
+		do
+			local function Keypress(action, state, input)
+				keyboard[input.KeyCode.Name] = state == Enum.UserInputState.Begin and 1 or 0
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function GpButton(action, state, input)
+				gamepad[input.KeyCode.Name] = state == Enum.UserInputState.Begin and 1 or 0
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function MousePan(action, state, input)
+				local delta = input.Delta
+				mouse.Delta = Vector2.new(-delta.y, -delta.x)
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function Thumb(action, state, input)
+				gamepad[input.KeyCode.Name] = input.Position
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function Trigger(action, state, input)
+				gamepad[input.KeyCode.Name] = input.Position.z
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function MouseWheel(action, state, input)
+				mouse[input.UserInputType.Name] = -input.Position.z
+				return Enum.ContextActionResult.Sink
+			end
+	
+			local function Zero(t)
+				for k, v in pairs(t) do
+					t[k] = v*0
+				end
+			end
+	
+			function Input.StartCapture()
+				ContextActionService:BindActionAtPriority("FreecamKeyboard", Keypress, false, INPUT_PRIORITY,
+					Enum.KeyCode.W, Enum.KeyCode.U,
+					Enum.KeyCode.A, Enum.KeyCode.H,
+					Enum.KeyCode.S, Enum.KeyCode.J,
+					Enum.KeyCode.D, Enum.KeyCode.K,
+					Enum.KeyCode.E, Enum.KeyCode.I,
+					Enum.KeyCode.Q, Enum.KeyCode.Y,
+					Enum.KeyCode.Up, Enum.KeyCode.Down
+				)
+				ContextActionService:BindActionAtPriority("FreecamMousePan",          MousePan,   false, INPUT_PRIORITY, Enum.UserInputType.MouseMovement)
+				ContextActionService:BindActionAtPriority("FreecamMouseWheel",        MouseWheel, false, INPUT_PRIORITY, Enum.UserInputType.MouseWheel)
+				ContextActionService:BindActionAtPriority("FreecamGamepadButton",     GpButton,   false, INPUT_PRIORITY, Enum.KeyCode.ButtonX, Enum.KeyCode.ButtonY)
+				ContextActionService:BindActionAtPriority("FreecamGamepadTrigger",    Trigger,    false, INPUT_PRIORITY, Enum.KeyCode.ButtonR2, Enum.KeyCode.ButtonL2)
+				ContextActionService:BindActionAtPriority("FreecamGamepadThumbstick", Thumb,      false, INPUT_PRIORITY, Enum.KeyCode.Thumbstick1, Enum.KeyCode.Thumbstick2)
+			end
+	
+			function Input.StopCapture()
+				navSpeed = 1
+				Zero(gamepad)
+				Zero(keyboard)
+				Zero(mouse)
+				ContextActionService:UnbindAction("FreecamKeyboard")
+				ContextActionService:UnbindAction("FreecamMousePan")
+				ContextActionService:UnbindAction("FreecamMouseWheel")
+				ContextActionService:UnbindAction("FreecamGamepadButton")
+				ContextActionService:UnbindAction("FreecamGamepadTrigger")
+				ContextActionService:UnbindAction("FreecamGamepadThumbstick")
+			end
+		end
+	end
+	
+	local function GetFocusDistance(cameraFrame)
+		local znear = 0.1
+		local viewport = Camera.ViewportSize
+		local projy = 2*tan(cameraFov/2)
+		local projx = viewport.x/viewport.y*projy
+		local fx = cameraFrame.rightVector
+		local fy = cameraFrame.upVector
+		local fz = cameraFrame.lookVector
+	
+		local minVect = Vector3.new()
+		local minDist = 512
+	
+		for x = 0, 1, 0.5 do
+			for y = 0, 1, 0.5 do
+				local cx = (x - 0.5)*projx
+				local cy = (y - 0.5)*projy
+				local offset = fx*cx - fy*cy + fz
+				local origin = cameraFrame.p + offset*znear
+				local _, hit = Workspace:FindPartOnRay(Ray.new(origin, offset.unit*minDist))
+				local dist = (hit - origin).magnitude
+				if minDist > dist then
+					minDist = dist
+					minVect = offset.unit
+				end
+			end
+		end
+	
+		return fz:Dot(minVect)*minDist
+	end
+	
+	------------------------------------------------------------------------
+	
+	local function StepFreecam(dt)
+		local vel = velSpring:Update(dt, Input.Vel(dt))
+		local pan = panSpring:Update(dt, Input.Pan(dt))
+		local fov = fovSpring:Update(dt, Input.Fov(dt))
+	
+		local zoomFactor = sqrt(tan(rad(70/2))/tan(rad(cameraFov/2)))
+	
+		cameraFov = clamp(cameraFov + fov*FOV_GAIN*(dt/zoomFactor), 1, 120)
+		cameraRot = cameraRot + pan*PAN_GAIN*(dt/zoomFactor)
+		cameraRot = Vector2.new(clamp(cameraRot.x, -PITCH_LIMIT, PITCH_LIMIT), cameraRot.y%(2*pi))
+	
+		local cameraCFrame = CFrame.new(cameraPos)*CFrame.fromOrientation(cameraRot.x, cameraRot.y, 0)*CFrame.new(vel*NAV_GAIN*dt)
+		cameraPos = cameraCFrame.p
+	
+		Camera.CFrame = cameraCFrame
+		Camera.Focus = cameraCFrame*CFrame.new(0, 0, -GetFocusDistance(cameraCFrame))
+		Camera.FieldOfView = cameraFov
+	end
+	
+	------------------------------------------------------------------------
+	
+	local PlayerState = {} do
+		local mouseBehavior
+		local mouseIconEnabled
+		local cameraType
+		local cameraFocus
+		local cameraCFrame
+		local cameraFieldOfView
+		local screenGuis = {}
+		local coreGuis = {
+			Backpack = true,
+			Chat = true,
+			Health = true,
+			PlayerList = true,
+		}
+		local setCores = {
+			BadgesNotificationsActive = true,
+			PointsNotificationsActive = true,
+		}
+	
+		function PlayerState.Push()
+			for name in pairs(coreGuis) do
+				coreGuis[name] = StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType[name])
+				StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], false)
+			end
+			for name in pairs(setCores) do
+				setCores[name] = StarterGui:GetCore(name)
+				StarterGui:SetCore(name, false)
+			end
+			local playergui = LocalPlayer:FindFirstChildOfClass("PlayerGui")
+			if playergui then
+				for _, gui in pairs(playergui:GetChildren()) do
+					if gui:IsA("ScreenGui") and gui.Enabled then
+						if gui.Name ~= "MobileFreecam" then
+							if gui.Name ~= "TopbarPlus" then
+								screenGuis[#screenGuis + 1] = gui
+								gui.Enabled = false
+							end
+						end
+					end
+				end
+			end
+	
+			cameraFieldOfView = Camera.FieldOfView
+			Camera.FieldOfView = 70
+	
+			cameraType = Camera.CameraType
+			Camera.CameraType = Enum.CameraType.Custom
+	
+			cameraCFrame = Camera.CFrame
+			cameraFocus = Camera.Focus
+	
+			mouseIconEnabled = UserInputService.MouseIconEnabled
+			UserInputService.MouseIconEnabled = false
+	
+			mouseBehavior = UserInputService.MouseBehavior
+			UserInputService.MouseBehavior = Enum.MouseBehavior.Default
+		end
+	
+		function PlayerState.Pop()
+			for name, isEnabled in pairs(coreGuis) do
+				StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType[name], isEnabled)
+			end
+			for name, isEnabled in pairs(setCores) do
+				StarterGui:SetCore(name, isEnabled)
+			end
+			for _, gui in pairs(screenGuis) do
+				if gui.Parent then
+					gui.Enabled = true
+				end
+			end
+	
+			Camera.FieldOfView = cameraFieldOfView
+			cameraFieldOfView = nil
+	
+			Camera.CameraType = cameraType
+			cameraType = nil
+	
+			Camera.CFrame = cameraCFrame
+			cameraCFrame = nil
+	
+			Camera.Focus = cameraFocus
+			cameraFocus = nil
+	
+			UserInputService.MouseIconEnabled = mouseIconEnabled
+			mouseIconEnabled = nil
+	
+			UserInputService.MouseBehavior = mouseBehavior
+			mouseBehavior = nil
+		end
+	end
+	
+	local function StartFreecam()
+		local cameraCFrame = Camera.CFrame
+		cameraRot = Vector2.new(cameraCFrame:toEulerAnglesYXZ())
+		cameraPos = cameraCFrame.p
+		cameraFov = Camera.FieldOfView
+	
+		velSpring:Reset(Vector3.new())
+		panSpring:Reset(Vector2.new())
+		fovSpring:Reset(0)
+	
+		PlayerState.Push()
+		RunService:BindToRenderStep("Freecam", Enum.RenderPriority.Camera.Value, StepFreecam)
+		Input.StartCapture()
+	end
+	
+	local function StopFreecam()
+		Input.StopCapture()
+		RunService:UnbindFromRenderStep("Freecam")
+		PlayerState.Pop()
+	end
+	
+	do
+		local enabled = false
+	
+		local function ToggleFreecam()
+			if enabled then
+				StopFreecam()
+			else
+				StartFreecam()
+			end
+			enabled = not enabled
+		end
+	
+		local function CheckMacro(macro)
+			for i = 1, #macro - 1 do
+				if not UserInputService:IsKeyDown(macro[i]) then
+					return
+				end
+			end
+			ToggleFreecam()
+		end
+	
+		local function HandleActivationInput(action, state, input)
+			if state == Enum.UserInputState.Begin then
+				if input.KeyCode == FREECAM_MACRO_KB[#FREECAM_MACRO_KB] then
+					CheckMacro(FREECAM_MACRO_KB)
+				end
+			end
+			return Enum.ContextActionResult.Pass
+		end
+	
+		ContextActionService:BindActionAtPriority("FreecamToggle", HandleActivationInput, false, TOGGLE_INPUT_PRIORITY, FREECAM_MACRO_KB[#FREECAM_MACRO_KB])
+	
+		local PlayerModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"))
+		local Controls = PlayerModule:GetControls()
+		local hidden = false
+	
+		script.Parent:WaitForChild("Toggle").Event:Connect(function(state)
+			enabled = not state
+			if enabled then
+				Controls:Enable()
+				script.Parent.hidecontrols.Visible = false
+				script.Parent.MobileControls.Visible = false
+			else
+				hidden = false
+				script.Parent.hidecontrols.Visible = true
+				script.Parent.hidecontrols.shown.Visible = true
+				script.Parent.hidecontrols.hidden.Visible = false
+				script.Parent.MobileControls.Visible = true
+				Controls:Disable()
+			end
+			ToggleFreecam()
+		end)
+	
+		script.Parent.hidecontrols.TextButton.MouseButton1Click:Connect(function()
+			if hidden then
+				hidden = false
+				script.Parent.hidecontrols.shown.Visible = true
+				script.Parent.hidecontrols.hidden.Visible = false
+				script.Parent.MobileControls.Visible = true
+			else
+				hidden = true
+				script.Parent.hidecontrols.shown.Visible = false
+				script.Parent.hidecontrols.hidden.Visible = true
+				script.Parent.MobileControls.Visible = false
+			end
+		end)
+	end
+end
+coroutine.wrap(ITYLOBB_fake_script)()
+local function XYQB_fake_script()
+	local script = Instance.new('LocalScript', TextFCButton)
+
+	local yes = false
+	script.Parent.MouseButton1Click:Connect(function()
+		if not yes then
+			script.Parent.Toggle:Fire(true)
+		else
+			script.Parent.Toggle:Fire(false)
+		end
+	end)
+end
+coroutine.wrap(XYQB_fake_script)()
  
  TextClickButton.MouseButton1Click:Connect(function()
 	 gui.barSelect()
