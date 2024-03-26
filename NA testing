@@ -16082,7 +16082,7 @@ local function EYIE_fake_script()
 	wait(2)
 	uhhfcbtn.Visible=true
 	uhhfcbtn:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
-	uhhfcbtn:TweenPosition(UDim2.new(0.48909232, 0, 0.06, 0), "Out", "Quint",1,true)
+	uhhfcbtn:TweenPosition(UDim2.new(0.48909232, 0, 0.08, 0), "Out", "Quint",1,true)
 	wait(0.4)
 	uhhfcbtn.Active = true
 	gui.draggable(uhhfcbtn)
