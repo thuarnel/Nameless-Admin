@@ -10593,10 +10593,14 @@ until glueloop == false
  cmd.add({"unairwalk", "unaw", "unfloat"}, {"unairwalk (unaw, unfloat)", "Stops the airwalk command"}, function()
 	 for i, v in pairs(workspace:GetChildren()) do
 		 if v.Name == "NAAirwalk" then
-			awdetect:Disconnect()
-			isAirWalk = false
 			v:Destroy()
- wait();
+	 end
+ end
+
+awdetect:Disconnect()
+isAirWalk = false
+
+wait();
  
  Notify({
  Description = "Airwalk: OFF";
@@ -10604,9 +10608,7 @@ until glueloop == false
  Duration = 5;
  
  });
-	 end
- end
- 
+
  end)
 
  
