@@ -1,123 +1,43 @@
-gui.draggable = function(ui, dragui)
-    if not dragui then dragui = ui end
-    local UserInputService = game:GetService("UserInputService")
-    
-    local dragging
-    local dragInput
-    local dragStart
-    local startPos
-    
-    local function update(input)
-        local delta = input.Position - dragStart
-        ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-    end
-    
-    dragui.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-            dragging = true
-            dragStart = input.Position
-            startPos = ui.Position
-            
-            input.Changed:Connect(function()
-                if input.UserInputState == Enum.UserInputState.End then
-                    dragging = false
-                end
-            end)
-        end
-    end)
-    
-    dragui.InputChanged:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-            dragInput = input
-        end
-    end)
-    
-    UserInputService.InputChanged:Connect(function(input)
-        if input == dragInput and dragging then
-            update(input)
-        end
-    end)
-end
-
-local NamelessFreeCam = Instance.new("ScreenGui")
-local hidecontrols = Instance.new("Frame")
-local shown = Instance.new("ImageLabel")
-local hidden = Instance.new("ImageLabel")
-local TextButton = Instance.new("TextButton")
+local ScreenGui = Instance.new("ScreenGui")
 local MobileControls = Instance.new("Frame")
 local Movement = Instance.new("Frame")
 local forward = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
 local TextLabel = Instance.new("TextLabel")
-local TextButton_2 = Instance.new("TextButton")
+local TextButton = Instance.new("TextButton")
 local right = Instance.new("Frame")
 local UICorner_2 = Instance.new("UICorner")
 local TextLabel_2 = Instance.new("TextLabel")
-local TextButton_3 = Instance.new("TextButton")
+local TextButton_2 = Instance.new("TextButton")
 local left = Instance.new("Frame")
 local UICorner_3 = Instance.new("UICorner")
 local TextLabel_3 = Instance.new("TextLabel")
-local TextButton_4 = Instance.new("TextButton")
+local TextButton_3 = Instance.new("TextButton")
 local back = Instance.new("Frame")
 local UICorner_4 = Instance.new("UICorner")
 local TextLabel_4 = Instance.new("TextLabel")
-local TextButton_5 = Instance.new("TextButton")
+local TextButton_4 = Instance.new("TextButton")
 local zoomIn = Instance.new("Frame")
 local UICorner_5 = Instance.new("UICorner")
 local TextLabel_5 = Instance.new("TextLabel")
-local TextButton_6 = Instance.new("TextButton")
+local TextButton_5 = Instance.new("TextButton")
 local zoomOut = Instance.new("Frame")
 local UICorner_6 = Instance.new("UICorner")
 local TextLabel_6 = Instance.new("TextLabel")
+local TextButton_6 = Instance.new("TextButton")
+local hidecontrols = Instance.new("Frame")
+local shown = Instance.new("ImageLabel")
+local hidden = Instance.new("ImageLabel")
 local TextButton_7 = Instance.new("TextButton")
-local NamelessFreeCam_2 = Instance.new("ImageButton")
+local FCbutton = Instance.new("ImageButton")
 local UICorner_7 = Instance.new("UICorner")
-local thetoggle = Instance.new("BindableEvent")
 
-NamelessFreeCam.Name = "NamelessFreeCam"
-NamelessFreeCam.Parent = game.CoreGui
-NamelessFreeCam.ResetOnSpawn = false
-
-thetoggle=NamelessFreeCam
-
-hidecontrols.Name = "hidecontrols"
-hidecontrols.Parent = NamelessFreeCam
-hidecontrols.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-hidecontrols.BackgroundTransparency = 1.000
-hidecontrols.Position = UDim2.new(1, -35, 1, -28)
-hidecontrols.Size = UDim2.new(0, 28, 0, 28)
-hidecontrols.Visible = false
-
-shown.Name = "shown"
-shown.Parent = hidecontrols
-shown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-shown.BackgroundTransparency = 1.000
-shown.Size = UDim2.new(1, 0, 1, 0)
-shown.Image = "rbxassetid://6523858394"
-shown.ImageColor3 = Color3.fromRGB(0, 0, 0)
-shown.ImageTransparency = 0.800
-
-hidden.Name = "hidden"
-hidden.Parent = hidecontrols
-hidden.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-hidden.BackgroundTransparency = 1.000
-hidden.Size = UDim2.new(1, 0, 0.839999974, 0)
-hidden.Visible = false
-hidden.Image = "rbxassetid://6255654429"
-hidden.ImageColor3 = Color3.fromRGB(0, 0, 0)
-hidden.ImageTransparency = 0.800
-
-TextButton.Parent = hidecontrols
-TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton.BackgroundTransparency = 1.000
-TextButton.Size = UDim2.new(1, 0, 1, 0)
-TextButton.Font = Enum.Font.SourceSans
-TextButton.Text = ""
-TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton.TextSize = 14.000
+ScreenGui.Parent = game.CoreGui
+ScreenGui.Name="NamelessFC"
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 MobileControls.Name = "MobileControls"
-MobileControls.Parent = NamelessFreeCam
+MobileControls.Parent = ScreenGui
 MobileControls.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 MobileControls.BackgroundTransparency = 1.000
 MobileControls.Size = UDim2.new(1, 0, 1, 0)
@@ -154,14 +74,14 @@ TextLabel.TextSize = 14.000
 TextLabel.TextStrokeTransparency = 0.800
 TextLabel.TextWrapped = true
 
-TextButton_2.Parent = forward
-TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton_2.BackgroundTransparency = 1.000
-TextButton_2.Size = UDim2.new(1, 0, 1, 0)
-TextButton_2.Font = Enum.Font.SourceSans
-TextButton_2.Text = ""
-TextButton_2.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton_2.TextSize = 14.000
+TextButton.Parent = forward
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.BackgroundTransparency = 1.000
+TextButton.Size = UDim2.new(1, 0, 1, 0)
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Text = ""
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextSize = 14.000
 
 right.Name = "right"
 right.Parent = Movement
@@ -187,14 +107,14 @@ TextLabel_2.TextSize = 14.000
 TextLabel_2.TextStrokeTransparency = 0.800
 TextLabel_2.TextWrapped = true
 
-TextButton_3.Parent = right
-TextButton_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton_3.BackgroundTransparency = 1.000
-TextButton_3.Size = UDim2.new(1, 0, 1, 0)
-TextButton_3.Font = Enum.Font.SourceSans
-TextButton_3.Text = ""
-TextButton_3.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton_3.TextSize = 14.000
+TextButton_2.Parent = right
+TextButton_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_2.BackgroundTransparency = 1.000
+TextButton_2.Size = UDim2.new(1, 0, 1, 0)
+TextButton_2.Font = Enum.Font.SourceSans
+TextButton_2.Text = ""
+TextButton_2.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_2.TextSize = 14.000
 
 left.Name = "left"
 left.Parent = Movement
@@ -219,14 +139,14 @@ TextLabel_3.TextSize = 14.000
 TextLabel_3.TextStrokeTransparency = 0.800
 TextLabel_3.TextWrapped = true
 
-TextButton_4.Parent = left
-TextButton_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton_4.BackgroundTransparency = 1.000
-TextButton_4.Size = UDim2.new(1, 0, 1, 0)
-TextButton_4.Font = Enum.Font.SourceSans
-TextButton_4.Text = ""
-TextButton_4.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton_4.TextSize = 14.000
+TextButton_3.Parent = left
+TextButton_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_3.BackgroundTransparency = 1.000
+TextButton_3.Size = UDim2.new(1, 0, 1, 0)
+TextButton_3.Font = Enum.Font.SourceSans
+TextButton_3.Text = ""
+TextButton_3.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_3.TextSize = 14.000
 
 back.Name = "back"
 back.Parent = Movement
@@ -252,14 +172,14 @@ TextLabel_4.TextSize = 14.000
 TextLabel_4.TextStrokeTransparency = 0.800
 TextLabel_4.TextWrapped = true
 
-TextButton_5.Parent = back
-TextButton_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton_5.BackgroundTransparency = 1.000
-TextButton_5.Size = UDim2.new(1, 0, 1, 0)
-TextButton_5.Font = Enum.Font.SourceSans
-TextButton_5.Text = ""
-TextButton_5.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton_5.TextSize = 14.000
+TextButton_4.Parent = back
+TextButton_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_4.BackgroundTransparency = 1.000
+TextButton_4.Size = UDim2.new(1, 0, 1, 0)
+TextButton_4.Font = Enum.Font.SourceSans
+TextButton_4.Text = ""
+TextButton_4.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_4.TextSize = 14.000
 
 zoomIn.Name = "zoomIn"
 zoomIn.Parent = MobileControls
@@ -284,14 +204,14 @@ TextLabel_5.TextSize = 14.000
 TextLabel_5.TextStrokeTransparency = 0.800
 TextLabel_5.TextWrapped = true
 
-TextButton_6.Parent = zoomIn
-TextButton_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-TextButton_6.BackgroundTransparency = 1.000
-TextButton_6.Size = UDim2.new(1, 0, 1, 0)
-TextButton_6.Font = Enum.Font.SourceSans
-TextButton_6.Text = ""
-TextButton_6.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton_6.TextSize = 14.000
+TextButton_5.Parent = zoomIn
+TextButton_5.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_5.BackgroundTransparency = 1.000
+TextButton_5.Size = UDim2.new(1, 0, 1, 0)
+TextButton_5.Font = Enum.Font.SourceSans
+TextButton_5.Text = ""
+TextButton_5.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_5.TextSize = 14.000
 
 zoomOut.Name = "zoomOut"
 zoomOut.Parent = MobileControls
@@ -316,7 +236,43 @@ TextLabel_6.TextSize = 14.000
 TextLabel_6.TextStrokeTransparency = 0.800
 TextLabel_6.TextWrapped = true
 
-TextButton_7.Parent = zoomOut
+TextButton_6.Parent = zoomOut
+TextButton_6.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton_6.BackgroundTransparency = 1.000
+TextButton_6.Size = UDim2.new(1, 0, 1, 0)
+TextButton_6.Font = Enum.Font.SourceSans
+TextButton_6.Text = ""
+TextButton_6.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton_6.TextSize = 14.000
+
+hidecontrols.Name = "hidecontrols"
+hidecontrols.Parent = ScreenGui
+hidecontrols.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+hidecontrols.BackgroundTransparency = 1.000
+hidecontrols.Position = UDim2.new(1, -35, 1, -28)
+hidecontrols.Size = UDim2.new(0, 28, 0, 28)
+hidecontrols.Visible = false
+
+shown.Name = "shown"
+shown.Parent = hidecontrols
+shown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+shown.BackgroundTransparency = 1.000
+shown.Size = UDim2.new(1, 0, 1, 0)
+shown.Image = "rbxassetid://6523858394"
+shown.ImageColor3 = Color3.fromRGB(0, 0, 0)
+shown.ImageTransparency = 0.800
+
+hidden.Name = "hidden"
+hidden.Parent = hidecontrols
+hidden.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+hidden.BackgroundTransparency = 1.000
+hidden.Size = UDim2.new(1, 0, 0.839999974, 0)
+hidden.Visible = false
+hidden.Image = "rbxassetid://6255654429"
+hidden.ImageColor3 = Color3.fromRGB(0, 0, 0)
+hidden.ImageTransparency = 0.800
+
+TextButton_7.Parent = hidecontrols
 TextButton_7.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TextButton_7.BackgroundTransparency = 1.000
 TextButton_7.Size = UDim2.new(1, 0, 1, 0)
@@ -325,39 +281,21 @@ TextButton_7.Text = ""
 TextButton_7.TextColor3 = Color3.fromRGB(0, 0, 0)
 TextButton_7.TextSize = 14.000
 
-NamelessFreeCam_2.Name = "NamelessFreeCam"
-NamelessFreeCam_2.Parent = NamelessFreeCam
-NamelessFreeCam_2.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
-NamelessFreeCam_2.BackgroundTransparency = 0.140
-NamelessFreeCam_2.Position = UDim2.new(0.48909232, 0, 0.0599999987, 0)
-NamelessFreeCam_2.Size = UDim2.new(0, 32, 0, 33)
-NamelessFreeCam_2.ZIndex = 0
-NamelessFreeCam_2.Image = "rbxassetid://6790558611"
+FCbutton.Name = "FCbutton"
+FCbutton.Parent = ScreenGui
+FCbutton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
+FCbutton.BackgroundTransparency = 0.140
+FCbutton.Position = UDim2.new(0.48909232, 0, 0, 0)
+FCbutton.Size = UDim2.new(0, 32, 0, 33)
+FCbutton.Image = "rbxassetid://6790558611"
 
 UICorner_7.CornerRadius = UDim.new(1, 0)
-UICorner_7.Parent = NamelessFreeCam_2
+UICorner_7.Parent = FCbutton
 
 -- Scripts:
 
-local function ZQEQYF_fake_script() -- NamelessFreeCam_2.LocalScript 
-	local script = Instance.new('LocalScript', NamelessFreeCam_2)
-
-	uhhfcbtn = script.Parent
-	uhhfcbtn.Visible = false
-	uhhfcbtn.Size = UDim2.new(0, 2,0, 33)
-	uhhfcbtn.BackgroundTransparency = 0.14
-	uhhfcbtn:TweenSize(UDim2.new(0, 251,0, 33), "Out", "Quint",1,true)
-	wait(2)
-	uhhfcbtn.Visible=true
-	uhhfcbtn:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
-	uhhfcbtn:TweenPosition(UDim2.new(0.48909232, 0, 0.06, 0), "Out", "Quint",1,true)
-	wait(0.4)
-	uhhfcbtn.Active = true
-	gui.draggable(uhhfcbtn)
-end
-coroutine.wrap(ZQEQYF_fake_script)()
-local function FXQSVRE_fake_script()
-	local script = Instance.new('LocalScript', NamelessFreeCam_2)
+local function VVCQ_fake_script() -- ScreenGui.FreecamScript 
+	local script = Instance.new('LocalScript', ScreenGui)
 
 	local pi    = math.pi
 	local abs   = math.abs
@@ -367,6 +305,8 @@ local function FXQSVRE_fake_script()
 	local sign  = math.sign
 	local sqrt  = math.sqrt
 	local tan   = math.tan
+	local thetoggle=Instance.new("BindableEvent", script.Parent)
+	thetoggle.Name="Toggle"
 	
 	local ContextActionService = game:GetService("ContextActionService")
 	local Players = game:GetService("Players")
@@ -391,6 +331,8 @@ local function FXQSVRE_fake_script()
 		end
 	end)
 	
+	
+	
 	local TOGGLE_INPUT_PRIORITY = Enum.ContextActionPriority.Low.Value
 	local INPUT_PRIORITY = Enum.ContextActionPriority.High.Value
 	local FREECAM_MACRO_KB = {Enum.KeyCode.LeftShift, Enum.KeyCode.P}
@@ -404,6 +346,8 @@ local function FXQSVRE_fake_script()
 	local VEL_STIFFNESS = 1.5
 	local PAN_STIFFNESS = 1.0
 	local FOV_STIFFNESS = 4.0
+	
+	
 	
 	local Spring = {} do
 		Spring.__index = Spring
@@ -439,6 +383,8 @@ local function FXQSVRE_fake_script()
 		end
 	end
 	
+	
+	
 	local cameraPos = Vector3.new()
 	local cameraRot = Vector2.new()
 	local cameraFov = 0
@@ -446,6 +392,8 @@ local function FXQSVRE_fake_script()
 	local velSpring = Spring.new(VEL_STIFFNESS, Vector3.new())
 	local panSpring = Spring.new(PAN_STIFFNESS, Vector2.new())
 	local fovSpring = Spring.new(FOV_STIFFNESS, 0)
+	
+	
 	
 	local Input = {} do
 		local thumbstickCurve do
@@ -707,7 +655,7 @@ local function FXQSVRE_fake_script()
 		return fz:Dot(minVect)*minDist
 	end
 	
-	------------------------------------------------------------------------
+	
 	
 	local function StepFreecam(dt)
 		local vel = velSpring:Update(dt, Input.Vel(dt))
@@ -728,7 +676,7 @@ local function FXQSVRE_fake_script()
 		Camera.FieldOfView = cameraFov
 	end
 	
-	------------------------------------------------------------------------
+	
 	
 	local PlayerState = {} do
 		local mouseBehavior
@@ -762,11 +710,9 @@ local function FXQSVRE_fake_script()
 			if playergui then
 				for _, gui in pairs(playergui:GetChildren()) do
 					if gui:IsA("ScreenGui") and gui.Enabled then
-						if gui.Name ~= "MobileFreecam" then
-							if gui.Name ~= "TopbarPlus" then
-								screenGuis[#screenGuis + 1] = gui
-								gui.Enabled = false
-							end
+						if gui.Name ~= script.Parent.Name then
+							screenGuis[#screenGuis + 1] = gui
+							gui.Enabled = false
 						end
 					end
 				end
@@ -842,6 +788,8 @@ local function FXQSVRE_fake_script()
 		PlayerState.Pop()
 	end
 	
+	
+	
 	do
 		local enabled = false
 	
@@ -910,17 +858,37 @@ local function FXQSVRE_fake_script()
 		end)
 	end
 end
-coroutine.wrap(FXQSVRE_fake_script)()
-local function RZTWMF_fake_script() -- NamelessFreeCam_2.tglFC 
-	local script = Instance.new('LocalScript', NamelessFreeCam_2)
+coroutine.wrap(VVCQ_fake_script)()
+local function IQCEZD_fake_script() -- FCbutton.uiappear 
+	local script = Instance.new('LocalScript', FCbutton)
 
-	local yes = false
+	namelessFC = script.Parent
+	namelessFC.Size = UDim2.new(0, 2,0, 33)
+	namelessFC.BackgroundTransparency = 0.14
+	namelessFC:TweenSize(UDim2.new(0, 251,0, 33), "Out", "Quint",1,true)
+	namelessFC.Visible=false
+	wait(2)
+	namelessFC:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
+	delay(1, function()
+		namelessFC.Visible=true
+		namelessFC:TweenPosition(UDim2.new(0.48909232, 0, 0.07, 0), "Out", "Quint",1,true)
+	end)
+	wait(0.4)
+	gui.draggable(namelessFC)
+end
+coroutine.wrap(IQCEZD_fake_script)()
+local function QHPZFU_fake_script() -- FCbutton.toggles 
+	local script = Instance.new('LocalScript', FCbutton)
+
+	no = false
 	script.Parent.MouseButton1Click:Connect(function()
-		if not yes then
-			script.Parent.Toggle:Fire(true)
+		if not no then
+			no = not no
+			script.Parent.Parent:WaitForChild("Toggle"):Fire(true)
 		else
-			script.Parent.Toggle:Fire(false)
+			no = not no
+			script.Parent.Parent:WaitForChild("Toggle"):Fire(false)
 		end
 	end)
 end
-coroutine.wrap(RZTWMF_fake_script)()
+coroutine.wrap(QHPZFU_fake_script)()
