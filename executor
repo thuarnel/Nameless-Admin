@@ -24,7 +24,7 @@ local UIAspectRatioConstraint_6 = Instance.new("UIAspectRatioConstraint")
 local Clear = Instance.new("TextButton")
 local UICorner_6 = Instance.new("UICorner")
 local UIAspectRatioConstraint_7 = Instance.new("UIAspectRatioConstraint")
-local Save = Instance.new("TextButton")
+local Copy = Instance.new("TextButton")
 local UICorner_7 = Instance.new("UICorner")
 local UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
 
@@ -187,20 +187,20 @@ UICorner_6.Parent = Clear
 UIAspectRatioConstraint_7.Parent = Clear
 UIAspectRatioConstraint_7.AspectRatio = 4.080
 
-Save.Name = "Save"
-Save.Parent = Executor
-Save.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Save.BackgroundTransparency = 0.600
-Save.Position = UDim2.new(0, 294, 0, 248)
-Save.Size = UDim2.new(0, 102, 0, 25)
-Save.Font = Enum.Font.SourceSans
-Save.Text = "Save"
-Save.TextColor3 = Color3.fromRGB(255, 255, 255)
-Save.TextSize = 20.000
+Copy.Name = "Copy"
+Copy.Parent = Executor
+Copy.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Copy.BackgroundTransparency = 0.600
+Copy.Position = UDim2.new(0, 294, 0, 248)
+Copy.Size = UDim2.new(0, 102, 0, 25)
+Copy.Font = Enum.Font.SourceSans
+Copy.Text = "Copy"
+Copy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Copy.TextSize = 20.000
 
-UICorner_7.Parent = Save
+UICorner_7.Parent = Copy
 
-UIAspectRatioConstraint_8.Parent = Save
+UIAspectRatioConstraint_8.Parent = Copy
 UIAspectRatioConstraint_8.AspectRatio = 4.080
 
 local function closebtn()
@@ -247,6 +247,15 @@ local function clrbtn()
 	end)
 end
 coroutine.wrap(clrbtn)()
+local function savebtn()
+	local script = Instance.new('LocalScript', Copy)
+
+	Copy = script.Parent
+	Copy.MouseButton1Click:Connect(function()
+		setclipboard(script.Parent.Parent.EditorScroller.Editor.Text)
+	end)
+end
+coroutine.wrap(savebtn)()
 local function uistuff()
 	local script = Instance.new('LocalScript', Executor)
 
