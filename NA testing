@@ -15750,18 +15750,4 @@ end)
 		 cmdInput.Text = ''
 		 cmdInput:CaptureFocus()
  end)
-
---executes freecam for mobile users
-spawn(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/freecam%20thingy"))()
-end)
-spawn(function()
-	Player.DevTouchMovementMode = "UserChoice"
-	Player.CameraMaxZoomDistance = math.huge
-	Player.CameraMinZoomDistance = 0
-	Player.CameraMode = "Classic"
-	Player.DevTouchCameraMode = "UserChoice"
-	Player.DevComputerMovementMode = "UserChoice"
-	Player.DevComputerCameraMode = "UserChoice"
-end)
 end
