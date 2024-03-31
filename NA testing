@@ -16,7 +16,9 @@ print([[
 ╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
 ]])
 end)
- 
+
+repeat wait() until game:GetService("Players").LocalPlayer.Character
+
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
  local Notify = Notification.Notify;
@@ -6111,6 +6113,17 @@ end
  
  cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
+ end)
+
+ cmd.add({"saveinstance", "savegame"}, {"if it bugs out try removing stuff from your AutoExec"}, function()
+	local Params = {
+		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
+		SSI = "saveinstance",
+	}
+	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
+	local Options = {}
+	synsaveinstance(Options)
  end)
  
  cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
