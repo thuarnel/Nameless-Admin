@@ -6116,7 +6116,7 @@ end
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
  end)
 
- cmd.add({"saveinstance", "savegame"}, {"if it bugs out try removing stuff from your AutoExec"}, function()
+ cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec"}, function()
 	local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
