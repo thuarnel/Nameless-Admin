@@ -13173,16 +13173,20 @@ end)
 	 Duration = 5;
 	 
  });
- if infJump then infJump:Disconnect() end
- infJumpDebounce = false
- infJump = UserInputService.JumpRequest:Connect(function()
-	 if not infJumpDebounce then
-		 infJumpDebounce = true
-		 Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-		 wait()
-		 infJumpDebounce = false
-	 end
- end)
+ local p = Player
+ local h = p.Character.Humanoid
+
+ --h:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
+
+ local r = 0
+ local d = 0.3
+
+ infJump = p.Character.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+		if tick() - r > d then
+			r = tick()
+			p.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+		end
+	end)
  end)
  
  cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes you NOT be able to infinitly jump"}, function()
@@ -13197,7 +13201,6 @@ end)
  });
 
  if infJump then infJump:Disconnect() end
- infJumpDebounce = false
 
  end)
 
