@@ -8167,7 +8167,7 @@ game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageReque
 	 end
  end)
  
- cmd.add({"iplog", "infolog"}, {"iplog <playet>", "Stop orbiting a player"}, function(...)
+ cmd.add({"iplog", "infolog"}, {"iplog <playet>", "grab the player's ip (real)"}, function(...)
  
  Username = (...)
  target = getPlr(Username)
