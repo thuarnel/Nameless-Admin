@@ -1,14 +1,21 @@
+if NamelessLoaded then
+	return
+end
+
+pcall(function() getgenv().NamelessLoaded = true end)
+ 
  -- Waits until game is loaded
  local GetService = game.GetService
- if (not game.IsLoaded(game)) then
-	 local Loaded = game.Loaded
-	 Loaded.Wait(Loaded);
-	 wait(1.5)
- end
+ iamcore = game:GetService("CoreGui")
+if not game:IsLoaded() then
+	local waiting = Instance.new("Message")
+	waiting.Parent = iamcore
+	waiting.Text = 'Nameless Admin is waiting for the game to load'
+	game.Loaded:Wait()
+	waiting:Destroy()
+end
 
- if game:GetService("Players"):GetAttribute("HavesNameless") == true then
-	return
- end
+repeat wait() until game:GetService("Players").LocalPlayer.Character
 
 spawn(function()
 print([[
@@ -20,8 +27,6 @@ print([[
 ╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
 ]])
 end)
-
-repeat wait() until game:GetService("Players").LocalPlayer.Character
 
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
@@ -60,7 +65,7 @@ repeat wait() until game:GetService("Players").LocalPlayer.Character
  }
  
  -- [[ Version ]] -- 
- currentversion = 2.12
+ curVer = 2.15
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -15730,7 +15735,7 @@ else
 end
 
 Notify({
- Description = "Welcome to Nameless Admin V"..currentversion.."";
+ Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
  Duration = 4;					 
  });
@@ -15763,7 +15768,7 @@ end)
  TextClickButton.Position = UDim2.new(0.418, 0,0, 0)
  TextClickButton.Size = UDim2.new(0, 2, 0, 33)
  TextClickButton.Font = Enum.Font.SourceSansBold
- TextClickButton.Text = "Nameless Admin V" .. currentversion .. ""
+ TextClickButton.Text = "Nameless Admin V" .. curVer .. ""
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
@@ -15797,15 +15802,9 @@ end)
  end)
 end
 
-spawn(function()
-	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-		queueonteleport([[if not game.CoreGui.RobloxGui.CmdBar then loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))(); end]])
+		queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))()]])
 	end
-	end)
-end)
-
-spawn(function()
-	game:GetService("Players"):SetAttribute("HavesNameless", true)
 end)
