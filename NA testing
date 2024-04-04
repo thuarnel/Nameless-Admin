@@ -637,12 +637,12 @@ end
  end
 
  --[[ COMMANDS ]]--
- cmd.add({"script", "s", "run"}, {"script <source> (s, run)", "Run the code requested"}, function()
+ --[[cmd.add({"script", "s", "run"}, {"script <source> (s, run)", "Run the code requested"}, function()
 	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
 local _, indexx = cmdtxtbar:find("%s")
 local thecode = cmdtxtbar:sub(indexx + 1)
 assert(loadstring(thecode))()
- end)
+ end)]]
 
  cmd.add({"loadstring", "ls"}, {"loadstring <link> (ls)", "Run the code using loadstring"}, function(source)
 	loadstring(game:HttpGet(source))()
@@ -15801,7 +15801,7 @@ spawn(function()
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-		queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))();]])
+		queueonteleport([[if not game.CoreGui.RobloxGui.CmdBar then loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))(); end]])
 	end
 	end)
 end)
