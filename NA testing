@@ -6,6 +6,10 @@
 	 wait(1.5)
  end
 
+ if game:GetService("Players"):GetAttribute("HavesNameless") == true then
+	return
+ end
+
 spawn(function()
 print([[
 ╭━╮╱╭╮╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╭╮
@@ -6255,7 +6259,7 @@ end
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
  end)
 
- cmd.add({"PartName"}, {"PartName", "gives a ui and allows you click on a part to grab it's path"}, function()
+ cmd.add({"PartName", "partpath"}, {"PartName (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
 
@@ -8811,8 +8815,9 @@ print(Time)
 	 local workspace = game.Workspace
  Players = game:GetService("Players")
  local speaker = Players.LocalPlayer
- workspace.CurrentCamera:remove()
+ workspace.CurrentCamera:Remove()
 	 wait(.1)
+	 repeat wait() until speaker.Character ~= nil
 	 workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA('Humanoid')
 	 workspace.CurrentCamera.CameraType = "Custom"
 	 speaker.CameraMinZoomDistance = 0.5
@@ -10546,7 +10551,7 @@ end
  end)
  
  glueloop = false
- cmd.add({"glue"}, {"glue <player>", "Bangs the player by attaching to them"}, function(...)
+ cmd.add({"glue", "loopgoto"}, {"glue <player> (loopgoto)", "Loop teleport to a player"}, function(...)
 	glueloop = true
 User = (...)
 Target = getPlr(User)
@@ -10556,7 +10561,7 @@ LocalPlayer.Character.HumanoidRootPart.CFrame = Target.Character.HumanoidRootPar
 until glueloop == false
  end)
  
- cmd.add({"unglue"}, {"unglue", "stops glueing"}, function()
+ cmd.add({"unglue", "unloopgoto", "noloopgoto"}, {"unglue (unloopgoto, noloopgoto)", "Stops teleporting you to a player"}, function()
 	glueloop = false
  end)
  
@@ -12175,7 +12180,7 @@ end
 	 end
 				 end)
  
-				 cmd.add({"noprompt", "nopurchaseprompts"}, {"noprompt (nopurchaseprompts)", "remove the stupid purchase prompt"}, function()
+				 cmd.add({"noprompt", "nopurchaseprompts", "noprompts"}, {"noprompt (nopurchaseprompts, noprompts)", "remove the stupid purchase prompt"}, function()
 					 
 					 
 					 
@@ -12190,7 +12195,7 @@ end
 					 game.CoreGui.PurchasePrompt.Enabled = false
 				 end)
  
-				 cmd.add({"prompt", "purchaseprompts"}, {"prompt (purchaseprompts)", "allows the stupid purchase prompt"}, function()
+				 cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"prompt (purchaseprompts, showprompts, showpurchaseprompts)", "allows the stupid purchase prompt"}, function()
 					 
 					 
 					 
@@ -13153,6 +13158,8 @@ end)
  
  });
  end)
+
+ local infJump
  
  cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be able to jump infinitly"}, function()
 	 
@@ -13161,54 +13168,76 @@ end)
 	 wait();
 	 
 	 Notify({
-	 Description = "Infinite jump enabled";
+	 Description = "Infinite Jump Enabled";
 	 Title = "Nameless Admin";
 	 Duration = 5;
 	 
  });
-	 _G.infinjump = true
- 
- local Player = game:GetService("Players").LocalPlayer
- local Mouse = Player:GetMouse()
- Mouse.KeyDown:connect(function(k)
- if _G.infinjump then
- if k:byte() == 32 then
- Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
- Humanoid:ChangeState("Jumping")
- wait(0.1)
- Humanoid:ChangeState("Seated")
- end
- end
+ if infJump then infJump:Disconnect() end
+ infJumpDebounce = false
+ infJump = UserInputService.JumpRequest:Connect(function()
+	 if not infJumpDebounce then
+		 infJumpDebounce = true
+		 Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+		 wait()
+		 infJumpDebounce = false
+	 end
  end)
  end)
  
  cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes you NOT be able to infinitly jump"}, function()
 	 
- 
- 
  wait();
  
  Notify({
- Description = "Infinite jump disabled";
+ Description = "Infinite Jump Disabled";
  Title = "Nameless Admin";
  Duration = 5;
  
  });
-	 _G.infinjump = false
- 
- local Player = game:GetService("Players").LocalPlayer
- local Mouse = Player:GetMouse()
- Mouse.KeyDown:connect(function(k)
- if _G.infinjump then
- if k:byte() == 32 then
- Humanoid = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
- Humanoid:ChangeState("Jumping")
- wait(0.1)
- Humanoid:ChangeState("Seated")
- end
- end
+
+ if infJump then infJump:Disconnect() end
+ infJumpDebounce = false
+
  end)
- end)
+
+ local flyjump
+
+ cmd.add({"flyjump"}, {"flyjump", "Allows you to hold space to fly up"}, function()
+	 
+	wait();
+	
+	Notify({
+	Description = "FlyJump Enabled";
+	Title = "Nameless Admin";
+	Duration = 3;
+	
+	});
+   
+   
+	if flyjump then flyjump:Disconnect() end
+	flyjump = UserInputService.JumpRequest:Connect(function()
+		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+	end)
+end)
+
+cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"}, function()
+	 
+	wait();
+	
+	Notify({
+	Description = "FlyJump Disabled";
+	Title = "Nameless Admin";
+	Duration = 3;
+	
+	});
+   
+   
+	if flyjump then flyjump:Disconnect() end
+	flyjump = UserInputService.JumpRequest:Connect(function()
+		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
+	end)
+end)
  
  cmd.add({"xray", "xrayon"}, {"xray (xrayon)", "Makes you be able to see through walls"}, function()
 	 
@@ -15764,3 +15793,7 @@ end)
 		 cmdInput:CaptureFocus()
  end)
 end
+
+spawn(function()
+	game:GetService("Players"):SetAttribute("HavesNameless", true)
+end)
