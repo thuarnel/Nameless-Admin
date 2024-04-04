@@ -46,12 +46,6 @@ repeat wait() until game:GetService("Players").LocalPlayer.Character
  else
  end
  end
-
- if not isfile("Nameless-Admin/Load.txt") then
-	writefile("Nameless-Admin/Load.txt", 'false')
-	else
-	end
-end
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
@@ -88,7 +82,6 @@ end
  local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
  local Character = game.Players.LocalPlayer.Character
  local Clicked = true
- local OnLoad = readfile("Nameless-Admin/Load.txt", 'false')
  _G.Spam = false
  --[[ FOR LOOP COMMANDS ]]--
  view = false
@@ -14745,22 +14738,6 @@ end)
  cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(...)
  game.Workspace.CurrentCamera.FieldOfView = (...)
  end)
-
- local stateThingy = false
-
- cmd.add({"LoadNameless"}, {"LoadNameless", "loads Nameless Admin automatically on teleport (like infinite yield on Arceus X)"}, function(...)
-	stateThingy = not stateThingy
-	writefile("Nameless-Admin\\Load.txt", stateThingy)
-
-	wait();
-	 
-	 Notify({
-	 Description = "Auto Load is set to: "..stateThingy.."";
-	 Title = "Nameless Admin";
-	 Duration = 5;
-	 
- });
- end)
  
  cmd.add({"homebrew"}, {"homebrew", "Executes homebrew admin"}, function()
 	 _G.CustomUI = false
@@ -15821,14 +15798,12 @@ end)
 end
 
 spawn(function()
-if OnLoad then
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
 		queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))();]])
 	end
 	end)
-end
 end)
 
 spawn(function()
