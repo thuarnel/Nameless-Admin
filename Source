@@ -54,7 +54,7 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	 prefix = readfile("Nameless-Admin/Prefix.txt", ';') or ";",
 	 tupleSeparator = ',',
 	 ui = {					
 		 
