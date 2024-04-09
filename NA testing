@@ -15,6 +15,14 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
+local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+	if (not teleportedServers) then
+local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
+	queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))()]])
+end
+end)
+
+
 repeat wait() until game:GetService("Players").LocalPlayer.Character
 
 spawn(function()
@@ -65,7 +73,7 @@ end)
  }
  
  -- [[ Version ]] -- 
- curVer = 2.15
+ curVer = 2.16
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -6749,6 +6757,7 @@ end)
  
  on = false
  cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
+	if IsOnMobile then
  on = true
  speed = (...)
  
@@ -6812,10 +6821,20 @@ end)
 	 else
 		 mobilefly(speed)
 	 end
+	else
+		wait();
+		 
+		 Notify({
+		 Description = "only for mobile users buddy";
+		 Title = "Nameless Admin";
+		 Duration = 3;
+	end
  end)
  
  cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
- unmobilefly()
+	if IsOnMobile then
+ 		unmobilefly()
+	end
  end)
  
  local flyPart
@@ -15800,10 +15819,3 @@ end)
 		 cmdInput:CaptureFocus()
  end)
 end
-
-local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
-		if (not teleportedServers) then
-	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-		queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))()]])
-	end
-end)
