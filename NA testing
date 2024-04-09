@@ -54,7 +54,7 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	 prefix = ";" or readfile("Nameless-Admin/Prefix.txt", ';'),
 	 tupleSeparator = ',',
 	 ui = {					
 		 
@@ -13224,9 +13224,11 @@ end)
    
    
 	if flyjump then flyjump:Disconnect() end
+	if not flyjump then
 	flyjump = UserInputService.JumpRequest:Connect(function()
 		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
 	end)
+end
 end)
 
 cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"}, function()
@@ -13242,9 +13244,6 @@ cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"
    
    
 	if flyjump then flyjump:Disconnect() end
-	flyjump = UserInputService.JumpRequest:Connect(function()
-		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-	end)
 end)
  
  cmd.add({"xray", "xrayon"}, {"xray (xrayon)", "Makes you be able to see through walls"}, function()
