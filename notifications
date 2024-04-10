@@ -4,11 +4,11 @@ local TextService = game:GetService("TextService");
 
 local Player = game:GetService("Players").LocalPlayer;
 local search = RunService:IsStudio() and Player.PlayerGui or game:GetService("CoreGui");
-if search:FindFirstChild("Notify_Maxype_AkaliNotif") and _G.MaxypeNotifyFuntion then
-	return _G.MaxypeNotifyFuntion
+if search:FindFirstChild("AkaliNotif") and _G.NotifSex then
+	return _G.NotifSex
 else
 	NotifGui= Instance.new("ScreenGui");
-	NotifGui.Name = "Notify_Maxype_AkaliNotif";
+	NotifGui.Name = "AkaliNotif";
 	NotifGui.Parent = search
 	Container = Instance.new("Frame");
 	Container.Name = "Container";
