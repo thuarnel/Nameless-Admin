@@ -283,7 +283,7 @@ end)
 					a.Parent = ESPholder
 					a.Adornee = plr.Character
 					a.FillTransparency = 0.7
-					a.FillColor = plr.TeamColor or Color3.fromRGB(0,255,0)
+					a.FillColor = (plr.TeamColor or Color3.fromRGB(0,255,0))
 
 			if plr.Character and plr.Character:FindFirstChild('Head') then
 				local BillboardGui = Instance.new("BillboardGui")
