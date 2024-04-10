@@ -272,9 +272,6 @@ end
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local addChar
-local addedNoob
-
  function ESP(plr)
 	task.spawn(function()
 		for i,v in pairs(COREGUI:GetChildren()) do
@@ -317,12 +314,6 @@ local addedNoob
 				TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
 				TextLabel.ZIndex = 10
 			end
-			addChar = plr.CharacterAdded:Connect(function(fix)
-				repeat wait(1) until fix and fix.Head
-				a.Adornee=fix
-				wait(.1);
-				BillboardGui.Adornee=Players[fix.Name].Character.Head
-			end)
 		end
 	end)
 end
@@ -5669,10 +5660,6 @@ end)
 				ESP(v)
 			end
 		end
-		addedNoob = Players.ChildAdded:Connect(function(viper)
-			wait(.2);
-			ESP(viper)
-		end)
 	 end)
  
 		 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
@@ -5682,8 +5669,6 @@ end)
 			c:Destroy()
 		end
 	end
-	addChar:Disconnect()
-	addedNoob:Disconnect()
 		 end)
  
 	 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
