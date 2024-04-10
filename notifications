@@ -179,7 +179,7 @@ local function FadeOutAfter(Object, Seconds)
 	ResetObjects();
 	Object:Destroy();
 end
-_G.MaxypeNotifyFuntion = {
+_G.NotifSex = {
 	Notify = function(Properties)
 		local Properties = typeof(Properties) == "table" and Properties or {};
 		local Title = Properties.Title;
@@ -218,4 +218,4 @@ _G.MaxypeNotifyFuntion = {
 		end
 	end,	
 }
-return _G.MaxypeNotifyFuntion 
+return _G.NotifSex
