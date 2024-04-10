@@ -318,10 +318,10 @@ local addedNoob
 				TextLabel.ZIndex = 10
 			end
 			addChar = plr.CharacterAdded:Connect(function(fix)
-				repeat wait() until fix
+				repeat wait(1) until fix and fix.Head
 				a.Adornee=fix
 				wait(.1);
-				BillboardGui.Adornee=fix:FindFirstChild("Head")
+				BillboardGui.Adornee=Players[fix.Name].Character.Head
 			end)
 		end
 	end)
