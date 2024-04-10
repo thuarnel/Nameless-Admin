@@ -1,23 +1,19 @@
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local TextService = game:GetService("TextService")
-local NotifGui = game.CoreGui:FindFirstChild("AkaliNotif") or Instance.new("ScreenGui")
-local Container = NotifGui:FindFirstChild("Container")
-pcall(function() getgenv().FindNotificationNameless = false end)
-if not NotifGui.Parent then
-    NotifGui.Name = "AkaliNotif"
-    NotifGui.Parent = RunService:IsStudio() and game.Players.LocalPlayer.PlayerGui or game.CoreGui
-end
+local TweenService = game:GetService("TweenService");
+local RunService = game:GetService("RunService");
+local TextService = game:GetService("TextService");
 
-if not Container and not FindNotificationNameless then
-    Container = Instance.new("Frame")
-    Container.Name = "Container"
-    Container.Position = UDim2.new(0, 20, 0.5, -20)
-    Container.Size = UDim2.new(0, 300, 0.5, 0)
-    Container.BackgroundTransparency = 1
-    Container.Parent = NotifGui
-	getgenv().FindNotificationNameless = true
-end
+local Player = game:GetService("Players").LocalPlayer;
+
+local NotifGui = Instance.new("ScreenGui");
+NotifGui.Name = "AkaliNotif";
+NotifGui.Parent = RunService:IsStudio() and Player.PlayerGui or game:GetService("CoreGui");
+
+local Container = Instance.new("Frame");
+Container.Name = "Container";
+Container.Position = UDim2.new(0, 20, 0.5, -20);
+Container.Size = UDim2.new(0, 300, 0.5, 0);
+Container.BackgroundTransparency = 1;
+Container.Parent = NotifGui;
 
 local function Image(ID, Button)
 	local NewImage = Instance.new(string.format("Image%s", Button and "Button" or "Label"));
