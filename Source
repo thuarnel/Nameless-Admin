@@ -6144,7 +6144,7 @@ end
  end)
 
  cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec"}, function()
-	saveinstance()
+	saveinstance({})
  end)
  
  cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
