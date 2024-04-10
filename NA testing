@@ -72,7 +72,7 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = ";" or readfile("Nameless-Admin/Prefix.txt", ';'),
+	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
 	 tupleSeparator = ',',
 	 ui = {					
 		 
@@ -6944,7 +6944,6 @@ end)
  local fcpro
  
  cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
-	if not IsOnMobile then
 	if not speed then speed = 5 end
 	 if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject = character 	wrap(function() character.PrimaryPart.Anchored = false end) end
 	 local dir = {w = false, a = false, s = false, d = false}
@@ -7016,16 +7015,6 @@ end)
 			 dir.q = false
 		 end
 	 end))
-	else
-		wait();
-	 
-	 Notify({
-	 Description = "Freecam command isn't supported for mobile users consider using the Freecam button";
-	 Title = "Nameless Admin";
-	 Duration = 5;
-	 
- });
-	end
  end)
  
  cmd.add({"unfreecam", "unfc", "unfcam"}, {"unfreecam (unfc, unfcam)", "Disable free camera"}, function()
