@@ -42,7 +42,8 @@ print([[
 end)
 
 --adonis admin bypass
-delay(5, function()
+task.spawn(function()
+	wait(5);
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
 
@@ -204,16 +205,16 @@ end)
 	 return (tick() - t), t
  end
  
-	 function r15(plr)
-		 if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
-			 return true
-		 end
-	 end
+function r15(plr)
+	if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
+		return true
+	end
+end
 	 
-	 function getRoot(character)
-	 local root = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart') or game.Players.LocalPlayer.Character:FindFirstChild('Torso') or game.Players.LocalPlayer.Character:FindFirstChild('UpperTorso')
-	 return root
- end
+function getRoot(char)
+	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
+	return rootPart
+end
  
  -- [[ FUNCTION TO GET A PLAYER ]] --
  local getPlr = function(Name)
@@ -263,7 +264,16 @@ end)
  end
  end)
 
- ESPenabled = false
+ local ESPenabled = false
+ 
+
+ function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
+local addChar
+local addedNoob
 
  function ESP(plr)
 	task.spawn(function()
@@ -278,12 +288,13 @@ end)
 			ESPholder.Name = plr.Name..'_ESP'
 			ESPholder.Parent = COREGUI
 			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+					
 					local a = Instance.new("Highlight")
 					a.Name = plr.Name
 					a.Parent = ESPholder
 					a.Adornee = plr.Character
-					a.FillTransparency = 0.7
-					a.FillColor = (plr.TeamColor or Color3.fromRGB(0,255,0))
+					a.FillTransparency = 0.45
+					a.FillColor = Color3.fromRGB(0,255,0)
 
 			if plr.Character and plr.Character:FindFirstChild('Head') then
 				local BillboardGui = Instance.new("BillboardGui")
@@ -305,48 +316,13 @@ end)
 				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
 				TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
 				TextLabel.ZIndex = 10
-				local espLoopFunc
-				local teamChange
-				local addedFunc
-				addedFunc = plr.CharacterAdded:Connect(function()
-					if ESPenabled then
-						espLoopFunc:Disconnect()
-						teamChange:Disconnect()
-						ESPholder:Destroy()
-						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-						ESP(plr)
-						addedFunc:Disconnect()
-					else
-						teamChange:Disconnect()
-						addedFunc:Disconnect()
-					end
-				end)
-				teamChange = plr:GetPropertyChangedSignal("TeamColor"):Connect(function()
-					if ESPenabled then
-						espLoopFunc:Disconnect()
-						addedFunc:Disconnect()
-						ESPholder:Destroy()
-						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-						ESP(plr)
-						teamChange:Disconnect()
-					else
-						teamChange:Disconnect()
-					end
-				end)
-				local function espLoop()
-					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
-						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
-							TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ' | Health: '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
-						end
-					else
-						teamChange:Disconnect()
-						addedFunc:Disconnect()
-						espLoopFunc:Disconnect()
-					end
-				end
-				espLoopFunc = RunService.RenderStepped:Connect(espLoop)
 			end
+			addChar = plr.CharacterAdded:Connect(function(fix)
+				repeat wait() until fix
+				a.Adornee=fix
+				wait(.1);
+				BillboardGui.Adornee=fix:FindFirstChild("Head")
+			end)
 		end
 	end)
 end
@@ -5686,13 +5662,17 @@ cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift l
 	game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule.CameraModule.MouseLockController.BoundKeys.Value = "LeftControl,RightControl"
 end)
 
-	 cmd.add({"esp"}, {"esp", "ESP"}, function()
+	 cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
 		ESPenabled = true
-		for i,v in pairs(Players:GetPlayers()) do
+		for _,v in pairs(Players:GetPlayers()) do
 			if v.Name ~= Player.Name then
 				ESP(v)
 			end
 		end
+		addedNoob = Players.ChildAdded:Connect(function(viper)
+			wait(.2);
+			ESP(viper)
+		end)
 	 end)
  
 		 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
@@ -5702,6 +5682,8 @@ end)
 			c:Destroy()
 		end
 	end
+	addChar:Disconnect()
+	addedNoob:Disconnect()
 		 end)
  
 	 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
