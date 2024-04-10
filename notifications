@@ -2,6 +2,7 @@ local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
 local TextService = game:GetService("TextService");
 local NotifGui
+local Container
 
 local Player = game:GetService("Players").LocalPlayer;
 if not game.CoreGui:FindFirstChild("AkaliNotif") then
@@ -12,12 +13,16 @@ else
 	NotifGui=game.CoreGui:FindFirstChild("AkaliNotif")
 end
 
-local Container = Instance.new("Frame");
+if not NotifGui:FindFirstChild("Container") then
+Container = Instance.new("Frame");
 Container.Name = "Container";
 Container.Position = UDim2.new(0, 20, 0.5, -20);
 Container.Size = UDim2.new(0, 300, 0.5, 0);
 Container.BackgroundTransparency = 1;
 Container.Parent = NotifGui;
+else
+	Container=NotifGui:FindFirstChild("Container")
+end
 
 local function Image(ID, Button)
 	local NewImage = Instance.new(string.format("Image%s", Button and "Button" or "Label"));
