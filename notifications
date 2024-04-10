@@ -177,7 +177,7 @@ local function FadeOutAfter(Object, Seconds)
 	wait(0.25);
 	table.remove(InstructionObjects, FindIndexByDependency(InstructionObjects, Object));
 	ResetObjects();
-	Object.Parent:Destroy();
+	Object:Destroy();
 end
 
 return {
