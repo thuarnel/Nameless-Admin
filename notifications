@@ -2,7 +2,7 @@ local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local TextService = game:GetService("TextService")
 local NotifGui = game.CoreGui:FindFirstChild("AkaliNotif") or Instance.new("ScreenGui")
-local Container = NotifGui:FindFirstChild("Container")
+local Container = NotifGui:WaitForChild("Container")
 
 if not NotifGui.Parent then
     NotifGui.Name = "AkaliNotif"
