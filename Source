@@ -1,4 +1,4 @@
-if NamelessLoaded then
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -15,17 +15,18 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function()
+task.spawn(function() -- automatically loads Nameless Admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
 		queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))()]])
 	end
-end)
+	end)
 end)
 
-task.spawn(function()
-	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true" ))();
+task.spawn(function() -- saveinstance support (credits to Viper)
+	task.wait(1)
+	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
 
 repeat wait() until game:GetService("Players").LocalPlayer.Character
@@ -41,9 +42,9 @@ print([[
 ]])
 end)
 
---adonis admin bypass
+-- adonis admin bypass
 task.spawn(function()
-	wait(5);
+	wait(5); -- delay needed so it would actually bypass adonis (in case of autoexec) | credits to Nooby on scriptblox
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
 
@@ -102,9 +103,10 @@ end)
  local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
+ local speaker = Player
  local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
+ local Character = Player.Character
  local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
- local Character = game.Players.LocalPlayer.Character
  local Clicked = true
  _G.Spam = false
  --[[ FOR LOOP COMMANDS ]]--
@@ -144,8 +146,8 @@ end)
  
  --[[ Some more variables ]]--
  
- local localPlayer = Players.LocalPlayer
- local LocalPlayer = Players.LocalPlayer
+ local localPlayer = Player
+ local LocalPlayer = Player
  local character = localPlayer.Character
  local mouse = localPlayer:GetMouse()
  local camera = workspace.CurrentCamera
@@ -215,6 +217,23 @@ function getRoot(char)
 	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
 	return rootPart
 end
+
+function FindInTable(tbl,val)
+	if tbl == nil then return false end
+	for _,v in pairs(tbl) do
+		if v == val then return true end
+	end 
+	return false
+end
+
+function GetInTable(Table, Name)
+	for i = 1, #Table do
+		if Table[i] == Name then
+			return i
+		end
+	end
+	return false
+end
  
  -- [[ FUNCTION TO GET A PLAYER ]] --
  local getPlr = function(Name)
@@ -235,9 +254,9 @@ end
  end
  
  -- [[ MORE VARIABLES ]] --
- plr = game.Players.LocalPlayer
+ plr = Player
  COREGUI = game:GetService("CoreGui")
- speaker = game.Players.LocalPlayer
+ speaker = Player
  char = plr.Character
  RunService = game:GetService("RunService")
  
@@ -2080,6 +2099,7 @@ print(Time)
  RunService.RenderStepped:Connect(function(ping) 
  script.Parent.Text = ("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping))) -- your ping
  end)
+ gui.draggable(Pingtext)
 		 end)
  
 		 cmd.add({"fps"}, {"fps", "Shows your fps"}, function()
@@ -2125,6 +2145,7 @@ print(Time)
  RunService.RenderStepped:Connect(function(frame) 
  script.Parent.Text = ("FPS: "..math.round(1/frame)) 
  end)
+ gui.draggable(Fpstext)
 		 end)
  
  cmd.add({"commands", "cmds"}, {"commands (cmds)", "Open the command list"}, function()
@@ -4512,6 +4533,10 @@ end)
 					 
  });
  end)
+
+ cmd.add({"antikick", "nokick"}, {"antikick (nokick)", "prevents you from getting kicked by LocalScripts or executed scripts"}, function()
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/anti%20kicker?raw=true"))() --not mine just re-uploaded
+end)
  
  cmd.add({"lay"}, {"lay", "zzzzzzzz"}, function()
 	 local Human = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid
@@ -6697,7 +6722,6 @@ end)
  
  on = false
  cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
- on = true
  speed = (...)
  
 	 if speed == nil then
@@ -6760,6 +6784,7 @@ end)
 	 else
 		 mobilefly(speed)
 	 end
+	 gui.draggable(TextButton)
  end)
  
  cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
@@ -9896,10 +9921,9 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  end)
 
  cmd.add({"firekey", "fkey"}, {"firekey <key> (fkey)", "makes you fire a keybind using VirtualInputManager"}, function(...)
- local keycodex = (...)
- vim:SendKeyEvent(true, keycodex, 0, game)
- task.wait();
- vim:SendKeyEvent(false, keycodex, 0, game)
+ local codex = (...) --real
+ vim:SendKeyEvent(true, codex, 0, game)
+ vim:SendKeyEvent(false, codex, 0, game)
  end)
  
  cmd.add({"legresize"}, {"legresize", "Makes your legs very big r15 only"}, function()
@@ -9943,7 +9967,8 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 wait(0.2)
  end)
  
- cmd.add({"small"}, {"small", "Makes you short r15 only"}, function()
+ -- patched
+ --[[cmd.add({"small"}, {"small", "Makes you short r15 only"}, function()
 	 
  
  
@@ -10000,7 +10025,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  wait(0.5)
  Humanoid:FindFirstChild("HeadScale"):Destroy()
  wait(0.2)
- end)
+ end)]]
  
  cmd.add({"loopfling"}, {"loopfling <player>", "Loop voids a player"}, function(plr)
 	 local Targets = {plr}
@@ -10323,22 +10348,22 @@ end
  cmd.add({"loopwalkspeed", "loopws"}, {"loopwalkspeed <speed> (loopws)", "Loop walkspeed"}, function(...)
 	 speed = (...)
 	 loopws = true
-	 repeat wait()
-	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-	 detectdied = game.Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
-		 if loopws == true then
- wait(game.Players.RespawnTime + 0.4)
- game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-		 end
- end)
+	 RepWs = Player.Character.CharacterAdded:Connect(function()
+		if loopws == true then
+		   repeat wait() until Player.Character.Humanoid
+			Player.Character.Humanoid.WalkSpeed = speed
+		end
+		end)
+	 repeat task.wait()
+	 Player.Character.Humanoid.WalkSpeed = speed
 	 until loopws == false
  end)
  
  cmd.add({"unloopwalkspeed", "unloopws"}, {"unloopwalkspeed <speed> (unloopws)", "Disable loop walkspeed"}, function(...)
 	 loopws = false
-	 detectdied:Disconnect()
+	 RepWs:Disconnect()
 	 wait(0.6)
-	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+	 Player.Character.Humanoid.WalkSpeed = 16
  end)
  
  loopwave = false
@@ -10347,8 +10372,7 @@ end
 	Player = (...)
 	Target = getPlr(Player)
 	local oldcframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-	repeat wait()
-		wait(0.2)
+	repeat wait(0.2)
 		targetcframe = Target.Character.HumanoidRootPart.CFrame
 	WaveAnim = Instance.new("Animation")
 				if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
@@ -12320,13 +12344,6 @@ end
  
  local hiddenGUIS = {}
  cmd.add({"hideguis"}, {"hideguis", "Hides guis"}, function()
- function FindInTable(tbl,val)
-	 if tbl == nil then return false end
-	 for _,v in pairs(tbl) do
-		 if v == val then return true end
-	 end 
-	 return false
- end
  
 	 for i,v in pairs(game.Players.LocalPlayer:FindFirstChildWhichIsA("PlayerGui"):GetDescendants()) do
 		 if (v:IsA("Frame") or v:IsA("ImageLabel") or v:IsA("ScrollingFrame")) and v.Visible then
@@ -12786,7 +12803,7 @@ end)
  end)
  
  cmd.add({"unswim"}, {"unswim", "Stops the swim script"}, function(...)
- speaker = game.Players.LocalPlayer
+ speaker = Player
  game.Workspace.Gravity = 168
 	 speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
 	 speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
@@ -12804,77 +12821,66 @@ end)
 	 speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
 	 speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
 	 speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
-	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+	 speaker.Character.Humanoid.WalkSpeed = 16
  end)
  
- local iamesp
+ local espParts = {}
+local partEspTrigger = nil
+function partAdded(part)
+	if #espParts > 0 then
+		if FindInTable(espParts,part.Name:lower()) then
+			local a = Instance.new("BoxHandleAdornment")
+			a.Name = part.Name:lower().."_PESP"
+			a.Parent = part
+			a.Adornee = part
+			a.AlwaysOnTop = true
+			a.ZIndex = 0
+			a.Size = part.Size
+			a.Transparency = 0.45
+			a.Color = BrickColor.new("Lime green")
+		end
+	else
+		partEspTrigger:Disconnect()
+		partEspTrigger = nil
+	end
+end
+
 
  cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function()
 	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
 	local _, indexx = cmdtxtbar:find("%s")
 	local thecode = cmdtxtbar:sub(indexx + 1)
-local objects = game:GetDescendants()
-local trparts = {}
-local modeprts = {}
-
-local function omg(part)
-	if part:FindFirstChild("NAprtesp") == nil then
-		local adornment = Instance.new("BoxHandleAdornment")
-		adornment.Name = "NAprtesp"
-		adornment.Adornee = part
-		adornment.ZIndex = 5
-		adornment.AlwaysOnTop = true
-		adornment.Transparency = 0.5
-		adornment.Size = part.Size
-		adornment.Color3 = Color3.new(1, 0, 0)
-		adornment.Parent = part
-	end
-end
-
-local function check(obj)
-	local objlower = obj.Name:lower()
-	return (obj:IsA("BasePart") or obj:IsA("Model")) and objlower == thecode:lower()
-end
-
-local function pert(obj)
-	if check(obj) then
-		table.insert(trparts, obj)
-		omg(obj)
-	end
-end
-
-for _, obj in ipairs(objects) do
-	if (obj:IsA("Model") or obj:IsA("Folder")) and obj.Name:lower() == thecode:lower() then
-		local mod = obj:GetDescendants()
-		for _, thej in ipairs(mod) do
-			pert(thej)
-		end
-	elseif obj:IsA("BasePart") and obj.Name:lower() == thecode:lower() then
-		pert(obj)
-	end
-end
-
-iamesp = game.DescendantAdded:Connect(function(hh)
-	if (hh:IsA("Model") or hh:IsA("Folder")) then
-		for _,checkpert in ipairs(hh:GetDescendants()) do
-			if checkpert:IsA("BasePart") then
-				pert(checkpert)
+	local partEspName = thecode:lower()
+	if not FindInTable(espParts,partEspName) then
+		table.insert(espParts,partEspName)
+		for i,v in pairs(workspace:GetDescendants()) do
+			if v:IsA("BasePart") and v.Name:lower() == partEspName then
+				local a = Instance.new("BoxHandleAdornment")
+				a.Name = partEspName.."_PESP"
+				a.Parent = v
+				a.Adornee = v
+				a.AlwaysOnTop = true
+				a.ZIndex = 0
+				a.Size = v.Size
+				a.Transparency = 0.45
+				a.Color = BrickColor.new("Lime green")
 			end
 		end
-	else
-	pert(hh)
 	end
-end)
+	if partEspTrigger == nil then
+		partEspTrigger = workspace.DescendantAdded:Connect(partAdded)
+	end
  end)
  
  cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function()
- iamesp:Disconnect()
-
-for i, part in ipairs(game:GetDescendants()) do
-	if part:IsA("BoxHandleAdornment") then
-		part:Destroy()
-	end
-end
+	partEspTrigger:Disconnect()
+		partEspTrigger = nil
+		espParts = {}
+		for i,v in pairs(workspace:GetDescendants()) do
+			if v:IsA("BoxHandleAdornment") and v.Name:sub(-5) == '_PESP' then
+				v:Destroy()
+			end
+		end
  end)
  
  cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function()
@@ -14286,7 +14292,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 	)
 end)
  
- cmd.add({"invisible"}, {"invisible", "Sets invisibility to scare people or something"}, function()
+ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scare people or something"}, function()
 	 Keybind = "E"
  
 	 local CS = game:GetService("CollectionService")
@@ -14526,6 +14532,7 @@ end)
 	 end)
  end
  coroutine.wrap(FEPVI_fake_script)()
+ gui.draggable(TextButton)
  else
  end
  end)
@@ -15658,22 +15665,28 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
 
-spawn(function()
-local display = game.Players.LocalPlayer.DisplayName
-local name = game.Players.LocalPlayer.Name
-local hh
-if display == name then
-	hh = "@"..name..""
-else
-	hh = ""..display.." (@"..name..")"
-end
+task.spawn(function()
+	local display = Player.DisplayName
+	local name = Player.Name
+	local hh
+	if display:lower() == name:lower() then
+		hh = "@"..name..""
+	else
+		hh = ""..display.." (@"..name..")"
+	end
 
 delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
- Duration = 5;					 
+ Duration = 3;
  });
+ wait();
+ Notify({
+	Description = "script has been continued (unofficially)\n\nScriptblox: v3r_\nDiscord: maxype";
+	Title = "Info";
+	Duration = 3;
+	});
 end)
 end)
  
