@@ -15678,13 +15678,13 @@ delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
- Duration = 3;
+ Duration = 7;
  });
  wait();
  Notify({
 	Description = "script has been continued (unofficially)\n\nScriptblox: v3r_\nDiscord: maxype";
 	Title = "Info";
-	Duration = 3;
+	Duration = 7;
 	});
 end)
 end)
