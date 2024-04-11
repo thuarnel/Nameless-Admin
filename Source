@@ -14467,7 +14467,7 @@ end)
  
  --Properties:
  
- ScreenGui.Parent = game.PlayerGui
+ ScreenGui.Parent = game.CoreGui
  ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
  
  TextButton.Parent = ScreenGui
@@ -14476,7 +14476,7 @@ end)
  TextButton.Position = UDim2.new(0.933, 0,0.621, 0)
  TextButton.Size = UDim2.new(0.043, 0,0.083, 0)
  TextButton.Font = Enum.Font.SourceSansBold
- TextButton.Text = "Become Invisible"
+ TextButton.Text = "Invisible"
  TextButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextButton.TextSize = 15.000
  TextButton.TextWrapped = true
@@ -14531,6 +14531,10 @@ end)
 	 end)
  end
  coroutine.wrap(FEPVI_fake_script)()
+ nuuh = Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
+	ScreenGui:Destroy()
+	nuuh:Disconnect()
+ end)
  gui.draggable(TextButton)
  else
  end
