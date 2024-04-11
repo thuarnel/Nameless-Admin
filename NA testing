@@ -1,5 +1,5 @@
-if NamelessLoaded then
-	return
+if NamelessLoaded then --checks if Nameless Admin is already loaded
+	return print'Nameless Admin is already running'
 end
 
 pcall(function() getgenv().NamelessLoaded = true end)
@@ -15,7 +15,7 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function()
+task.spawn(function() --automatically loads Nameless Admin again when teleporting
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -43,7 +43,7 @@ end)
 
 --adonis admin bypass
 task.spawn(function()
-	wait(5);
+	wait(5); --delay needed so it would actually bypass adonis (in case of autoexec) | credits to Nooby on scriptblox
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
 
@@ -13121,7 +13121,7 @@ end)
  --h:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 
  local r = 0
- local d = 0.3
+ local d = 0.25
 
  infJump = p.Character.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
 		if tick() - r > d then
@@ -13179,9 +13179,6 @@ cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"
    
    
 	if flyjump then flyjump:Disconnect() end
-	flyjump = UserInputService.JumpRequest:Connect(function()
-		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-	end)
 end)
  
  cmd.add({"xray", "xrayon"}, {"xray (xrayon)", "Makes you be able to see through walls"}, function()
@@ -15661,22 +15658,28 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
 
-spawn(function()
-local display = game.Players.LocalPlayer.DisplayName
-local name = game.Players.LocalPlayer.Name
-local hh
-if display == name then
-	hh = "@"..name..""
-else
-	hh = ""..display.." (@"..name..")"
-end
+task.spawn(function()
+	local display = Player.DisplayName
+	local name = Player.Name
+	local hh
+	if display:lower() == name:lower() then
+		hh = "@"..name..""
+	else
+		hh = ""..display.." (@"..name..")"
+	end
 
 delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
- Duration = 5;					 
+ Duration = 3;
  });
+ wait(1);
+ Notify({
+	Description = "script has been continued (unofficially)\n\nScriptblox: v3r_\nDiscord: maxype";
+	Title = "Info";
+	Duration = 3;
+	});
 end)
 end)
  
