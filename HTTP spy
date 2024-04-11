@@ -214,7 +214,7 @@ registerDynamicScrollingFrame(MainContainer)
 local HttpGet
 
 HttpGet = hookfunction(game.HttpGet, function(self, url, ...)
-Log(url)
+Log("Http Get Request from: "..url)
 
 return HttpGet(self, url, ...)
 end)
@@ -222,7 +222,7 @@ end)
 local HttpPost
 
 HttpPost = hookfunction(game.HttpPost, function(self, url, ...)
-Log(url)
+Log("Http Post Request from: "..url)
 
 return HttpPost(self, url, ...)
 end)
