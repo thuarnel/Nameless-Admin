@@ -13121,7 +13121,7 @@ end)
  --h:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 
  local r = 0
- local d = 0.3
+ local d = 0.25
 
  infJump = p.Character.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
 		if tick() - r > d then
@@ -13179,9 +13179,6 @@ cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"
    
    
 	if flyjump then flyjump:Disconnect() end
-	flyjump = UserInputService.JumpRequest:Connect(function()
-		Player.Character:FindFirstChildWhichIsA("Humanoid"):ChangeState(Enum.HumanoidStateType.Jumping)
-	end)
 end)
  
  cmd.add({"xray", "xrayon"}, {"xray (xrayon)", "Makes you be able to see through walls"}, function()
