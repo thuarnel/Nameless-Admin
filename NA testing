@@ -6727,7 +6727,6 @@ end)
  
  on = false
  cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
- on = true
  speed = (...)
  
 	 if speed == nil then
@@ -6790,6 +6789,7 @@ end)
 	 else
 		 mobilefly(speed)
 	 end
+	 gui.draggable(TextButton)
  end)
  
  cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
@@ -14297,7 +14297,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 	)
 end)
  
- cmd.add({"invisible"}, {"invisible", "Sets invisibility to scare people or something"}, function()
+ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scare people or something"}, function()
 	 Keybind = "E"
  
 	 local CS = game:GetService("CollectionService")
@@ -14537,6 +14537,7 @@ end)
 	 end)
  end
  coroutine.wrap(FEPVI_fake_script)()
+ gui.draggable(TextButton)
  else
  end
  end)
