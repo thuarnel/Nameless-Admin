@@ -12875,22 +12875,8 @@ end
 	end
  end)
  
- cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function(args)
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
-	if thecode then
-		local partEspName = thecode:lower()
-		if FindInTable(espParts,partEspName) then
-			table.remove(espParts, GetInTable(espParts, partEspName))
-		end
-		for i,v in pairs(workspace:GetDescendants()) do
-			if v:IsA("BoxHandleAdornment") and v.Name == partEspName..'_PESP' then
-				v:Destroy()
-			end
-		end
-	else
-		partEspTrigger:Disconnect()
+ cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function()
+	partEspTrigger:Disconnect()
 		partEspTrigger = nil
 		espParts = {}
 		for i,v in pairs(workspace:GetDescendants()) do
@@ -12898,13 +12884,6 @@ end
 				v:Destroy()
 			end
 		end
-	end
-
-for i, part in ipairs(game:GetDescendants()) do
-	if part:IsA("BoxHandleAdornment") then
-		part:Destroy()
-	end
-end
  end)
  
  cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function()
