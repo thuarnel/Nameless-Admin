@@ -2104,6 +2104,7 @@ print(Time)
  RunService.RenderStepped:Connect(function(ping) 
  script.Parent.Text = ("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping))) -- your ping
  end)
+ gui.draggable(Pingtext)
 		 end)
  
 		 cmd.add({"fps"}, {"fps", "Shows your fps"}, function()
@@ -2149,6 +2150,7 @@ print(Time)
  RunService.RenderStepped:Connect(function(frame) 
  script.Parent.Text = ("FPS: "..math.round(1/frame)) 
  end)
+ gui.draggable(Fpstext)
 		 end)
  
  cmd.add({"commands", "cmds"}, {"commands (cmds)", "Open the command list"}, function()
