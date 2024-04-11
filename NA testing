@@ -48,11 +48,6 @@ task.spawn(function()
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
 
-task.spawn(function() -- fixes a few commands & stuff
-	task.wait(1)
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/manage?raw=true"))();
-end)
-
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
  local Notify = Notification.Notify;
