@@ -14522,11 +14522,11 @@ end)
 		 game.Players.LocalPlayer.Character.Head.Anchored = false
 		 game.Players.LocalPlayer.Character.Animate.Disabled = true
 		 game.Players.LocalPlayer.Character.Animate.Disabled = false
-					 script.Parent.Text = "Visible"
+					 --script.Parent.Text = "Visible"
 	 elseif IsInvis == true then
 	 IsInvis = false
-	script.Parent.Text = "Invisible"
-		TurnVisible()
+         TurnVisible()
+	--script.Parent.Text = "Invisible"
 		 end
 	 end)
  end
