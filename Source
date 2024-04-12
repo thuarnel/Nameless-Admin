@@ -10344,26 +10344,22 @@ end
  sitDied:Disconnect()
  end)
  
- loopws = false
-local RepWs
+local loopws = false
+getgenv().NamelessWs = nil
  cmd.add({"loopwalkspeed", "loopws"}, {"loopwalkspeed <speed> (loopws)", "Loop walkspeed"}, function(...)
-	 speed = (...)
+	 val = {...}
+getgenv().NamelessWs = (val[1] or 16)
 	 loopws = true
-	 RepWs = game.Players.LocalPlayer.Character.CharacterAdded:Connect(function()
-		if loopws == true then
-			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-		end
-	end)
 	 repeat task.wait()
-	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
-	 until loopws == false
+pcall(function()
+speaker.Character.Humanoid.WalkSpeed = getgenv().NamelessWs
+end)
+until loopws == false
  end)
  
  cmd.add({"unloopwalkspeed", "unloopws"}, {"unloopwalkspeed <speed> (unloopws)", "Disable loop walkspeed"}, function(...)
 	 loopws = false
-	 RepWs:Disconnect()
-	 wait(0.6)
-	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+getgenv().NamelessWs = nil
  end)
  
  loopwave = false
