@@ -10359,7 +10359,6 @@ until loopws == false
  
  cmd.add({"unloopwalkspeed", "unloopws"}, {"unloopwalkspeed <speed> (unloopws)", "Disable loop walkspeed"}, function(...)
 	 loopws = false
-getgenv().NamelessWs = nil
  end)
  
  loopwave = false
