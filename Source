@@ -10345,17 +10345,17 @@ end
  end)
  
  loopws = false
+local RepWs
  cmd.add({"loopwalkspeed", "loopws"}, {"loopwalkspeed <speed> (loopws)", "Loop walkspeed"}, function(...)
 	 speed = (...)
 	 loopws = true
-	 RepWs = Player.Character.CharacterAdded:Connect(function()
+	 RepWs = game.Players.LocalPlayer.Character.CharacterAdded:Connect(function()
 		if loopws == true then
-		   repeat wait() until Player.Character.Humanoid
-			Player.Character.Humanoid.WalkSpeed = speed
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 		end
-		end)
+	end)
 	 repeat task.wait()
-	 Player.Character.Humanoid.WalkSpeed = speed
+	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
 	 until loopws == false
  end)
  
@@ -10363,7 +10363,7 @@ end
 	 loopws = false
 	 RepWs:Disconnect()
 	 wait(0.6)
-	 Player.Character.Humanoid.WalkSpeed = 16
+	 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
  end)
  
  loopwave = false
