@@ -74,7 +74,7 @@ end)
  
  -- [[ PREFIX AND OTHER STUFF. ]] -- 
  local opt = {
-	 prefix = ";" or readfile("Nameless-Admin/Prefix.txt", ';'),
+	 prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
 	 tupleSeparator = ',',
 	 ui = {					
 		 
@@ -100,6 +100,8 @@ end)
  local StarterGui = game:GetService("StarterGui")
  local SoundService = game:GetService("SoundService")
  local Lighting = game:GetService("Lighting")
+ local ReplicatedStorage = game:GetService("ReplicatedStorage")
+ local GuiService = game:GetService("GuiService")
  local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
  sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
  local Player = game.Players.LocalPlayer
@@ -5019,7 +5021,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Namele
  });
 				 end)
  
-				 cmd.add({"clicktp"}, {"clicktp", "Teleport where your mouse is"}, function()
+				 cmd.add({"clicktp", "tptool"}, {"clicktp (tptool)", "Teleport where your mouse is"}, function()
 					 mouse = game.Players.LocalPlayer:GetMouse()
  tool = Instance.new("Tool")
  tool.RequiresHandle = false
@@ -6237,7 +6239,7 @@ end)
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
  end)
 
- cmd.add({"PartName", "partpath"}, {"PartName (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
+ cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
 
@@ -10344,27 +10346,48 @@ end
  sitDied:Disconnect()
  end)
  
- loopws = false
- cmd.add({"loopwalkspeed", "loopws"}, {"loopwalkspeed <speed> (loopws)", "Loop walkspeed"}, function(...)
-	 speed = (...)
+local loopws = false
+getgenv().NamelessWs = nil
+ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <speed> (loopws, lws)", "Loop walkspeed"}, function(...)
+	val = {...}
+getgenv().NamelessWs = (val[1] or 16)
 	 loopws = true
-	 RepWs = Player.Character.CharacterAdded:Connect(function()
-		if loopws == true then
-		   repeat wait() until Player.Character.Humanoid
-			Player.Character.Humanoid.WalkSpeed = speed
-		end
-		end)
 	 repeat task.wait()
-	 Player.Character.Humanoid.WalkSpeed = speed
-	 until loopws == false
+pcall(function()
+speaker.Character.Humanoid.WalkSpeed = getgenv().NamelessWs
+end)
+until loopws == false
  end)
  
- cmd.add({"unloopwalkspeed", "unloopws"}, {"unloopwalkspeed <speed> (unloopws)", "Disable loop walkspeed"}, function(...)
+ cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <speed> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	 loopws = false
-	 RepWs:Disconnect()
-	 wait(0.6)
-	 Player.Character.Humanoid.WalkSpeed = 16
  end)
+
+ local loopjp = false
+getgenv().NamelessJP = nil
+ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <speed> (loopjp, ljp)", "Loop JumpPower"}, function(...)
+	val = {...}
+getgenv().NamelessJP = (val[1] or 50)
+	 loopjp = true
+	 repeat task.wait()
+pcall(function()
+speaker.Character.Humanoid.JumpPower = getgenv().NamelessJP
+end)
+until loopjp == false
+ end)
+ 
+ cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <speed> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
+	 loopjp = false
+ end)
+
+ cmd.add({"stopanimations", "stopanims", "stopanim"}, {"stopanimations <speed> (stopanims, stopanim)", "Stops running animations"}, function()
+	local Char = speaker.Character
+	local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+
+	for i,v in next, Hum:GetPlayingAnimationTracks() do
+		v:Stop()
+	end
+end)
  
  loopwave = false
  cmd.add({"loopwaveat", "loopwat"}, {"loopwaveat <player> (loopwat)", "Wave to a player in a loop"}, function(...)
@@ -10394,8 +10417,37 @@ end
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldcframe
  end)
 
- cmd.add({"unloopwaveat", "unloopwat"}, {"unloopwaveat <player> (unloopwat)", "Stops the loopwaveat command"}, function(...)
+ cmd.add({"unloopwaveat", "unloopwat"}, {"unloopwaveat <player> (unloopwat)", "Stops the loopwaveat command"}, function()
 	loopwave = false
+ end)
+
+ cmd.add({"tools", "gears"}, {"tools <player> (gears)", "Copies tools from ReplicatedStorage and Lighting"}, function()
+	local function copy(instance)
+		for i,c in pairs(instance:GetDescendants()) do
+			if c:IsA('Tool') or c:IsA('HopperBin') then
+				c:Clone().Parent = speaker:FindFirstChildOfClass("Backpack")
+			end
+			copy(c)
+		end
+	end
+	copy(Lighting)
+	local function copy(instance)
+		for i,c in pairs(instance:GetDescendants()) do
+			if c:IsA('Tool') or c:IsA('HopperBin') then
+				c:Clone().Parent = speaker:FindFirstChildOfClass("Backpack")
+			end
+			copy(c)
+		end
+	end
+	copy(ReplicatedStorage)
+
+	wait();
+					 
+	Notify({
+	Description = "Copied tools from ReplicatedStorage and Lighting";
+	Title = "Nameless Admin";
+	Duration = 3;
+	});
  end)
 
  cmd.add({"waveat", "wat"}, {"waveat <player> (wat)", "Wave to a player"}, function(...)
@@ -10478,6 +10530,39 @@ end
 		 bangDied:Disconnect()
  end
  end)
+
+ local HumanModCons = {}
+
+ cmd.add({"edgejump", "ejump"}, {"edgejump (ejump)", "Automatically jumps when you get to the edge of an object"}, function()
+	local Char = speaker.Character
+	local Human = Char and Char:FindFirstChildWhichIsA("Humanoid")
+	local state
+	local laststate
+	local lastcf
+	local function edgejump()
+		if Char and Human then
+			laststate = state
+			state = Human:GetState()
+			if laststate ~= state and state == Enum.HumanoidStateType.Freefall and laststate ~= Enum.HumanoidStateType.Jumping then
+				Char.HumanoidRootPart.CFrame = lastcf
+				Char.HumanoidRootPart.Velocity = Vector3.new(Char.HumanoidRootPart.Velocity.X, Human.JumpPower or Human.JumpHeight, Char.HumanoidRootPart.Velocity.Z)
+			end
+			lastcf = Char.HumanoidRootPart.CFrame
+		end
+	end
+	edgejump()
+	HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or RunService.RenderStepped:Connect(edgejump)
+	HumanModCons.ejCA = (HumanModCons.ejCA and HumanModCons.ejCA:Disconnect() and false) or speaker.CharacterAdded:Connect(function(nChar)
+		Char, Human = nChar, nChar:WaitForChild("Humanoid")
+		edgejump()
+		HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or RunService.RenderStepped:Connect(edgejump)
+	end)
+end)
+
+cmd.add({"unedgejump", "noedgejump", "noejump", "unejump"}, {"unedgejump (noedgejump, noejump, unejump)", "Disables edgejump"}, function()
+	HumanModCons.ejLoop = (HumanModCons.ejLoop and HumanModCons.ejLoop:Disconnect() and false) or nil
+	HumanModCons.ejCA = (HumanModCons.ejCA and HumanModCons.ejCA:Disconnect() and false) or nil
+end)
  
  cmd.add({"bang", "fuck"}, {"bang <player> <speed>", "Bangs the player by attaching to them"}, function(h,d)	 
 	 speed = d
@@ -10517,7 +10602,7 @@ end
  end)
  
  glueloop = false
- cmd.add({"glue", "loopgoto"}, {"glue <player> (loopgoto)", "Loop teleport to a player"}, function(...)
+ cmd.add({"glue", "loopgoto", "lgoto"}, {"glue <player> (loopgoto, lgoto)", "Loop teleport to a player"}, function(...)
 	glueloop = true
 User = (...)
 Target = getPlr(User)
@@ -12124,6 +12209,13 @@ end
 			 cmd.add({"unloopkill"}, {"unloopkill", "Stops loop killing a player"}, function()
 				 Loopkill = false
 			 end)
+
+			 cmd.add({"inspect"}, {"examine", "Stops loop killing a player"}, function(args)
+				for _, v in ipairs(getPlayer(args[1], speaker)) do
+					GuiService:CloseInspectMenu()
+					GuiService:InspectPlayerFromUserId(Players[v].UserId)
+				end
+			end)
  
  local netlagtab = {}
  
@@ -12729,6 +12821,23 @@ local thecode = cmdtxtbar:sub(indexx + 1)
             end
         end
     end
+ end)
+
+ cmd.add({"tweengotopart", "tgotopart", "ttopart"}, {"tweengotopart {partname} (tgotopart, ttopart)", "Tweens your character to a part or multiple parts"}, function()
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+local _, indexx = cmdtxtbar:find("%s")
+local thecode = cmdtxtbar:sub(indexx + 1)
+
+for i,v in pairs(workspace:GetDescendants()) do
+	if v.Name:lower() == thecode:lower() and v:IsA("BasePart") then
+		if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
+			speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
+			wait(.1)
+		end
+		wait(1)
+		TweenService:Create(getRoot(speaker.Character), TweenInfo.new(1, Enum.EasingStyle.Linear), {CFrame = v.CFrame}):Play()
+	end
+end
  end)
 
  cmd.add({"gotopartclass", "gpc", "gotopartc"}, {"gotopartclass {classname} (gpc, gotopartc)", "Moves your character to a part or multiple parts based on classname"}, function(...)
@@ -14292,6 +14401,7 @@ game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
 	)
 end)
  
+ 
  cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scare people or something"}, function()
 	 Keybind = "E"
  
@@ -14301,9 +14411,9 @@ end)
 	 if invisRunning then return end
 		 invisRunning = true
 		 -- Full credit to AmokahFox @V3rmillion
-		 local Player = speaker
-		 repeat wait(.1) until Player.Character
-		 local Character = Player.Character
+		 local Player = game.Players.LocalPlayer
+		 repeat wait(.1) until game.Players.LocalPlayer.Character
+		 local Character = game.Players.LocalPlayer.Character
 		 Character.Archivable = true
 		 local IsInvis = false
 		 local IsRunning = true
@@ -14321,7 +14431,7 @@ end)
 				 else
 					 IsInteger = false
 				 end
-				 local Pos = Player.Character.HumanoidRootPart.Position
+				 local Pos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
 				 local Pos_String = tostring(Pos)
 				 local Pos_Seperate = Pos_String:split(', ')
 				 local X = tonumber(Pos_Seperate[1])
@@ -14410,7 +14520,7 @@ end)
 		   if IsInvis == false then
 			   IsInvis = true
 		 CF = game.Workspace.CurrentCamera.CFrame
-		 local CF_1 = speaker.Character.HumanoidRootPart.CFrame
+		 local CF_1 = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		 Character:MoveTo(Vector3.new(0,math.pi*1000000,0))
 		 game.Workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
 		 wait(.1)
@@ -14419,20 +14529,20 @@ end)
 		 Character.Parent = game.Lighting
 		 InvisibleCharacter.Parent = game.Workspace
 		 InvisibleCharacter.HumanoidRootPart.CFrame = CF_1
-		 speaker.Character = InvisibleCharacter
+		 game.Players.LocalPlayer.Character = InvisibleCharacter
 		 local workspace = game.Workspace
 	 Players = game:GetService("Players")
-	 local speaker = speaker
+	 local speaker = game.Players.LocalPlayer
 	 workspace.CurrentCamera:remove()
 		 wait(.1)
 		 game.Workspace.CurrentCamera.CameraSubject = speaker.Character:FindFirstChildWhichIsA('Humanoid')
 		 game.Workspace.CurrentCamera.CameraType = "Custom"
-		 speaker.CameraMinZoomDistance = 0.5
-		 speaker.CameraMaxZoomDistance = 400
-		 speaker.CameraMode = "Classic"
-		 speaker.Character.Head.Anchored = false
-		 speaker.Character.Animate.Disabled = true
-		 speaker.Character.Animate.Disabled = false
+		 game.Players.LocalPlayer.CameraMinZoomDistance = 0.5
+		 game.Players.LocalPlayer.CameraMaxZoomDistance = 400
+		 game.Players.LocalPlayer.CameraMode = "Classic"
+		 game.Players.LocalPlayer.Character.Head.Anchored = false
+		 game.Players.LocalPlayer.Character.Animate.Disabled = true
+		 game.Players.LocalPlayer.Character.Animate.Disabled = false
 	 elseif IsInvis == true then
 	 TurnVisible()
 	 IsInvis = false
@@ -14469,6 +14579,7 @@ end)
  
  ScreenGui.Parent = game.CoreGui
  ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+ ScreenGui.ResetOnSpawn = false
  
  TextButton.Parent = ScreenGui
  TextButton.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
@@ -14524,18 +14635,13 @@ end)
 		 game.Players.LocalPlayer.Character.Animate.Disabled = false
 					 script.Parent.Text = "Visible"
 	 elseif IsInvis == true then
+	 TurnVisible()
 	 IsInvis = false
-	script.Parent.Text = "Invisible"
-		TurnVisible()
+				 script.Parent.Text = "Invisible"
 		 end
 	 end)
  end
  coroutine.wrap(FEPVI_fake_script)()
- nuuh = Players.LocalPlayer.Character.Humanoid.Died:Connect(function()
-	ScreenGui:Destroy()
-	nuuh:Disconnect()
- end)
- gui.draggable(TextButton)
  else
  end
  end)
