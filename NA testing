@@ -10381,7 +10381,7 @@ until loopjp == false
  end)
 
  cmd.add({"stopanimations", "stopanims", "stopanim"}, {"stopanimations <speed> (stopanims, stopanim)", "Stops running animations"}, function()
-	local Char = speaker.Character
+	local Char = Players.LocalPlayer.Character
 	local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 
 	for i,v in next, Hum:GetPlayingAnimationTracks() do
