@@ -2338,11 +2338,14 @@ print(Time)
 		 end)
  
  cmd.add({"rejoin", "rj"}, {"rejoin (rj)", "Rejoin the game"}, function()
-	 game:GetService("TeleportService"):Teleport(game.PlaceId)
-	 wait()
+	 if #game.Players:GetPlayers() <= 1 then
+		game.Players.LocalPlayer:Kick("Rejoining...")
+		wait()
+		game:GetService("TeleportService"):Teleport(game.PlaceId)
+	else
+		game:GetService("TeleportService"):Teleport(game.PlaceId)
+	end
 	 
- 
- 
  wait();
  
  Notify({
