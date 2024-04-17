@@ -42,11 +42,6 @@ print([[
 ]])
 end)
 
--- adonis admin bypass
-task.spawn(function()
-	wait(5); -- delay needed so it would actually bypass adonis (in case of autoexec) | credits to Nooby on scriptblox
-	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
-end)
 
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
@@ -2346,12 +2341,32 @@ print(Time)
 		game:GetService("TeleportService"):Teleport(game.PlaceId)
 	end
 	 
+ 
+ 
  wait();
  
  Notify({
  Description = "Rejoining...";
  Title = "Nameless Admin";
  Duration = 5;
+ 
+ });
+ end)
+
+cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (bypassadonis, badonis, adonisb)", "bypasses adonis admin detection"}, function()
+	 task.spawn(function()
+	wait(1); -- credits to Nooby on scriptblox
+	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
+end)
+	 
+ 
+ 
+ wait();
+ 
+ Notify({
+ Description = "Bypassing...";
+ Title = "Nameless Admin";
+ Duration = 3;
  
  });
  end)
