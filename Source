@@ -1,3 +1,5 @@
+--hi
+
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
