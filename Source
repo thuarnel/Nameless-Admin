@@ -24,9 +24,9 @@ task.spawn(function() -- automatically loads Nameless Admin when teleported
 	end)
 end)
 
-task.spawn(function()
+task.spawn(function() -- saveinstance support (credits to Viper)
 	task.wait(1)
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/saveinstance%20real%20no%20clickbait?raw=true"))();
+	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
 
 repeat wait() until game:GetService("Players").LocalPlayer.Character
