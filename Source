@@ -1,4 +1,4 @@
---hi
+-- hi there grimexploits
 
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
@@ -9931,7 +9931,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 wait();
 	 
 	 Notify({
-	 Description = "there isn't any discord invite link from FilteringEnabled";
+	 Description = "there isn't any discord invite link from qipu";
 	 Title = "Nameless Admin";
 	 Duration = 5;
 	 
@@ -15810,13 +15810,6 @@ Notify({
  Title = "Hey "..hh.."";
  Duration = 7;
  });
- wait();
- Notify({
-	Description = "script has been continued (unofficially)\n\nScriptblox: v3r_\nDiscord: maxype";
-	Title = "Info";
-	Duration = 7;
-	});
-end)
 end)
  
  function Destroy(guiObject)
