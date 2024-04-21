@@ -1,4 +1,4 @@
-if getgenv().NamelessLoaded == true then --checks if Nameless Admin is already loaded
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -15,7 +15,7 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function() -- automatically loads Nameless Admin when teleported
+spawn(function() -- automatically loads Nameless Admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -24,7 +24,7 @@ task.spawn(function() -- automatically loads Nameless Admin when teleported
 	end)
 end)
 
-task.spawn(function() -- saveinstance support (credits to Viper)
+spawn(function() -- saveinstance support (credits to Viper)
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
@@ -289,7 +289,7 @@ end
 end
 
  function ESP(plr)
-	task.spawn(function()
+	spawn(function()
 		for i,v in pairs(COREGUI:GetChildren()) do
 			if v.Name == plr.Name..'_ESP' then
 				v:Destroy()
@@ -2324,7 +2324,7 @@ print(Time)
 	   local qot = print("a")
 	   local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 	   if hrp then
-		 qot = "task.spawn(function() end) repeat wait() until game and game:IsLoaded() local lp = game:GetService('Players').LocalPlayer local char = lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame = CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..") - char:WaitForChild('HumanoidRootPart').Position).Magnitude < 10"
+		 qot = "spawn(function() end) repeat wait() until game and game:IsLoaded() local lp = game:GetService('Players').LocalPlayer local char = lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame = CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..") - char:WaitForChild('HumanoidRootPart').Position).Magnitude < 10"
 	   end
 	   queueteleport(qot)
 	   game:GetService("TeleportService"):TeleportCancel()
@@ -2354,7 +2354,7 @@ print(Time)
  end)
 
 cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (bypassadonis, badonis, adonisb)", "bypasses adonis admin detection"}, function()
-	 task.spawn(function()
+	 spawn(function()
 	wait(1); -- credits to Nooby on scriptblox
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
@@ -8739,7 +8739,7 @@ print(Time)
 		 end
 	 
 		 ChatFixToggle = false
-		 task.spawn(function()
+		 spawn(function()
 			 wait(1)
 			 ACLWarning:Destroy()
 		 end)
@@ -15778,7 +15778,7 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
 
-task.spawn(function()
+spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
 	local hh
@@ -15793,6 +15793,7 @@ Notify({
  Title = "Hey "..hh.."";
  Duration = 7;
  });
+
 end)
  
  function Destroy(guiObject)
