@@ -1,4 +1,4 @@
-if NamelessLoaded then --checks if Nameless Admin is already loaded
+if getgenv().NamelessLoaded == true then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -15788,13 +15788,11 @@ task.spawn(function()
 		hh = ""..display.." (@"..name..")"
 	end
 
-delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
  Duration = 7;
  });
-end)
 end)
  
  function Destroy(guiObject)
