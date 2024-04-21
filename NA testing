@@ -9619,7 +9619,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/translatoooor"))()
  end)
  
- cmd.add({"freeze", "thaw", "anchor". "fr"}, {"freeze (thaw, anchor, fr)", "Freezes your character"}, function()
+ cmd.add({"freeze", "thaw", "anchor", "fr"}, {"freeze (thaw, anchor, fr)", "Freezes your character"}, function()
  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
  end)
  
