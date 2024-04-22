@@ -1,5 +1,7 @@
 -- hi grimexploits i know that you're gonna steal this
 
+-- @maxype
+
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
