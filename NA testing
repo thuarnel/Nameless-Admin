@@ -1,7 +1,5 @@
 -- hi grimexploits i know that you're gonna steal this
 
--- @maxype
-
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
@@ -15880,3 +15878,8 @@ end)
 		 cmdInput:CaptureFocus()
  end)
 end
+
+
+-- @maxype
+
+-- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
