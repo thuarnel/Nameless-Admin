@@ -13238,6 +13238,7 @@ end)
  end)
 
  local infJump
+ local infJumpFix
  
  cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be able to jump infinitly"}, function()
 	 
@@ -13272,9 +13273,11 @@ fix()
 else
 	fix()
 end
-game.Players.LocalPlayer.CharacterAdded:Connect(function()
+infJumpFix = game.Players.LocalPlayer.CharacterAdded:Connect(function()
 if infJump then
 	infJump:Disconnect()
+	fix()
+else
 	fix()
 end
 end)
@@ -13292,6 +13295,7 @@ end)
  });
 
  if infJump then infJump:Disconnect() end
+ if infJumpFix then infJumpFix:Disconnect() end
 
  end)
 
