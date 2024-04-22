@@ -731,12 +731,6 @@ end
  end
 
  --[[ COMMANDS ]]--
- --[[cmd.add({"script", "s", "run"}, {"script <source> (s, run)", "Run the code requested"}, function()
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-local _, indexx = cmdtxtbar:find("%s")
-local thecode = cmdtxtbar:sub(indexx + 1)
-assert(loadstring(thecode))()
- end)]]
 
  cmd.add({"loadstring", "ls"}, {"loadstring <link> (ls)", "Run the code using loadstring"}, function(source)
 	loadstring(game:HttpGet(source))()
@@ -6257,7 +6251,7 @@ end)
 end)
 
  cmd.add({"backdoor", "backdoorscan"}, {"backdoor (backdoorscan)", "Scans for any backdoors using FraktureSS"}, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))();
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
  end)
  
  cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
@@ -9906,8 +9900,6 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  
  cmd.add({"hatresize"}, {"hatresize", "Makes your hats very big r15 only"}, function()
 	 
-	 
-	 
 	 wait();
 	 
 	 Notify({
@@ -9918,6 +9910,7 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  });
  
  loadstring(game:HttpGet('https://github.com/DigitalityScripts/roblox-scripts/raw/main/hat%20resize'))()
+
  end)
  
  cmd.add({"exit"}, {"exit", "Close down roblox"}, function()
@@ -12723,8 +12716,9 @@ local PromptButtonHoldBegan = nil
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
 	local delcount = 0
 	args = {...}
+	bruh = args[1]
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == args:lower() then
+		if v.Name:lower() == bruh:lower() then
 			v:Destroy()
 			delcount = delcount + 1
 		end
@@ -12734,7 +12728,7 @@ local PromptButtonHoldBegan = nil
 
 	
 	Notify({
- Description = "Deleted over "..delcount.." part(s) named: "..args.."";
+ Description = "Deleted over "..delcount.." part(s) named: "..bruh.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12761,11 +12755,12 @@ local PromptButtonHoldBegan = nil
  });
  end)
 
- cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function()
+ cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
 	local chardelprt = 0
 	args = {...}
+	hh = args[1]
 	for i,v in pairs(Player.Character:GetDescendants()) do
-		if v.Name:lower() == args:lower() then
+		if v.Name:lower() == hh:lower() then
 			chardelprt = chardelprt + 1
 			v:Destroy()
 		end
@@ -12774,7 +12769,7 @@ local PromptButtonHoldBegan = nil
 	wait();
 
 	Notify({
- Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..args.."";
+ Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..hh.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12800,11 +12795,12 @@ local PromptButtonHoldBegan = nil
  });
  end)
  
- cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function()
+ cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
 	args = {...}
+	grr = args[1]
 
     for _, descendant in pairs(game.Workspace:GetDescendants()) do
-        if descendant:IsA("BasePart") and descendant.Name:lower() == args:lower() then
+        if descendant:IsA("BasePart") and descendant.Name:lower() == grr:lower() then
             local character = Player.Character
             if character and character:FindFirstChildOfClass("Humanoid") then
                 local humanoid = character:FindFirstChildOfClass("Humanoid")
@@ -12819,11 +12815,12 @@ local PromptButtonHoldBegan = nil
     end
  end)
 
- cmd.add({"tweengotopart", "tgotopart", "ttopart"}, {"tweengotopart {partname} (tgotopart, ttopart)", "Tweens your character to a part or multiple parts"}, function()
+ cmd.add({"tweengotopart", "tgotopart", "ttopart"}, {"tweengotopart {partname} (tgotopart, ttopart)", "Tweens your character to a part or multiple parts"}, function(...)
 	arg = {...}
+	lol = arg[1]
 
 for i,v in pairs(workspace:GetDescendants()) do
-	if v.Name:lower() == arg:lower() and v:IsA("BasePart") then
+	if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
 		if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 			speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 			wait(.1)
@@ -12837,10 +12834,10 @@ end
  cmd.add({"gotopartclass", "gpc", "gotopartc"}, {"gotopartclass {classname} (gpc, gotopartc)", "Moves your character to a part or multiple parts based on classname"}, function(...)
 	local args = {...}
     
-    local partName = args[1]
+    local pooooo = args[1]
 
     for i,v in pairs(workspace:GetDescendants()) do
-		if v.ClassName:lower() == partName:lower() and v:IsA("BasePart") then
+		if v.ClassName:lower() == pooooo:lower() and v:IsA("BasePart") then
 			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
@@ -12851,21 +12848,23 @@ end
 	end
  end)
 
- cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function()
+ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
     lol = {...}
+	bringmeit = lol[1]
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
+		if v.Name:lower() == bringmeit:lower() and v:IsA("BasePart") then
 			v.CFrame = getRoot(Player.Character).CFrame
 		end
 	end
 end)
 
-cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function()
-    model = {...}
+cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function(...)
+    nooo = {...}
+	i_love_models = nooo[1]
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == model:lower() and v:IsA("Model") then
+		if v.Name:lower() == i_love_models:lower() and v:IsA("Model") then
 			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
@@ -12945,11 +12944,9 @@ function partAdded(part)
 end
 
 
- cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function()
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
-	local partEspName = thecode:lower()
+ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
+	arg = {...}
+	local partEspName = arg:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
 		for i,v in pairs(workspace:GetDescendants()) do
@@ -12982,14 +12979,12 @@ end
 		end
  end)
  
- cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function()
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
+ cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
+	arg = {...}
 
 for _,v in pairs(game.Workspace:GetDescendants()) do
 	local lwr = v.Name:lower()
-	if lwr == thecode:lower() then
+	if lwr == arg:lower() then
 		if v:IsA("BasePart") then
 			wait(0.1)
 			game.Workspace.CurrentCamera.CameraSubject = v
