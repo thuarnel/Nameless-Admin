@@ -1724,7 +1724,7 @@ end)
 		 Root.Anchored = false
  end)
  
- cmd.add({"ospeed", "orbitspeed"}, {"orbitspeed <speed> (ospeed)", "Hat orbit command"}, function(...)
+ cmd.add({"ospeed", "orbitspeed"}, {"orbitspeed <number> (ospeed)", "Hat orbit command"}, function(...)
 		 Speed = tonumber(...)
  end)
  
@@ -2338,7 +2338,7 @@ print(Time)
 		wait()
 		game:GetService("TeleportService"):Teleport(game.PlaceId)
 	else
-		game:GetService("TeleportService"):Teleport(game.PlaceId)
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
 	end
 	 
  
@@ -4937,7 +4937,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Namele
  end)
 							 end)
 							 
- cmd.add({"hamster"}, {"hamster <speed>", "Hamster ball"}, function(...)
+ cmd.add({"hamster"}, {"hamster <number>", "Hamster ball"}, function(...)
 	-- [[ skidded ]] --
  local UserInputService = game:GetService("UserInputService")
  local RunService = game:GetService("RunService")
@@ -6251,18 +6251,13 @@ end)
  
  });
  end)
- 
- 
- cmd.add({"Frakture", "FraktureSS"}, {"Frakture (FraktureSS)", "Scans for any backdoors using FraktureSS"}, function()
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
- end)
 
  cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
 
- cmd.add({"backdoor", "backdoorscan"}, {"backdoor (backdoorscan)", "Scans for any backdoors using backdoor.exe by iK4oS"}, function()
-	loadstring(game:HttpGet(('https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua'),true))()
+ cmd.add({"backdoor", "backdoorscan"}, {"backdoor (backdoorscan)", "Scans for any backdoors using FraktureSS"}, function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))();
  end)
  
  cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
@@ -9624,11 +9619,11 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/translatoooor"))()
  end)
  
- cmd.add({"freeze", "thaw", "anchor"}, {"freeze (thaw, anchor)", "Freezes your character"}, function()
+ cmd.add({"freeze", "thaw", "anchor", "fr"}, {"freeze (thaw, anchor, fr)", "Freezes your character"}, function()
  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
  end)
  
- cmd.add({"unfreeze", "unthaw", "unanchor"}, {"unfreeze (unthaw, unanchor)", "Unfreezes your character"}, function()
+ cmd.add({"unfreeze", "unthaw", "unanchor", "unfr"}, {"unfreeze (unthaw, unanchor, unfr)", "Unfreezes your character"}, function()
  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
  end)
  
@@ -9924,17 +9919,6 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  
  loadstring(game:HttpGet('https://github.com/DigitalityScripts/roblox-scripts/raw/main/hat%20resize'))()
  end)
- 
- cmd.add({"discord"}, {"discord", "discord server link"}, function()
-	 wait();
-	 
-	 Notify({
-	 Description = "there isn't any discord invite link from FilteringEnabled";
-	 Title = "Nameless Admin";
-	 Duration = 5;
-	 
-	 });
-	 end)
  
  cmd.add({"exit"}, {"exit", "Close down roblox"}, function()
  game:Shutdown()
@@ -10366,7 +10350,7 @@ end
  
 local loopws = false
 getgenv().NamelessWs = nil
- cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <speed> (loopws, lws)", "Loop walkspeed"}, function(...)
+ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lws)", "Loop walkspeed"}, function(...)
 	val = {...}
 getgenv().NamelessWs = (val[1] or 16)
 	 loopws = true
@@ -10377,13 +10361,13 @@ end)
 until loopws == false
  end)
  
- cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <speed> (unloopws, unlws)", "Disable loop walkspeed"}, function()
+ cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	 loopws = false
  end)
 
  local loopjp = false
 getgenv().NamelessJP = nil
- cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <speed> (loopjp, ljp)", "Loop JumpPower"}, function(...)
+ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, ljp)", "Loop JumpPower"}, function(...)
 	val = {...}
 getgenv().NamelessJP = (val[1] or 50)
 	 loopjp = true
@@ -10394,11 +10378,11 @@ end)
 until loopjp == false
  end)
  
- cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <speed> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
+ cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	 loopjp = false
  end)
 
- cmd.add({"stopanimations", "stopanims", "stopanim"}, {"stopanimations <speed> (stopanims, stopanim)", "Stops running animations"}, function()
+ cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
 	local Char = Players.LocalPlayer.Character
 	local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 
@@ -10582,7 +10566,7 @@ cmd.add({"unedgejump", "noedgejump", "noejump", "unejump"}, {"unedgejump (noedge
 	HumanModCons.ejCA = (HumanModCons.ejCA and HumanModCons.ejCA:Disconnect() and false) or nil
 end)
  
- cmd.add({"bang", "fuck"}, {"bang <player> <speed>", "Bangs the player by attaching to them"}, function(h,d)	 
+ cmd.add({"bang", "fuck"}, {"bang <player> <number>", "Bangs the player by attaching to them"}, function(h,d)	 
 	 speed = d
  
 	 if speed == nil then
@@ -10881,7 +10865,7 @@ end
  end)
  
  TPWalk = false
- cmd.add({"tpwalk", "tpwalk"}, {"tpwalk <speed>", "More undetectable walkspeed script"}, function(...)
+ cmd.add({"tpwalk", "tpwalk"}, {"tpwalk <number>", "More undetectable walkspeed script"}, function(...)
 	if TPWalk == true then
 		TPWalk = false
 		TPWalking = TPWalking:Disconnect()
@@ -12738,11 +12722,9 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
 	local delcount = 0
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
+	args = {...}
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == thecode:lower() then
+		if v.Name:lower() == args:lower() then
 			v:Destroy()
 			delcount = delcount + 1
 		end
@@ -12752,7 +12734,7 @@ local PromptButtonHoldBegan = nil
 
 	
 	Notify({
- Description = "Deleted over "..delcount.." part(s) named: "..thecode.."";
+ Description = "Deleted over "..delcount.." part(s) named: "..args.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12781,11 +12763,9 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function()
 	local chardelprt = 0
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)
+	args = {...}
 	for i,v in pairs(Player.Character:GetDescendants()) do
-		if v.Name:lower() == thecode:lower() then
+		if v.Name:lower() == args:lower() then
 			chardelprt = chardelprt + 1
 			v:Destroy()
 		end
@@ -12794,7 +12774,7 @@ local PromptButtonHoldBegan = nil
 	wait();
 
 	Notify({
- Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..thecode.."";
+ Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..args.."";
  Title = "Nameless Admin";
  Duration = 4;
  });
@@ -12821,12 +12801,10 @@ local PromptButtonHoldBegan = nil
  end)
  
  cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function()
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-local _, indexx = cmdtxtbar:find("%s")
-local thecode = cmdtxtbar:sub(indexx + 1)
+	args = {...}
 
     for _, descendant in pairs(game.Workspace:GetDescendants()) do
-        if descendant:IsA("BasePart") and descendant.Name:lower() == thecode:lower() then
+        if descendant:IsA("BasePart") and descendant.Name:lower() == args:lower() then
             local character = Player.Character
             if character and character:FindFirstChildOfClass("Humanoid") then
                 local humanoid = character:FindFirstChildOfClass("Humanoid")
@@ -12842,12 +12820,10 @@ local thecode = cmdtxtbar:sub(indexx + 1)
  end)
 
  cmd.add({"tweengotopart", "tgotopart", "ttopart"}, {"tweengotopart {partname} (tgotopart, ttopart)", "Tweens your character to a part or multiple parts"}, function()
-	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-local _, indexx = cmdtxtbar:find("%s")
-local thecode = cmdtxtbar:sub(indexx + 1)
+	arg = {...}
 
 for i,v in pairs(workspace:GetDescendants()) do
-	if v.Name:lower() == thecode:lower() and v:IsA("BasePart") then
+	if v.Name:lower() == arg:lower() and v:IsA("BasePart") then
 		if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 			speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
 			wait(.1)
@@ -12876,24 +12852,20 @@ end
  end)
 
  cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function()
-    local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-local _, indexx = cmdtxtbar:find("%s")
-local thecode = cmdtxtbar:sub(indexx + 1)
+    lol = {...}
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == thecode:lower() and v:IsA("BasePart") then
+		if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
 			v.CFrame = getRoot(Player.Character).CFrame
 		end
 	end
 end)
 
 cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports you to the model"}, function()
-    local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
-local _, indexx = cmdtxtbar:find("%s")
-local thecode = cmdtxtbar:sub(indexx + 1)
+    model = {...}
 
 for i,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == thecode:lower() and v:IsA("Model") then
+		if v.Name:lower() == model:lower() and v:IsA("Model") then
 			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
 				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
 				wait(.1)
