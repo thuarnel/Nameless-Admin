@@ -13269,6 +13269,7 @@ function fix()
 end
 if infJump then
 	infJump:Disconnect()
+	wait();
 fix()
 else
 	fix()
@@ -13276,6 +13277,7 @@ end
 infJumpFix = game.Players.LocalPlayer.CharacterAdded:Connect(function()
 if infJump then
 	infJump:Disconnect()
+	wait();
 	fix()
 else
 	fix()
