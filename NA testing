@@ -15,7 +15,7 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-spawn(function() -- automatically loads Nameless Admin when teleported
+task.spawn(function() -- automatically loads Nameless Admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 	local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -24,7 +24,7 @@ spawn(function() -- automatically loads Nameless Admin when teleported
 	end)
 end)
 
-spawn(function() -- saveinstance support (credits to Viper)
+task.spawn(function() -- saveinstance support (credits to Viper)
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
@@ -289,7 +289,7 @@ end
 end
 
  function ESP(plr)
-	spawn(function()
+	task.spawn(function()
 		for i,v in pairs(COREGUI:GetChildren()) do
 			if v.Name == plr.Name..'_ESP' then
 				v:Destroy()
@@ -2324,7 +2324,7 @@ print(Time)
 	   local qot = print("a")
 	   local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 	   if hrp then
-		 qot = "spawn(function() end) repeat wait() until game and game:IsLoaded() local lp = game:GetService('Players').LocalPlayer local char = lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame = CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..") - char:WaitForChild('HumanoidRootPart').Position).Magnitude < 10"
+		 qot = "task.spawn(function() end) repeat wait() until game and game:IsLoaded() local lp = game:GetService('Players').LocalPlayer local char = lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame = CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..") - char:WaitForChild('HumanoidRootPart').Position).Magnitude < 10"
 	   end
 	   queueteleport(qot)
 	   game:GetService("TeleportService"):TeleportCancel()
@@ -2338,7 +2338,7 @@ print(Time)
 		wait()
 		game:GetService("TeleportService"):Teleport(game.PlaceId)
 	else
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+		game:GetService("TeleportService"):Teleport(game.PlaceId)
 	end
 	 
  
@@ -2354,7 +2354,7 @@ print(Time)
  end)
 
 cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (bypassadonis, badonis, adonisb)", "bypasses adonis admin detection"}, function()
-	 spawn(function()
+	 task.spawn(function()
 	wait(1); -- credits to Nooby on scriptblox
 	for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 end)
@@ -6251,13 +6251,18 @@ end)
  
  });
  end)
+ 
+ 
+ cmd.add({"Frakture", "FraktureSS"}, {"Frakture (FraktureSS)", "Scans for any backdoors using FraktureSS"}, function()
+	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
+ end)
 
  cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
 
  cmd.add({"backdoor", "backdoorscan"}, {"backdoor (backdoorscan)", "Scans for any backdoors using backdoor.exe by iK4oS"}, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
+	loadstring(game:HttpGet(('https://raw.githubusercontent.com/iK4oS/backdoor.exe/master/source.lua'),true))()
  end)
  
  cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
@@ -8739,7 +8744,7 @@ print(Time)
 		 end
 	 
 		 ChatFixToggle = false
-		 spawn(function()
+		 task.spawn(function()
 			 wait(1)
 			 ACLWarning:Destroy()
 		 end)
@@ -9619,11 +9624,11 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
 	 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/translatoooor"))()
  end)
  
- cmd.add({"freeze", "thaw", "anchor", "fr"}, {"freeze (thaw, anchor, fr)", "Freezes your character"}, function()
+ cmd.add({"freeze", "thaw", "anchor"}, {"freeze (thaw, anchor)", "Freezes your character"}, function()
  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
  end)
  
- cmd.add({"unfreeze", "unthaw", "unanchor", "unfr"}, {"unfreeze (unthaw, unanchor, unfr)", "Unfreezes your character"}, function()
+ cmd.add({"unfreeze", "unthaw", "unanchor"}, {"unfreeze (unthaw, unanchor)", "Unfreezes your character"}, function()
  game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
  end)
  
@@ -9919,6 +9924,17 @@ getChar().HumanoidRootPart.CFrame = target.Character.Humanoid.RootPart.CFrame
  
  loadstring(game:HttpGet('https://github.com/DigitalityScripts/roblox-scripts/raw/main/hat%20resize'))()
  end)
+ 
+ cmd.add({"discord"}, {"discord", "discord server link"}, function()
+	 wait();
+	 
+	 Notify({
+	 Description = "there isn't any discord invite link from FilteringEnabled";
+	 Title = "Nameless Admin";
+	 Duration = 5;
+	 
+	 });
+	 end)
  
  cmd.add({"exit"}, {"exit", "Close down roblox"}, function()
  game:Shutdown()
@@ -10350,7 +10366,7 @@ end
  
 local loopws = false
 getgenv().NamelessWs = nil
- cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lws)", "Loop walkspeed"}, function(...)
+ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <speed> (loopws, lws)", "Loop walkspeed"}, function(...)
 	val = {...}
 getgenv().NamelessWs = (val[1] or 16)
 	 loopws = true
@@ -10361,13 +10377,13 @@ end)
 until loopws == false
  end)
  
- cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
+ cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <speed> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	 loopws = false
  end)
 
  local loopjp = false
 getgenv().NamelessJP = nil
- cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, ljp)", "Loop JumpPower"}, function(...)
+ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <speed> (loopjp, ljp)", "Loop JumpPower"}, function(...)
 	val = {...}
 getgenv().NamelessJP = (val[1] or 50)
 	 loopjp = true
@@ -10378,11 +10394,11 @@ end)
 until loopjp == false
  end)
  
- cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
+ cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <speed> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	 loopjp = false
  end)
 
- cmd.add({"stopanimations", "stopanims", "stopanim"}, {"stopanimations <number> (stopanims, stopanim)", "Stops running animations"}, function()
+ cmd.add({"stopanimations", "stopanims", "stopanim"}, {"stopanimations <speed> (stopanims, stopanim)", "Stops running animations"}, function()
 	local Char = Players.LocalPlayer.Character
 	local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
 
@@ -12722,12 +12738,11 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
 	local delcount = 0
-	arg = {...}
-	--[[local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
 	local _, indexx = cmdtxtbar:find("%s")
-	local thecode = cmdtxtbar:sub(indexx + 1)]]
+	local thecode = cmdtxtbar:sub(indexx + 1)
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower() == arg:lower() then
+		if v.Name:lower() == thecode:lower() then
 			v:Destroy()
 			delcount = delcount + 1
 		end
@@ -12743,7 +12758,7 @@ local PromptButtonHoldBegan = nil
  });
  end)
 
- cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removeclass, dc)", "Removes any part with a certain classname from the workspace"}, function(...)
+ cmd.add({"deleteclass", "removeclass"}, {"deleteclass {ClassName} (removeclass)", "Removes any part with a certain classname from the workspace"}, function(...)
  local delclass = 0
  local grr = {...}
  local JJ = grr[1]
@@ -12766,9 +12781,11 @@ local PromptButtonHoldBegan = nil
 
  cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function()
 	local chardelprt = 0
-	arg = {...}
+	local cmdtxtbar = game.CoreGui.RobloxGui.CmdBar.CenterBar.Input.Text
+	local _, indexx = cmdtxtbar:find("%s")
+	local thecode = cmdtxtbar:sub(indexx + 1)
 	for i,v in pairs(Player.Character:GetDescendants()) do
-		if v.Name:lower() == arg:lower() then
+		if v.Name:lower() == thecode:lower() then
 			chardelprt = chardelprt + 1
 			v:Destroy()
 		end
@@ -14911,17 +14928,14 @@ end)
  
 	cmd.add({"jp", "jumppower"}, {"jumppower <number> (jp)", "Makes your JumpPower whatever you want"}, function(...)
 		local args = {...}
-	if args[2] then
-		local jp = args[2] or 16
-		if isNumber(jp) then
-			speaker.Character:FindFirstChildOfClass('Humanoid').JumpPower = jp
+		local jpower = args[1] or 50
+		if isNumber(jpower) then
+			if Player.Character:FindFirstChildOfClass('Humanoid').UseJumpPower then
+				Player.Character:FindFirstChildOfClass('Humanoid').JumpPower = jpower
+			else
+				Player.Character:FindFirstChildOfClass('Humanoid').JumpHeight  = jpower
+			end
 		end
-	else
-		local jp = args[1] or 16
-		if isNumber(jp) then
-			speaker.Character:FindFirstChildOfClass('Humanoid').JumpPower = jp
-		end
-	end
 	end)
  
 		 cmd.add({"oofspam"}, {"oofspam", "Spams oof"}, function()
@@ -15778,7 +15792,7 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
 
-spawn(function()
+task.spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
 	local hh
@@ -15788,12 +15802,13 @@ spawn(function()
 		hh = ""..display.." (@"..name..")"
 	end
 
+delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = "Hey "..hh.."";
  Duration = 7;
  });
-
+end)
 end)
  
  function Destroy(guiObject)
@@ -15827,7 +15842,7 @@ end)
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
- TextClickButton.ZIndex=99
+ TextClickButton.ZIndex=1
 
  
  UICorner.CornerRadius = UDim.new(1, 0)
