@@ -160,13 +160,28 @@ end)
  
  local bringc = {}
 
-
+-- welcome messages
  local msg = {
     "Hey",
     "Hello",
     "Hi",
     "wsp",
 	"Hi there",
+}
+
+-- goofy text lol
+local Goofer = {
+    "Egg",
+    "Among Us",
+    "i am a goofy goober",
+    "mmmm lasagna",
+	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+	"i am wondering if i even have a life",
+	"[REDACTED]",
+	"hey guys welcome to another video",
+	"⚠️⚠️⚠️",
+	":-(",
+	"(╯°□°)╯︵ ┻━┻",
 }
  
  --[[ COMMAND FUNCTIONS ]]--
@@ -223,6 +238,10 @@ end
 
 function rngMsg()
     return msg[math.random(1, #msg)]
+end
+
+function goof()
+    return Goofer[math.random(1, #Goofer)]
 end
 	 
 function getRoot(char)
@@ -15789,8 +15808,13 @@ delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
  Title = ""..rngMsg().." "..hh.."";
- Duration = 7;
+ Duration = 5;
  });
+ Notify({
+	Description = goof();
+	Title = "Goofy Messages";
+	Duration = 3;
+	});
 end)
 end)
  
