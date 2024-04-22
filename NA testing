@@ -1,3 +1,5 @@
+-- hi grimexploits i know that you're gonna steal this
+
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
@@ -80,7 +82,7 @@ end)
  }
  
  -- [[ Version ]] -- 
- curVer = 2.16
+ curVer = 2.17
  
  --[[ VARIABLES ]]--
  PlaceId, JobId = game.PlaceId, game.JobId
@@ -157,6 +159,15 @@ end)
  end)
  
  local bringc = {}
+
+
+ local msg = {
+    "Hey",
+    "Hello",
+    "Hi",
+    "wsp",
+	"Hi there",
+}
  
  --[[ COMMAND FUNCTIONS ]]--
  commandcount = 0
@@ -208,6 +219,10 @@ function r15(plr)
 	if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
 		return true
 	end
+end
+
+function rngMsg()
+    return msg[math.random(1, #msg)]
 end
 	 
 function getRoot(char)
@@ -3542,10 +3557,10 @@ end)
 	 end)
  end)
  
- cmd.add({"vr", "clovr", "vrscript", "fevr"}, {"vr (clovr, vrscript, fevr)", "FE VR SCRIPT AKA CLOVR"}, function()
-	-- [[ should be patched ]] --
+ --[[cmd.add({"vr", "clovr", "vrscript", "fevr"}, {"vr (clovr, vrscript, fevr)", "FE VR SCRIPT AKA CLOVR"}, function()
+	-- should be patched --
  loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/CloVR"))();
- end)
+ end)]]
 
 cmd.add({"antilag", "boostfps"}, {"antilag (boostfps)", "Low Graphics"}, function()
 _G.Settings = {
@@ -4215,7 +4230,7 @@ end)
 			 player.CharacterAdded:wait(1):waitForChild("HumanoidRootPart").CFrame = CF
  end)
  
- cmd.add({"localtime", "yourtime"}, {"localtime (yourtime)", "Chats your current time"}, function()
+ cmd.add({"localtime", "yourtime"}, {"localtime (yourtime)", "Shows your current time"}, function()
    local hour = os.date("*t")['hour']
 		 if hour < 10 then
 				 hour = "0"..hour
@@ -12734,7 +12749,7 @@ local PromptButtonHoldBegan = nil
  });
  end)
 
- cmd.add({"deleteclass", "removeclass"}, {"deleteclass {ClassName} (removeclass)", "Removes any part with a certain classname from the workspace"}, function(...)
+ cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removeclass, dc)", "Removes any part with a certain classname from the workspace"}, function(...)
  local delclass = 0
  local grr = {...}
  local JJ = grr[1]
@@ -12755,7 +12770,7 @@ local PromptButtonHoldBegan = nil
  });
  end)
 
- cmd.add({"chardelete", "charremove"}, {"chardelete {partname} (charremove)", "Removes any part with a certain name from your character"}, function(...)
+ cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove"}, {"chardelete {partname} (charremove, chardel, cdelete, cremove)", "Removes any part with a certain name from your character"}, function(...)
 	local chardelprt = 0
 	args = {...}
 	hh = args[1]
@@ -13635,7 +13650,7 @@ Lighting.Brightness = 0
  });
  end)
  
- cmd.add({"iy", "i"}, {"iy {command} (i)", "Executes infinite yield scripts"}, function(...)
+ cmd.add({"iy"}, {"iy {command}", "Executes infinite yield scripts"}, function(...)
 	 if IYLOADED == false then
 		 local function copytable(tbl) local copy = {} for i,v in pairs(tbl) do copy[i] = v end return copy end
 		 local sandbox_env = copytable(getfenv())
@@ -15759,6 +15774,7 @@ end
 	 commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList.UIListLayout.AbsoluteContentSize.Y)
  end)
 
+
 task.spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
@@ -15772,7 +15788,7 @@ task.spawn(function()
 delay(1, function()
 Notify({
  Description = "Welcome to Nameless Admin V"..curVer.."";
- Title = "Hey "..hh.."";
+ Title = ""..rngMsg().." "..hh.."";
  Duration = 7;
  });
 end)
