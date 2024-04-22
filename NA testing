@@ -15812,7 +15812,7 @@ Notify({
  });
  Notify({
 	Description = goof();
-	Title = "Goofy Messages";
+	Title = "Random Goofy Message";
 	Duration = 3;
 	});
 end)
