@@ -12980,7 +12980,8 @@ end
 
  cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "Makes you be able to see any part"}, function(...)
 	arg = {...}
-	local partEspName = arg:lower()
+	fix = arg[1]
+	local partEspName = fix:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
 		for i,v in pairs(workspace:GetDescendants()) do
@@ -13015,10 +13016,11 @@ end
  
  cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "Views a part"}, function(...)
 	arg = {...}
+	args = arg[1]
 
 for _,v in pairs(game.Workspace:GetDescendants()) do
 	local lwr = v.Name:lower()
-	if lwr == arg:lower() then
+	if lwr == args:lower() then
 		if v:IsA("BasePart") then
 			wait(0.1)
 			game.Workspace.CurrentCamera.CameraSubject = v
@@ -13256,13 +13258,26 @@ end)
 
  local r = 0
  local d = 0.25
-
+function fix()
  infJump = p.Character.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
 		if tick() - r > d then
 			r = tick()
 			p.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
 		end
 	end)
+end
+if infJump then
+	infJump:Disconnect()
+fix()
+else
+	fix()
+end
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+if infJump then
+	infJump:Disconnect()
+	fix()
+end
+end)
  end)
  
  cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes you NOT be able to infinitly jump"}, function()
