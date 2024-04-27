@@ -1,10 +1,10 @@
 -- hi grimexploits i know that you're gonna steal this
 
-if NamelessLoad then --checks if Nameless Admin is already loaded
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
-pcall(function() getgenv().NamelessLoad = true end)
+pcall(function() getgenv().NamelessLoaded = true end)
  
  -- Waits until game is loaded
  local GetService = game.GetService
@@ -30,6 +30,7 @@ task.spawn(function() -- saveinstance support (credits to Viper)
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
+
 
 spawn(function()
 print([[
@@ -578,7 +579,8 @@ end
 	 end)
 	 FLY()
  end
-
+ 
+ 
 local tool
  spawn(function()
 repeat wait() until game:GetService("Players").LocalPlayer.Character
