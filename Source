@@ -31,7 +31,6 @@ task.spawn(function() -- saveinstance support (credits to Viper)
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)
 
-repeat wait() until game:GetService("Players").LocalPlayer.Character
 
 spawn(function()
 print([[
@@ -582,8 +581,12 @@ end
  end
  
  
- local tool = getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
- 
+local tool
+ spawn(function()
+repeat wait() until game:GetService("Players").LocalPlayer.Character
+ tool = getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
+end)
+
  local function attachTool(tool,cf)
 	 for i,v in pairs(tool:GetDescendants()) do
 		 if not (v:IsA("BasePart") or v:IsA("Mesh") or v:IsA("SpecialMesh")) then
