@@ -1,10 +1,10 @@
 -- hi grimexploits i know that you're gonna steal this
 
-if NamelessLoaded then --checks if Nameless Admin is already loaded
+if NamelessLoad then --checks if Nameless Admin is already loaded
 	return
 end
 
-pcall(function() getgenv().NamelessLoaded = true end)
+pcall(function() getgenv().NamelessLoad = true end)
  
  -- Waits until game is loaded
  local GetService = game.GetService
