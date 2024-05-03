@@ -32,18 +32,6 @@ task.spawn(function() -- saveinstance support (credits to Viper)
 end)
 
 
-spawn(function()
-print([[
-╭━╮╱╭╮╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╭╮
-┃┃╰╮┃┃╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱┃┃
-┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃╱┃┣━╯┣╮╭┳┳━╮
-┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮
-┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
-╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
-]])
-end)
-
-
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
  local Notify = Notification.Notify;
@@ -15866,14 +15854,15 @@ end)
  TextClickButton.Parent = ScreenGui
  TextClickButton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
  TextClickButton.BackgroundTransparency = 1.000
- TextClickButton.Position = UDim2.new(0.418, 0,0, 0)
+ TextClickButton.AnchorPoint = Vector2.new(0.5, 0)
+ TextClickButton.Position = UDim2.new(0.5, 0, 0, 0)
  TextClickButton.Size = UDim2.new(0, 2, 0, 33)
  TextClickButton.Font = Enum.Font.SourceSansBold
  TextClickButton.Text = "Nameless Admin V" .. curVer .. ""
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
- TextClickButton.ZIndex=1
+ TextClickButton.ZIndex=500
 
  
  UICorner.CornerRadius = UDim.new(1, 0)
@@ -15882,16 +15871,20 @@ end)
  local function mainNameless()
 	 local script = Instance.new('LocalScript', TextClickButton)
 	 textclickbutton = script.Parent
-	 textclickbutton.Size = UDim2.new(0, 2,0, 33)
+	 textclickbutton.Size = UDim2.new(0, 2, 0, 33)
 	 textclickbutton.BackgroundTransparency = 0.14
-	 textclickbutton:TweenSize(UDim2.new(0, 251,0, 33), "Out", "Quint",1,true)
+
+	 local textWidth = game:GetService("TextService"):GetTextSize(textclickbutton.Text, textclickbutton.TextSize, textclickbutton.Font, Vector2.new(math.huge, math.huge)).X
+	 local newSize = UDim2.new(0, textWidth + 10, 0, 33)
+
+	 textclickbutton:TweenSize(newSize, "Out", "Quint", 1, true)
 	 wait(2)
 	 textclickbutton:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
 	 textclickbutton:TweenPosition(UDim2.new(0.48909232, 0, 0, 0), "Out", "Quint",1,true)
 	 wait(0.4)
 	 textclickbutton.Text = "NA"
 	 textclickbutton.Active = true
- 	gui.draggable(textclickbutton)
+ 	 gui.draggable(textclickbutton)
  end
  coroutine.wrap(mainNameless)()
 
@@ -15902,6 +15895,15 @@ end)
 		 cmdInput:CaptureFocus()
  end)
 end
+
+print([[
+╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
+┃┃╰╮┃┃        ┃┃          ┃╭━╮┃ ┃┃
+┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃ ┃┣━╯┣╮╭┳┳━╮
+┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮
+┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
+╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
+]])
 
 
 -- @maxype
