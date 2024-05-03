@@ -32,18 +32,6 @@ task.spawn(function() -- saveinstance support (credits to Viper)
 end)
 
 
-spawn(function()
-print([[
-╭━╮╱╭╮╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╭╮
-┃┃╰╮┃┃╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱╱╱╱╱╱┃╭━╮┃╱┃┃
-┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃╱┃┣━╯┣╮╭┳┳━╮
-┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮
-┃┃╱┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
-╰╯╱╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯╱╰┻━━┻┻┻┻┻╯╰╯
-]])
-end)
-
-
  -- Notification library
  local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
  local Notify = Notification.Notify;
@@ -15884,14 +15872,18 @@ end)
 	 textclickbutton = script.Parent
 	 textclickbutton.Size = UDim2.new(0, 2,0, 33)
 	 textclickbutton.BackgroundTransparency = 0.14
-	 textclickbutton:TweenSize(UDim2.new(0, 251,0, 33), "Out", "Quint",1,true)
+
+	 local textWidth = game:GetService("TextService"):GetTextSize(textclickbutton.Text, textclickbutton.TextSize, textclickbutton.Font, Vector2.new(math.huge, math.huge)).X
+	 local newSize = UDim2.new(0, textWidth + 10, 0, 33)
+
+	 textclickbutton:TweenSize(newSize, "Out", "Quint", 1, true)
 	 wait(2)
 	 textclickbutton:TweenSize(UDim2.new(0, 32, 0, 33), "Out", "Quint",1,true)
 	 textclickbutton:TweenPosition(UDim2.new(0.48909232, 0, 0, 0), "Out", "Quint",1,true)
 	 wait(0.4)
 	 textclickbutton.Text = "NA"
 	 textclickbutton.Active = true
- 	gui.draggable(textclickbutton)
+ 	 gui.draggable(textclickbutton)
  end
  coroutine.wrap(mainNameless)()
 
@@ -15902,6 +15894,15 @@ end)
 		 cmdInput:CaptureFocus()
  end)
 end
+
+print([[
+╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
+┃┃╰╮┃┃        ┃┃          ┃╭━╮┃ ┃┃
+┃╭╮╰╯┣━━┳╮╭┳━━┫┃╭━━┳━━┳━━╮┃┃ ┃┣━╯┣╮╭┳┳━╮
+┃┃╰╮┃┃╭╮┃╰╯┃┃━┫┃┃┃━┫━━┫━━┫┃╰━╯┃╭╮┃╰╯┣┫╭╮╮
+┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
+╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
+]])
 
 
 -- @maxype
