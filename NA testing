@@ -15854,14 +15854,15 @@ end)
  TextClickButton.Parent = ScreenGui
  TextClickButton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
  TextClickButton.BackgroundTransparency = 1.000
- TextClickButton.Position = UDim2.new(0.418, 0,0, 0)
+ TextClickButton.AnchorPoint = Vector2.new(0.5, 0)
+ TextClickButton.Position = UDim2.new(0.5, 0, 0, 0)
  TextClickButton.Size = UDim2.new(0, 2, 0, 33)
  TextClickButton.Font = Enum.Font.SourceSansBold
  TextClickButton.Text = "Nameless Admin V" .. curVer .. ""
  TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
  TextClickButton.TextSize = 20.000
  TextClickButton.TextWrapped = true
- TextClickButton.ZIndex=1
+ TextClickButton.ZIndex=500
 
  
  UICorner.CornerRadius = UDim.new(1, 0)
@@ -15870,7 +15871,7 @@ end)
  local function mainNameless()
 	 local script = Instance.new('LocalScript', TextClickButton)
 	 textclickbutton = script.Parent
-	 textclickbutton.Size = UDim2.new(0, 2,0, 33)
+	 textclickbutton.Size = UDim2.new(0, 2, 0, 33)
 	 textclickbutton.BackgroundTransparency = 0.14
 
 	 local textWidth = game:GetService("TextService"):GetTextSize(textclickbutton.Text, textclickbutton.TextSize, textclickbutton.Font, Vector2.new(math.huge, math.huge)).X
