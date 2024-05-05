@@ -24,7 +24,7 @@ local TemplateText = Instance.new("TextButton")
 --Properties:
 
 HttpSpy.Name = "HttpSpy"
-HttpSpy.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+HttpSpy.Parent = game.CoreGui
 HttpSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 HttpSpy.ResetOnSpawn = false
 
