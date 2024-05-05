@@ -51,7 +51,7 @@ local UIGradient = Instance.new("UIGradient")
 --Properties:
 
 ChatGUI.Name = "ChatGUI"
-ChatGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ChatGUI.Parent = game.CoreGui
 ChatGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ChatGUI.ResetOnSpawn = false
 
