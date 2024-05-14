@@ -12729,7 +12729,7 @@ cmd.add({"tweengotocampos", "tweentocampos", "tweentcp"}, {"tweengotocampos (twe
 
 end)
 
-cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part with a certain name from the workspace"}, function(...)
+cmd.add({"delete", "remove", "del"}, {"delete {partname} (remove, del)", "Removes any part with a certain name from the workspace"}, function(...)
 	local delcount = 0
 	args = {...}
 	bruh = args[1]
@@ -12750,24 +12750,41 @@ cmd.add({"delete", "remove"}, {"delete {partname} (remove)", "Removes any part w
 	});
 end)
 
-local autormv
+local autoRemover = {}
+local autormv = nil
+function descendantadd(part)
+	if #autoRemover > 0 then
+		if FindInTable(autoRemover,part.Name:lower()) then
+			wait();
+			part:Destroy()
+		end
+	else
+		autormv:Disconnect()
+		autormv = nil
+	end
+end
 
-cmd.add({"autodelete", "autoremove"}, {"autodelete {partname} (autoremove)", "Removes any part with a certain name from the workspace on loop"}, function(...)
+cmd.add({"autodelete", "autoremove", "autodel"}, {"autodelete {partname} (autoremove, autodel)", "Removes any part with a certain name from the workspace on loop"}, function(...)
 	args = {...}
 	bruh = args[1]
-	autormv = workspace.DescendantAdded:Connect(function(prt)
-		if prt.Name:lower() == bruh:lower() then
-			repeat wait() until prt
-			wait();
-			prt:Destroy()
+	local bra = bruh:lower()
+	if not FindInTable(autoRemover,bra) then
+		table.insert(autoRemover,bra)
+		for i,v in pairs(workspace:GetDescendants()) do
+			if v.Name:lower() == bra then
+				v:Destroy()
+			end
 		end
-	end)
+	end
+	if autormv == nil then
+		autormv = workspace.DescendantAdded:Connect(descendantadd)
+	end
 end)
 
-cmd.add({"unautodelete", "unautoremove"}, {"unautodelete {partname} (unautoremove)", "disables autodelete"}, function()
-	if autormv then
-		autormv:Disconnect()
-	end
+cmd.add({"unautodelete", "unautoremove", "unautodel"}, {"unautodelete {partname} (unautoremove, unautodel)", "disables autodelete"}, function()
+	autormv:Disconnect()
+	autormv = nil
+	autoRemover = {}
 end)
 
 cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removeclass, dc)", "Removes any part with a certain classname from the workspace"}, function(...)
@@ -12791,25 +12808,43 @@ cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removec
 	});
 end)
 
-local autoclass
+local classicc = {}
+local autoclass = nil
+
+function classauto(part)
+	if #autoRemover > 0 then
+		if FindInTable(classicc,part.ClassName:lower()) then
+			wait();
+			part:Destroy()
+		end
+	else
+		autoclass:Disconnect()
+		autoclass = nil
+	end
+end
 
 cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {ClassName} (autoremoveclass, autodc)", "Removes any part with a certain classname from the workspace on loop"}, function(...)
 	local grr = {...}
 	local JJ = grr[1]
-
-	autoclass = workspace.DescendantAdded:Connect(function(class)
-		if class.ClassName:lower() == JJ:lower() then
-			repeat wait() until class
-			wait();
-			class:Destroy()
+	
+	local bra = JJ:lower()
+	if not FindInTable(classicc,bra) then
+		table.insert(classicc,bra)
+		for i,v in pairs(workspace:GetDescendants()) do
+			if v.ClassName:lower() == bra then
+				v:Destroy()
+			end
 		end
-	end)
+	end
+	if autoclass == nil then
+		autoclass = workspace.DescendantAdded:Connect(descendantadd)
+	end
 end)
 
 cmd.add({"unautodeleteclass", "unautoremoveclass", "unautodc"}, {"unautodeleteclass {ClassName} (unautoremoveclass, unautodc)", "disabled autodeleteclass"}, function(...)
-	if autoclass then
-		autoclass:Disconnect()
-	end
+	autoclass:Disconnect()
+	autoclass = nil
+	classicc = {}
 end)
 
 cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove"}, {"chardelete {partname} (charremove, chardel, cdelete, cremove)", "Removes any part with a certain name from your character"}, function(...)
@@ -12984,15 +13019,26 @@ local partEspTrigger = nil
 function partAdded(part)
 	if #espParts > 0 then
 		if FindInTable(espParts,part.Name:lower()) then
-			local a = Instance.new("BoxHandleAdornment")
-			a.Name = part.Name:lower().."_PESP"
-			a.Parent = part
-			a.Adornee = part
-			a.AlwaysOnTop = true
-			a.ZIndex = 0
-			a.Size = part.Size
-			a.Transparency = 0.45
-			a.Color = BrickColor.new("Lime green")
+			if part:IsA("BasePart") then
+				local a = Instance.new("BoxHandleAdornment")
+				a.Name = part.Name:lower().."_PESP"
+				a.Parent = part
+				a.Adornee = part
+				a.AlwaysOnTop = true
+				a.ZIndex = 0
+				a.Size = part.Size
+				a.Transparency = 0.45
+				a.Color = BrickColor.new("Lime green")
+			elseif (part:IsA("Model") or part:IsA("Folder")) then
+				local a = Instance.new("BoxHandleAdornment")
+				a.Name = part.Name:lower().."_PESP"
+				a.Parent = part
+				a.Adornee = part
+				a.AlwaysOnTop = true
+				a.ZIndex = 0
+				a.Transparency = 0.45
+			else
+			end
 		end
 	else
 		partEspTrigger:Disconnect()
@@ -13018,6 +13064,14 @@ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "
 				a.Size = v.Size
 				a.Transparency = 0.45
 				a.Color = BrickColor.new("Lime green")
+			elseif (v:IsA("Model") or v:IsA("Folder")) and v.Name:lower() == partEspName then
+				local a = Instance.new("BoxHandleAdornment")
+				a.Name = partEspName.."_PESP"
+				a.Parent = v
+				a.Adornee = v
+				a.AlwaysOnTop = true
+				a.ZIndex = 0
+				a.Transparency = 0.45
 			end
 		end
 	end
