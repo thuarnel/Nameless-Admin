@@ -12757,6 +12757,7 @@ cmd.add({"autodelete", "autoremove"}, {"autodelete {partname} (autoremove)", "Re
 	bruh = args[1]
 	autormv = workspace.DescendantAdded:Connect(function(prt)
 		if prt.Name:lower() == bruh:lower() then
+			repeat wait() until prt
 			prt:Destroy()
 		end
 	end)
@@ -12797,6 +12798,7 @@ cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {Cla
 
 	autoclass = workspace.DescendantAdded:Connect(function(class)
 		if class.ClassName:lower() == JJ:lower() then
+			repeat wait() until class
 			class:Destroy()
 		end
 	end)
