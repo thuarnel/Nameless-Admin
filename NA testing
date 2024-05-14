@@ -12772,7 +12772,6 @@ cmd.add({"autodelete", "autoremove", "autodel"}, {"autodelete {partname} (autore
 		table.insert(autoRemover,bra)
 		for i,v in pairs(workspace:GetDescendants()) do
 			if v.Name:lower() == bra then
-				wait();
 				v:Destroy()
 			end
 		end
@@ -12782,7 +12781,7 @@ cmd.add({"autodelete", "autoremove", "autodel"}, {"autodelete {partname} (autore
 	end
 end)
 
-cmd.add({"unautodelete", "unautoremove"}, {"unautodelete {partname} (unautoremove)", "disables autodelete"}, function()
+cmd.add({"unautodelete", "unautoremove", "unautodel"}, {"unautodelete {partname} (unautoremove, unautodel)", "disables autodelete"}, function()
 	autormv:Disconnect()
 	autormv = nil
 	autoRemover = {}
@@ -12833,7 +12832,6 @@ cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {Cla
 		table.insert(classicc,bra)
 		for i,v in pairs(workspace:GetDescendants()) do
 			if v.ClassName:lower() == bra then
-				wait();
 				v:Destroy()
 			end
 		end
@@ -13031,7 +13029,7 @@ function partAdded(part)
 				a.Size = part.Size
 				a.Transparency = 0.45
 				a.Color = BrickColor.new("Lime green")
-			elseif part:IsA("Model") then
+			elseif (part:IsA("Model") or part:IsA("Folder")) then
 				local a = Instance.new("BoxHandleAdornment")
 				a.Name = part.Name:lower().."_PESP"
 				a.Parent = part
@@ -13040,15 +13038,6 @@ function partAdded(part)
 				a.ZIndex = 0
 				a.Transparency = 0.45
 			else
-				local a = Instance.new("BoxHandleAdornment")
-				a.Name = part.Name:lower().."_PESP"
-				a.Parent = part
-				a.Adornee = part
-				a.AlwaysOnTop = true
-				a.ZIndex = 0
-				a.Size = part.Size
-				a.Transparency = 0.45
-				a.Color = BrickColor.new("Lime green")
 			end
 		end
 	else
