@@ -13068,7 +13068,7 @@ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "
 				local a = Instance.new("BoxHandleAdornment")
 				a.Name = partEspName.."_PESP"
 				a.Parent = v
-				--a.Adornee = v
+				a.Adornee = v
 				a.AlwaysOnTop = true
 				a.ZIndex = 0
 				a.Transparency = 0.45
