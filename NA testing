@@ -12808,12 +12808,12 @@ cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removec
 	});
 end)
 
-local classicc = {}
+local autoclassic = {}
 local autoclass = nil
 
-function classauto(part)
-	if #autoRemover > 0 then
-		if FindInTable(classicc,part.ClassName:lower()) then
+function idkClass(part)
+	if #autoclassic > 0 then
+		if FindInTable(autoclassic,part.ClassName:lower()) then
 			wait();
 			part:Destroy()
 		end
@@ -12827,24 +12827,24 @@ cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {Cla
 	local grr = {...}
 	local JJ = grr[1]
 
-	local bra = JJ:lower()
-	if not FindInTable(classicc,bra) then
-		table.insert(classicc,bra)
+	local classicauto = JJ:lower()
+	if not FindInTable(autoclassic,classicauto) then
+		table.insert(autoclassic,classicauto)
 		for i,v in pairs(workspace:GetDescendants()) do
-			if v.ClassName:lower() == bra then
+			if v.ClassName:lower() == classicauto then
 				v:Destroy()
 			end
 		end
 	end
 	if autoclass == nil then
-		autoclass = workspace.DescendantAdded:Connect(classauto)
+		autoclass = workspace.DescendantAdded:Connect(idkClass)
 	end
 end)
 
 cmd.add({"unautodeleteclass", "unautoremoveclass", "unautodc"}, {"unautodeleteclass {ClassName} (unautoremoveclass, unautodc)", "disabled autodeleteclass"}, function(...)
 	autoclass:Disconnect()
 	autoclass = nil
-	classicc = {}
+	autoclassic = {}
 end)
 
 cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove"}, {"chardelete {partname} (charremove, chardel, cdelete, cremove)", "Removes any part with a certain name from your character"}, function(...)
