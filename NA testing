@@ -12826,7 +12826,7 @@ end
 cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {ClassName} (autoremoveclass, autodc)", "Removes any part with a certain classname from the workspace on loop"}, function(...)
 	local grr = {...}
 	local JJ = grr[1]
-	
+
 	local bra = JJ:lower()
 	if not FindInTable(classicc,bra) then
 		table.insert(classicc,bra)
@@ -12837,7 +12837,7 @@ cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {Cla
 		end
 	end
 	if autoclass == nil then
-		autoclass = workspace.DescendantAdded:Connect(descendantadd)
+		autoclass = workspace.DescendantAdded:Connect(classauto)
 	end
 end)
 
