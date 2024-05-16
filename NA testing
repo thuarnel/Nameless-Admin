@@ -17,10 +17,19 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
---[[task.spawn(function() -- saveinstance support (credits to Viper)
+--[[task.spawn(function() -- saveinstance support (credits to Viper) | disabled cause it breaks dex
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
 end)]]
+
+task.spawn(function() --automatically load nameless admin when teleported
+	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
+		if (not teleportedServers) then
+			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
+			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))();]])
+		end
+	end)
+end)
 
 
 -- Notification library
@@ -2368,8 +2377,6 @@ cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (
 		wait(1); -- credits to Nooby on scriptblox
 		for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
 	end)
-
-
 
 	wait();
 
@@ -6134,8 +6141,16 @@ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
 end)
 
-cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec"}, function()
-	saveinstance({})
+cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
+	--saveinstance({})
+	
+	local Params = {
+		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
+		SSI = "saveinstance",
+	}
+	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
+	local Options = {}
+	synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
