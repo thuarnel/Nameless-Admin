@@ -6144,13 +6144,21 @@ end)
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
 	
-	local Params = {
+	--[[local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
 	}
 	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
 	local Options = {}
-	synsaveinstance(Options)
+	synsaveinstance(Options)]]
+
+local Params = {
+    RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
+    SSI = "saveinstance",
+}
+local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
+local Options = {}
+synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
