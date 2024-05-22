@@ -126,7 +126,7 @@ local NoScriptsFound = Instance.new("TextLabel")
 
 --Properties:
 
-ScreenGui.Parent = game.CoreGui
+ScreenGui.Parent = game:GetService("Players").LocalPlayer.PlayerGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 MainUI.Name = "MainUI"
