@@ -12694,14 +12694,17 @@ end)
 local PromptButtonHoldBegan = nil
 
 cmd.add({"instantproximityprompts", "instantpp", "ipp"}, {"instantproximityprompts (instantpp, ipp)", "Disable the cooldown for proximity prompts"}, function()
+	if PromptButtonHoldBegan then PromptButtonHoldBegan:Disconnect() end
 	PromptButtonHoldBegan = ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
 		fireproximityprompt(prompt)
 	end)
 end)
 
 cmd.add({"uninstantproximityprompts", "uninstantpp", "unipp"}, {"uninstantproximityprompts (uninstantpp, unipp)", "Undo the cooldown removal"}, function()
-	PromptButtonHoldBegan:Disconnect()
-	PromptButtonHoldBegan = nil
+	if PromptButtonHoldBegan then
+		PromptButtonHoldBegan:Disconnect()
+		PromptButtonHoldBegan = nil
+	end
 end)
 
 cmd.add({"light"}, {"light <range> <brightness>", "Gives your player dynamic light"}, function(...)
