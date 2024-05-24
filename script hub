@@ -258,7 +258,7 @@ Clear.TextColor3 = Color3.fromRGB(255, 255, 255)
 Clear.TextSize = 20.000
 
 Clear.MouseButton1Click:Connect(function()
-ScreenGui:Destroy()
+	ScreenGui:Destroy()
 end)
 
 UICorner_7.Parent = Clear
@@ -375,7 +375,7 @@ ClearCacheButton.Text = "Exit"
 ClearCacheButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 ClearCacheButton.TextSize = 14.000
 ClearCacheButton.MouseButton1Click:Connect(function()
-ScreenGui:Destroy()
+	ScreenGui:Destroy()
 end)
 
 UICorner_16.CornerRadius = UDim.new(1, 0)
@@ -1234,5 +1234,5 @@ end)
 Comments.Position = UDim2.new(0.0205762573, 0, 0.720532486, 0)
 Buttons.Position = UDim2.new(0.0267489702, 0, .582198629, 0)
 
-		MainFrame.Visible = true
-		MainFrame:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+MainFrame.Visible = true
+MainFrame:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
