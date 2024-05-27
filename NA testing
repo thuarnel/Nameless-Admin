@@ -357,29 +357,41 @@ end
 
 function mobilefly(speed)
 	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
+	local velName = "flyv"
+	local gyroName = "flyg"
+
+	local existingvelHandler = game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild(velName)
+	local existinggyroHandler = game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild(gyroName)
+	if existingvelHandler then
+		existingvelHandler:Destroy()
+	end
+	if existinggyroHandler then
+		existinggyroHandler:Destroy()
+	end
+
 	local bv = Instance.new("BodyVelocity")
-	bv.Name = "VelocityHandler"
+	bv.Name = velName
 	bv.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-	bv.MaxForce = Vector3.new(0,0,0)
-	bv.Velocity = Vector3.new(0,0,0)
+	bv.MaxForce = Vector3.new(0, 0, 0)
+	bv.Velocity = Vector3.new(0, 0, 0)
 
 	local bg = Instance.new("BodyGyro")
-	bg.Name = "GyroHandler"
+	bg.Name = gyroName
 	bg.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-	bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
+	bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
 	bg.P = 1000
 	bg.D = 50
 
 	local Signal1
 	Signal1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(NewChar)
 		local bv = Instance.new("BodyVelocity")
-		bv.Name = "VelocityHandler"
+		bv.Name = "velHandler"
 		bv.Parent = NewChar:WaitForChild("Humanoid").RootPart
 		bv.MaxForce = Vector3.new(0,0,0)
 		bv.Velocity = Vector3.new(0,0,0)
 
 		local bg = Instance.new("BodyGyro")
-		bg.Name = "GyroHandler"
+		bg.Name = "gyroHandler"
 		bg.Parent = NewChar:WaitForChild("Humanoid").HumanoidRootPart
 		bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
 		bg.P = 1000
@@ -390,37 +402,57 @@ function mobilefly(speed)
 
 	local Signal2
 	Signal2 = game:GetService"RunService".RenderStepped:Connect(function()
-		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("velHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("gyroHandler") then
 
-			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-			game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
+			game.Players.LocalPlayer.Character.HumanoidRootPart.gyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
 			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
 
-			game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
+			game.Players.LocalPlayer.Character.HumanoidRootPart.gyroHandler.CFrame = camera.CoordinateFrame
 			local direction = controlModule:GetMoveVector()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity = Vector3.new()
 			if direction.X > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
 			end
 			if direction.X < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
 			end
 			if direction.Z > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
 			end
 			if direction.Z < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.velHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
 			end
 		end
 	end)
 end
 
 function unmobilefly()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
-	game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-	Signal1:Disconnect()
-	Signal2:Disconnect()
+	local velName = "flyv"
+	local gyroName = "flyg"
+
+	if game.Players.LocalPlayer.Character then
+		local rootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+		if rootPart then
+			local velHandler = rootPart:FindFirstChild(velName)
+			local gyroHandler = rootPart:FindFirstChild(gyroName)
+
+			if velHandler then
+				velHandler:Destroy()
+			end
+			if gyroHandler then
+				gyroHandler:Destroy()
+			end
+		end
+		game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+	end
+
+	if Signal1 then
+		Signal1:Disconnect()
+	end
+	if Signal2 then
+		Signal2:Disconnect()
+	end
 end
 
 
@@ -6143,7 +6175,7 @@ end)
 
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
-	
+
 	--[[local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
@@ -6152,13 +6184,13 @@ cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs ou
 	local Options = {}
 	synsaveinstance(Options)]]
 
-local Params = {
-    RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
-    SSI = "saveinstance",
-}
-local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
-local Options = {}
-synsaveinstance(Options)
+	local Params = {
+		RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
+		SSI = "saveinstance",
+	}
+	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
+	local Options = {}
+	synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
