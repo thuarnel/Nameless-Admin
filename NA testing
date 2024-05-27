@@ -6842,6 +6842,7 @@ end)
 
 cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
 	unmobilefly()
+	on=false
 	if rahhh then
 		rahhh:Destroy()
 		rahhh=nil
