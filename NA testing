@@ -6824,9 +6824,9 @@ cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on m
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		ScreenGui.Parent = game.CoreGui
-		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		ScreenGui.ResetOnSpawn = false
+		rahhh.Parent = game.CoreGui
+		rahhh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		rahhh.ResetOnSpawn = false
 
 		TextButton.Parent = rahhh
 		TextButton.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
