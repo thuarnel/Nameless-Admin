@@ -355,81 +355,105 @@ function ESP(plr)
 	end)
 end
 
-local function mobilefly(speed)
-    local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
+local Signal1, Signal2
 
-    local bv, bg
+function mobilefly(speed)
+	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
+	local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+	local rootPart = character:WaitForChild("HumanoidRootPart")
+	
+	local existingBV = rootPart:FindFirstChild("VelocityHandler")
+	local existingBG = rootPart:FindFirstChild("GyroHandler")
 
-    local function doFly(parent)
-        bv = Instance.new("BodyVelocity")
-        bv.Name = "VelocityHandler"
-        bv.Parent = parent
-        bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-        bv.Velocity = Vector3.new(0, 0, 0)
+	if not existingBV then
+		local bv = Instance.new("BodyVelocity")
+		bv.Name = "VelocityHandler"
+		bv.MaxForce = Vector3.new(0, 0, 0)
+		bv.Velocity = Vector3.new(0, 0, 0)
+		bv.Parent = rootPart
+	end
 
-        bg = Instance.new("BodyGyro")
-        bg.Name = "GyroHandler"
-        bg.Parent = parent
-        bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-        bg.P = 1000
-        bg.D = 50
-    end
+	if not existingBG then
+		local bg = Instance.new("BodyGyro")
+		bg.Name = "GyroHandler"
+		bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+		bg.P = 1000
+		bg.D = 50
+		bg.Parent = rootPart
+	end
 
-    doFly(game.Players.LocalPlayer.Character.HumanoidRootPart)
+	Signal1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(newChar)
+		local newRootPart = newChar:WaitForChild("HumanoidRootPart")
 
-    local Signal1
-    Signal1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(NewChar)
-        if Signal1 then
-            Signal1:Disconnect()
-        end
+		local newBV = newRootPart:FindFirstChild("VelocityHandler")
+		local newBG = newRootPart:FindFirstChild("GyroHandler")
 
-        doFly(NewChar:WaitForChild("Humanoid").RootPart)
-    end)
+		if not newBV then
+			local bv = Instance.new("BodyVelocity")
+			bv.Name = "VelocityHandler"
+			bv.MaxForce = Vector3.new(0, 0, 0)
+			bv.Velocity = Vector3.new(0, 0, 0)
+			bv.Parent = newRootPart
+		end
 
-    local camera = game.Workspace.CurrentCamera
+		if not newBG then
+			local bg = Instance.new("BodyGyro")
+			bg.Name = "GyroHandler"
+			bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+			bg.P = 1000
+			bg.D = 50
+			bg.Parent = newRootPart
+		end
+	end)
 
-    local Signal2
-    Signal2 = game:GetService("RunService").RenderStepped:Connect(function()
-        local character = game.Players.LocalPlayer.Character
-        if character and character:FindFirstChildOfClass("Humanoid") and character.HumanoidRootPart:FindFirstChild("VelocityHandler") and character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-            character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-            character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-            character.Humanoid.PlatformStand = true
+	local camera = game.Workspace.CurrentCamera
 
-            character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
-            local direction = controlModule:GetMoveVector()
-            local velocity = Vector3.new()
+	Signal2 = game:GetService("RunService").RenderStepped:Connect(function()
+		local character = game.Players.LocalPlayer.Character
+		local rootPart = character and character:FindFirstChild("HumanoidRootPart")
+		local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+		local bv = rootPart and rootPart:FindFirstChild("VelocityHandler")
+		local bg = rootPart and rootPart:FindFirstChild("GyroHandler")
 
-            if direction.X ~= 0 then
-                velocity = velocity + camera.CFrame.RightVector * (direction.X * speed)
-            end
-            if direction.Z ~= 0 then
-                velocity = velocity - camera.CFrame.LookVector * (direction.Z * speed)
-            end
+		if character and humanoid and rootPart and bv and bg then
+			bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+			bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+			humanoid.PlatformStand = true
 
-            character.HumanoidRootPart.VelocityHandler.Velocity = velocity
-        end
-    end)
+			bg.CFrame = camera.CFrame
+			local direction = controlModule:GetMoveVector()
+			local newVelocity = Vector3.new()
 
-    return Signal1, Signal2
+			if direction.X ~= 0 then
+				newVelocity = newVelocity + camera.CFrame.RightVector * (direction.X * speed)
+			end
+			if direction.Z ~= 0 then
+				newVelocity = newVelocity - camera.CFrame.LookVector * (direction.Z * speed)
+			end
+
+			bv.Velocity = newVelocity
+		end
+	end)
 end
 
-local function unmobilefly(Signal1, Signal2)
-    if Signal1 then
-        Signal1:Disconnect()
-    end
-    if Signal2 then
-        Signal2:Disconnect()
-    end
-    if bv then
-        bv:Destroy()
-    end
-    if bg then
-        bg:Destroy()
-    end
-    game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
+function unmobilefly()
+	local character = game.Players.LocalPlayer.Character
+	if character and character:FindFirstChild("HumanoidRootPart") then
+		local rootPart = character.HumanoidRootPart
+		if rootPart:FindFirstChild("VelocityHandler") then
+			rootPart.VelocityHandler:Destroy()
+		end
+		if rootPart:FindFirstChild("GyroHandler") then
+			rootPart.GyroHandler:Destroy()
+		end
+		local humanoid = character:FindFirstChildOfClass("Humanoid")
+		if humanoid then
+			humanoid.PlatformStand = false
+		end
+	end
+	if Signal1 then Signal1:Disconnect() end
+	if Signal2 then Signal2:Disconnect() end
 end
-
 
 
 function x(v)
@@ -6151,7 +6175,7 @@ end)
 
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
-
+	
 	--[[local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
@@ -6160,13 +6184,13 @@ cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs ou
 	local Options = {}
 	synsaveinstance(Options)]]
 
-	local Params = {
-		RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
-		SSI = "saveinstance",
-	}
-	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
-	local Options = {}
-	synsaveinstance(Options)
+local Params = {
+    RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
+    SSI = "saveinstance",
+}
+local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
+local Options = {}
+synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
@@ -6777,7 +6801,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 end)
 
 on = false
-rahhh = nil
+rahh=nil
 cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
 	speed = (...)
 
@@ -6795,16 +6819,16 @@ cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on m
 			Duration = 5;
 		});
 
-		rahhh = Instance.new("ScreenGui")
+		rahh = Instance.new("ScreenGui")
 		local TextButton = Instance.new("TextButton")
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		rahhh.Parent = game.CoreGui
-		rahhh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		rahhh.ResetOnSpawn = false
+		rahh.Parent = game.CoreGui
+		rahh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		rahh.ResetOnSpawn = false
 
-		TextButton.Parent = rahhh
+		TextButton.Parent = rahh
 		TextButton.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 		TextButton.BackgroundTransparency = 0.140
 		TextButton.Position = UDim2.new(0.933, 0,0.621, 0)
@@ -6847,9 +6871,9 @@ end)
 cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
 	unmobilefly()
 	on=false
-	if rahhh then
-		rahhh:Destroy()
-		rahhh=nil
+	if rahh then
+		rahh:Destroy()
+		rahh=nil
 	end
 end)
 
@@ -15974,8 +15998,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	ScreenGui.Parent = game.CoreGui
 	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui.ResetOnSpawn = false
-	ScreenGui.DisplayOrder=99999 -- added this so it doesn't collide with other UI :P
+	ScreenGui.ResetOnSpawn = true
 
 	TextClickButton.Name = "NamelessAdminButton"
 	TextClickButton.Parent = ScreenGui
