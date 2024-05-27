@@ -5778,6 +5778,7 @@ cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
 
     plrAdded = Players.PlayerAdded:Connect(function(plr)
         if plr ~= Players.LocalPlayer then
+			ESP(plr)
             charAdded[plr] = plr.CharacterAdded:Connect(function()
                 ESP(plr)
             end)
