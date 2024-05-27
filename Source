@@ -389,9 +389,8 @@ function mobilefly(speed)
 	local camera = game.Workspace.CurrentCamera
 
 	local Signal2
-	Signal2 = game:GetService"RunService".RenderStepped:Connect(function()
+	Signal2 = game:GetService("RunService").RenderStepped:Connect(function()
 		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-
 			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
 			game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
 			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
@@ -400,27 +399,32 @@ function mobilefly(speed)
 			local direction = controlModule:GetMoveVector()
 			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
 			if direction.X > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
 			end
 			if direction.X < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector*(direction.X*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
 			end
 			if direction.Z > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
 			end
 			if direction.Z < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector*(direction.Z*speed)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
 			end
 		end
 	end)
 end
 
+
 function unmobilefly()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
 	game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-	Signal1:Disconnect()
-	Signal2:Disconnect()
+	if Signal1 then
+		Signal1:Disconnect()
+	end
+	if Signal2 then
+		Signal2:Disconnect()
+	end
 end
 
 
@@ -6143,7 +6147,7 @@ end)
 
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
-	
+
 	--[[local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
@@ -6152,13 +6156,13 @@ cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs ou
 	local Options = {}
 	synsaveinstance(Options)]]
 
-local Params = {
-    RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
-    SSI = "saveinstance",
-}
-local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
-local Options = {}
-synsaveinstance(Options)
+	local Params = {
+		RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
+		SSI = "saveinstance",
+	}
+	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
+	local Options = {}
+	synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
@@ -6769,6 +6773,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 end)
 
 on = false
+rahhh = nil
 cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
 	speed = (...)
 
@@ -6786,16 +6791,16 @@ cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on m
 			Duration = 5;
 		});
 
-		local ScreenGui = Instance.new("ScreenGui")
+		rahhh = Instance.new("ScreenGui")
 		local TextButton = Instance.new("TextButton")
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		ScreenGui.Parent = game.CoreGui
-		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		ScreenGui.ResetOnSpawn = false
+		rahhh.Parent = game.CoreGui
+		rahhh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		rahhh.ResetOnSpawn = false
 
-		TextButton.Parent = ScreenGui
+		TextButton.Parent = rahhh
 		TextButton.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 		TextButton.BackgroundTransparency = 0.140
 		TextButton.Position = UDim2.new(0.933, 0,0.621, 0)
@@ -6837,6 +6842,11 @@ end)
 
 cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
 	unmobilefly()
+	on=false
+	if rahhh then
+		rahhh:Destroy()
+		rahhh=nil
+	end
 end)
 
 local flyPart
