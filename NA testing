@@ -15490,6 +15490,13 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 	end
 end)
 
+Players.PlayerAdded:Connect(function(plr)
+	if ESPenabled then
+		repeat wait(1) until plr.Character and getRoot(plr.Character)
+		ESP(plr)
+	end
+end)
+
 
 -- [[ PLUGIN LOADER ]] -- 
 local PluginsLoaded = 0
