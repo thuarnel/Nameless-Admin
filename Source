@@ -350,9 +350,42 @@ function ESP(plr)
 				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
 				TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
 				TextLabel.ZIndex = 10
+				local espLoopFunc
+				local addedFunc
+				addedFunc = plr.CharacterAdded:Connect(function()
+					if ESPenabled then
+						espLoopFunc:Disconnect()
+						ESPholder:Destroy()
+						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+						ESP(plr)
+						addedFunc:Disconnect()
+					else
+						addedFunc:Disconnect()
+					end
+				end)
+				local function espLoop()
+					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
+							TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName ..' | Studs: '..pos
+						end
+					else
+						addedFunc:Disconnect()
+						espLoopFunc:Disconnect()
+					end
+				end
+				espLoopFunc = RunService.RenderStepped:Connect(espLoop)
 			end
 		end
 	end)
+end
+
+function removeESP()
+    for i,c in pairs(COREGUI:GetChildren()) do
+		if string.sub(c.Name, -4) == '_ESP' then
+			c:Destroy()
+		end
+	end
 end
 
 local Signal1, Signal2
@@ -664,7 +697,7 @@ function getTorso(x)
 end
 
 function getRoot(char)
-	local rootPart = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart') or game.Players.LocalPlayer.Character:FindFirstChild('Torso') or game.Players.LocalPlayer.Character:FindFirstChild('UpperTorso')
+	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
 	return rootPart
 end
 
@@ -5748,21 +5781,17 @@ cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift l
 end)
 
 cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
-	ESPenabled = true
-	for _,v in pairs(Players:GetPlayers()) do
-		if v.Name ~= Player.Name then
-			ESP(v)
-		end
-	end
+    ESPenabled = true
+	for _, v in pairs(Players:GetPlayers()) do
+        if v.Name ~= Players.LocalPlayer.Name then
+            ESP(v)
+        end
+    end
 end)
 
 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
-	ESPenabled = false
-	for i,c in pairs(COREGUI:GetChildren()) do
-		if string.sub(c.Name, -4) == '_ESP' then
-			c:Destroy()
-		end
-	end
+    ESPenabled = false
+    removeESP()
 end)
 
 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
@@ -15998,7 +16027,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	ScreenGui.Parent = game.CoreGui
 	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui.DisplayOrder=9999
+	ScreenGui.DisplayOrder=999
 
 	TextClickButton.Name = "NamelessAdminButton"
 	TextClickButton.Parent = ScreenGui
