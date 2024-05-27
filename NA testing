@@ -5756,38 +5756,36 @@ cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift l
 end)
 
 local plrAdded
-local charAdded = {}
-local addedChar = {}
+local charAdded
+local addedChar
 
 cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
     ESPenabled = true
-	for plr, connection in pairs(addedChar) do
-        connection:Disconnect()
+	if plrAdded then
+        plrAdded:Disconnect()
+        plrAdded = nil
     end
-	addedChar = {}
+	if addedChar then
+		addedChar:Disconnect()
+		addedChar=nil
+	end
+	if charAdded then
+        charAdded:Disconnect()
+        charAdded = nil
+    end
     for _, v in pairs(Players:GetPlayers()) do
         if v.Name ~= Players.LocalPlayer.Name then
             ESP(v)
-			addedChar[v] = v.CharacterAdded:Connect(function()
+			addedChar = v.CharacterAdded:Connect(function()
                 ESP(v)
             end)
         end
     end
 
-	if plrAdded then
-        plrAdded:Disconnect()
-        plrAdded = nil
-    end
-
-    for plr, connection in pairs(charAdded) do
-        connection:Disconnect()
-    end
-    charAdded = {}
-
     plrAdded = Players.PlayerAdded:Connect(function(plr)
         if plr ~= Players.LocalPlayer then
 			ESP(plr)
-            charAdded[plr] = plr.CharacterAdded:Connect(function()
+            charAdded = plr.CharacterAdded:Connect(function()
                 ESP(plr)
             end)
         end
@@ -5802,15 +5800,14 @@ cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
         plrAdded:Disconnect()
         plrAdded = nil
     end
-
-    for plr, connection in pairs(charAdded) do
-        connection:Disconnect()
+	if addedChar then
+		addedChar:Disconnect()
+		addedChar=nil
+	end
+	if charAdded then
+        charAdded:Disconnect()
+        charAdded = nil
     end
-    charAdded = {}
-	for plr, connection in pairs(addedChar) do
-        connection:Disconnect()
-    end
-	addedChar = {}
 end)
 
 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
