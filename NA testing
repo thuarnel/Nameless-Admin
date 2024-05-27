@@ -5762,7 +5762,7 @@ cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
     ESPenabled = true
     for _, v in pairs(Players:GetPlayers()) do
         if v.Name ~= Players.LocalPlayer.Name then
-            addESP(v)
+            ESP(v)
         end
     end
 
@@ -5779,7 +5779,7 @@ cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
     plrAdded = Players.PlayerAdded:Connect(function(plr)
         if plr ~= Players.LocalPlayer then
             charAdded[plr] = plr.CharacterAdded:Connect(function()
-                addESP(plr)
+                ESP(plr)
             end)
         end
     end)
