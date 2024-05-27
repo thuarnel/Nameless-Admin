@@ -350,6 +350,31 @@ function ESP(plr)
 				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
 				TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
 				TextLabel.ZIndex = 10
+				local espLoopFunc
+				local addedFunc
+				addedFunc = plr.CharacterAdded:Connect(function()
+					if ESPenabled then
+						espLoopFunc:Disconnect()
+						ESPholder:Destroy()
+						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+						ESP(plr)
+						addedFunc:Disconnect()
+					else
+						addedFunc:Disconnect()
+					end
+				end)
+				local function espLoop()
+					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
+							TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ' | '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
+						end
+					else
+						addedFunc:Disconnect()
+						espLoopFunc:Disconnect()
+					end
+				end
+				espLoopFunc = RunService.RenderStepped:Connect(espLoop)
 			end
 		end
 	end)
@@ -5755,59 +5780,18 @@ cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift l
 	game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule.CameraModule.MouseLockController.BoundKeys.Value = "LeftControl,RightControl"
 end)
 
-local plrAdded
-local charAdded
-local addedChar
-
 cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
     ESPenabled = true
-	if plrAdded then
-        plrAdded:Disconnect()
-        plrAdded = nil
-    end
-	if addedChar then
-		addedChar:Disconnect()
-		addedChar=nil
-	end
-	if charAdded then
-        charAdded:Disconnect()
-        charAdded = nil
-    end
-    for _, v in pairs(Players:GetPlayers()) do
+	for _, v in pairs(Players:GetPlayers()) do
         if v.Name ~= Players.LocalPlayer.Name then
             ESP(v)
-			addedChar = v.CharacterAdded:Connect(function()
-                ESP(v)
-            end)
         end
     end
-
-    plrAdded = Players.PlayerAdded:Connect(function(plr)
-        if plr ~= Players.LocalPlayer then
-			ESP(plr)
-            charAdded = plr.CharacterAdded:Connect(function()
-                ESP(plr)
-            end)
-        end
-    end)
 end)
 
 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
     ESPenabled = false
     removeESP()
-
-    if plrAdded then
-        plrAdded:Disconnect()
-        plrAdded = nil
-    end
-	if addedChar then
-		addedChar:Disconnect()
-		addedChar=nil
-	end
-	if charAdded then
-        charAdded:Disconnect()
-        charAdded = nil
-    end
 end)
 
 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
