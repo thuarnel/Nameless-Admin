@@ -309,14 +309,15 @@ function round(num, numDecimalPlaces)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local function addESP(plr)
+function addESP(plr)
     task.spawn(function()
+		task.spawn(function()
         for _, v in pairs(CoreGui:GetChildren()) do
             if v.Name == plr.Name..'_ESP' then
                 v:Destroy()
             end
         end
-        wait()
+	end)
         if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not CoreGui:FindFirstChild(plr.Name..'_ESP') then
             local ESPholder = Instance.new("Folder")
             ESPholder.Name = plr.Name..'_ESP'
@@ -366,7 +367,7 @@ local function addESP(plr)
     end)
 end
 
-local function removeESP()
+function removeESP()
     for _, v in pairs(CoreGui:GetChildren()) do
         if string.sub(v.Name, -4) == '_ESP' then
             v:Destroy()
@@ -5777,9 +5778,18 @@ cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
         end
     end
 
+	if plrAdded then
+        plrAdded:Disconnect()
+        plrAdded = nil
+    end
+
+    for plr, connection in pairs(charAdded) do
+        connection:Disconnect()
+    end
+    charAdded = {}
+
     plrAdded = Players.PlayerAdded:Connect(function(plr)
         if plr ~= Players.LocalPlayer then
-            addESP(plr)
             charAdded[plr] = plr.CharacterAdded:Connect(function()
                 addESP(plr)
             end)
