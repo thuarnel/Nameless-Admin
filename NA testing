@@ -355,77 +355,81 @@ function ESP(plr)
 	end)
 end
 
-function mobilefly(speed)
-	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
-	local bv = Instance.new("BodyVelocity")
-	bv.Name = "VelocityHandler"
-	bv.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-	bv.MaxForce = Vector3.new(0,0,0)
-	bv.Velocity = Vector3.new(0,0,0)
+local function mobilefly(speed)
+    local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
 
-	local bg = Instance.new("BodyGyro")
-	bg.Name = "GyroHandler"
-	bg.Parent = game.Players.LocalPlayer.Character.HumanoidRootPart
-	bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-	bg.P = 1000
-	bg.D = 50
+    local bv, bg
 
-	local Signal1
-	Signal1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(NewChar)
-		local bv = Instance.new("BodyVelocity")
-		bv.Name = "VelocityHandler"
-		bv.Parent = NewChar:WaitForChild("Humanoid").RootPart
-		bv.MaxForce = Vector3.new(0,0,0)
-		bv.Velocity = Vector3.new(0,0,0)
+    local function doFly(parent)
+        bv = Instance.new("BodyVelocity")
+        bv.Name = "VelocityHandler"
+        bv.Parent = parent
+        bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        bv.Velocity = Vector3.new(0, 0, 0)
 
-		local bg = Instance.new("BodyGyro")
-		bg.Name = "GyroHandler"
-		bg.Parent = NewChar:WaitForChild("Humanoid").HumanoidRootPart
-		bg.MaxTorque = Vector3.new(9e9,9e9,9e9)
-		bg.P = 1000
-		bg.D = 50
-	end)
+        bg = Instance.new("BodyGyro")
+        bg.Name = "GyroHandler"
+        bg.Parent = parent
+        bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bg.P = 1000
+        bg.D = 50
+    end
 
-	local camera = game.Workspace.CurrentCamera
+    doFly(game.Players.LocalPlayer.Character.HumanoidRootPart)
 
-	local Signal2
-	Signal2 = game:GetService("RunService").RenderStepped:Connect(function()
-		if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character.Humanoid.RootPart and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("VelocityHandler") and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("GyroHandler") then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9,9e9,9e9)
-			game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9,9e9,9e9)
-			game.Players.LocalPlayer.Character.Humanoid.PlatformStand = true
+    local Signal1
+    Signal1 = game.Players.LocalPlayer.CharacterAdded:Connect(function(NewChar)
+        if Signal1 then
+            Signal1:Disconnect()
+        end
 
-			game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
-			local direction = controlModule:GetMoveVector()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = Vector3.new()
-			if direction.X > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
-			end
-			if direction.X < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * speed)
-			end
-			if direction.Z > 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
-			end
-			if direction.Z < 0 then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity = game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * speed)
-			end
-		end
-	end)
+        doFly(NewChar:WaitForChild("Humanoid").RootPart)
+    end)
+
+    local camera = game.Workspace.CurrentCamera
+
+    local Signal2
+    Signal2 = game:GetService("RunService").RenderStepped:Connect(function()
+        local character = game.Players.LocalPlayer.Character
+        if character and character:FindFirstChildOfClass("Humanoid") and character.HumanoidRootPart:FindFirstChild("VelocityHandler") and character.HumanoidRootPart:FindFirstChild("GyroHandler") then
+            character.HumanoidRootPart.VelocityHandler.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+            character.HumanoidRootPart.GyroHandler.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+            character.Humanoid.PlatformStand = true
+
+            character.HumanoidRootPart.GyroHandler.CFrame = camera.CoordinateFrame
+            local direction = controlModule:GetMoveVector()
+            local velocity = Vector3.new()
+
+            if direction.X ~= 0 then
+                velocity = velocity + camera.CFrame.RightVector * (direction.X * speed)
+            end
+            if direction.Z ~= 0 then
+                velocity = velocity - camera.CFrame.LookVector * (direction.Z * speed)
+            end
+
+            character.HumanoidRootPart.VelocityHandler.Velocity = velocity
+        end
+    end)
+
+    return Signal1, Signal2
 end
 
-
-function unmobilefly()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.VelocityHandler:Destroy()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.GyroHandler:Destroy()
-	game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
-	if Signal1 then
-		Signal1:Disconnect()
-	end
-	if Signal2 then
-		Signal2:Disconnect()
-	end
+local function unmobilefly(Signal1, Signal2)
+    if Signal1 then
+        Signal1:Disconnect()
+    end
+    if Signal2 then
+        Signal2:Disconnect()
+    end
+    if bv then
+        bv:Destroy()
+    end
+    if bg then
+        bg:Destroy()
+    end
+    game.Players.LocalPlayer.Character.Humanoid.PlatformStand = false
 end
+
 
 
 function x(v)
@@ -15970,7 +15974,8 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	ScreenGui.Parent = game.CoreGui
 	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui.ResetOnSpawn = true
+	ScreenGui.ResetOnSpawn = false
+	ScreenGui.DisplayOrder=99999 -- added this so it doesn't collide with other UI :P
 
 	TextClickButton.Name = "NamelessAdminButton"
 	TextClickButton.Parent = ScreenGui
