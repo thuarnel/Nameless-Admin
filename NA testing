@@ -309,62 +309,50 @@ function round(num, numDecimalPlaces)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-function addESP(plr)
-    task.spawn(function()
-		task.spawn(function()
-        for _, v in pairs(CoreGui:GetChildren()) do
-            if v.Name == plr.Name..'_ESP' then
-                v:Destroy()
-            end
-        end
+function ESP(plr)
+	task.spawn(function()
+		for i,v in pairs(COREGUI:GetChildren()) do
+			if v.Name == plr.Name..'_ESP' then
+				v:Destroy()
+			end
+		end
+		wait()
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
+			local ESPholder = Instance.new("Folder")
+			ESPholder.Name = plr.Name..'_ESP'
+			ESPholder.Parent = COREGUI
+			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+
+			local a = Instance.new("Highlight")
+			a.Name = plr.Name
+			a.Parent = ESPholder
+			a.Adornee = plr.Character
+			a.FillTransparency = 0.45
+			a.FillColor = Color3.fromRGB(0,255,0)
+
+			if plr.Character and plr.Character:FindFirstChild('Head') then
+				local BillboardGui = Instance.new("BillboardGui")
+				local TextLabel = Instance.new("TextLabel")
+				BillboardGui.Adornee = plr.Character.Head
+				BillboardGui.Name = plr.Name
+				BillboardGui.Parent = ESPholder
+				BillboardGui.Size = UDim2.new(0, 100, 0, 150)
+				BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
+				BillboardGui.AlwaysOnTop = true
+				TextLabel.Parent = BillboardGui
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Position = UDim2.new(0, 0, 0, -50)
+				TextLabel.Size = UDim2.new(0, 100, 0, 100)
+				TextLabel.Font = Enum.Font.SourceSansSemibold
+				TextLabel.TextSize = 17
+				TextLabel.TextColor3 = Color3.new(12, 4, 20)
+				TextLabel.TextStrokeTransparency = 0.3
+				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
+				TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
+				TextLabel.ZIndex = 10
+			end
+		end
 	end)
-        if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not CoreGui:FindFirstChild(plr.Name..'_ESP') then
-            local ESPholder = Instance.new("Folder")
-            ESPholder.Name = plr.Name..'_ESP'
-            ESPholder.Parent = CoreGui
-
-            repeat wait(1) until plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and plr.Character:FindFirstChildOfClass("Humanoid")
-
-            local highlight = Instance.new("Highlight")
-            highlight.Name = plr.Name
-            highlight.Parent = ESPholder
-            highlight.Adornee = plr.Character
-            highlight.FillTransparency = 0.45
-            highlight.FillColor = Color3.fromRGB(0, 255, 0)
-
-            if plr.Character and plr.Character:FindFirstChild('Head') then
-                local BillboardGui = Instance.new("BillboardGui")
-                local NameLabel = Instance.new("TextLabel")
-
-                BillboardGui.Adornee = plr.Character.Head
-                BillboardGui.Name = plr.Name
-                BillboardGui.Parent = ESPholder
-                BillboardGui.Size = UDim2.new(0, 100, 0, 150)
-                BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
-                BillboardGui.AlwaysOnTop = true
-
-                NameLabel.Parent = BillboardGui
-                NameLabel.BackgroundTransparency = 1
-                NameLabel.Position = UDim2.new(0, 0, 0, -50)
-                NameLabel.Size = UDim2.new(0, 100, 0, 100)
-                NameLabel.Font = Enum.Font.SourceSansSemibold
-                NameLabel.TextSize = 17
-                NameLabel.TextColor3 = Color3.new(1,1,1)
-                NameLabel.TextStrokeTransparency = 0.3
-                NameLabel.TextYAlignment = Enum.TextYAlignment.Bottom
-                NameLabel.ZIndex = 10
-
-                task.spawn(function()
-                    while BillboardGui and BillboardGui.Parent and task.wait() do
-                        if plr.Character and plr.Character:FindFirstChild("HumanoidRootPart") and Players.LocalPlayer.Character and Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                            local distance = (plr.Character.HumanoidRootPart.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-                            NameLabel.Text = string.format('@%s | %s | Studs: %.2f', plr.Name, plr.DisplayName, distance)
-                        end
-                    end
-                end)
-            end
-        end
-    end)
 end
 
 function removeESP()
