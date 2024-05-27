@@ -356,11 +356,11 @@ function ESP(plr)
 end
 
 function removeESP()
-    for _, v in pairs(CoreGui:GetChildren()) do
-        if string.sub(v.Name, -4) == '_ESP' then
-            v:Destroy()
-        end
-    end
+    for i,c in pairs(COREGUI:GetChildren()) do
+		if string.sub(c.Name, -4) == '_ESP' then
+			c:Destroy()
+		end
+	end
 end
 
 local Signal1, Signal2
