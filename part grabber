@@ -1,3 +1,6 @@
+if getgenv().prtGrabLoaded then return print'Part Grabber is running already' end
+getgenv().prtGrabLoaded=true
+
 local prtGrab = Instance.new("ScreenGui")
 local Main = Instance.new("Frame")
 local Container = Instance.new("Frame")
@@ -181,6 +184,7 @@ UICorner_2.Parent = Main
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
 UIGradient_2.Parent = Main
 
+local idk=nil
 
 
 local function BLBPRD_fake_script()
@@ -211,13 +215,13 @@ end
 
 local function prt()
     if mouse.Target then
-        script.Parent.Text = "game."..getFullPath(mouse.Target)
+        script.Parent.Text = getFullPath(mouse.Target)
     else
         warn("Error while getting path")
     end
 end
-
-mouse.Button1Down:Connect(prt)
+if idk then idk:Disconnect() idk=nil end
+idk=mouse.Button1Down:Connect(prt)
 end
 coroutine.wrap(BLBPRD_fake_script)()
 local function UUVHNZD_fake_script() -- Found.LocalScript 
@@ -233,6 +237,8 @@ local function AUPMILR_fake_script() -- Exit.LocalScript
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent:Destroy()
+if idk then idk:Disconnect() idk=nil end
+getgenv().prtGrabLoaded=false
 	end)
 end
 coroutine.wrap(AUPMILR_fake_script)()
