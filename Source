@@ -6849,6 +6849,11 @@ cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on m
 			Duration = 5;
 		});
 
+		if rahh then
+			rahh:Destroy()
+			rahh=nil
+		end
+
 		rahh = Instance.new("ScreenGui")
 		local TextButton = Instance.new("TextButton")
 		local UICorner = Instance.new("UICorner")
