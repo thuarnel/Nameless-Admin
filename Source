@@ -6209,7 +6209,7 @@ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
 end)
-
+local hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
 	
@@ -6218,7 +6218,10 @@ cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs ou
 		SSI = "saveinstance",
 	}
 	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
-	local Options = {}
+		local Options = {}	
+	if identifyexecutor() == "Fluxus" and not hastheyfixedit then
+	Options = { IgnoreSpecialProperties = true }
+	end
 	synsaveinstance(Options)
 end)
 
