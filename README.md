@@ -1,7 +1,10 @@
-### unofficial continuation of Nameless Admin
+### continuation of Nameless Admin
 
-
-
+## Current Devs:
+```lua
+@ltseverydayyou (maxype) | https://github.com/ltseverydayyou
+@MuhXd (Viper) | https://github.com/MuhXd
+```
 
 ## Original Owner: 
 ```lua
