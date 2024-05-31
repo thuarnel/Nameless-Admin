@@ -8,7 +8,11 @@
       \/     /_____/                \/     \/      \/|__|                             \/            \/    \/                           \/     \/        \/                              \/  /_____/             \/     \/     \/       \/            \/     \/                  \/        \/ 
 
 --]]
+if not GrimExLoaded then
 loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/Source.lua?raw=NEWLOADSTRINGYAYAYA"))();
+else
+return
+end
 
 -- @maxype
 
