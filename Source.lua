@@ -1,4 +1,4 @@
--- hi grimexploits i know that you're gonna steal this
+-- hi grimexploits i know that you're gonna steal this since you cannot code nor do you know Lua
 
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
