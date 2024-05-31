@@ -16099,7 +16099,13 @@ print([[
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
 
+-- NA devs (2024)
 
--- @maxype
+-- @ltseverydayyou (maxype)
+-- @MuhXd (Viper)
+
+--[[
+don't you dare give yourself credits grimexploits you have done nothing to contribute
+]]
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
