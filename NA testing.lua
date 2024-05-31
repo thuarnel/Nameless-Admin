@@ -1,4 +1,4 @@
--- hi grimexploits i know that you're gonna steal this
+-- hi grimexploits i know that you're gonna steal this since you cannot code nor do you know Lua
 
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
@@ -26,7 +26,7 @@ task.spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source"))();]])
+			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]])
 		end
 	end)
 end)
@@ -6209,25 +6209,20 @@ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
 end)
-
+local hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
 	
-	--[[local Params = {
+	local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
 	}
 	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
-	local Options = {}
-	synsaveinstance(Options)]]
-
-local Params = {
-    RepoURL = "https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/",
-    SSI = "saveinstance",
-}
-local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI, true), Params.SSI)()
-local Options = {}
-synsaveinstance(Options)
+		local Options = {}	
+	if identifyexecutor() == "Fluxus" and not hastheyfixedit then
+	Options = { IgnoreSpecialProperties = true }
+	end
+	synsaveinstance(Options)
 end)
 
 cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"}, function(...)
@@ -16104,7 +16099,13 @@ print([[
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
 
+-- NA devs (2024)
 
--- @maxype
+-- @ltseverydayyou (maxype)
+-- @MuhXd (Viper)
+
+--[[
+don't you dare give yourself credits grimexploits you have done nothing to contribute
+]]
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
