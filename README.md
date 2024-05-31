@@ -6,6 +6,16 @@
 @MuhXd (Viper) | https://github.com/MuhXd
 ```
 
+
+## INFO
+```
+old scripts will be fixed and function properly
+```
+```
+new cmds soon
+```
+
+
 ## Original Owner: 
 ```lua
 https://github.com/FilteringEnabled
