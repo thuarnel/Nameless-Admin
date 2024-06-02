@@ -4645,7 +4645,7 @@ cmd.add({"unantisit"}, {"unantisit", "Disable antisit command"}, function()
 end)
 
 cmd.add({"antikick", "nokick"}, {"antikick (nokick)", "prevents you from getting kicked by LocalScripts or executed scripts"}, function()
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/anti%20kicker?raw=true"))() --not mine just re-uploaded
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/BetterAntiKick.lua?raw=true"))() -- Better Version
 end)
 
 cmd.add({"lay"}, {"lay", "zzzzzzzz"}, function()
