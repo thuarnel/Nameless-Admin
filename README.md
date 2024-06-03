@@ -26,4 +26,5 @@ https://github.com/FilteringEnabled
 loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/main/Source?raw=true"))()
 ```
 
-# hi GrimEx (@nightwolf5975)
+
+# hi GrimEx (@nightwolf5975) thx for verifying <3
