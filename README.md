@@ -27,4 +27,4 @@ loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/
 ```
 
 
-# hi GrimEx (@nightwolf5975) thx for verifying <3
+# hi GrimEx (@nightwolf5975) thx for verifying you theft <3
