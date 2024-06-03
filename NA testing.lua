@@ -17,10 +17,10 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
---[[task.spawn(function() -- saveinstance support (credits to Viper) | disabled cause it breaks dex
+task.spawn(function() -- saveinstance support v2 | @ltseverydayyou
 	task.wait(1)
-	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Arecus-X-Neo/Saveinstance.lua?raw=true"))();
-end)]]
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
+end)
 
 task.spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
