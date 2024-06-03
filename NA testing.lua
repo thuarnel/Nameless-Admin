@@ -2234,7 +2234,7 @@ cmd.add({"commands", "cmds"}, {"commands (cmds)", "Open the command list"}, func
 	gui.commands()
 end)
 
-cmd.add({"adonisfinder", "adonfind"}, {"adonis finder (adonfind)", "Lets you see if the game has adonis admin"}, function()
+cmd.add({"adonisfinder", "adfind"}, {"adonis finder (adfind)", "Lets you see if the game has adonis admin"}, function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/AdonisScanner.lua?raw=adonfind"))()
 end)
 
