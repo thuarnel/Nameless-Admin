@@ -2238,6 +2238,21 @@ cmd.add({"adonisfinder", "adfind"}, {"adonis finder (adfind)", "Lets you see if 
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/AdonisScanner.lua?raw=adonfind"))()
 end)
 
+cmd.add({"SensorRotaionScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
+	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
+	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
+end)
+
+cmd.add({"LandscapeRotaionScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
+	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+end)
+
+
+cmd.add({"PortraitRotaionScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+end)
 
 cmd.add({"commandcount", "cc"}, {"commandcount (cc)", "Counds how many commands NA has"}, function()
 
