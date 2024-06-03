@@ -1,4 +1,7 @@
--- hi grimexploits i know that you're gonna steal this since you cannot code nor do you know Lua
+-- Hi Grimexploits, thanks for showing me enough proof of how you skidded this script and Nameless Admin. You've basically proven that you never got permission from qipu to rename Nameless Admin
+-- Next time, ask for our permission instead of skidding it, nerd. You've basically proven yourself that you did NOT get permission from qipu to rebrand Nameless Admin to your so-called admin script
+-- On another note, joining our server and threatening to steal our game isn't really a good decision, you know that?
+-- You've made yourself look like a fool and a thief by lying to everyone about having gotten permission from qipu to rebrand his admin. It's clear you never had any authorization, and your actions only prove your dishonesty
 
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
@@ -17,7 +20,7 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function() -- saveinstance support v2 | @ltseverydayyou
+task.spawn(function() -- saveinstance support v2 | @ltseverydayyou | gl skidding this grimexploits
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)
@@ -16037,9 +16040,9 @@ task.spawn(function()
 			Duration = 5;
 		});
 		Notify({
-			Description = goof();
-			Title = "Random Goofy Message";
-			Duration = 3;
+			Description = "Please refrain from using GrimEx admin. They have taken the hard work that Viper and I put into fixing this script and making it function properly";
+			Title = "⚠️ WARNING ⚠️";
+			Duration = 7;
 		});
 	end)
 end)
@@ -16118,14 +16121,11 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
+print("new UI revamp coming soon, gl skidding it grimexploits cause it will be obfuscated and blacklisted for (grimace admin) <3") -- rebrand yourself to grimace shake admin LOL
 
 -- NA devs (2024)
 
 -- @ltseverydayyou (maxype)
 -- @MuhXd (Viper)
-
---[[
-don't you dare give yourself credits grimexploits you have done nothing to contribute
-]]
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
