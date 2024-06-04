@@ -12,7 +12,7 @@
 old scripts will be fixed and function properly
 ```
 ```
-new cmds soon
+new cmds soon (if we not lazy :P)
 ```
 
 
@@ -27,4 +27,4 @@ loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/
 ```
 
 
-# hi GrimEx (@nightwolf5975) thx for verifying you theft <3
+# hi GrimEx (@nightwolf5975)
