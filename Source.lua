@@ -1,7 +1,4 @@
--- Hi Grimexploits, thanks for showing me enough proof of how you skidded this script and Nameless Admin. You've basically proven that you never got permission from qipu to rename Nameless Admin
--- Next time, ask for our permission instead of skidding it, nerd. You've basically proven yourself that you did NOT get permission from qipu to rebrand Nameless Admin to your so-called admin script
--- On another note, joining our server and threatening to steal our game isn't really a good decision, you know that?
--- You've made yourself look like a fool and a thief by lying to everyone about having gotten permission from qipu to rebrand his admin. It's clear you never had any authorization, and your actions only prove your dishonesty
+-- quit skidding this
 
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
