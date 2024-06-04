@@ -15,11 +15,6 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function() -- saveinstance support v2
-	task.wait(1)
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
-end)
-
 task.spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
