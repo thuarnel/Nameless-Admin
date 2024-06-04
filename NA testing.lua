@@ -1,5 +1,3 @@
--- hi grimexploits i know that you're gonna steal this since you cannot code nor do you know Lua
-
 if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
@@ -17,7 +15,7 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
-task.spawn(function() -- saveinstance support v2 | @ltseverydayyou
+task.spawn(function() -- saveinstance support v2
 	task.wait(1)
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)
@@ -16039,7 +16037,7 @@ task.spawn(function()
 		Notify({
 			Description = goof();
 			Title = "Random Goofy Message";
-			Duration = 3;
+			Duration = 4;
 		});
 	end)
 end)
@@ -16089,7 +16087,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 		textclickbutton.BackgroundTransparency = 0.14
 
 		local textWidth = game:GetService("TextService"):GetTextSize(textclickbutton.Text, textclickbutton.TextSize, textclickbutton.Font, Vector2.new(math.huge, math.huge)).X
-		local newSize = UDim2.new(0, textWidth + 10, 0, 33)
+		local newSize = UDim2.new(0, textWidth + 20, 0, 33)
 
 		textclickbutton:TweenSize(newSize, "Out", "Quint", 1, true)
 		wait(2)
@@ -16118,14 +16116,9 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
-
--- NA devs (2024)
+print("new UI revamp coming soon")
 
 -- @ltseverydayyou (maxype)
 -- @MuhXd (Viper)
-
---[[
-don't you dare give yourself credits grimexploits you have done nothing to contribute
-]]
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
