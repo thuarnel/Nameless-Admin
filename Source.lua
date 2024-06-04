@@ -16037,9 +16037,9 @@ task.spawn(function()
 			Duration = 5;
 		});
 		Notify({
-			Description = "Please refrain from using GrimEx admin. They have taken the hard work that Viper and I put into fixing this script and making it function properly";
-			Title = "⚠️ WARNING ⚠️";
-			Duration = 7;
+			Description = goof();
+			Title = "Random Goofy Message";
+			Duration = 4;
 		});
 	end)
 end)
@@ -16118,7 +16118,7 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
-print("new UI revamp coming soon, gl skidding it grimexploits cause it will be obfuscated and blacklisted for (grimace admin) <3") -- rebrand yourself to grimace shake admin LOL
+print("new UI revamp coming soon")
 
 -- NA devs (2024)
 
