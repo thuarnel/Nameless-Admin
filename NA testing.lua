@@ -2256,23 +2256,26 @@ end)
 cmd.add({"adonisfinder", "adfind"}, {"adonis finder (adfind)", "Lets you see if the game has adonis admin"}, function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/AdonisScanner.lua?raw=adonfind"))()
 end)
-
+-- Mobile Commands for the screen
+if IsOnMobile then
+	
 cmd.add({"SensorRotaionScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
 	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
-	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
 end)
 
 cmd.add({"LandscapeRotaionScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
 	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
-	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
 end)
-
 
 cmd.add({"PortraitRotaionScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
 	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
-	game.StarterGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
-end)
+	end)
+	
+cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = game.StarterGui.ScreenOrientation 
+	end)
 
+end
 cmd.add({"commandcount", "cc"}, {"commandcount (cc)", "Counds how many commands NA has"}, function()
 
 	Notify({
