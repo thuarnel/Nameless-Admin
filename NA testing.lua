@@ -7027,7 +7027,6 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 	end
 	if IsOnMobile then 
 		wait();
-
 		Notify({
 			Description = "Nameless Admin has detected you using mobile you now have a mfly button click it to enable / disable mobile flying (For easier use)";
 			Title = "Nameless Admin";
@@ -7091,12 +7090,19 @@ end)
 cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
 
 	wait();
-
-	Notify({
-		Description = "Not flying anymore";
-		Title = "Nameless Admin";
-		Duration = 5;
-	});
+	if IsOnMobile then
+		Notify({
+			Description = "Mobile Fly Disabled";
+			Title = "Nameless Admin";
+			Duration = 5;
+		});
+	else
+		Notify({
+			Description = "Flying is disabled";
+			Title = "Nameless Admin";
+			Duration = 5;
+		});
+	end
 	unmobilefly()
 	on=false
 	if rahh then
