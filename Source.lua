@@ -134,17 +134,17 @@ local NormalSpin = true
 
 local localPlayer = Player
 local LocalPlayer = Player
-local character = localPlayer.Character
+local character = Player.Character or Player.CharacterAdded:Wait()
 local mouse = localPlayer:GetMouse()
 local camera = workspace.CurrentCamera
 local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 player, plr, lp = localPlayer, localPlayer, localPlayer, localPlayer
 
-game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
+--[[game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 	character = c
 	Character = c
-end)
+end)]]
 
 local genv = function() 
 	return ((getgenv and getgenv()) or shared or _G);
