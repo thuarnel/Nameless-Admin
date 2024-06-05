@@ -78,6 +78,7 @@ local ProximityPromptService = game:GetService("ProximityPromptService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService('HttpService')
 local RunService2 = game:FindService("RunService")
 local StarterGui = game:GetService("StarterGui")
 local SoundService = game:GetService("SoundService")
@@ -302,7 +303,7 @@ COREGUI = game:GetService("CoreGui")
 speaker = Player
 char = plr.Character
 RunService = game:GetService("RunService")
-local JSONEncode, JSONDecode = Services.Http.JSONEncode, Services.Http.JSONDecode
+local JSONEncode, JSONDecode = HttpService.JSONEncode, HttpService.JSONDecode
 local con = game.Loaded.Connect
 local LoadTime = tick();
 
@@ -6459,7 +6460,7 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 		Duration = 5;
 
 	});
-	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data
+	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data
 	local num = 0
 	local Jobid = nil
 
@@ -6493,7 +6494,7 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	});
 
-	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
 	local Players = Services.Players.MaxPlayers
 	local Jobid = nil
 
@@ -6527,7 +6528,7 @@ cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a se
 
 	});
 
-	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
 	local Ping = math.huge
 	local Jobid = nil
 
