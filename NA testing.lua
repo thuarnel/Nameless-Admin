@@ -141,10 +141,10 @@ local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 player, plr, lp = localPlayer, localPlayer, localPlayer, localPlayer
 
---[[Player.CharacterAdded:connect(function(c)
-	Character=c
-	character=c
-end)]]
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
+	character = c
+	Character = c
+end)
 
 local genv = function() 
 	return ((getgenv and getgenv()) or shared or _G);
