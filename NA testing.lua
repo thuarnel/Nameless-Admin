@@ -86,10 +86,11 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GuiService = game:GetService("GuiService")
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
-local Player = game.Players.LocalPlayer
+local Player = game:GetService("Players").LocalPlayer
+local plr = game:GetService("Players").LocalPlayer
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
-local Character = Player.Character
+local Character = Player.Character or Player.CharacterAdded:Wait()
 local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked = true
 _G.Spam = false
@@ -139,9 +140,9 @@ local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 player, plr, lp = localPlayer, localPlayer, localPlayer, localPlayer
 
-localPlayer.CharacterAdded:Connect(function(c)
-	character = c
-end)
+local genv = function() 
+	return ((getgenv and getgenv()) or shared or _G);
+end
 
 local bringc = {}
 
@@ -216,8 +217,20 @@ local wait = function(int)
 end
 
 function r15(plr)
-	if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
-		return true
+	plr = plr or game:GetService("Players").LocalPlayer
+	if plr then
+		if plr.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
+			return true
+		end
+	end
+end
+
+function r6(Player)
+	Player = Player or game:GetService("Players").LocalPlayer
+	if Player then
+		if Player.Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+			return true
+		end
 	end
 end
 
@@ -232,6 +245,20 @@ end
 function getRoot(char)
 	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
 	return rootPart
+end
+
+local function getChar()
+	return game.Players.LocalPlayer.Character
+end
+
+local function getBp()
+	return game.Players.LocalPlayer.Backpack
+end
+
+function isNumber(str)
+	if tonumber(str) ~= nil or str == 'inf' then
+		return true
+	end
 end
 
 function FindInTable(tbl,val)
@@ -275,6 +302,9 @@ COREGUI = game:GetService("CoreGui")
 speaker = Player
 char = plr.Character
 RunService = game:GetService("RunService")
+local JSONEncode, JSONDecode = Services.Http.JSONEncode, Services.Http.JSONDecode
+local con = game.Loaded.Connect
+local LoadTime = tick();
 
 game:GetService('RunService').Stepped:connect(function()
 	if anniblockspam then
@@ -380,7 +410,7 @@ function ESP(plr)
 end
 
 function removeESP()
-    for i,c in pairs(COREGUI:GetChildren()) do
+	for i,c in pairs(COREGUI:GetChildren()) do
 		if string.sub(c.Name, -4) == '_ESP' then
 			c:Destroy()
 		end
@@ -392,8 +422,8 @@ local Signal1, Signal2
 function mobilefly(speed)
 	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
 	local character = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-	local rootPart = character:WaitForChild("HumanoidRootPart")
-	
+	local rootPart = getRoot(Character)
+
 	local existingBV = rootPart:FindFirstChild("VelocityHandler")
 	local existingBG = rootPart:FindFirstChild("GyroHandler")
 
@@ -469,14 +499,14 @@ function mobilefly(speed)
 end
 
 function unmobilefly()
-	local character = game.Players.LocalPlayer.Character
-	if character and character:FindFirstChild("HumanoidRootPart") then
-		local rootPart = character.HumanoidRootPart
-		if rootPart:FindFirstChild("VelocityHandler") then
-			rootPart.VelocityHandler:Destroy()
+	local char = game.Players.LocalPlayer.Character
+	root = getRoot(char)
+	if char and root then
+		if root:FindFirstChild("VelocityHandler") then
+			root.VelocityHandler:Destroy()
 		end
-		if rootPart:FindFirstChild("GyroHandler") then
-			rootPart.GyroHandler:Destroy()
+		if root:FindFirstChild("GyroHandler") then
+			root.GyroHandler:Destroy()
 		end
 		local humanoid = character:FindFirstChildOfClass("Humanoid")
 		if humanoid then
@@ -504,20 +534,6 @@ function x(v)
 	end
 end
 
-local function getChar()
-	return game.Players.LocalPlayer.Character
-end
-
-local function getBp()
-	return game.Players.LocalPlayer.Backpack
-end
-
-function isNumber(str)
-	if tonumber(str) ~= nil or str == 'inf' then
-		return true
-	end
-end
-
 local cmdlp = game.Players.LocalPlayer
 
 plr = cmdlp
@@ -526,7 +542,7 @@ workspace = game.workspace
 
 cmdm = plr:GetMouse()
 
-function sFLY(vfly)
+--[[function sFLY(vfly)
 	FLYING = false
 	speedofthefly = 10
 	speedofthevfly = 10
@@ -630,7 +646,7 @@ function sFLY(vfly)
 		end
 	end)
 	FLY()
-end
+end]]
 
 
 local tool
@@ -693,11 +709,6 @@ end)
 function getTorso(x)
 	x = x or game.Players.LocalPlayer.Character
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart")
-end
-
-function getRoot(char)
-	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-	return rootPart
 end
 
 local lp = game:GetService("Players").LocalPlayer
@@ -821,8 +832,12 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"loadstring", "ls"}, {"loadstring <link> (ls)", "Run the code using loadstring"}, function(source)
+cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(source)
 	loadstring(game:HttpGet(source))()
+end)
+
+cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(script)
+	loadstring(script)()
 end)
 
 cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
@@ -2430,8 +2445,15 @@ cmd.add({"rjre", "rejoinrefresh"}, {"rjre (rejoinrefresh)", "Rejoins and telepor
 			qot = "task.spawn(function() end) repeat wait() until game and game:IsLoaded() local lp = game:GetService('Players').LocalPlayer local char = lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame = CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..") - char:WaitForChild('HumanoidRootPart').Position).Magnitude < 10"
 		end
 		queueteleport(qot)
-		game:GetService("TeleportService"):TeleportCancel()
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+		if #game.Players:GetPlayers() <= 1 then
+			game.Players.LocalPlayer:Kick("Rejoining...")
+			wait()
+			game:GetService("TeleportService"):TeleportCancel()
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+		else
+			game:GetService("TeleportService"):TeleportCancel()
+			game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+		end
 	end
 end)
 
@@ -2452,7 +2474,6 @@ cmd.add({"rejoin", "rj"}, {"rejoin (rj)", "Rejoin the game"}, function()
 		Description = "Rejoining...";
 		Title = "Nameless Admin";
 		Duration = 5;
-
 	});
 end)
 
@@ -4666,6 +4687,43 @@ cmd.add({"antikick", "nokick"}, {"antikick (nokick)", "prevents you from getting
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/BetterAntiKick.lua?raw=true"))() -- Better Version
 end)
 
+cmd.add({"anticframeteleport", "acframetp", "acftp"}, {"anticframeteleport (acframetp, acftp)", "If a script tries to teleport you somewhere, it shouldn't work"}, function()
+	local allow, Old = nil, nil 
+	genv().actp = true
+	wait();
+
+	Notify({
+		Description = "nothing should be able to teleport you now";
+		Title = "Nameless Admin";
+		Duration = 3;
+	});
+
+	r = GetRoot(plr.Character)
+
+	con(r:GetPropertyChangedSignal("CFrame"), function() 
+		if genv().actp then
+			allow = true
+			r.CFrame = Old
+			Wait();
+			allow = false
+		end
+	end)
+
+	repeat wait() Old = r.CFrame until not r
+end)
+
+cmd.add({"unanticframeteleport", "unacframetp", "unacftp"}, {"unanticframeteleport (unacframetp, unacftp)", "Stops the Anti CFrame Teleport"}, function()
+	genv().actp = false
+
+	wait();
+
+	Notify({
+		Description = "Anti CFrame Teleport disabled";
+		Title = "Nameless Admin";
+		Duration = 3;
+	});
+end)
+
 cmd.add({"lay"}, {"lay", "zzzzzzzz"}, function()
 	local Human = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character.Humanoid
 	if not Human then
@@ -5807,17 +5865,17 @@ cmd.add({"ctrlshiftlock", "ctrlsl"}, {"ctrlshiftlock (ctrlsl)", "Enables shift l
 end)
 
 cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
-    ESPenabled = true
+	ESPenabled = true
 	for _, v in pairs(Players:GetPlayers()) do
-        if v.Name ~= Players.LocalPlayer.Name then
-            ESP(v)
-        end
-    end
+		if v.Name ~= Players.LocalPlayer.Name then
+			ESP(v)
+		end
+	end
 end)
 
 cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
-    ESPenabled = false
-    removeESP()
+	ESPenabled = false
+	removeESP()
 end)
 
 cmd.add({"creep", "ctp", "scare"}, {"ctp <player> (creep, scare)", "Teleports from a player behind them and under the floor to the top"}, function(...)
@@ -6230,15 +6288,15 @@ end)
 local hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
-	
+
 	local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI = "saveinstance",
 	}
 	local synsaveinstance = loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau", true), Params.SSI)()
-		local Options = {}	
+	local Options = {}	
 	if identifyexecutor() == "Fluxus" and not hastheyfixedit then
-	Options = { IgnoreSpecialProperties = true }
+		Options = { IgnoreSpecialProperties = true }
 	end
 	synsaveinstance(Options)
 end)
@@ -6392,7 +6450,7 @@ cmd.add({"joinjobid", "jjobid"}, {"joinjobid <jobid> (jjid)", "Joins the job id 
 	TeleportService:TeleportToPlaceInstance(game.PlaceId,id)
 end)
 
-cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "Serverhop"}, function()
+cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 	wait();
 
 	Notify({
@@ -6401,36 +6459,119 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "Serverhop"}, function()
 		Duration = 5;
 
 	});
-	local Number = 0
-	local SomeSRVS = {}
-	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
-		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-			if v.playing > Number then
-				Number = v.playing
-				SomeSRVS[1] = v.id
+	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data
+	local num = 0
+	local Jobid = nil
+
+	if Servers and #Servers > 1 then
+		for Index, Server in next, Servers do
+			local Playing, Max = Server.playing, Server.maxPlayers
+			if (Playing > Players) and (Playing < Max) then
+				num = Playing
+				Jobid = Server.id
 			end
 		end
 	end
-	if #SomeSRVS > 0 then
-		Notify({
-			Description = "Teleporting...";
-			Title = "Searched!";
-			Duration = 5;
 
+	if Jobid then
+		Notify({
+			Description = string.format("Serverhopping, player count: %s", tostring(Players));
+			Title = "Nameless Admin!";
+			Duration = 5;
 		});
-		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
 	end
 end)
 
-cmd.add({"autorejoin", "autorj"}, {"autorejoin", "Rejoins the server if you get kicked / disconnected"}, function()
-	Players = game.Players
+cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a small server"}, function()
+	wait();
 
-	game.CoreGui:FindFirstChild("RobloxPromptGui"):FindFirstChild("promptOverlay").DescendantAdded:Connect(function(Err)
+	Notify({
+		Description = "Searching";
+		Title = "Nameless Admin";
+		Duration = 5;
+
+	});
+
+	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local Players = Services.Players.MaxPlayers
+	local Jobid = nil
+
+	if Servers and #Servers > 1 then
+		for Index, Server in next, Servers do
+			local Playing, Max = Server.playing, Server.maxPlayers
+			if (Playing < Players) and (Playing < Max) then
+				Players = Playing
+				Jobid = Server.id
+			end
+		end
+	end
+
+	if Jobid then
+		Notify({
+			Description = string.format("Serverhopping, player count: %s", tostring(Players));
+			Title = "Nameless Admin!";
+			Duration = 5;
+		});
+		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
+	end
+end)
+
+cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a server with the best ping"}, function()
+	wait();
+
+	Notify({
+		Description = "Searching";
+		Title = "Nameless Admin";
+		Duration = 5;
+
+	});
+
+	local Servers = JSONDecode(Services.Http, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local Ping = math.huge
+	local Jobid = nil
+
+	if Servers and #Servers > 1 then
+		for Index, Server in next, Servers do
+			local ping = Server.ping
+			if (ping < Ping) then
+				Ping = ping
+				Jobid = Server.id
+			end
+		end
+	end
+
+	if Jobid then
+		Notify({
+			Description = string.format("Serverhopping, ping: %s", tostring(Ping));
+			Title = "Nameless Admin!";
+			Duration = 5;
+		});
+		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
+	end
+end)
+
+autorjthingy=nil
+
+cmd.add({"autorejoin", "autorj"}, {"autorejoin", "Rejoins the server if you get kicked / disconnected"}, function()
+
+	if autorjthingy then autorjthingy:Disconnect() autorjthingy=nil end
+
+	autorjthingy = game.CoreGui:FindFirstChild("RobloxPromptGui"):FindFirstChild("promptOverlay").DescendantAdded:Connect(function(Err)
 		if Err.Name == "ErrorTitle" then
+			if Err.Text:sub(0, 12) == "Disconnected" then
+				if #Players:GetPlayers() <= 1 then
+					game.Players.LocalPlayer:Kick("Rejoining...")
+					wait()
+					game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+				else
+					game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, game.JobId, game.Players.LocalPlayer)
+				end
+			end
 			Err:GetPropertyChangedSignal("Text"):Connect(function()
 				if Err.Text:sub(0, 12) == "Disconnected" then
 					if #Players:GetPlayers() <= 1 then
-						Players.LocalPlayer:Kick("\nRejoining...")
+						game.Players.LocalPlayer:Kick("Rejoining...")
 						wait()
 						game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
 					else
@@ -6446,7 +6587,30 @@ cmd.add({"autorejoin", "autorj"}, {"autorejoin", "Rejoins the server if you get 
 		Title = "Nameless Admin";
 		Duration = 5;
 
-	}); end)
+	}); 
+end)
+
+cmd.add({"unautorejoin", "unautorj"}, {"unautorejoin (unautorj)", "disables auto rejoin command"}, function()
+
+	if autorjthingy then
+		autorjthingy:Disconnect()
+		autorjthingy=nil 
+
+		Notify({
+			Description = "Auto Rejoin is now disabled!";
+			Title = "Nameless Admin";
+			Duration = 5;
+
+		}); 
+	else
+		Notify({
+			Description = "Auto Rejoin is already disabled";
+			Title = "Nameless Admin";
+			Duration = 5;
+
+		}); 
+	end
+end)
 
 cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 	local toLog = {
@@ -6852,15 +7016,15 @@ end)
 
 on = false
 rahh=nil
-cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on mobile"}, function(...)
+
+cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 	speed = (...)
 
 	if speed == nil then
-		speed = 69
+		speed = 50
 	else
 	end
-
-	if table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform()) then 
+	if IsOnMobile then 
 		wait();
 
 		Notify({
@@ -6923,7 +7087,15 @@ cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "Fly that works on m
 	gui.draggable(TextButton)
 end)
 
-cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler"}, function()
+cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
+
+	wait();
+
+	Notify({
+		Description = "Not flying anymore";
+		Title = "Nameless Admin";
+		Duration = 5;
+	});
 	unmobilefly()
 	on=false
 	if rahh then
@@ -6932,43 +7104,20 @@ cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "CFrame fly disabler
 	end
 end)
 
-local flyPart
-cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
-	FLYING = false
-	cmdlp.Character.Humanoid.PlatformStand = false
-	wait()
-
-
-
-	wait();
-
+cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "nil"}, function()
 	Notify({
-		Description = "Fly enabled";
+		Description = "moved into the (fly) command";
 		Title = "Nameless Admin";
-		Duration = 5;
-
+		Duration = 3;
 	});
-	sFLY(true)
-	speedofthevfly = (...)
-	if (...) == nil then
-		speedofthevfly = 2
-	end
 end)
 
-cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
-
-
-
-	wait();
-
+cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "nil"}, function()
 	Notify({
-		Description = "Not flying anymore";
+		Description = "moved into the (unfly) command";
 		Title = "Nameless Admin";
-		Duration = 5;
-
+		Duration = 3;
 	});
-	FLYING = false
-	cmdlp.Character.Humanoid.PlatformStand = false
 end)
 
 cmd.add({"noclip", "nclip", "nc"}, {"noclip", "Disable your player's collision"}, function()
@@ -6987,6 +7136,25 @@ cmd.add({"clip", "c"}, {"clip", "Enable your player's collision"}, function()
 	lib.disconnect("noclip")
 end)
 
+cmd.add({"freezewalk"}, {"freezewalk", "Freezes your character on the server but lets you walk on the client"}, function()
+	local Character = getChar()
+	local Root = getRoot(Character)
+
+	if r6(plr) then
+		local Clone = Root:Clone()
+		Root:Destroy()
+		Clone.Parent = Character
+	else
+		Character.LowerTorso.Anchored = true
+		Character.LowerTorso.Root:Destroy()
+	end
+	Notify({
+		Description = "freezewalk is activated, reset to stop it";
+		Title = "Nameless Admin";
+		Duration = 3;
+	});
+end)
+
 cmd.add({"r15"}, {"r15", "Prompts a message asking to make you R15"}, function()
 	local avs = game:GetService("AvatarEditorService")
 	avs:PromptSaveAvatar(game.Players.LocalPlayer.Character.Humanoid.HumanoidDescription,Enum.HumanoidRigType.R15)
@@ -7002,7 +7170,6 @@ cmd.add({"r15"}, {"r15", "Prompts a message asking to make you R15"}, function()
 			Description = "You are now R15";
 			Title = "Nameless Admin";
 			Duration = 3;
-
 		});
 		respawn()
 	else
@@ -7010,7 +7177,6 @@ cmd.add({"r15"}, {"r15", "Prompts a message asking to make you R15"}, function()
 			Description = "An error has occured";
 			Title = "Nameless Admin";
 			Duration = 3;
-
 		});
 	end
 end)
@@ -8104,11 +8270,6 @@ cmd.add({"nodecals", "nodecal", "notextures"}, {"nodecals", "Remove all characte
 end)
 
 cmd.add({"spinfling", "sfling"}, {"spinfling (sfling)", "Fling by spinning"}, function()
-
-	function getRoot(char)
-		local rootPart = game.Players.LocalPlayer.Character:FindFirstChild('HumanoidRootPart') or game.Players.LocalPlayer.Character:FindFirstChild('Torso') or game.Players.LocalPlayer.Character:FindFirstChild('UpperTorso')
-		return rootPart
-	end
 
 	local Noclipping = nil
 	Clip = false
@@ -12593,10 +12754,6 @@ cmd.add({"spin"}, {"spin {amount}", "Makes your character spin as fast as you wa
 		Duration = 5;
 
 	});
-	function getRoot(char)
-		local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-		return rootPart
-	end
 
 	local spinSpeed = (...)
 	for i,v in pairs(getRoot(game.Players.LocalPlayer.Character):GetChildren()) do
@@ -12623,10 +12780,6 @@ cmd.add({"unspin"}, {"unspin", "Makes your character unspin"}, function()
 		Duration = 5;
 
 	});
-	function getRoot(char)
-		local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-		return rootPart
-	end
 
 	for i,v in pairs(getRoot(game.Players.LocalPlayer.Character):GetChildren()) do
 		if v.Name == "Spinning" then
