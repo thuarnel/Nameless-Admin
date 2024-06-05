@@ -4690,7 +4690,7 @@ end)
 
 cmd.add({"anticframeteleport", "acframetp", "acftp"}, {"anticframeteleport (acframetp, acftp)", "If a script tries to teleport you somewhere, it shouldn't work"}, function()
 	local allow, Old = nil, nil 
-	genv().actp = true
+	getgenv().acftp = true
 	wait();
 
 	Notify({
@@ -4699,22 +4699,22 @@ cmd.add({"anticframeteleport", "acframetp", "acftp"}, {"anticframeteleport (acfr
 		Duration = 3;
 	});
 
-	r = GetRoot(plr.Character)
+	root = getRoot(plr.Character)
 
-	con(r:GetPropertyChangedSignal("CFrame"), function() 
-		if genv().actp then
+	con(root:GetPropertyChangedSignal("CFrame"), function() 
+		if getgenv().acftp then
 			allow = true
-			r.CFrame = Old
+			root.CFrame = Old
 			Wait();
 			allow = false
 		end
 	end)
 
-	repeat wait() Old = r.CFrame until not r
+	repeat wait() Old = root.CFrame until not root
 end)
 
 cmd.add({"unanticframeteleport", "unacframetp", "unacftp"}, {"unanticframeteleport (unacframetp, unacftp)", "Stops the Anti CFrame Teleport"}, function()
-	genv().actp = false
+	getgenv().acftp = false
 
 	wait();
 
