@@ -10614,37 +10614,43 @@ cmd.add({"unheadstand"}, {"unheadstand <player>", "Stop the headstand command"},
 end)
 
 local loopws = false
+local wsLoop=nil
 getgenv().NamelessWs = nil
 cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lws)", "Loop walkspeed"}, function(...)
 	val = {...}
-	getgenv().NamelessWs = (val[1] or 16)
+	NamelessWs = (val[1] or 16)
 	loopws = true
-	repeat task.wait()
-		pcall(function()
-			speaker.Character.Humanoid.WalkSpeed = getgenv().NamelessWs
-		end)
-	until loopws == false
+if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	wsLoop = RunService.RenderStepped:connect(function()
+		if loopws then
+		speaker.Character.Humanoid.WalkSpeed = NamelessWs
+		end
+	end)
 end)
 
 cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	loopws = false
+        if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 end)
 
 local loopjp = false
+local jpLoop=nil
 getgenv().NamelessJP = nil
 cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, ljp)", "Loop JumpPower"}, function(...)
 	val = {...}
-	getgenv().NamelessJP = (val[1] or 50)
+	NamelessJP = (val[1] or 50)
 	loopjp = true
-	repeat task.wait()
-		pcall(function()
-			speaker.Character.Humanoid.JumpPower = getgenv().NamelessJP
-		end)
-	until loopjp == false
+if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	jpLoop = RunService.RenderStepped:connect(function()
+		if loopjp then
+		speaker.Character.Humanoid.JumpPower = NamelessJP
+		end
+	end)
 end)
 
 cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	loopjp = false
+if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 end)
 
 cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
