@@ -6468,28 +6468,27 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 		Duration = 5;
 
 	});
-	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data
-	local num = 0
-	local Jobid = nil
-
-	if Servers and #Servers > 1 then
-		for Index, Server in next, Servers do
-			local Playing, Max = Server.playing, Server.maxPlayers
-			if (Playing > Players) and (Playing < Max) then
-				num = Playing
-				Jobid = Server.id
-			end
+		local Number = 0
+		local SomeSRVS = {}
+		local found = 0
+				 for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+					 if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+						 if v.playing > Number then
+							 Number = v.playing
+							 SomeSRVS[1] = v.id
+					                 found = v.playing
+						 end
+					 end
+				 end
+				 if #SomeSRVS > 0 then
+				 Notify({
+ Description = "serverhopping | Player Count: "..found;
+ Title = "Nameless Admin";
+ Duration = 5;
+ 
+ });
+					 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
 		end
-	end
-
-	if Jobid then
-		Notify({
-			Description = string.format("Serverhopping, player count: %s", tostring(Players));
-			Title = "Nameless Admin!";
-			Duration = 5;
-		});
-		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
-	end
 end)
 
 cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a small server"}, function()
@@ -6502,28 +6501,28 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	});
 
-	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
-	local Players = Services.Players.MaxPlayers
-	local Jobid = nil
+		local Number = math.huge
+local SomeSRVS = {}
+local found = 0
 
-	if Servers and #Servers > 1 then
-		for Index, Server in next, Servers do
-			local Playing, Max = Server.playing, Server.maxPlayers
-			if (Playing < Players) and (Playing < Max) then
-				Players = Playing
-				Jobid = Server.id
-			end
+for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+    if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+        if v.playing < Number then
+            Number = v.playing
+            SomeSRVS[1] = v.id
+            found = v.playing
+        end
+    end
+end
+
+if #SomeSRVS > 0 then
+    Notify({
+        Description = "Serverhopping | Player Count: "..found";
+        Title = "Nameless Admin!";
+        Duration = 5;
+    });
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
 		end
-	end
-
-	if Jobid then
-		Notify({
-			Description = string.format("Serverhopping, player count: %s", tostring(Players));
-			Title = "Nameless Admin!";
-			Duration = 5;
-		});
-		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
-	end
 end)
 
 cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a server with the best ping"}, function()
