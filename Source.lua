@@ -6399,41 +6399,6 @@ cmd.add({"removedn", "nodn", "nodpn"}, {"removedn (nodn, nodpn)", "Removes all d
 	end)
 end)
 
-cmd.add({"anticlientkick", "antickick"}, {"anticlientkick (antickick)", "Makes local scripts not able to kick you"}, function()
-	if not hookmetamethod then 
-		Notify({
-			Description = "Your executor does not support anticlientkick";
-			Title = "Nameless Admin";
-			Duration = 5;
-
-		});
-	end
-	oldhmmi = hookmetamethod(game, "__index", function(self, method)
-		if self == LocalPlayer and method:lower() == "kick" then
-			return print("Expected ':' not '.' calling member function Kick")
-		end
-		return oldhmmi(self, method)
-	end)
-	oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
-		if self == LocalPlayer and getnamecallmethod():lower() == "kick" then
-			return
-				Notify({
-					Description = "A kick was just attempted but was blocked";
-					Title = "Nameless Admin";
-					Duration = 5;
-
-				});
-		end
-		return oldhmmnc(self, ...)
-	end)
-	Notify({
-		Description = "Anti kick executed";
-		Title = "Nameless Admin";
-		Duration = 5;
-
-	});
-end)
-
 cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
@@ -6482,7 +6447,7 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 				 end
 				 if #SomeSRVS > 0 then
 				 Notify({
- Description = "serverhopping | Player Count: "..found;
+ Description = "serverhopping | Player Count: "..found.."";
  Title = "Nameless Admin";
  Duration = 5;
  
@@ -6517,7 +6482,7 @@ end
 
 if #SomeSRVS > 0 then
     Notify({
-        Description = "Serverhopping | Player Count: "..found";
+        Description = "serverhopping | Player Count: "..found.."";
         Title = "Nameless Admin!";
         Duration = 5;
     });
