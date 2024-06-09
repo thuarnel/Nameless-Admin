@@ -2271,7 +2271,7 @@ cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRot
 	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
 	end)
 	
-cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
 		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = game.StarterGui.ScreenOrientation 
 	end)
 
@@ -6483,7 +6483,7 @@ end
 if #SomeSRVS > 0 then
     Notify({
         Description = "serverhopping | Player Count: "..found.."";
-        Title = "Nameless Admin!";
+        Title = "Nameless Admin";
         Duration = 5;
     });
     game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
@@ -6517,7 +6517,7 @@ cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a se
 	if Jobid then
 		Notify({
 			Description = string.format("Serverhopping, ping: %s", tostring(Ping));
-			Title = "Nameless Admin!";
+			Title = "Nameless Admin";
 			Duration = 5;
 		});
 		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
@@ -10196,9 +10196,6 @@ cmd.add({"firekey", "fkey"}, {"firekey <key> (fkey)", "makes you fire a keybind 
 end)
 
 cmd.add({"legresize"}, {"legresize", "Makes your legs very big r15 only"}, function()
-
-
-
 	wait();
 
 	Notify({
@@ -10940,49 +10937,40 @@ cmd.add({"unbang", "unfuck"}, {"unbang", "Unbangs the player"}, function()
 	end
 end)
 
-
-cmd.add({"unairwalk", "unaw"}, {"unairwalk (unaw)", "Stops the airwalk command"}, function()
-	for i, v in pairs(workspace:GetChildren()) do
-		if v:IsA("BasePart") and v.Name == "Airwalk" then
-			v:Destroy()
-		end
-	end
+Airwalker=nil
+awPart=nil
+cmd.add({"unairwalk", "unfloat", "unaw"}, {"unairwalk (unfloat, unaw)", "Stops the airwalk command"}, function()
+	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
+	if awPart then awPart:Destroy() awPart=nil end
 	wait();
 
 	Notify({
 		Description = "Airwalk: OFF";
 		Title = "Nameless Admin";
 		Duration = 5;
-
 	});
 
 end)
 
-
-cmd.add({"airwalk", "aw"}, {"airwalk (aw)", "Press space to go up, unairwalk to stop"}, function()
+cmd.add({"airwalk", "float", "aw"}, {"airwalk (float, aw)", "Press space to go up, unairwalk to stop"}, function()
 	wait();
 
 	Notify({
 		Description = "Airwalk: On";
 		Title = "Nameless Admin";
 		Duration = 5;
-
 	});
-
-	local function AirWalk()
-		local AirWPart = Instance.new("Part", workspace)
-		AirWPart.Size = Vector3.new(7, 2, 3)
-		AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-		AirWPart.Transparency = 1
-		AirWPart.Anchored = true
-		AirWPart.Name = "Airwalk"
-		AirWPart:SetAttribute("NamelessWalk", true)
-		for i = 1, math.huge do
-			AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-			task.wait(.1)
-		end
-	end
-	AirWalk()
+	
+	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
+	if awPart then awPart:Destroy() awPart=nil end
+		awPart = Instance.new("Part", workspace)
+		awPart.Size = Vector3.new(7, 2, 3)
+		awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+		awPart.Transparency = 1
+		awPart.Anchored = true
+		Airwalker = RunService.RenderStepped:connect(function()
+			awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+		end)
 end)
 
 cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -13204,6 +13192,17 @@ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the par
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == bringmeit:lower() and v:IsA("BasePart") then
 			v.CFrame = getRoot(Player.Character).CFrame
+		end
+	end
+end)
+
+cmd.add({"bringmodel", "bmodel"}, {"bringmodel {modelname} (bmodel)", "Brings the model to you"}, function(...)
+	idklol = {...}
+	givemethemodel = idklol[1]
+
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name:lower() == givemethemodel:lower() and v:IsA("Model") then
+			v:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot())
 		end
 	end
 end)
