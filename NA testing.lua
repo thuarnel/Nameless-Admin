@@ -2271,7 +2271,7 @@ cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRot
 	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
 	end)
 	
-cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
 		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = game.StarterGui.ScreenOrientation 
 	end)
 
@@ -6399,41 +6399,6 @@ cmd.add({"removedn", "nodn", "nodpn"}, {"removedn (nodn, nodpn)", "Removes all d
 	end)
 end)
 
-cmd.add({"anticlientkick", "antickick"}, {"anticlientkick (antickick)", "Makes local scripts not able to kick you"}, function()
-	if not hookmetamethod then 
-		Notify({
-			Description = "Your executor does not support anticlientkick";
-			Title = "Nameless Admin";
-			Duration = 5;
-
-		});
-	end
-	oldhmmi = hookmetamethod(game, "__index", function(self, method)
-		if self == LocalPlayer and method:lower() == "kick" then
-			return print("Expected ':' not '.' calling member function Kick")
-		end
-		return oldhmmi(self, method)
-	end)
-	oldhmmnc = hookmetamethod(game, "__namecall", function(self, ...)
-		if self == LocalPlayer and getnamecallmethod():lower() == "kick" then
-			return
-				Notify({
-					Description = "A kick was just attempted but was blocked";
-					Title = "Nameless Admin";
-					Duration = 5;
-
-				});
-		end
-		return oldhmmnc(self, ...)
-	end)
-	Notify({
-		Description = "Anti kick executed";
-		Title = "Nameless Admin";
-		Duration = 5;
-
-	});
-end)
-
 cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
@@ -6468,28 +6433,27 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 		Duration = 5;
 
 	});
-	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data
-	local num = 0
-	local Jobid = nil
-
-	if Servers and #Servers > 1 then
-		for Index, Server in next, Servers do
-			local Playing, Max = Server.playing, Server.maxPlayers
-			if (Playing > Players) and (Playing < Max) then
-				num = Playing
-				Jobid = Server.id
-			end
+		local Number = 0
+		local SomeSRVS = {}
+		local found = 0
+				 for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+					 if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+						 if v.playing > Number then
+							 Number = v.playing
+							 SomeSRVS[1] = v.id
+					                 found = v.playing
+						 end
+					 end
+				 end
+				 if #SomeSRVS > 0 then
+				 Notify({
+ Description = "serverhopping | Player Count: "..found.."";
+ Title = "Nameless Admin";
+ Duration = 5;
+ 
+ });
+					 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
 		end
-	end
-
-	if Jobid then
-		Notify({
-			Description = string.format("Serverhopping, player count: %s", tostring(Players));
-			Title = "Nameless Admin!";
-			Duration = 5;
-		});
-		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
-	end
 end)
 
 cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a small server"}, function()
@@ -6502,28 +6466,28 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	});
 
-	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. game.PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
-	local Players = Services.Players.MaxPlayers
-	local Jobid = nil
+		local Number = math.huge
+local SomeSRVS = {}
+local found = 0
 
-	if Servers and #Servers > 1 then
-		for Index, Server in next, Servers do
-			local Playing, Max = Server.playing, Server.maxPlayers
-			if (Playing < Players) and (Playing < Max) then
-				Players = Playing
-				Jobid = Server.id
-			end
+for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+    if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+        if v.playing < Number then
+            Number = v.playing
+            SomeSRVS[1] = v.id
+            found = v.playing
+        end
+    end
+end
+
+if #SomeSRVS > 0 then
+    Notify({
+        Description = "serverhopping | Player Count: "..found.."";
+        Title = "Nameless Admin";
+        Duration = 5;
+    });
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
 		end
-	end
-
-	if Jobid then
-		Notify({
-			Description = string.format("Serverhopping, player count: %s", tostring(Players));
-			Title = "Nameless Admin!";
-			Duration = 5;
-		});
-		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
-	end
 end)
 
 cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a server with the best ping"}, function()
@@ -6553,7 +6517,7 @@ cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a se
 	if Jobid then
 		Notify({
 			Description = string.format("Serverhopping, ping: %s", tostring(Ping));
-			Title = "Nameless Admin!";
+			Title = "Nameless Admin";
 			Duration = 5;
 		});
 		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
@@ -10232,9 +10196,6 @@ cmd.add({"firekey", "fkey"}, {"firekey <key> (fkey)", "makes you fire a keybind 
 end)
 
 cmd.add({"legresize"}, {"legresize", "Makes your legs very big r15 only"}, function()
-
-
-
 	wait();
 
 	Notify({
@@ -10650,37 +10611,43 @@ cmd.add({"unheadstand"}, {"unheadstand <player>", "Stop the headstand command"},
 end)
 
 local loopws = false
+local wsLoop=nil
 getgenv().NamelessWs = nil
 cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lws)", "Loop walkspeed"}, function(...)
 	val = {...}
-	getgenv().NamelessWs = (val[1] or 16)
+	NamelessWs = (val[1] or 16)
 	loopws = true
-	repeat task.wait()
-		pcall(function()
-			speaker.Character.Humanoid.WalkSpeed = getgenv().NamelessWs
-		end)
-	until loopws == false
+if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	wsLoop = RunService.RenderStepped:connect(function()
+		if loopws then
+		speaker.Character.Humanoid.WalkSpeed = NamelessWs
+		end
+	end)
 end)
 
 cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	loopws = false
+        if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 end)
 
 local loopjp = false
+local jpLoop=nil
 getgenv().NamelessJP = nil
 cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, ljp)", "Loop JumpPower"}, function(...)
 	val = {...}
-	getgenv().NamelessJP = (val[1] or 50)
+	NamelessJP = (val[1] or 50)
 	loopjp = true
-	repeat task.wait()
-		pcall(function()
-			speaker.Character.Humanoid.JumpPower = getgenv().NamelessJP
-		end)
-	until loopjp == false
+if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	jpLoop = RunService.RenderStepped:connect(function()
+		if loopjp then
+		speaker.Character.Humanoid.JumpPower = NamelessJP
+		end
+	end)
 end)
 
 cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	loopjp = false
+if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 end)
 
 cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
@@ -10970,49 +10937,40 @@ cmd.add({"unbang", "unfuck"}, {"unbang", "Unbangs the player"}, function()
 	end
 end)
 
-
-cmd.add({"unairwalk", "unaw"}, {"unairwalk (unaw)", "Stops the airwalk command"}, function()
-	for i, v in pairs(workspace:GetChildren()) do
-		if v:IsA("BasePart") and v.Name == "Airwalk" then
-			v:Destroy()
-		end
-	end
+Airwalker=nil
+awPart=nil
+cmd.add({"unairwalk", "unfloat", "unaw"}, {"unairwalk (unfloat, unaw)", "Stops the airwalk command"}, function()
+	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
+	if awPart then awPart:Destroy() awPart=nil end
 	wait();
 
 	Notify({
 		Description = "Airwalk: OFF";
 		Title = "Nameless Admin";
 		Duration = 5;
-
 	});
 
 end)
 
-
-cmd.add({"airwalk", "aw"}, {"airwalk (aw)", "Press space to go up, unairwalk to stop"}, function()
+cmd.add({"airwalk", "float", "aw"}, {"airwalk (float, aw)", "Press space to go up, unairwalk to stop"}, function()
 	wait();
 
 	Notify({
 		Description = "Airwalk: On";
 		Title = "Nameless Admin";
 		Duration = 5;
-
 	});
-
-	local function AirWalk()
-		local AirWPart = Instance.new("Part", workspace)
-		AirWPart.Size = Vector3.new(7, 2, 3)
-		AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-		AirWPart.Transparency = 1
-		AirWPart.Anchored = true
-		AirWPart.Name = "Airwalk"
-		AirWPart:SetAttribute("NamelessWalk", true)
-		for i = 1, math.huge do
-			AirWPart.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame - Vector3.new(0, 4, 0)
-			task.wait(.1)
-		end
-	end
-	AirWalk()
+	
+	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
+	if awPart then awPart:Destroy() awPart=nil end
+		awPart = Instance.new("Part", workspace)
+		awPart.Size = Vector3.new(7, 2, 3)
+		awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+		awPart.Transparency = 1
+		awPart.Anchored = true
+		Airwalker = RunService.RenderStepped:connect(function()
+			awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+		end)
 end)
 
 cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -13234,6 +13192,17 @@ cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the par
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == bringmeit:lower() and v:IsA("BasePart") then
 			v.CFrame = getRoot(Player.Character).CFrame
+		end
+	end
+end)
+
+cmd.add({"bringmodel", "bmodel"}, {"bringmodel {modelname} (bmodel)", "Brings the model to you"}, function(...)
+	idklol = {...}
+	givemethemodel = idklol[1]
+
+	for i,v in pairs(workspace:GetDescendants()) do
+		if v.Name:lower() == givemethemodel:lower() and v:IsA("Model") then
+			v:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot())
 		end
 	end
 end)
