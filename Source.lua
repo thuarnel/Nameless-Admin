@@ -20,7 +20,7 @@ end
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)]]
 
-task.spawn(function() --automatically load nameless admin when teleported
+spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -67,7 +67,7 @@ local opt = {
 }
 
 -- [[ Version ]] -- 
-curVer = 2.17
+curVer = 2.18
 
 --[[ VARIABLES ]]--
 PlaceId, JobId = game.PlaceId, game.JobId
@@ -85,10 +85,12 @@ local SoundService = game:GetService("SoundService")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GuiService = game:GetService("GuiService")
+local COREGUI = game:GetService("CoreGui")
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
+local PlrGui = Player.PlayerGui
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character or Player.CharacterAdded:Wait()
@@ -16194,7 +16196,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	local UICorner = Instance.new("UICorner")
 	local TextFCButton = Instance.new("ImageButton")
 
-	ScreenGui.Parent = game.CoreGui
+	ScreenGui.Parent = (COREGUI or PlrGui)
 	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	ScreenGui.DisplayOrder=999
