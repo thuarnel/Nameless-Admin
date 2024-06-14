@@ -93,7 +93,7 @@ local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player.PlayerGui
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
-local Character = Player.Character or Player.CharacterAdded:Wait()
+local Character = Player.Character or Player.CharacterAdded:Wait();
 local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked = true
 _G.Spam = false
@@ -136,16 +136,18 @@ local NormalSpin = true
 
 local localPlayer = Player
 local LocalPlayer = Player
-local character = Player.Character or Player.CharacterAdded:Wait()
+local character = Player.Character or Player.CharacterAdded:Wait();
 local mouse = localPlayer:GetMouse()
 local camera = workspace.CurrentCamera
 local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 local player, plr, lp = localPlayer, localPlayer, localPlayer
 
-game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
-	character = c
-	Character = c
+task.spawn(function()
+	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
+		character = c
+		Character = c
+	end)
 end)
 
 local genv = function() 
