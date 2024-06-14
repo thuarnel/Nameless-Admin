@@ -176,7 +176,7 @@ local Goofer = {
 	"⚠️⚠️⚠️",
 	":-(",
 	"(╯°□°)╯︵ ┻━┻",
-        "freaky",
+	"freaky",
 	"unreal",
 }
 
@@ -2262,20 +2262,20 @@ cmd.add({"adonisfinder", "adfind"}, {"adonis finder (adfind)", "Lets you see if 
 end)
 -- Mobile Commands for the screen
 if IsOnMobile then
-	
-cmd.add({"SensorRotationScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
-end)
 
-cmd.add({"LandscapeRotationScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
-end)
-
-cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+	cmd.add({"SensorRotationScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
 	end)
-	
-cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
+
+	cmd.add({"LandscapeRotationScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+	end)
+
+	cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+	end)
+
+	cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
 		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = game.StarterGui.ScreenOrientation 
 	end)
 
@@ -6433,27 +6433,27 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 		Duration = 5;
 
 	});
-		local Number = 0
-		local SomeSRVS = {}
-		local found = 0
-				 for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
-					 if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-						 if v.playing > Number then
-							 Number = v.playing
-							 SomeSRVS[1] = v.id
-					                 found = v.playing
-						 end
-					 end
-				 end
-				 if #SomeSRVS > 0 then
-				 Notify({
- Description = "serverhopping | Player Count: "..found.."";
- Title = "Nameless Admin";
- Duration = 5;
- 
- });
-					 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	local Number = 0
+	local SomeSRVS = {}
+	local found = 0
+	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+			if v.playing > Number then
+				Number = v.playing
+				SomeSRVS[1] = v.id
+				found = v.playing
+			end
 		end
+	end
+	if #SomeSRVS > 0 then
+		Notify({
+			Description = "serverhopping | Player Count: "..found.."";
+			Title = "Nameless Admin";
+			Duration = 5;
+
+		});
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	end
 end)
 
 cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a small server"}, function()
@@ -6466,28 +6466,28 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	});
 
-		local Number = math.huge
-local SomeSRVS = {}
-local found = 0
+	local Number = math.huge
+	local SomeSRVS = {}
+	local found = 0
 
-for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
-    if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-        if v.playing < Number then
-            Number = v.playing
-            SomeSRVS[1] = v.id
-            found = v.playing
-        end
-    end
-end
-
-if #SomeSRVS > 0 then
-    Notify({
-        Description = "serverhopping | Player Count: "..found.."";
-        Title = "Nameless Admin";
-        Duration = 5;
-    });
-    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+			if v.playing < Number then
+				Number = v.playing
+				SomeSRVS[1] = v.id
+				found = v.playing
+			end
 		end
+	end
+
+	if #SomeSRVS > 0 then
+		Notify({
+			Description = "serverhopping | Player Count: "..found.."";
+			Title = "Nameless Admin";
+			Duration = 5;
+		});
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	end
 end)
 
 cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a server with the best ping"}, function()
@@ -10617,17 +10617,17 @@ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lw
 	val = {...}
 	NamelessWs = (val[1] or 16)
 	loopws = true
-if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 	wsLoop = RunService.RenderStepped:connect(function()
 		if loopws then
-		speaker.Character.Humanoid.WalkSpeed = NamelessWs
+			speaker.Character.Humanoid.WalkSpeed = NamelessWs
 		end
 	end)
 end)
 
 cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	loopws = false
-        if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 end)
 
 local loopjp = false
@@ -10637,17 +10637,17 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	val = {...}
 	NamelessJP = (val[1] or 50)
 	loopjp = true
-if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp then
-		speaker.Character.Humanoid.JumpPower = NamelessJP
+			speaker.Character.Humanoid.JumpPower = NamelessJP
 		end
 	end)
 end)
 
 cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	loopjp = false
-if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 end)
 
 cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
@@ -10960,17 +10960,17 @@ cmd.add({"airwalk", "float", "aw"}, {"airwalk (float, aw)", "Press space to go u
 		Title = "Nameless Admin";
 		Duration = 5;
 	});
-	
+
 	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
 	if awPart then awPart:Destroy() awPart=nil end
-		awPart = Instance.new("Part", workspace)
-		awPart.Size = Vector3.new(7, 2, 3)
+	awPart = Instance.new("Part", workspace)
+	awPart.Size = Vector3.new(7, 2, 3)
+	awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+	awPart.Transparency = 1
+	awPart.Anchored = true
+	Airwalker = RunService.RenderStepped:connect(function()
 		awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
-		awPart.Transparency = 1
-		awPart.Anchored = true
-		Airwalker = RunService.RenderStepped:connect(function()
-			awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
-		end)
+	end)
 end)
 
 cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -13592,7 +13592,7 @@ cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be ab
 
 	local r = 0
 	local d = 0.25
-	function fix()
+	local function fix()
 		if infJump then infJump:Disconnect() infJump=nil end
 		infJump = charr.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
 			if tick() - r > d then
@@ -13601,11 +13601,11 @@ cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be ab
 			end
 		end)
 	end
+	fix()
 	if jumpFixy then jumpFixy:Disconnect() jumpFixy=nil end
 	jumpFixy = p.CharacterAdded:connect(function()
 		fix()
-	end
-	fix()
+	end)
 end)
 
 cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes you NOT be able to infinitly jump"}, function()
