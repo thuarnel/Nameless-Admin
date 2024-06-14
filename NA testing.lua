@@ -20,7 +20,7 @@ end
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)]]
 
-task.spawn(function() --automatically load nameless admin when teleported
+spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -67,7 +67,7 @@ local opt = {
 }
 
 -- [[ Version ]] -- 
-curVer = 2.17
+curVer = 2.18
 
 --[[ VARIABLES ]]--
 PlaceId, JobId = game.PlaceId, game.JobId
@@ -85,10 +85,12 @@ local SoundService = game:GetService("SoundService")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GuiService = game:GetService("GuiService")
+local COREGUI = game:GetService("CoreGui")
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
+local PlrGui = Player.PlayerGui
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character or Player.CharacterAdded:Wait()
@@ -174,6 +176,8 @@ local Goofer = {
 	"⚠️⚠️⚠️",
 	":-(",
 	"(╯°□°)╯︵ ┻━┻",
+	"freaky",
+	"unreal",
 }
 
 --[[ COMMAND FUNCTIONS ]]--
@@ -423,7 +427,7 @@ function removeESP()
 	end
 end
 
-local Signal1, Signal2
+local Signal1, Signal2 = nil,nil
 
 function mobilefly(speed)
 	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
@@ -544,7 +548,7 @@ local cmdlp = game.Players.LocalPlayer
 
 plr = cmdlp
 
-workspace = game.workspace
+workspace = game:GetService("Workspace")
 
 cmdm = plr:GetMouse()
 
@@ -655,7 +659,7 @@ cmdm = plr:GetMouse()
 end]]
 
 
-local tool
+local tool=nil
 spawn(function()
 	repeat wait() until game:GetService("Players").LocalPlayer.Character
 	tool = getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
@@ -683,7 +687,7 @@ local function attachTool(tool,cf)
 end
 
 local nc = false
-local ncLoop
+local ncLoop=nil
 ncLoop = game:GetService("RunService").Stepped:Connect(function()
 	if nc and getChar() ~= nil then
 		for _, v in pairs(getChar():GetDescendants()) do
@@ -695,7 +699,7 @@ ncLoop = game:GetService("RunService").Stepped:Connect(function()
 end)
 
 local netsleepTargets = {}
-local nsLoop
+local nsLoop=nil
 nsLoop = game:GetService("RunService").Stepped:Connect(function()
 	if #netsleepTargets == 0 then return end
 	for i,v in pairs(netsleepTargets) do
@@ -2258,20 +2262,20 @@ cmd.add({"adonisfinder", "adfind"}, {"adonis finder (adfind)", "Lets you see if 
 end)
 -- Mobile Commands for the screen
 if IsOnMobile then
-	
-cmd.add({"SensorRotationScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
-end)
 
-cmd.add({"LandscapeRotationScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
-end)
-
-cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
-	game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+	cmd.add({"SensorRotationScreen", "SensorScreen","SenScreen"}, {"SensorRotaionScreen (SensorScreen or SenScreen)", "Changes ScreenOrientation to Sensor"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Sensor
 	end)
-	
-cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
+
+	cmd.add({"LandscapeRotationScreen", "LandscapeScreen","LandScreen"}, {"LandscapeRotaionScreen (LandscapeScreen or LandScreen)", "Changes ScreenOrientation to Landscape Sensor"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.LandscapeSensor
+	end)
+
+	cmd.add({"PortraitRotationScreen", "PortraitScreen","Portscreen"}, {"PortraitRotaionScreen (PortraitScreen or Portscreen)", "Changes ScreenOrientation to Portrait"}, function()
+		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = Enum.ScreenOrientation.Portrait
+	end)
+
+	cmd.add({"DefaultRotaionScreen", "DefaultScreen","Defscreen"}, {"DefaultRotaionScreen (DefaultScreen or Defscreen)", "Changes ScreenOrientation to Portrait"}, function()
 		game.Players.LocalPlayer.PlayerGui.ScreenOrientation = game.StarterGui.ScreenOrientation 
 	end)
 
@@ -2508,10 +2512,6 @@ end)
 
 	});
 end)]]
-
-wrap(function()
-	--i am so not putting an emulator as a command here
-end)
 
 --[ LOCALPLAYER ]--
 local function respawn()
@@ -6399,7 +6399,7 @@ cmd.add({"removedn", "nodn", "nodpn"}, {"removedn (nodn, nodpn)", "Removes all d
 	end)
 end)
 
-cmd.add({"partname", "partpath"}, {"partname (partpath)", "gives a ui and allows you click on a part to grab it's path"}, function()
+cmd.add({"partname", "partpath", "partgrabber"}, {"partname (partpath, partgrabber)", "gives a ui and allows you click on a part to grab it's path"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
 end)
 
@@ -6433,27 +6433,27 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 		Duration = 5;
 
 	});
-		local Number = 0
-		local SomeSRVS = {}
-		local found = 0
-				 for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
-					 if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-						 if v.playing > Number then
-							 Number = v.playing
-							 SomeSRVS[1] = v.id
-					                 found = v.playing
-						 end
-					 end
-				 end
-				 if #SomeSRVS > 0 then
-				 Notify({
- Description = "serverhopping | Player Count: "..found.."";
- Title = "Nameless Admin";
- Duration = 5;
- 
- });
-					 game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	local Number = 0
+	local SomeSRVS = {}
+	local found = 0
+	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+			if v.playing > Number then
+				Number = v.playing
+				SomeSRVS[1] = v.id
+				found = v.playing
+			end
 		end
+	end
+	if #SomeSRVS > 0 then
+		Notify({
+			Description = "serverhopping | Player Count: "..found.."";
+			Title = "Nameless Admin";
+			Duration = 5;
+
+		});
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	end
 end)
 
 cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a small server"}, function()
@@ -6466,28 +6466,28 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	});
 
-		local Number = math.huge
-local SomeSRVS = {}
-local found = 0
+	local Number = math.huge
+	local SomeSRVS = {}
+	local found = 0
 
-for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
-    if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
-        if v.playing < Number then
-            Number = v.playing
-            SomeSRVS[1] = v.id
-            found = v.playing
-        end
-    end
-end
-
-if #SomeSRVS > 0 then
-    Notify({
-        Description = "serverhopping | Player Count: "..found.."";
-        Title = "Nameless Admin";
-        Duration = 5;
-    });
-    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100")).data) do
+		if type(v) == "table" and v.maxPlayers > v.playing and v.id ~= game.JobId then
+			if v.playing < Number then
+				Number = v.playing
+				SomeSRVS[1] = v.id
+				found = v.playing
+			end
 		end
+	end
+
+	if #SomeSRVS > 0 then
+		Notify({
+			Description = "serverhopping | Player Count: "..found.."";
+			Title = "Nameless Admin";
+			Duration = 5;
+		});
+		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
+	end
 end)
 
 cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a server with the best ping"}, function()
@@ -7188,7 +7188,7 @@ cmd.add({"r6"}, {"r6", "Prompts a message asking to make you R6"}, function()
 	end
 end)
 
-local fcpro
+local fcpro=nil
 
 cmd.add({"freecam", "fc", "fcam"}, {"freecam [speed] (fc, fcam)", "Enable free camera"}, function(speed)
 	if not speed then speed = 5 end
@@ -10617,17 +10617,17 @@ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lw
 	val = {...}
 	NamelessWs = (val[1] or 16)
 	loopws = true
-if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 	wsLoop = RunService.RenderStepped:connect(function()
 		if loopws then
-		speaker.Character.Humanoid.WalkSpeed = NamelessWs
+			speaker.Character.Humanoid.WalkSpeed = NamelessWs
 		end
 	end)
 end)
 
 cmd.add({"unloopwalkspeed", "unloopws", "unlws"}, {"unloopwalkspeed <number> (unloopws, unlws)", "Disable loop walkspeed"}, function()
 	loopws = false
-        if wsLoop then wsLoop:Disconnect() wsLoop=nil end
+	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 end)
 
 local loopjp = false
@@ -10637,17 +10637,17 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	val = {...}
 	NamelessJP = (val[1] or 50)
 	loopjp = true
-if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp then
-		speaker.Character.Humanoid.JumpPower = NamelessJP
+			speaker.Character.Humanoid.JumpPower = NamelessJP
 		end
 	end)
 end)
 
 cmd.add({"unloopjumppower", "unloopjp", "unljp"}, {"unloopjumppower <number> (unloopjp, unljp)", "Disable loop walkspeed"}, function()
 	loopjp = false
-if jpLoop then jpLoop:Disconnect() jpLoop=nil end
+	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 end)
 
 cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
@@ -10960,17 +10960,17 @@ cmd.add({"airwalk", "float", "aw"}, {"airwalk (float, aw)", "Press space to go u
 		Title = "Nameless Admin";
 		Duration = 5;
 	});
-	
+
 	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
 	if awPart then awPart:Destroy() awPart=nil end
-		awPart = Instance.new("Part", workspace)
-		awPart.Size = Vector3.new(7, 2, 3)
+	awPart = Instance.new("Part", workspace)
+	awPart.Size = Vector3.new(7, 2, 3)
+	awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
+	awPart.Transparency = 1
+	awPart.Anchored = true
+	Airwalker = RunService.RenderStepped:connect(function()
 		awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
-		awPart.Transparency = 1
-		awPart.Anchored = true
-		Airwalker = RunService.RenderStepped:connect(function()
-			awPart.CFrame = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame - Vector3.new(0, 4, 0)
-		end)
+	end)
 end)
 
 cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the player on your client"}, function(...)
@@ -10986,12 +10986,12 @@ cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the
 		end
 	end))
 
-	if Username == "all" or Username == "others" then
+	if Username:lower() == "all" or Username:lower() == "others" then
 		bringc = game:GetService("RunService").RenderStepped:Connect(function()
 			for i, target in pairs(game:GetService("Players"):GetChildren()) do
 				if target.Name == game.Players.LocalPlayer.Name then
 				else
-					target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 5
+					getRoot(target.Character).CFrame = getRoot(game.Players.LocalPlayer.Character).CFrame + getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector * 5
 				end
 			end
 		end)
@@ -10999,8 +10999,8 @@ cmd.add({"cbring", "clientbring"}, {"clientbring <player> (cbring)", "Brings the
 		target = getPlr(Username)
 
 		bringc = game:GetService("RunService").RenderStepped:Connect(function()
-			if target.Character and target.Character:FindFirstChild("HumanoidRootPart") then
-				target.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 3
+			if target.Character and getRoot(target.Character) then
+				getRoot(target.Character).CFrame = getRoot(game.Players.LocalPlayer.Character).CFrame + getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector * 3
 			end
 		end)
 	end
@@ -11032,7 +11032,7 @@ cmd.add({"mute", "muteboombox"}, {"mute <player> (muteboombox)", "Mutes the play
 			Duration = 5;
 
 		});
-		if Username == "all" or Username == "others" then
+		if Username:lower() == "all" or Username:lower() == "others" then
 			local players = game:GetService("Players"):GetPlayers()
 			for _, player in ipairs(players) do
 				for _, object in ipairs(player.Character:GetDescendants()) do
@@ -11127,7 +11127,7 @@ TPWalk = false
 cmd.add({"tpwalk", "tpwalk"}, {"tpwalk <number>", "More undetectable walkspeed script"}, function(...)
 	if TPWalk == true then
 		TPWalk = false
-		TPWalking = TPWalking:Disconnect()
+		if TPWalking then TPWalking:Disconnect() TPWalking=nil end
 	end
 	TPWalk = true
 	Speed = (...)
@@ -11147,7 +11147,7 @@ end)
 
 cmd.add({"untpwalk"}, {"untpwalk", "Stops the tpwalk command"}, function()
 	TPWalk = false
-	TPWalking = false
+	if TPWalking then TPWalking:Disconnect() TPWalking=nil end
 end)
 
 cmd.add({"loopmute", "loopmuteboombox"}, {"loopmute <player> (loopmuteboombox)", "Loop mutes the players boombox"}, function(...)
@@ -11405,16 +11405,16 @@ cmd.add({"looplbring", "looplegbring"}, {"looplbring <player> (looplegbring)", "
 					firetouchinterest(MainTool.Handle, TRootPart, 0)
 					firetouchinterest(MainTool.Handle, TRootPart, 1)
 					wait()
-					Player.Character.HumanoidRootPart.CFrame = CF
+					getRoot(Player.Character).CFrame = CF
 				until flag
 			else
-				Player.Character.HumanoidRootPart.CFrame =
-					TCharacter.HumanoidRootPart.CFrame
+				getRoot(Player.Character).CFrame =
+					getRoot(TCharacter).CFrame
 				wait()
 				Player.Character.HumanoidRootPart.CFrame =
-					TCharacter.HumanoidRootPart.CFrame
+					getRoot(TCharacter).CFrame
 				wait()
-				Player.Character.HumanoidRootPart.CFrame = CF
+				getRoot(Player.Character).CFrame = CF
 				wait()
 			end
 			wait(.3)
@@ -11427,8 +11427,8 @@ cmd.add({"looplbring", "looplegbring"}, {"looplbring <player> (looplegbring)", "
 			end
 
 			wait(4)
-			CF = Player.Character.HumanoidRootPart.CFrame
-			player.CharacterAdded:wait(1):waitForChild("HumanoidRootPart").CFrame = CF
+			CF = getRoot(Player.Character).CFrame
+			player.CharacterAdded:wait(1):WaitForChild("HumanoidRootPart").CFrame = CF
 		end
 		wait(0.8)
 		respawn()
@@ -11437,7 +11437,7 @@ end)
 
 cmd.add({"getmass"}, {"getmass <player>", "Get your mass"}, function(...)
 	target = getPlr(...)
-	local mass = target.Character.HumanoidRootPart.AssemblyMass 
+	local mass = getRoot(target.Character).AssemblyMass 
 	wait();
 
 	Notify({
@@ -11509,7 +11509,7 @@ cmd.add({"dvoid", "dvoid"}, {"dvoid <player> (dvoid)", "Delay void"}, function(.
 			wait()
 		until flag
 		wait(0.2)
-		Player.Character.HumanoidRootPart.CFrame = CFrame.new(0,-1000,0)
+		getRoot(Player.Character).CFrame = CFrame.new(0,-1000,0)
 	end
 	l.Parent = game.Players.LocalPlayer.Character
 	l.Name = "Humanoid"
@@ -11584,16 +11584,16 @@ cmd.add({"dbring", "delaybring"}, {"delaybring <player> (dbring)", "Delay bring"
 			firetouchinterest(MainTool.Handle, TRootPart, 0)
 			firetouchinterest(MainTool.Handle, TRootPart, 1)
 			wait()
-			Player.Character.HumanoidRootPart.CFrame = CF
+			getRoot(Player.Character).CFrame = CF
 		until flag
 	else
-		Player.Character.HumanoidRootPart.CFrame =
-			TCharacter.HumanoidRootPart.CFrame
+		getRoot(Player.Character).CFrame =
+			getRoot(TCharacter).CFrame
 		wait()
-		Player.Character.HumanoidRootPart.CFrame =
-			TCharacter.HumanoidRootPart.CFrame
+		getRoot(Player.Character).CFrame =
+			getRoot(TCharacter).CFrame
 		wait()
-		Player.Character.HumanoidRootPart.CFrame = CF
+		getRoot(Player.Character).CFrame = CF
 		wait()
 	end
 	wait(.3)
@@ -11611,7 +11611,7 @@ cmd.add({"looplkill", "looplegkill"}, {"looplkill <player> (looplegkill)", "Leg 
 	Target = (...)
 
 	repeat wait()
-		if Target == "all" or Target == "others" then
+		if Target:lower() == "all" or Target:lower() == "others" then
 			loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 			print("Patched")
 		else
@@ -12913,7 +12913,7 @@ end)
 local PromptButtonHoldBegan = nil
 
 cmd.add({"instantproximityprompts", "instantpp", "ipp"}, {"instantproximityprompts (instantpp, ipp)", "Disable the cooldown for proximity prompts"}, function()
-	if PromptButtonHoldBegan then PromptButtonHoldBegan:Disconnect() end
+	if PromptButtonHoldBegan then PromptButtonHoldBegan:Disconnect() PromptButtonHoldBegan=nil end
 	PromptButtonHoldBegan = ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
 		fireproximityprompt(prompt)
 	end)
@@ -13570,9 +13570,8 @@ cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every
 	});
 end)
 
-local infJump
-local infJumpFix
-
+local infJump=nil
+local jumpFixy=nil
 cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be able to jump infinitly"}, function()
 
 
@@ -13586,35 +13585,26 @@ cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be ab
 
 	});
 	local p = Player
-	local h = p.Character.Humanoid
+	local charr=p.Character
+	local h = charr.Humanoid
 
 	--h:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 
 	local r = 0
 	local d = 0.25
-	function fix()
-		infJump = p.Character.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+	local function fix()
+		if infJump then infJump:Disconnect() infJump=nil end
+		infJump = charr.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
 			if tick() - r > d then
 				r = tick()
-				p.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+				charr:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
 			end
 		end)
 	end
-	if infJump then
-		infJump:Disconnect()
-		wait();
+	fix()
+	if jumpFixy then jumpFixy:Disconnect() jumpFixy=nil end
+	jumpFixy = p.CharacterAdded:connect(function()
 		fix()
-	else
-		fix()
-	end
-	infJumpFix = game.Players.LocalPlayer.CharacterAdded:Connect(function()
-		if infJump then
-			infJump:Disconnect()
-			wait();
-			fix()
-		else
-			fix()
-		end
 	end)
 end)
 
@@ -13629,12 +13619,11 @@ cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes y
 
 	});
 
-	if infJump then infJump:Disconnect() end
-	if infJumpFix then infJumpFix:Disconnect() end
-
+	if infJump then infJump:Disconnect() infJump=nil end
+	if jumpFixy then jumpFixy:Disconnect() jumpFixy=nil end
 end)
 
-local flyjump
+local flyjump=nil
 
 cmd.add({"flyjump"}, {"flyjump", "Allows you to hold space to fly up"}, function()
 
@@ -15172,36 +15161,6 @@ cmd.add({"homebrew"}, {"homebrew", "Executes homebrew admin"}, function()
 	loadstring(game:HttpGet(('https://raw.githubusercontent.com/mgamingpro/HomebrewAdmin/master/Main'),true))()
 end)
 
-cmd.add({"iy", "i"}, {"iy {command} (i)", "Executes infinite yield scripts"}, function(...)
-	-- [[ thanks to homebrew devs for this ]] --
-	if IYLOADED == false then
-		local function copytable(tbl) local copy = {} for i,v in pairs(tbl) do copy[i] = v end return copy end
-		local sandbox_env = copytable(getfenv())
-		setmetatable(sandbox_env, {
-			__index = function(self, i)
-				if rawget(sandbox_env, i) then
-					return rawget(sandbox_env, i)
-				elseif getfenv()[i] then
-					return getfenv()[i]
-				end
-			end
-		})
-		sandbox_env.game = nil
-		iy, _ = game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"):gsub("local Main", "Main"):gsub("Players.LocalPlayer.Chatted","Funny = Players.LocalPlayer.Chatted"):gsub("local lastMessage","notify = _G.notify\nlocal lastMessage")
-		setfenv(loadstring(iy),sandbox_env)()
-		iy_cmds_table = sandbox_env.CMDs
-		iy_gui = sandbox_env.Main
-		iy_chathandler = sandbox_env.Funny
-		execCmd = sandbox_env.execCmd
-		iy_gui:Destroy()
-		pcall(function()
-			iy_chathandler:Disconnect()
-		end)
-		IYLOADED = true
-	end
-	execCmd((...))
-end)
-
 cmd.add({"fatesadmin"}, {"fatesadmin", "Executes fates admin"}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/fatesc/fates-admin/main/main.lua"))();
 end)
@@ -15318,99 +15277,6 @@ cmd.add({"oofspam"}, {"oofspam", "Spams oof"}, function()
 	end
 end)
 
-
-
-cmd.add({"partgrabber"}, {"partgrabber", "Press Q"}, function()
-	wait();
-
-	Notify({
-		Description = "Part grabber executed, press Q on a part";
-		Title = "Nameless Admin";
-		Duration = 5;
-
-	});
-	local player = game.Players.LocalPlayer.Character
-	local mouse = game.Players.LocalPlayer:GetMouse()
-	local key = game:GetService("UserInputService")
-
-	BodyAngularVelocity = true
-	local keyyy = Enum.KeyCode.Q
-
-
-	local y = 5.7
-	local y2 = 7.2
-	local P = 1000000
-	local V = Vector3.new(100000,100000,100000)
-	local SBT = Instance.new("SelectionBox")
-	SBT.Name = "SB"
-	SBT.Parent = player.HumanoidRootPart
-	SBT.Adornee = player.HumanoidRootPart
-	SBT.Color3 = Color3.new(0,0,0)
-
-	while wait(.3) do
-		key.InputBegan:Connect(function(k)
-			if k.KeyCode == keyyy then
-				local handle = mouse.Target
-				if handle.Anchored == false then
-					wait(.3)
-					handle.Position = handle.Position + Vector3.new(0,1,0)
-					local BP = Instance.new("BodyPosition")
-					BP.Name = "BP"
-					BP.Parent = handle
-					BP.P = P
-					BP.MaxForce = V
-					local SB = Instance.new("SelectionBox")
-					SB.Name = "SB"
-					SB.Parent = handle
-					SB.Adornee = handle
-					local colour = math.random(1,7)
-					if colour == 1 then
-						SB.Color3 = Color3.new(255,0,0)
-					end
-					if colour == 2 then
-						SB.Color3 = Color3.new(255,170,0)
-					end
-					if colour == 3 then
-						SB.Color3 = Color3.new(255,255,0)
-					end
-					if colour == 4 then
-						SB.Color3 = Color3.new(0,255,0)
-					end
-					if colour == 5 then
-						SB.Color3 = Color3.new(0,170,255)
-					end
-					if colour == 6 then
-						SB.Color3 = Color3.new(170,0,255)
-					end
-					if colour == 7 then
-						SB.Color3 = Color3.new(0,0,0)
-					end
-					player.Torso.Anchored = true
-					if BodyAngularVelocity == true then
-						local BAV = Instance.new("BodyAngularVelocity")
-						BAV.Name = "BAV"
-						BAV.Parent = handle
-						BAV.P = 999000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-						BAV.AngularVelocity = Vector3.new(9990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,9990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,9990000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000)
-					end
-					wait(.3)
-					player.Torso.Anchored = false
-					while wait(.3) do
-						if handle:FindFirstChild("BP",true) then
-							handle.CanCollide = false
-						end
-						BP.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,y,0)
-						wait(.3)
-						if handle:FindFirstChild("BP",true) then
-							handle.CanCollide = false
-						end
-						BP.Position = game.Players.LocalPlayer.Character.HumanoidRootPart.Position + Vector3.new(0,y2,0)
-					end
-				end
-			end
-		end)
-	end
-end)
 
 cmd.add({"tpua", "bringua"}, {"tpua <player> (bringua)", "brings every unanchored part on the map"}, function(...)
 	local heartbeat = game:GetService("RunService").Heartbeat
@@ -16185,7 +16051,7 @@ function Destroy(guiObject)
 	end
 end
 
-wait(0.2)
+task.wait(0.2);
 
 -- [[ COMMAND BAR BUTTON ]] --
 if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
@@ -16194,7 +16060,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	local UICorner = Instance.new("UICorner")
 	local TextFCButton = Instance.new("ImageButton")
 
-	ScreenGui.Parent = game.CoreGui
+	ScreenGui.Parent = (COREGUI or PlrGui)
 	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	ScreenGui.DisplayOrder=999
@@ -16253,7 +16119,6 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
-print("new UI revamp coming soon")
 
 -- @ltseverydayyou (maxype)
 -- @MuhXd (Viper)
