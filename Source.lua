@@ -178,7 +178,6 @@ local Goofer = {
 	"(╯°□°)╯︵ ┻━┻",
         "freaky",
 	"unreal",
-	"
 }
 
 --[[ COMMAND FUNCTIONS ]]--
