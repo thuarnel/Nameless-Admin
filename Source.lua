@@ -2489,28 +2489,10 @@ cmd.add({"rejoin", "rj"}, {"rejoin (rj)", "Rejoin the game"}, function()
 	});
 end)
 
--- patched
---[[cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (bypassadonis, badonis, adonisb)", "bypasses adonis admin detection"}, function()
-	task.spawn(function()
-		wait(1);
-		for k,v in pairs(getgc(true)) do if pcall(function() return rawget(v,"indexInstance") end) and type(rawget(v,"indexInstance")) == "table" and (rawget(v,"indexInstance"))[1] == "kick" then v.tvk = {"kick",function() return game.Workspace:WaitForChild("") end} end end
-		Notify({
-			Description = "Adonis Admin is bypassed";
-			Title = "Nameless Admin";
-			Duration = 3;
-	
-		});
-	end)
-
-	wait();
-
-	Notify({
-		Description = "Bypassing...";
-		Title = "Nameless Admin";
-		Duration = 3;
-
-	});
-end)]]
+-- fixed - viper
+cmd.add({"adonisbypass", "bypassadonis", "badonis", "adonisb"}, {"adonisbypass (bypassadonis, badonis, adonisb)", "bypasses adonis admin detection"}, function()
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/adonisbypass.lua?raw=true"))()
+end)
 
 --[ LOCALPLAYER ]--
 local function respawn()
