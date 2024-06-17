@@ -15507,12 +15507,12 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 	wait(.2);
 
 	Notify({
-		Description = "Your UserId/Username has been set to the owner's UserId/Username";
+		Description = "UserId set to: "..ownId.."\nUsername set to: "..ownUser;
 		Title = "Nameless Admin";
 		Duration = 4;
 
 	});
-	print("id: "..ownId.." | user: "..ownUser) -- testing
+	print'set'
 end)
 
 cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox chat is slow"}, function()
