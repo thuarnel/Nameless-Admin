@@ -869,13 +869,14 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(arg)
-	loadstring(game:HttpGet(arg[1]))()
+cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(...)
+	loadstring(game:HttpGet({...}))()
 end)
 
 cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(...)
-	local s = (...)
-	assert(loadstring(s))()
+	local j = (...)
+	local args = table.concat(j, "")
+	assert(loadstring(args))()
 end)
 
 cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
