@@ -55,16 +55,15 @@ if FileSupport then
 	else
 	end
 end
-
--- [[ PREFIX AND OTHER STUFF. ]] -- 
-local opt = {
-	h=";"
+local prefixCheck=";"
 	if FileSupport then
 	h= readfile("Nameless-Admin/Prefix.txt", ';')
 	else
 	h=";"
-	end
-	prefix = h,
+end
+-- [[ PREFIX AND OTHER STUFF. ]] -- 
+local opt = {
+	prefix = prefixCheck,
 	tupleSeparator = ',',
 	ui = {},
 	keybinds = {},
