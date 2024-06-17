@@ -58,7 +58,7 @@ end
 
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt = {
-	h=nil
+	h=";"
 	if FileSupport then
 	h= readfile("Nameless-Admin/Prefix.txt", ';')
 	else
