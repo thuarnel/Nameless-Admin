@@ -15853,6 +15853,27 @@ end
 gui.menuify = function(menu)
 	local exit = menu:FindFirstChild("Exit", true)
 	local mini = menu:FindFirstChild("Minimize", true)
+	local minimized = false
+	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
+	mini.MouseButton1Click:Connect(function()
+		minimized = not minimized
+		if minimized then
+			sizeX.Value = menu.Size.X.Offset
+			sizeY.Value = menu.Size.Y.Offset
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
+		else
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
+		end
+	end)
+	exit.MouseButton1Click:Connect(function()
+		menu.Visible = false
+	end)
+	gui.draggable(menu, menu.Topbar)
+	menu.Visible = false
+end
+gui.menuifyv2 = function(menu)
+	local exit = menu:FindFirstChild("Exit", true)
+	local mini = menu:FindFirstChild("Minimize", true)
 	local clear = menu:FindFirstChild("Clear", true);
 	local minimized = false
 	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
@@ -15988,7 +16009,7 @@ end)
 
 gui.barDeselect(0)
 cmdBar.Visible = true
-gui.menuify(chatLogsFrame)
+gui.menuifyv2(chatLogsFrame)
 gui.menuify(commandsFrame)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
