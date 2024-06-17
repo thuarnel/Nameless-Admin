@@ -15629,7 +15629,7 @@ else
 	Main.Parent = COREGUI
 	ScreenGui = Main
 end
-
+ScreenGui.DisplayOrder=9999
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
 local centerBar = cmdBar.CenterBar
@@ -16077,16 +16077,7 @@ task.wait(0.2);
 
 -- [[ COMMAND BAR BUTTON ]] --
 if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
-	local ScreenGui = Instance.new("ScreenGui")
-	local TextClickButton = Instance.new("TextButton")
-	local UICorner = Instance.new("UICorner")
-	local TextFCButton = Instance.new("ImageButton")
-
-	ScreenGui.Parent = (COREGUI or PlrGui)
-	ScreenGui.Name = randomString()
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui.DisplayOrder=999
-
+	
 	TextClickButton.Name = "NamelessAdminButton"
 	TextClickButton.Parent = ScreenGui
 	TextClickButton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
