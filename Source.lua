@@ -4852,7 +4852,7 @@ cmd.add({"triggerbot", "tbot"}, {"triggerbot (tbot)", "Executes a script that au
 	local On = Instance.new("TextLabel")
 	local uicorner = Instance.new("UICorner")
 	GUI.Name = "GUI"
-	GUI.Parent = game.CoreGui --game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	GUI.Parent = (COREGUI or PlrGui)
 	On.Name = "On"
 	On.Parent = GUI
 	On.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
@@ -6627,7 +6627,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 	local copy = Instance.new("TextButton")
 
 	FunctionSpy.Name = "FunctionSpy"
-	FunctionSpy.Parent = game.CoreGui
+	FunctionSpy.Parent = (COREGUI or PlrGui)
 	FunctionSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Main.Name = "Main"
@@ -7008,7 +7008,7 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		rahh.Parent = game.CoreGui
+		rahh.Parent = (COREGUI or PlrGui)
 		rahh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		rahh.ResetOnSpawn = false
 
@@ -12504,7 +12504,7 @@ cmd.add({"noprompt", "nopurchaseprompts", "noprompts"}, {"noprompt (nopurchasepr
 		Duration = 5;
 
 	});
-	game.CoreGui.PurchasePrompt.Enabled = false
+	COREGUI.PurchasePrompt.Enabled = false
 end)
 
 cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"prompt (purchaseprompts, showprompts, showpurchaseprompts)", "allows the stupid purchase prompt"}, function()
@@ -12519,7 +12519,7 @@ cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"p
 		Duration = 5;
 
 	});
-	game.CoreGui.PurchasePrompt.Enabled = true
+	COREGUI.PurchasePrompt.Enabled = true
 end)
 
 cmd.add({"nameless"}, {"nameless", "Makes your hats visible but not your name or your body"}, function()
@@ -15465,7 +15465,7 @@ end)
 cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
 	local ownId = "unknown"
 	local ownUser = "unknown"
-	spawn(function()
+	pcall(function()
 		if game.CreatorType == Enum.CreatorType.User then
 			Player.UserId = game.CreatorId
 			Player.Name = game.CreatorName
@@ -15473,7 +15473,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = game.CreatorName
 		end
 	end)
-	spawn(function()
+	pcall(function()
 		if game.CreatorType == Enum.CreatorType.Group then
 			local groupId = game.CreatorId
 			local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
@@ -15484,7 +15484,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = owner.Name
 		end
 	end)
-	spawn(function()
+	pcall(function()
 		task.wait(1);
 		game.StarterGui:SetCoreGuiEnabled(0, false)
 		wait(3);
@@ -15594,12 +15594,14 @@ end
 
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
+print("checking screengui") -- testing
 if not RunService:IsStudio() then
 	ScreenGui = game:GetObjects("rbxassetid://13510552309")[1]
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
 end
+print'Found Gui'
 
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
@@ -15656,7 +15658,7 @@ pcall(function()
 		return tostr(t)
 	end)
 end)
-
+print'roblox gui check?'
 if not RunService:IsStudio() then
 	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
 	newGui.DescendantAdded:Connect(function(v)
@@ -15667,6 +15669,7 @@ if not RunService:IsStudio() then
 	end
 	ScreenGui = newGui
 end
+print'done?'
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
