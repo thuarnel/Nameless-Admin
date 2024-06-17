@@ -207,17 +207,15 @@ local Goofer = {
 local commandcount = 0
 cmd = {}
 cmd.add = function(...)
-	local vars = {...}
-	local aliases, info, func = vars[1], vars[2], vars[3]
-	for i, cmdName in pairs(aliases) do
-		if i == 1 then
-			Commands[cmdName:lower()] = {func, info}
-		else
-			Aliases[cmdName:lower()] = {func, info}
-		end
-	end
-	commandcount = commandcount + 1
+    local vars = {...}
+    local aliases, info, func = unpack(vars)
+    for i, cmdName in ipairs(aliases) do
+        aliases[i] = cmdName:lower()
+    end
+    Commands[aliases[1]] = {aliases, info, func}
+    commandcount = commandcount + 1
 end
+
 
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
@@ -16099,7 +16097,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextClickButton.TextSize = 20.000
 	TextClickButton.TextWrapped = true
-	TextClickButton.ZIndex=500
+	TextClickButton.ZIndex=9999
 
 
 	UICorner.CornerRadius = UDim.new(1, 0)
