@@ -36,11 +36,11 @@ end
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)]]
 
-spawn(function() --automatically load nameless admin when teleported
+pcall(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]])
+			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))();]])
 		end
 	end)
 end)
@@ -58,10 +58,12 @@ local FileSupport = isfile and isfolder and writefile and readfile
 if FileSupport then
 	if not isfolder('Nameless-Admin') then
 		makefolder('Nameless-Admin')
+	else
 	end
 
 	if not isfolder('Nameless-Admin/Plugins') then
 		makefolder('Nameless-Admin/Plugins')
+	else
 	end
 
 	if not isfile("Nameless-Admin/Prefix.txt") then
@@ -69,17 +71,18 @@ if FileSupport then
 	else
 	end
 end
-
+local prefixCheck=";"
+	if FileSupport then
+	h= readfile("Nameless-Admin/Prefix.txt", ';')
+	else
+	h=";"
+end
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt = {
-	prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	prefix = prefixCheck,
 	tupleSeparator = ',',
-	ui = {					
-
-	},
-	keybinds = {			
-
-	},
+	ui = {},
+	keybinds = {},
 }
 
 -- [[ Version ]] -- 
@@ -87,29 +90,31 @@ local curVer = 2.18
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId = game.PlaceId, game.JobId
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
-local vim = game:GetService("VirtualInputManager")
-local ProximityPromptService = game:GetService("ProximityPromptService")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService('HttpService')
-local RunService2 = game:FindService("RunService")
-local StarterGui = game:GetService("StarterGui")
-local SoundService = game:GetService("SoundService")
-local Lighting = game:GetService("Lighting")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local GuiService = game:GetService("GuiService")
-local COREGUI = game:GetService("CoreGui")
+local Players = game:GetService("Players");
+local UserInputService = game:GetService("UserInputService");
+local vim = game:GetService("VirtualInputManager");
+local ProximityPromptService = game:GetService("ProximityPromptService");
+local TweenService = game:GetService("TweenService");
+local RunService = game:GetService("RunService");
+local TeleportService = game:GetService("TeleportService");
+local HttpService = game:GetService('HttpService');
+local RunService2 = game:FindService("RunService");
+local StarterGui = game:GetService("StarterGui");
+local SoundService = game:GetService("SoundService");
+local Lighting = game:GetService("Lighting");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local GuiService = game:GetService("GuiService");
+local COREGUI = game:GetService("CoreGui");
+local CoreGui = game:GetService("CoreGui");
+local coregui = game:GetService("CoreGui");
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
-local PlrGui = Player.PlayerGui
+local PlrGui = Player:FindFirstChild("PlayerGui")
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
-local Character = Player.Character or Player.CharacterAdded:Wait();
+local Character = Player.Character
 local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked = true
 _G.Spam = false
@@ -152,14 +157,14 @@ local NormalSpin = true
 
 local localPlayer = Player
 local LocalPlayer = Player
-local character = Player.Character or Player.CharacterAdded:Wait();
+local character = Player.Character
 local mouse = localPlayer:GetMouse()
 local camera = workspace.CurrentCamera
 local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
-local player, plr, lp = localPlayer, localPlayer, localPlayer
+local player, plr, lp = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer
 
-task.spawn(function()
+pcall(function()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 		character = c
 		Character = c
@@ -226,6 +231,14 @@ cmd.run = function(args)
 	if not success then
 	end
 end
+function randomString()
+	local length = math.random(10,20)
+	local array = {}
+	for i = 1, length do
+		array[i] = string.char(math.random(32, 126))
+	end
+	return table.concat(array)
+end
 
 --[[ LIBRARY FUNCTIONS ]]--
 local lib = {}
@@ -276,11 +289,11 @@ function getRoot(char)
 end
 
 local function getChar()
-	return game.Players.LocalPlayer.Character
+	return game:GetService("Players").LocalPlayer.Character
 end
 
 local function getBp()
-	return game.Players.LocalPlayer.Backpack
+	return game:GetService("Players").LocalPlayer.Backpack
 end
 
 function isNumber(str)
@@ -326,7 +339,6 @@ end
 
 -- [[ MORE VARIABLES ]] --
 local plr = Player
-local COREGUI = game:GetService("CoreGui")
 local speaker = Player
 local char = plr.Character
 local JSONEncode, JSONDecode = HttpService.JSONEncode, HttpService.JSONDecode
@@ -861,8 +873,8 @@ cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(source)
 	loadstring(game:HttpGet(source))()
 end)
 
-cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(script)
-	loadstring(script)()
+cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(s)
+	assert(loadstring(s))()
 end)
 
 cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
@@ -982,9 +994,9 @@ cmd.add({"lag"}, {"lag <player>", "Chat lag"}, function()
 	end
 end)
 
-cmd.add({"plugins"}, {"plugins", "Check what kind of plugins you have, add plugins using a gui, delete a plugin."}, function()
+--[[cmd.add({"plugins"}, {"plugins", "Check what kind of plugins you have, add plugins using a gui, delete a plugin."}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminPlugin"))();
-end)
+end)]]
 
 cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(...)
 	PrefixChange = (...)
@@ -4869,7 +4881,7 @@ cmd.add({"triggerbot", "tbot"}, {"triggerbot (tbot)", "Executes a script that au
 	local On = Instance.new("TextLabel")
 	local uicorner = Instance.new("UICorner")
 	GUI.Name = "GUI"
-	GUI.Parent = game.CoreGui --game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	GUI.Parent = (COREGUI or PlrGui)
 	On.Name = "On"
 	On.Parent = GUI
 	On.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
@@ -6293,10 +6305,11 @@ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
 end)
 
-local hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
+local hastheyfixedit = nil
 
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
+	hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
 
 	local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
@@ -6643,7 +6656,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 	local copy = Instance.new("TextButton")
 
 	FunctionSpy.Name = "FunctionSpy"
-	FunctionSpy.Parent = game.CoreGui
+	FunctionSpy.Parent = (COREGUI or PlrGui)
 	FunctionSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Main.Name = "Main"
@@ -7024,7 +7037,7 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		rahh.Parent = game.CoreGui
+		rahh.Parent = (COREGUI or PlrGui)
 		rahh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		rahh.ResetOnSpawn = false
 
@@ -12520,7 +12533,7 @@ cmd.add({"noprompt", "nopurchaseprompts", "noprompts"}, {"noprompt (nopurchasepr
 		Duration = 5;
 
 	});
-	game.CoreGui.PurchasePrompt.Enabled = false
+	COREGUI.PurchasePrompt.Enabled = false
 end)
 
 cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"prompt (purchaseprompts, showprompts, showpurchaseprompts)", "allows the stupid purchase prompt"}, function()
@@ -12535,7 +12548,7 @@ cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"p
 		Duration = 5;
 
 	});
-	game.CoreGui.PurchasePrompt.Enabled = true
+	COREGUI.PurchasePrompt.Enabled = true
 end)
 
 cmd.add({"nameless"}, {"nameless", "Makes your hats visible but not your name or your body"}, function()
@@ -14948,7 +14961,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 		--Properties:
 
-		ScreenGui.Parent = game.CoreGui
+		ScreenGui.Parent = (COREGUI or PlrGui)
 		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		ScreenGui.ResetOnSpawn = false
 
@@ -15117,7 +15130,7 @@ cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
 	Notify({
 		Description = "Fired " .. remoteamount .. " amount of remotes";
 		Title = "Nameless Admin";
-		Duration = 7;
+		Duration = 4;
 
 	});
 end)
@@ -15161,8 +15174,8 @@ cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes
 	end
 end)
 
-cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(...)
-	game.Workspace.CurrentCamera.FieldOfView = (...)
+cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(arg)
+	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
 end)
 
 cmd.add({"homebrew"}, {"homebrew", "Executes homebrew admin"}, function()
@@ -15481,7 +15494,7 @@ end)
 cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
 	local ownId = "unknown"
 	local ownUser = "unknown"
-	spawn(function()
+	pcall(function()
 		if game.CreatorType == Enum.CreatorType.User then
 			Player.UserId = game.CreatorId
 			Player.Name = game.CreatorName
@@ -15489,7 +15502,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = game.CreatorName
 		end
 	end)
-	spawn(function()
+	pcall(function()
 		if game.CreatorType == Enum.CreatorType.Group then
 			local groupId = game.CreatorId
 			local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
@@ -15500,7 +15513,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = owner.Name
 		end
 	end)
-	spawn(function()
+	pcall(function()
 		task.wait(1);
 		game.StarterGui:SetCoreGuiEnabled(0, false)
 		wait(3);
@@ -15510,12 +15523,12 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 	wait(.2);
 
 	Notify({
-		Description = "Your UserId has been set to the owner's id";
+		Description = "Your UserId/Username has been set to the owner's UserId/Username";
 		Title = "Nameless Admin";
 		Duration = 4;
 
 	});
-
+	print("id: "..ownId.." | user: "..ownUser) -- testing
 end)
 
 cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox chat is slow"}, function()
@@ -15528,17 +15541,9 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 	end
 end)
 
-Players.PlayerAdded:Connect(function(plr)
-	if ESPenabled then
-		repeat wait(1) until plr.Character and getRoot(plr.Character)
-		ESP(plr)
-	end
-end)
-
-
 -- [[ PLUGIN LOADER ]] -- 
-local PluginsLoaded = 0
-PluginsErrored = 0
+--[[local PluginsLoaded = 0
+local PluginsErrored = 0
 
 if CustomFunctionSupport then
 	local success, result = pcall(function()
@@ -15558,27 +15563,22 @@ if CustomFunctionSupport then
 		});
 	end
 
-	-- [[ PLUGINS LOADED NOTIFICATION ]] --
+	-- PLUGINS LOADED NOTIFICATION --
 	if PluginsErrored == 0 then
- --[[
 	 Notify({
 			 Description = "Loaded " .. PluginsLoaded .. " plugins";
 			 Title = "Nameless Admin";
 			 Duration = 3;
 			 
 			 });
- ]]
-	else
- --[[
-	 Notify({
+else	 
+Notify({
 	 Description = "Loaded " .. PluginsLoaded .. " plugins, although " .. PluginsErrored .. " plugins have errored";
 	 Title = "Nameless Admin";
-			 Duration = 3;
-			 
-			 });
- ]]
+	 Duration = 3;
+	 });
 	end
-end
+end]]
 
 --[[ FUNCTIONALITY ]]--
 localPlayer.Chatted:Connect(function(str)
@@ -15599,8 +15599,14 @@ function CheckPermissions(Player)
 		end
 	end)
 end
-Players.PlayerAdded:Connect(function(Player)
-	CheckPermissions(Player)
+Players.PlayerAdded:Connect(function(plr)
+	CheckPermissions(plr)
+end)
+Players.PlayerAdded:Connect(function(plr)
+	if ESPenabled then
+		repeat wait(1) until plr.Character
+		ESP(plr)
+	end
 end)
 for i,v in pairs(Players:GetPlayers()) do
 	if v ~= LocalPlayer then
@@ -15610,12 +15616,34 @@ end
 
 
 --[[ GUI VARIABLES ]]--
-local ScreenGui
-if not RunService:IsStudio() then
-	ScreenGui = game:GetObjects("rbxassetid://13510552309")[1]
+local ScreenGui=nil
+local uiModel = game:GetObjects("rbxassetid://13510552309")[1]
+--[[if not RunService:IsStudio() then
+	ScreenGui = uiModel
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
+end]]
+
+if get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	ScreenGui = Main
+elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
+	local Main = uiModel
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	ScreenGui = Main
+elseif COREGUI:FindFirstChild('RobloxGui') then
+	ScreenGui = COREGUI.RobloxGui
+else
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = COREGUI
+	ScreenGui = Main
 end
 
 local description = ScreenGui.Description
@@ -15654,7 +15682,7 @@ resizeFrame.Parent = nil
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection = {}
 
-pcall(function()
+--[[pcall(function()
 	for i, v in pairs(ScreenGui:GetDescendants()) do
 		coreGuiProtection[v] = rPlayer.Name
 	end
@@ -15673,7 +15701,6 @@ pcall(function()
 		return tostr(t)
 	end)
 end)
-
 if not RunService:IsStudio() then
 	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
 	newGui.DescendantAdded:Connect(function(v)
@@ -15683,7 +15710,7 @@ if not RunService:IsStudio() then
 		v.Parent = newGui
 	end
 	ScreenGui = newGui
-end
+end]]
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
@@ -16033,17 +16060,17 @@ end)
 task.spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
-	local hh
+	local hh=nil
 	if display:lower() == name:lower() then
 		hh = "@"..name..""
 	else
-		hh = ""..display.." (@"..name..")"
+		hh = display.." (@"..name..")"
 	end
 
-	delay(1, function()
+	delay(0.3, function()
 		Notify({
 			Description = "Welcome to Nameless Admin V"..curVer.."";
-			Title = ""..rngMsg().." "..hh.."";
+			Title = rngMsg().." "..hh.."";
 			Duration = 5;
 		});
 		Notify({
@@ -16052,6 +16079,8 @@ task.spawn(function()
 			Duration = 4;
 		});
 	end)
+		
+cmdInput.PlaceholderText="Nameless Admin V"..curVer
 end)
 
 function Destroy(guiObject)
@@ -16070,7 +16099,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	local TextFCButton = Instance.new("ImageButton")
 
 	ScreenGui.Parent = (COREGUI or PlrGui)
-	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
+	ScreenGui.Name = randomString()
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	ScreenGui.DisplayOrder=999
 
