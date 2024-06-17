@@ -211,14 +211,13 @@ cmd.add = function(...)
 	local aliases, info, func = vars[1], vars[2], vars[3]
 	for i, cmdName in pairs(aliases) do
 		if i == 1 then
-			Commands[cmdName:lower()] = {function(...) func(...) end, info}
+			Commands[cmdName:lower()] = {func, info}
 		else
-			Aliases[cmdName:lower()] = {function(...) func(...) end, info}
+			Aliases[cmdName:lower()] = {func, info}
 		end
 	end
 	commandcount = commandcount + 1
 end
-
 
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
@@ -870,11 +869,12 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(source)
-	loadstring(game:HttpGet(source))()
+cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(arg)
+	loadstring(game:HttpGet(arg[1]))()
 end)
 
-cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(s)
+cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(...)
+	local s = (...)
 	assert(loadstring(s))()
 end)
 
