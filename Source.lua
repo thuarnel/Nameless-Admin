@@ -95,10 +95,10 @@ local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserIn
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
-local PlrGui = Player.PlayerGui
+local PlrGui = Player:FindFirstChild("PlayerGui")
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
-local Character = Player.Character or Player.CharacterAdded:Wait();
+local Character = Player.Character
 local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked = true
 _G.Spam = false
@@ -141,14 +141,14 @@ local NormalSpin = true
 
 local localPlayer = Player
 local LocalPlayer = Player
-local character = Player.Character or Player.CharacterAdded:Wait();
+local character = Player.Character
 local mouse = localPlayer:GetMouse()
 local camera = workspace.CurrentCamera
 local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
-local player, plr, lp = localPlayer, localPlayer, localPlayer
+local player, plr, lp = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer
 
-task.spawn(function()
+pcall(function()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 		character = c
 		Character = c
@@ -273,11 +273,11 @@ function getRoot(char)
 end
 
 local function getChar()
-	return game.Players.LocalPlayer.Character
+	return game:GetService("Players").LocalPlayer.Character
 end
 
 local function getBp()
-	return game.Players.LocalPlayer.Backpack
+	return game:GetService("Players").LocalPlayer.Backpack
 end
 
 function isNumber(str)
