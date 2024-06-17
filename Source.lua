@@ -58,7 +58,13 @@ end
 
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt = {
-	prefix = if FileSupport then readfile("Nameless-Admin/Prefix.txt", ';') else ";" end,
+	h=nil
+	if FileSupport then
+	h= readfile("Nameless-Admin/Prefix.txt", ';')
+	else
+	h=";"
+	end
+	prefix = h,
 	tupleSeparator = ',',
 	ui = {},
 	keybinds = {},
