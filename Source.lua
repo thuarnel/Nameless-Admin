@@ -15601,7 +15601,7 @@ end
 
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
-local uiModel = game:GetObjects("rbxassetid://13510552309")[1]
+local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
 --[[if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
@@ -16083,7 +16083,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextClickButton.TextSize = 20.000
 	TextClickButton.TextWrapped = true
-	TextClickButton.ZIndex=500
+	TextClickButton.ZIndex=9999
 
 
 	UICorner.CornerRadius = UDim.new(1, 0)

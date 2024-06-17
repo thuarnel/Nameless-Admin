@@ -869,14 +869,12 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(...)
-	loadstring(game:HttpGet({...}))()
+cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(source)
+	loadstring(game:HttpGet(source))()
 end)
 
-cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(...)
-	local j = (...)
-	local args = table.concat(j, "")
-	assert(loadstring(args))()
+cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(s)
+	assert(loadstring(s))()
 end)
 
 cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
@@ -15619,7 +15617,7 @@ end
 
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
-local uiModel = game:GetObjects("rbxassetid://13510552309")[1]
+local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
 --[[if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
