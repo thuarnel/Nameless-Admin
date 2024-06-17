@@ -206,6 +206,19 @@ local Goofer = {
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount = 0
 cmd = {}
+cmd.add = function(...)
+	local vars = {...}
+	local aliases, info, func = vars[1], vars[2], vars[3]
+	for i, cmdName in pairs(aliases) do
+		if i == 1 then
+			Commands[cmdName:lower()] = {func, info}
+		else
+			Aliases[cmdName:lower()] = {func, info}
+		end
+	end
+	commandcount = commandcount + 1
+end
+
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
 	local success, msg = pcall(function()
@@ -219,25 +232,6 @@ cmd.run = function(args)
 	end)
 	if not success then end
 end
-
-cmd.run = function(args)
-	local caller, arguments = args[1], args; table.remove(args, 1);
-	local success, msg = pcall(function()
-		if Commands[caller:lower()] then
-			local func, varargs = unpack(Commands[caller:lower()])
-			if #arguments >= varargs then
-				func(unpack(arguments, 1, varargs))
-			else end
-		elseif Aliases[caller:lower()] then
-			local func, varargs = unpack(Aliases[caller:lower()])
-			if #arguments >= varargs then
-				func(unpack(arguments, 1, varargs))
-			else end
-		end
-	end)
-	if not success then end
-end
-
 function randomString()
 	local length = math.random(10,20)
 	local array = {}
