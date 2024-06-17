@@ -20,7 +20,7 @@ end
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)]]
 
-spawn(function() --automatically load nameless admin when teleported
+pcall(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -42,10 +42,12 @@ local FileSupport = isfile and isfolder and writefile and readfile
 if FileSupport then
 	if not isfolder('Nameless-Admin') then
 		makefolder('Nameless-Admin')
+	else
 	end
 
 	if not isfolder('Nameless-Admin/Plugins') then
 		makefolder('Nameless-Admin/Plugins')
+	else
 	end
 
 	if not isfile("Nameless-Admin/Prefix.txt") then
@@ -56,14 +58,10 @@ end
 
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt = {
-	prefix = readfile("Nameless-Admin/Prefix.txt", ';'),
+	prefix = if FileSupport then readfile("Nameless-Admin/Prefix.txt", ';') else ";" end,
 	tupleSeparator = ',',
-	ui = {					
-
-	},
-	keybinds = {			
-
-	},
+	ui = {},
+	keybinds = {},
 }
 
 -- [[ Version ]] -- 
@@ -71,21 +69,23 @@ local curVer = 2.18
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId = game.PlaceId, game.JobId
-local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players");
+local UserInputService = game:GetService("UserInputService");
 local vim = game:GetService("VirtualInputManager");
-local ProximityPromptService = game:GetService("ProximityPromptService")
-local TweenService = game:GetService("TweenService")
-local RunService = game:GetService("RunService")
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService('HttpService')
-local RunService2 = game:FindService("RunService")
-local StarterGui = game:GetService("StarterGui")
-local SoundService = game:GetService("SoundService")
-local Lighting = game:GetService("Lighting")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local GuiService = game:GetService("GuiService")
+local ProximityPromptService = game:GetService("ProximityPromptService");
+local TweenService = game:GetService("TweenService");
+local RunService = game:GetService("RunService");
+local TeleportService = game:GetService("TeleportService");
+local HttpService = game:GetService('HttpService');
+local RunService2 = game:FindService("RunService");
+local StarterGui = game:GetService("StarterGui");
+local SoundService = game:GetService("SoundService");
+local Lighting = game:GetService("Lighting");
+local ReplicatedStorage = game:GetService("ReplicatedStorage");
+local GuiService = game:GetService("GuiService");
 local COREGUI = game:GetService("CoreGui");
+local CoreGui = game:GetService("CoreGui");
+local coregui = game:GetService("CoreGui");
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
@@ -209,6 +209,14 @@ cmd.run = function(args)
 	end)
 	if not success then
 	end
+end
+function randomString()
+	local length = math.random(10,20)
+	local array = {}
+	for i = 1, length do
+		array[i] = string.char(math.random(32, 126))
+	end
+	return table.concat(array)
 end
 
 --[[ LIBRARY FUNCTIONS ]]--
@@ -844,8 +852,8 @@ cmd.add({"url"}, {"url <link>", "Run the script using url"}, function(source)
 	loadstring(game:HttpGet(source))()
 end)
 
-cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(script)
-	loadstring(script)()
+cmd.add({"loadstring", "ls"}, {"loadstring <code> (ls)", "Run the code using the loadstring"}, function(s)
+	assert(loadstring(s))()
 end)
 
 cmd.add({"executor", "exec"}, {"executor (exec)", "Very simple executor"}, function()
@@ -965,9 +973,9 @@ cmd.add({"lag"}, {"lag <player>", "Chat lag"}, function()
 	end
 end)
 
-cmd.add({"plugins"}, {"plugins", "Check what kind of plugins you have, add plugins using a gui, delete a plugin."}, function()
+--[[cmd.add({"plugins"}, {"plugins", "Check what kind of plugins you have, add plugins using a gui, delete a plugin."}, function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminPlugin"))();
-end)
+end)]]
 
 cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(...)
 	PrefixChange = (...)
@@ -15494,7 +15502,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 	wait(.2);
 
 	Notify({
-		Description = "Your UserId has been set to the owner's id";
+		Description = "Your UserId/Username has been set to the owner's UserId/Username";
 		Title = "Nameless Admin";
 		Duration = 4;
 
@@ -15511,10 +15519,10 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 		end
 	end
 end)
-
+print'cmds loaded'
 
 -- [[ PLUGIN LOADER ]] -- 
-local PluginsLoaded = 0
+--[[local PluginsLoaded = 0
 local PluginsErrored = 0
 
 if CustomFunctionSupport then
@@ -15535,27 +15543,22 @@ if CustomFunctionSupport then
 		});
 	end
 
-	-- [[ PLUGINS LOADED NOTIFICATION ]] --
+	-- PLUGINS LOADED NOTIFICATION --
 	if PluginsErrored == 0 then
- --[[
 	 Notify({
 			 Description = "Loaded " .. PluginsLoaded .. " plugins";
 			 Title = "Nameless Admin";
 			 Duration = 3;
 			 
 			 });
- ]]
-	else
- --[[
-	 Notify({
+else	 
+Notify({
 	 Description = "Loaded " .. PluginsLoaded .. " plugins, although " .. PluginsErrored .. " plugins have errored";
 	 Title = "Nameless Admin";
-			 Duration = 3;
-			 
-			 });
- ]]
+	 Duration = 3;
+	 });
 	end
-end
+end]]
 
 --[[ FUNCTIONALITY ]]--
 localPlayer.Chatted:Connect(function(str)
@@ -15594,14 +15597,34 @@ end
 
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
-print("checking screengui") -- testing
-if not RunService:IsStudio() then
-	ScreenGui = game:GetObjects("rbxassetid://13510552309")[1]
+local uiModel = game:GetObjects("rbxassetid://13510552309")[1]
+--[[if not RunService:IsStudio() then
+	ScreenGui = uiModel
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
+end]]
+
+if get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	ScreenGui = Main
+elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
+	local Main = uiModel
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	ScreenGui = Main
+elseif COREGUI:FindFirstChild('RobloxGui') then
+	ScreenGui = COREGUI.RobloxGui
+else
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = COREGUI
+	ScreenGui = Main
 end
-print'Found Gui'
 
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
@@ -15639,7 +15662,7 @@ resizeFrame.Parent = nil
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection = {}
 
-pcall(function()
+--[[pcall(function()
 	for i, v in pairs(ScreenGui:GetDescendants()) do
 		coreGuiProtection[v] = rPlayer.Name
 	end
@@ -15658,7 +15681,6 @@ pcall(function()
 		return tostr(t)
 	end)
 end)
-print'roblox gui check?'
 if not RunService:IsStudio() then
 	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
 	newGui.DescendantAdded:Connect(function(v)
@@ -15668,8 +15690,7 @@ if not RunService:IsStudio() then
 		v.Parent = newGui
 	end
 	ScreenGui = newGui
-end
-print'done?'
+end]]
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
@@ -16058,7 +16079,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	local TextFCButton = Instance.new("ImageButton")
 
 	ScreenGui.Parent = (COREGUI or PlrGui)
-	ScreenGui.Name = "iambyfron" --i bet 100% that you just searched up the keyword "byfron" lol
+	ScreenGui.Name = randomString()
 	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	ScreenGui.DisplayOrder=999
 
