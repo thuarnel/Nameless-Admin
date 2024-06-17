@@ -220,17 +220,21 @@ cmd.add = function(...)
 end
 
 cmd.run = function(args)
-	local caller, arguments = args[1], args; table.remove(args, 1);
+	local caller = args[1]
+	table.remove(args, 1)
+	local arguments = args
 	local success, msg = pcall(function()
 		if Commands[caller:lower()] then
-			Commands[caller:lower()][1](unpack(arguments))
+			Commands[caller:lower()][1](arguments)
 		elseif Aliases[caller:lower()] then
-			Aliases[caller:lower()][1](unpack(arguments))
+			Aliases[caller:lower()][1](arguments)
 		end
 	end)
 	if not success then
 	end
 end
+
+
 function randomString()
 	local length = math.random(10,20)
 	local array = {}
