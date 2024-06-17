@@ -219,6 +219,25 @@ cmd.run = function(args)
 	end)
 	if not success then end
 end
+
+cmd.run = function(args)
+	local caller, arguments = args[1], args; table.remove(args, 1);
+	local success, msg = pcall(function()
+		if Commands[caller:lower()] then
+			local func, varargs = unpack(Commands[caller:lower()])
+			if #arguments >= varargs then
+				func(unpack(arguments, 1, varargs))
+			else end
+		elseif Aliases[caller:lower()] then
+			local func, varargs = unpack(Aliases[caller:lower()])
+			if #arguments >= varargs then
+				func(unpack(arguments, 1, varargs))
+			else end
+		end
+	end)
+	if not success then end
+end
+
 function randomString()
 	local length = math.random(10,20)
 	local array = {}
