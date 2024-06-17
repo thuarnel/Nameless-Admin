@@ -15524,7 +15524,6 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 		end
 	end
 end)
-print'cmds loaded'
 
 -- [[ PLUGIN LOADER ]] -- 
 --[[local PluginsLoaded = 0
