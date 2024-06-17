@@ -73,9 +73,9 @@ if FileSupport then
 end
 local prefixCheck=";"
 	if FileSupport then
-	h= readfile("Nameless-Admin/Prefix.txt", ';')
+	prefixCheck= readfile("Nameless-Admin/Prefix.txt", ';')
 	else
-	h=";"
+	prefixCheck=";"
 end
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt = {
