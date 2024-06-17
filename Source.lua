@@ -73,7 +73,7 @@ local curVer = 2.18
 local PlaceId, JobId = game.PlaceId, game.JobId
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
-local vim = game:GetService("VirtualInputManager")
+local vim = game:GetService("VirtualInputManager");
 local ProximityPromptService = game:GetService("ProximityPromptService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -85,7 +85,7 @@ local SoundService = game:GetService("SoundService")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local GuiService = game:GetService("GuiService")
-local COREGUI = game:GetService("CoreGui")
+local COREGUI = game:GetService("CoreGui");
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
@@ -310,7 +310,6 @@ end
 
 -- [[ MORE VARIABLES ]] --
 local plr = Player
-local COREGUI = game:GetService("CoreGui")
 local speaker = Player
 local char = plr.Character
 local JSONEncode, JSONDecode = HttpService.JSONEncode, HttpService.JSONDecode
@@ -6277,10 +6276,11 @@ cmd.add({"reset", "die"}, {"reset (die)", "Makes your health be 0"}, function()
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
 end)
 
-local hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
+local hastheyfixedit = nil
 
 cmd.add({"saveinstance", "savegame"}, {"saveinstance (savegame)", "if it bugs out try removing stuff from your AutoExec folder"}, function()
 	--saveinstance({})
+	hastheyfixedit = loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
 
 	local Params = {
 		RepoURL = "https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
@@ -14932,7 +14932,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 		--Properties:
 
-		ScreenGui.Parent = game.CoreGui
+		ScreenGui.Parent = (COREGUI or PlrGui)
 		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		ScreenGui.ResetOnSpawn = false
 
@@ -15101,7 +15101,7 @@ cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
 	Notify({
 		Description = "Fired " .. remoteamount .. " amount of remotes";
 		Title = "Nameless Admin";
-		Duration = 7;
+		Duration = 4;
 
 	});
 end)
@@ -15145,8 +15145,8 @@ cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes
 	end
 end)
 
-cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(...)
-	game.Workspace.CurrentCamera.FieldOfView = (...)
+cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(arg)
+	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
 end)
 
 cmd.add({"homebrew"}, {"homebrew", "Executes homebrew admin"}, function()
@@ -15499,7 +15499,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 		Duration = 4;
 
 	});
-
+	print("id: "..ownId.." | user: "..ownUser) -- testing
 end)
 
 cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox chat is slow"}, function()
@@ -15512,17 +15512,10 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 	end
 end)
 
-Players.PlayerAdded:Connect(function(plr)
-	if ESPenabled then
-		repeat wait(1) until plr.Character and getRoot(plr.Character)
-		ESP(plr)
-	end
-end)
-
 
 -- [[ PLUGIN LOADER ]] -- 
 local PluginsLoaded = 0
-PluginsErrored = 0
+local PluginsErrored = 0
 
 if CustomFunctionSupport then
 	local success, result = pcall(function()
@@ -15583,8 +15576,14 @@ function CheckPermissions(Player)
 		end
 	end)
 end
-Players.PlayerAdded:Connect(function(Player)
-	CheckPermissions(Player)
+Players.PlayerAdded:Connect(function(plr)
+	CheckPermissions(plr)
+end)
+Players.PlayerAdded:Connect(function(plr)
+	if ESPenabled then
+		repeat wait(1) until plr.Character
+		ESP(plr)
+	end
 end)
 for i,v in pairs(Players:GetPlayers()) do
 	if v ~= LocalPlayer then
@@ -15594,7 +15593,7 @@ end
 
 
 --[[ GUI VARIABLES ]]--
-local ScreenGui
+local ScreenGui=nil
 if not RunService:IsStudio() then
 	ScreenGui = game:GetObjects("rbxassetid://13510552309")[1]
 else
@@ -16017,17 +16016,17 @@ end)
 task.spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
-	local hh
+	local hh=nil
 	if display:lower() == name:lower() then
 		hh = "@"..name..""
 	else
-		hh = ""..display.." (@"..name..")"
+		hh = display.." (@"..name..")"
 	end
 
-	delay(1, function()
+	delay(0.3, function()
 		Notify({
 			Description = "Welcome to Nameless Admin V"..curVer.."";
-			Title = ""..rngMsg().." "..hh.."";
+			Title = rngMsg().." "..hh.."";
 			Duration = 5;
 		});
 		Notify({
@@ -16036,6 +16035,8 @@ task.spawn(function()
 			Duration = 4;
 		});
 	end)
+		
+cmdInput.PlaceholderText="Nameless Admin V"..curVer
 end)
 
 function Destroy(guiObject)
