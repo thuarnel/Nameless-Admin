@@ -208,16 +208,17 @@ local commandcount = 0
 cmd = {}
 cmd.add = function(...)
 	local vars = {...}
-	local aliases, info, func = vars[1], vars[2], vars
+	local aliases, info, func = vars[1], vars[2], vars[3]
 	for i, cmdName in pairs(aliases) do
 		if i == 1 then
-			Commands[cmdName:lower()] = {func, info}
+			Commands[cmdName:lower()] = {function(...) func(...) end, info}
 		else
-			Aliases[cmdName:lower()] = {func, info}
+			Aliases[cmdName:lower()] = {function(...) func(...) end, info}
 		end
 	end
 	commandcount = commandcount + 1
 end
+
 
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
