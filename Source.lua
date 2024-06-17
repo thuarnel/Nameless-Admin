@@ -15853,6 +15853,7 @@ end
 gui.menuify = function(menu)
 	local exit = menu:FindFirstChild("Exit", true)
 	local mini = menu:FindFirstChild("Minimize", true)
+	local clear = menu:FindFirstChild("Clear", true);
 	local minimized = false
 	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
 	mini.MouseButton1Click:Connect(function()
@@ -15868,6 +15869,16 @@ gui.menuify = function(menu)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible = false
 	end)
+	if clear then 
+		clear.MouseButton1Click:Connect(function()
+			local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
+			for _,v in ipairs(t.Parent:GetChildren()) do
+				if v:IsA("TextLabel") then
+					v:Destroy()
+				end
+			end
+		end)
+	end
 	gui.draggable(menu, menu.Topbar)
 	menu.Visible = false
 end
