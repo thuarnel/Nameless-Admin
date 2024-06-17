@@ -72,9 +72,9 @@ if FileSupport then
 	end
 end
 local prefixCheck=";"
-	if FileSupport then
+if FileSupport then
 	prefixCheck= readfile("Nameless-Admin/Prefix.txt", ';')
-	else
+else
 	prefixCheck=";"
 end
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
@@ -15645,7 +15645,7 @@ else
 	Main.Parent = COREGUI
 	ScreenGui = Main
 end
-
+if ScreenGui then ScreenGui.DisplayOrder=9999 end
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
 local centerBar = cmdBar.CenterBar
@@ -16079,30 +16079,14 @@ task.spawn(function()
 			Duration = 4;
 		});
 	end)
-		
-cmdInput.PlaceholderText="Nameless Admin V"..curVer
+
+	cmdInput.PlaceholderText="Nameless Admin V"..curVer
 end)
-
-function Destroy(guiObject)
-	if not pcall(function()guiObject.Parent = game:GetService("CoreGui")end) then
-		guiObject.Parent = nil
-	end
-end
-
-task.wait(0.2);
 
 -- [[ COMMAND BAR BUTTON ]] --
 if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
-	local ScreenGui = Instance.new("ScreenGui")
 	local TextClickButton = Instance.new("TextButton")
 	local UICorner = Instance.new("UICorner")
-	local TextFCButton = Instance.new("ImageButton")
-
-	ScreenGui.Parent = (COREGUI or PlrGui)
-	ScreenGui.Name = randomString()
-	ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	ScreenGui.DisplayOrder=999
-
 	TextClickButton.Name = "NamelessAdminButton"
 	TextClickButton.Parent = ScreenGui
 	TextClickButton.BackgroundColor3 = Color3.fromRGB(4, 4, 4)
