@@ -16065,19 +16065,17 @@ end)
 
 -- [[ CHAT TO USE COMMANDS ]] --
 local function bindToChat(plr, msg)
-	if getgenv().NamelessCLOGS then
-		local chatMsg = chatExample:Clone()
-		for i, v in pairs(chatLogs:GetChildren()) do
-			if v:IsA("TextLabel") then
-				v.LayoutOrder = v.LayoutOrder + 1
-			end
+	local chatMsg = chatExample:Clone()
+	for i, v in pairs(chatLogs:GetChildren()) do
+		if v:IsA("TextLabel") then
+			v.LayoutOrder = v.LayoutOrder + 1
 		end
-		chatMsg.Parent = chatLogs
-		chatMsg.Text = ("%s (@%s): %s"):format(plr.DisplayName, plr.Name, msg)
-
-		local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
-		chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
 	end
+	chatMsg.Parent = chatLogs
+	chatMsg.Text = ("%s (@%s): %s"):format(plr.DisplayName, plr.Name, msg)
+
+	local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
+	chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
 end
 
 for i, plr in pairs(Players:GetPlayers()) do
