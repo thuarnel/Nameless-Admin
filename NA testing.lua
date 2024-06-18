@@ -14,7 +14,7 @@
                                                                                              
 
 ]]
-if getgenv().NamelessLoaded then --checks if Nameless Admin is already loaded
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -16072,7 +16072,7 @@ local function bindToChat(plr, msg)
 		end
 	end
 	chatMsg.Parent = chatLogs
-	chatMsg.Text = ("%s (@%s): %s"):format(plr.DisplayName, plr.Name, msg)
+	chatMsg.Text = ("%s [@%s]: %s"):format(plr.DisplayName, plr.Name, msg)
 
 	local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
 	chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)

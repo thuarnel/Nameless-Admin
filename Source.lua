@@ -1,4 +1,4 @@
-if getgenv().NamelessLoaded then --checks if Nameless Admin is already loaded
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -45,10 +45,10 @@ if FileSupport then
 	else
 	end
 
-	if not isfolder('Nameless-Admin/Plugins') then
+	--[[if not isfolder('Nameless-Admin/Plugins') then
 		makefolder('Nameless-Admin/Plugins')
 	else
-	end
+	end]]
 
 	if not isfile("Nameless-Admin/Prefix.txt") then
 		writefile("Nameless-Admin/Prefix.txt", ';')
@@ -77,6 +77,7 @@ local PlaceId, JobId = game.PlaceId, game.JobId
 local Players = game:GetService("Players");
 local UserInputService = game:GetService("UserInputService");
 local vim = game:GetService("VirtualInputManager");
+local AssetService = game:GetService("AssetService");
 local ProximityPromptService = game:GetService("ProximityPromptService");
 local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
@@ -1935,9 +1936,9 @@ cmd.add({"godmode", "god"}, {"godmode (god)", "Makes you unable to be killed"}, 
 	loadstring(game:HttpGet(('https://pastebin.com/raw/bbyuynM1'),true))()
 end)
 
-cmd.add({"TeleportGui", "TPui"}, {"TeleportGui (TPui)", "Gives an UI that grabs all places and teleports you by clicking a simple button"}, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	--obfuscated so dont even try
+cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpui, universeviewer, uviewer)", "Gives an UI that grabs all places and teleports you by clicking a simple button"}, function()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
+	gui.universeGui()
 end)
 
 cmd.add({"clickfling", "mousefling"}, {"mousefling (clickfling)", "Fling a player by clicking them"}, function()
@@ -15645,6 +15646,9 @@ local commandsFrame = ScreenGui.Commands
 local commandsFilter = commandsFrame.Container.Filter
 local commandsList = commandsFrame.Container.List
 local commandExample = commandsList.TextLabel
+local UniverseViewerFrame = ScreenGui.UniverseViewer
+local UniverseList = UniverseViewerFrame.Container.List
+local UniverseExample = UniverseList.TextButton
 local resizeFrame = ScreenGui.Resizeable
 local resizeXY = {
 	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
@@ -15661,6 +15665,7 @@ local resizeXY = {
 cmdExample.Parent = nil
 chatExample.Parent = nil
 commandExample.Parent = nil
+UniverseExample.Parent = nil
 resizeFrame.Parent = nil
 
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
@@ -15738,6 +15743,12 @@ gui.chatlogs = function()
 		chatLogsFrame.Visible = true
 	end
 	chatLogsFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
+end
+gui.universeGui = function()
+	if not UniverseViewerFrame.Visible then
+		UniverseViewerFrame.Visible = true
+	end
+	UniverseViewerFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
 end
 
 gui.tween = function(obj, style, direction, duration, goal)
@@ -16011,6 +16022,7 @@ gui.barDeselect(0)
 cmdBar.Visible = true
 gui.menuifyv2(chatLogsFrame)
 gui.menuify(commandsFrame)
+gui.menuify(UniverseViewerFrame)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
@@ -16044,7 +16056,7 @@ local function bindToChat(plr, msg)
 		end
 	end
 	chatMsg.Parent = chatLogs
-	chatMsg.Text = ("[%s]: %s"):format(plr.Name, msg)
+	chatMsg.Text = ("%s [@%s]: %s"):format(plr.DisplayName, plr.Name, msg)
 
 	local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
 	chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
@@ -16097,6 +16109,26 @@ task.spawn(function()
 	end)
 
 	cmdInput.PlaceholderText="Nameless Admin V"..curVer
+end)
+
+task.spawn(function()
+	local page = AssetService:GetGamePlacesAsync()
+	while true do
+		local template = UniverseExample
+		local list = UniverseList
+		for _, place in page:GetCurrentPage() do
+			local btn = template:Clone()
+			btn.Parent=list
+			btn.Text=place.Name.." ("..place.PlaceId..")"
+			btn.MouseButton1Click:Connect(function()
+				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
+			end)
+		end
+		if page.IsFinished then
+			break
+		end
+		page:AdvanceToNextPageAsync()
+	end
 end)
 
 -- [[ COMMAND BAR BUTTON ]] --
