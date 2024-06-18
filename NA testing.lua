@@ -15938,20 +15938,25 @@ gui.menuifyv2 = function(menu)
 			end
 		end)
 	end
-	if tgl then
+	if tgl and tgl:FindFirstChildOfClass("BoolValue") then
+		if tgl:FindFirstChildOfClass("BoolValue") then  if checkVal then tgl.Text = "Enabled: On" else tgl.Text = "Enabled: Off" end tgl:FindFirstChildOfClass("BoolValue").Value=checkVal end
 		tgl.MouseButton1Click:Connect(function()
 			if tgl:FindFirstChildOfClass("BoolValue") then
 				val=tgl:FindFirstChildOfClass("BoolValue")
-				if tgl:FindFirstChildOfClass("BoolValue").Value then
-					checkVal=false
-					tgl.Text="Enabled: Off"
-					getgenv()[val.Name]=checkVal
-					writefile("Nameless-Admin/Value.txt", ''..checkVal..'')
+				if val and val.Value then
+					checkVal = false
+					val.Value=false
+					tgl.Text = "Enabled: Off"
+					local name = val.Name
+					getgenv()[name] = checkVal
+					writefile("Nameless-Admin/Value.txt", "false")
 				else
 					checkVal=true
+					val.Value=true
 					tgl.Text="Enabled: On"
-					getgenv()[val.Name]=checkVal
-					writefile("Nameless-Admin/Value.txt", ''..checkVal..'')
+					local name = val.Name
+					getgenv()[name] = checkVal
+					writefile("Nameless-Admin/Value.txt", "true")
 				end
 			end
 		end)
