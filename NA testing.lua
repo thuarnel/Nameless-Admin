@@ -70,10 +70,6 @@ if FileSupport then
 		writefile("Nameless-Admin/Prefix.txt", ';')
 	else
 	end
-	if not isfile("Nameless-Admin/Value.txt") then
-		writefile("Nameless-Admin/Value.txt", "false")
-	else
-	end
 end
 local prefixCheck=";"
 if FileSupport then
@@ -15906,15 +15902,8 @@ gui.menuifyv2 = function(menu)
 	local exit = menu:FindFirstChild("Exit", true)
 	local mini = menu:FindFirstChild("Minimize", true)
 	local clear = menu:FindFirstChild("Clear", true);
-	local tgl = menu:FindFirstChild("Toggle", true);
-	local checkVal=false
 	local minimized = false
 	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
-	if FileSupport then
-		checkVal= readfile("Nameless-Admin/Value.txt", "false")
-	else
-		checkVal=false
-	end
 	mini.MouseButton1Click:Connect(function()
 		minimized = not minimized
 		if minimized then
@@ -15934,39 +15923,6 @@ gui.menuifyv2 = function(menu)
 			for _,v in ipairs(t.Parent:GetChildren()) do
 				if v:IsA("TextLabel") then
 					v:Destroy()
-				end
-			end
-		end)
-	end
-	if tgl and tgl:FindFirstChildOfClass("BoolValue") then
-		if tgl:FindFirstChildOfClass("BoolValue") then
-			local name = tgl:FindFirstChildOfClass("BoolValue").Name
-			if checkVal then
-				tgl.Text = "Enabled: On"
-				tgl:FindFirstChildOfClass("BoolValue").Value=checkVal
-				_G[name] = checkVal
-			else 
-				tgl.Text = "Enabled: Off" 
-				tgl:FindFirstChildOfClass("BoolValue").Value=checkVal
-				_G[name] = checkVal
-			end
-			tgl:FindFirstChildOfClass("BoolValue").Value=checkVal 
-		end
-		tgl.MouseButton1Click:Connect(function()
-			if tgl:FindFirstChildOfClass("BoolValue") then
-				val=tgl:FindFirstChildOfClass("BoolValue")
-				if val and val.Value then
-					checkVal = false
-					tgl.Text = "Enabled: Off"
-					local name = val.Name
-					_G[name], val.Value = checkVal, checkVal
-					writefile("Nameless-Admin/Value.txt", "false")
-				else
-					checkVal=true
-					tgl.Text="Enabled: On"
-					local name = val.Name
-					_G[name], val.Value = checkVal, checkVal
-					writefile("Nameless-Admin/Value.txt", "true")
 				end
 			end
 		end)
