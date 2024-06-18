@@ -1956,9 +1956,9 @@ cmd.add({"godmode", "god"}, {"godmode (god)", "Makes you unable to be killed"}, 
 	loadstring(game:HttpGet(('https://pastebin.com/raw/bbyuynM1'),true))()
 end)
 
-cmd.add({"TeleportGui", "TPui"}, {"TeleportGui (TPui)", "Gives an UI that grabs all places and teleports you by clicking a simple button"}, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	--obfuscated so dont even try
+cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpui, universeviewer, uviewer)", "Gives an UI that grabs all places and teleports you by clicking a simple button"}, function()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
+	gui.universeGui()
 end)
 
 cmd.add({"clickfling", "mousefling"}, {"mousefling (clickfling)", "Fling a player by clicking them"}, function()
