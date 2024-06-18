@@ -16124,7 +16124,7 @@ task.spawn(function()
 			btn.MouseButton1Click:Connect(function()
 				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
 				Notify({
-					Description = "Teleport To: "..place.Name;
+					Description = "Teleporting To Place: "..place.Name;
 					Title = "Nameless Admin";
 					Duration = 5;
 				});
