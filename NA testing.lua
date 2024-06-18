@@ -71,7 +71,7 @@ if FileSupport then
 	else
 	end
 	if not isfile("Nameless-Admin/Value.txt") then
-		writefile("Nameless-Admin/Value.txt", false)
+		writefile("Nameless-Admin/Value.txt", "false")
 	else
 	end
 end
@@ -15911,7 +15911,7 @@ gui.menuifyv2 = function(menu)
 	local minimized = false
 	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
 	if FileSupport then
-		checkVal= readfile("Nameless-Admin/Value.txt", false)
+		checkVal= readfile("Nameless-Admin/Value.txt", "false")
 	else
 		checkVal=false
 	end
@@ -15946,12 +15946,12 @@ gui.menuifyv2 = function(menu)
 					checkVal=false
 					tgl.Text="Enabled: Off"
 					getgenv()[val.Name]=checkVal
-					writefile("Nameless-Admin/Value.txt", checkVal)
+					writefile("Nameless-Admin/Value.txt", ''..checkVal..'')
 				else
 					checkVal=true
 					tgl.Text="Enabled: On"
 					getgenv()[val.Name]=checkVal
-					writefile("Nameless-Admin/Value.txt", checkVal)
+					writefile("Nameless-Admin/Value.txt", ''..checkVal..'')
 				end
 			end
 		end)
