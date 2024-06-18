@@ -61,13 +61,17 @@ if FileSupport then
 	else
 	end
 
-	if not isfolder('Nameless-Admin/Plugins') then
+	--[[if not isfolder('Nameless-Admin/Plugins') then
 		makefolder('Nameless-Admin/Plugins')
 	else
-	end
+	end]]
 
 	if not isfile("Nameless-Admin/Prefix.txt") then
 		writefile("Nameless-Admin/Prefix.txt", ';')
+	else
+	end
+	if not isfile("Nameless-Admin/Value.txt") then
+		writefile("Nameless-Admin/Value.txt", false)
 	else
 	end
 end
@@ -93,6 +97,7 @@ local PlaceId, JobId = game.PlaceId, game.JobId
 local Players = game:GetService("Players");
 local UserInputService = game:GetService("UserInputService");
 local vim = game:GetService("VirtualInputManager");
+local AssetService = game:GetService("AssetService");
 local ProximityPromptService = game:GetService("ProximityPromptService");
 local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
@@ -15661,6 +15666,9 @@ local commandsFrame = ScreenGui.Commands
 local commandsFilter = commandsFrame.Container.Filter
 local commandsList = commandsFrame.Container.List
 local commandExample = commandsList.TextLabel
+local UniverseViewerFrame = ScreenGui.UniverseViewer
+local UniverseList = UniverseViewerFrame.Container.List
+local UniverseExample = UniverseList.TextButton
 local resizeFrame = ScreenGui.Resizeable
 local resizeXY = {
 	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
@@ -15677,6 +15685,7 @@ local resizeXY = {
 cmdExample.Parent = nil
 chatExample.Parent = nil
 commandExample.Parent = nil
+UniverseExample.Parent = nil
 resizeFrame.Parent = nil
 
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
@@ -15754,6 +15763,12 @@ gui.chatlogs = function()
 		chatLogsFrame.Visible = true
 	end
 	chatLogsFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
+end
+gui.universeGui = function()
+	if not UniverseViewerFrame.Visible then
+		UniverseViewerFrame.Visible = true
+	end
+	UniverseViewerFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
 end
 
 gui.tween = function(obj, style, direction, duration, goal)
@@ -15891,8 +15906,15 @@ gui.menuifyv2 = function(menu)
 	local exit = menu:FindFirstChild("Exit", true)
 	local mini = menu:FindFirstChild("Minimize", true)
 	local clear = menu:FindFirstChild("Clear", true);
+	local tgl = menu:FindFirstChild("Toggle", true);
+	local checkVal=false
 	local minimized = false
 	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
+	if FileSupport then
+		checkVal= readfile("Nameless-Admin/Value.txt", false)
+	else
+		checkVal=false
+	end
 	mini.MouseButton1Click:Connect(function()
 		minimized = not minimized
 		if minimized then
@@ -15912,6 +15934,24 @@ gui.menuifyv2 = function(menu)
 			for _,v in ipairs(t.Parent:GetChildren()) do
 				if v:IsA("TextLabel") then
 					v:Destroy()
+				end
+			end
+		end)
+	end
+	if tgl then
+		tgl.MouseButton1Click:Connect(function()
+			if tgl:FindFirstChildOfClass("ValueBase") then
+				val=tgl:FindFirstChildOfClass("ValueBase")
+				if tgl:FindFirstChildOfClass("ValueBase").Value then
+					checkVal=false
+					tgl.Text="Enabled: Off"
+					getgenv()[val.Name]=checkVal
+					writefile("Nameless-Admin/Value.txt", checkVal)
+				else
+					checkVal=true
+					tgl.Text="Enabled: On"
+					getgenv()[val.Name]=checkVal
+					writefile("Nameless-Admin/Value.txt", checkVal)
 				end
 			end
 		end)
@@ -16027,6 +16067,7 @@ gui.barDeselect(0)
 cmdBar.Visible = true
 gui.menuifyv2(chatLogsFrame)
 gui.menuify(commandsFrame)
+gui.menuify(UniverseViewerFrame)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
@@ -16053,17 +16094,19 @@ end)
 
 -- [[ CHAT TO USE COMMANDS ]] --
 local function bindToChat(plr, msg)
-	local chatMsg = chatExample:Clone()
-	for i, v in pairs(chatLogs:GetChildren()) do
-		if v:IsA("TextLabel") then
-			v.LayoutOrder = v.LayoutOrder + 1
+	if getgenv().NamelessCLOGS then
+		local chatMsg = chatExample:Clone()
+		for i, v in pairs(chatLogs:GetChildren()) do
+			if v:IsA("TextLabel") then
+				v.LayoutOrder = v.LayoutOrder + 1
+			end
 		end
-	end
-	chatMsg.Parent = chatLogs
-	chatMsg.Text = ("[%s]: %s"):format(plr.Name, msg)
+		chatMsg.Parent = chatLogs
+		chatMsg.Text = ("%s (@%s): %s"):format(plr.DisplayName, plr.Name, msg)
 
-	local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
-	chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
+		local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
+		chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
+	end
 end
 
 for i, plr in pairs(Players:GetPlayers()) do
@@ -16113,6 +16156,26 @@ task.spawn(function()
 	end)
 
 	cmdInput.PlaceholderText="Nameless Admin V"..curVer
+end)
+
+task.spawn(function()
+	local page = AssetService:GetGamePlacesAsync()
+	while true do
+		local template = UniverseExample
+		local list = UniverseList
+		for _, place in page:GetCurrentPage() do
+			local btn = template:Clone()
+			btn.Parent=list
+			btn.Text=place.Name.." ("..place.PlaceId..")"
+			btn.MouseButton1Click:Connect(function()
+				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
+			end)
+		end
+		if page.IsFinished then
+			break
+		end
+		page:AdvanceToNextPageAsync()
+	end
 end)
 
 -- [[ COMMAND BAR BUTTON ]] --
