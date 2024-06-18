@@ -15940,9 +15940,9 @@ gui.menuifyv2 = function(menu)
 	end
 	if tgl then
 		tgl.MouseButton1Click:Connect(function()
-			if tgl:FindFirstChildOfClass("ValueBase") then
-				val=tgl:FindFirstChildOfClass("ValueBase")
-				if tgl:FindFirstChildOfClass("ValueBase").Value then
+			if tgl:FindFirstChildOfClass("BoolValue") then
+				val=tgl:FindFirstChildOfClass("BoolValue")
+				if tgl:FindFirstChildOfClass("BoolValue").Value then
 					checkVal=false
 					tgl.Text="Enabled: Off"
 					getgenv()[val.Name]=checkVal
