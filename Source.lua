@@ -5845,7 +5845,7 @@ function ShiftLock()
 end
 cmd.add({"shiftlock", "sl"}, {"shiftlock (sl)", "Enables shiftlock"}, function()
 	if IsOnMobile then
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/shiftlock"))()
+		gui.ShiftlockVis()
 	else
 		EnableShiftlock()
 	end
@@ -5853,11 +5853,7 @@ end)
 
 cmd.add({"unshiftlock", "unsl"}, {"unshiftlock (unsl)", "Disables shiftlock"}, function()
 	if IsOnMobile then
-		for _,lol in ipairs(game.CoreGui:GetChildren()) do
-			if lol.Name == "shiftlockk" then
-				lol:Destroy()
-			end
-		end
+		gui.ShiftlockInvis()
 	else
 		DisableShiftlock()
 	end
@@ -15649,6 +15645,7 @@ local commandExample = commandsList.TextLabel
 local UniverseViewerFrame = ScreenGui.UniverseViewer
 local UniverseList = UniverseViewerFrame.Container.List
 local UniverseExample = UniverseList.TextButton
+local ShiftlockUi = ScreenGui.LockButton
 local resizeFrame = ScreenGui.Resizeable
 local resizeXY = {
 	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
@@ -15749,6 +15746,16 @@ gui.universeGui = function()
 		UniverseViewerFrame.Visible = true
 	end
 	UniverseViewerFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
+end
+gui.ShiftlockVis = function()
+	if not ShiftlockUi.Visible then
+		ShiftlockUi.Visible = true
+	end
+end
+gui.ShiftlockInvis = function()
+	if ShiftlockUi.Visible then
+		ShiftlockUi.Visible = false
+	end
 end
 
 gui.tween = function(obj, style, direction, duration, goal)
@@ -15915,6 +15922,46 @@ gui.menuifyv2 = function(menu)
 	menu.Visible = false
 end
 
+gui.shiftlock = function(sLock)
+	local V = false
+	local g = nil
+	local GameSettings = UserSettings():GetService("UserGameSettings")
+	local J = nil
+	
+	local function ForceShiftLock()
+		local i, k = pcall(function()
+			return GameSettings.RotationType
+		end)
+		_ = i
+		g = k
+		J = game:GetService("RunService").RenderStepped:Connect(function()
+			pcall(function()
+				GameSettings.RotationType = Enum.RotationType.CameraRelative
+			end)
+		end)
+	end
+
+	local function EndForceShiftLock()
+		if J then
+			pcall(function()
+				GameSettings.RotationType = g or Enum.RotationType.MovementRelative
+			end)
+			J:Disconnect()
+		end
+	end
+
+	sLock.MouseButton1Click:Connect(function()
+		V = not V
+		sLock.btnIcon.ImageColor3 = V and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(255,255,255)
+		if V then
+			ForceShiftLock()
+		else
+			EndForceShiftLock()
+		end
+	end)
+	gui.draggable(sLock)
+end
+
 
 gui.loadCommands = function()
 	for i, v in pairs(cmdAutofill:GetChildren()) do
@@ -16023,6 +16070,7 @@ cmdBar.Visible = true
 gui.menuifyv2(chatLogsFrame)
 gui.menuify(commandsFrame)
 gui.menuify(UniverseViewerFrame)
+gui.shiftlock(ShiftlockUi)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
