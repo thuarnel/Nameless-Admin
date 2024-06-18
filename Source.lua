@@ -16119,9 +16119,15 @@ task.spawn(function()
 		for _, place in page:GetCurrentPage() do
 			local btn = template:Clone()
 			btn.Parent=list
+			btn.Name=place.Name
 			btn.Text=place.Name.." ("..place.PlaceId..")"
 			btn.MouseButton1Click:Connect(function()
 				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
+				Notify({
+					Description = "Teleport To: "..place.Name;
+					Title = "Nameless Admin";
+					Duration = 5;
+				});
 			end)
 		end
 		if page.IsFinished then
