@@ -16146,7 +16146,7 @@ end)
 RunService.Stepped:Connect(function()
 	chatLogs.CanvasSize = UDim2.new(0, 0, 0, chatLogs:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
-	UniverseViewerFrame.CanvasSize = UDim2.new(0, 0, 0, UniverseViewerFrame:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+	UniverseList.CanvasSize = UDim2.new(0, 0, 0, UniverseList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 end)
 
 
