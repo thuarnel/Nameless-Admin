@@ -281,6 +281,11 @@ local function getBp()
 	return game:GetService("Players").LocalPlayer.Backpack
 end
 
+local function getHum()
+	local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	return hum
+end
+
 function isNumber(str)
 	if tonumber(str) ~= nil or str == 'inf' then
 		return true
@@ -10588,7 +10593,7 @@ cmd.add({"unheadsit"}, {"unheadsit", "Stop the headsit command"}, function()
 end)
 
 cmd.add({"jump"}, {"jump", "jump."}, function()
-	game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	getHum():ChangeState(Enum.HumanoidStateType.Jumping)
 end)
 
 cmd.add({"headstand"}, {"headstand <player>", "Stand on someones head"}, function(...)
@@ -10623,7 +10628,7 @@ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lw
 	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 	wsLoop = RunService.RenderStepped:connect(function()
 		if loopws then
-			speaker.Character.Humanoid.WalkSpeed = NamelessWs
+			getHum().WalkSpeed = NamelessWs
 		end
 	end)
 end)
@@ -10643,7 +10648,7 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp then
-			speaker.Character.Humanoid.JumpPower = NamelessJP
+			getHum().JumpPower = NamelessJP
 		end
 	end)
 end)
@@ -10655,7 +10660,7 @@ end)
 
 cmd.add({"stopanimations", "stopanims", "stopanim", "noanim"}, {"stopanimations (stopanims, stopanim, noanim)", "Stops running animations"}, function()
 	local Char = Players.LocalPlayer.Character
-	local Hum = Char:FindFirstChildOfClass("Humanoid") or Char:FindFirstChildOfClass("AnimationController")
+	local Hum = getHum() or Char:FindFirstChildOfClass("AnimationController")
 
 	for i,v in next, Hum:GetPlayingAnimationTracks() do
 		v:Stop()
@@ -10667,18 +10672,18 @@ cmd.add({"loopwaveat", "loopwat"}, {"loopwaveat <player> (loopwat)", "Wave to a 
 	loopwave = true
 	Player = (...)
 	Target = getPlr(Player)
-	local oldcframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+	local oldcframe = getRoot(game.Players.LocalPlayer.Character).CFrame
 	repeat wait(0.2)
-		targetcframe = Target.Character.HumanoidRootPart.CFrame
+		targetcframe = getRoot(Target.Character).CFrame
 		WaveAnim = Instance.new("Animation")
 		if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
 			WaveAnim.AnimationId = "rbxassetid://507770239"
 		else
 			WaveAnim.AnimationId = "rbxassetid://128777973"
 		end
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetcframe * CFrame.new(0, 0, -3)
+		getRoot(game.Players.LocalPlayer.Character).CFrame = targetcframe * CFrame.new(0, 0, -3)
 		local CharPos = game.Players.LocalPlayer.Character.PrimaryPart.Position
-		local tpos = Target.Character:FindFirstChild("HumanoidRootPart").Position
+		local tpos = getRoot(Target.Character).Position
 		local TPos = Vector3.new(tpos.X,CharPos.Y,tpos.Z)
 		local NewCFrame = CFrame.new(CharPos,TPos)
 		Players.LocalPlayer.Character:SetPrimaryPartCFrame(NewCFrame)
@@ -10687,7 +10692,7 @@ cmd.add({"loopwaveat", "loopwat"}, {"loopwaveat <player> (loopwat)", "Wave to a 
 		wait(1.6)
 		wave:Stop()
 	until loopwave == false
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldcframe
+	getRoot(game.Players.LocalPlayer.Character).CFrame = oldcframe
 end)
 
 cmd.add({"unloopwaveat", "unloopwat"}, {"unloopwaveat <player> (unloopwat)", "Stops the loopwaveat command"}, function()
@@ -10728,15 +10733,15 @@ cmd.add({"waveat", "wat"}, {"waveat <player> (wat)", "Wave to a player"}, functi
 	-- r15 / 507770239
 	Player = (...)
 	Target = getPlr(Player)
-	local oldcframe = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-	targetcframe = Target.Character.HumanoidRootPart.CFrame
+	local oldcframe = getRoot(game.Players.LocalPlayer.Character).CFrame
+	targetcframe = getRoot(Target.Character).CFrame
 	WaveAnim = Instance.new("Animation")
 	if game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
 		WaveAnim.AnimationId = "rbxassetid://507770239"
 	else
 		WaveAnim.AnimationId = "rbxassetid://128777973"
 	end
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetcframe * CFrame.new(0, 0, -3)
+	getRoot(game.Players.LocalPlayer.Character).CFrame = targetcframe * CFrame.new(0, 0, -3)
 	local CharPos = game.Players.LocalPlayer.Character.PrimaryPart.Position
 	local tpos = Target.Character:FindFirstChild("HumanoidRootPart").Position
 	local TPos = Vector3.new(tpos.X,CharPos.Y,tpos.Z)
@@ -10746,7 +10751,7 @@ cmd.add({"waveat", "wat"}, {"waveat <player> (wat)", "Wave to a player"}, functi
 	wave:Play(-1, 5, -1)
 	wait(1.6)
 	wave:Stop()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = oldcframe
+	getRoot(game.Players.LocalPlayer.Character).CFrame = oldcframe
 end)
 
 cmd.add({"headbang", "mouthbang", "hb", "mb"}, {"headbang <player> (mouthbang, hb, mb)", "Bang them in the mouth because you are gay"}, function(h,d)
@@ -10785,9 +10790,9 @@ cmd.add({"headbang", "mouthbang", "hb", "mb"}, {"headbang <player> (mouthbang, h
 	bangLoop = RunService.Stepped:Connect(function()
 		pcall(function()
 			local otherRoot = game.Players[bangplr].Character.Head
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = otherRoot.CFrame * bangOffet
+			getRoot(game.Players.LocalPlayer.Character).CFrame = otherRoot.CFrame * bangOffet
 			local CharPos = game.Players.LocalPlayer.Character.PrimaryPart.Position
-			local tpos = players.Character:FindFirstChild("HumanoidRootPart").Position
+			local tpos = getRoot(players.Character).Position
 			local TPos = Vector3.new(tpos.X,CharPos.Y,tpos.Z)
 			local NewCFrame = CFrame.new(CharPos,TPos)
 			Players.LocalPlayer.Character:SetPrimaryPartCFrame(NewCFrame)
@@ -10817,10 +10822,10 @@ cmd.add({"edgejump", "ejump"}, {"edgejump (ejump)", "Automatically jumps when yo
 			laststate = state
 			state = Human:GetState()
 			if laststate ~= state and state == Enum.HumanoidStateType.Freefall and laststate ~= Enum.HumanoidStateType.Jumping then
-				Char.HumanoidRootPart.CFrame = lastcf
-				Char.HumanoidRootPart.Velocity = Vector3.new(Char.HumanoidRootPart.Velocity.X, Human.JumpPower or Human.JumpHeight, Char.HumanoidRootPart.Velocity.Z)
+				getRoot(Char).CFrame = lastcf
+				getRoot(Char).Velocity = Vector3.new(getRoot(Char).Velocity.X, Human.JumpPower or Human.JumpHeight, getRoot(Char).Velocity.Z)
 			end
-			lastcf = Char.HumanoidRootPart.CFrame
+			lastcf = getRoot(Char).CFrame
 		end
 	end
 	edgejump()
@@ -15157,6 +15162,29 @@ end)
 
 cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(arg)
 	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
+end)
+local fovcon=nil
+cmd.add({"loopfov", "lfov"}, {"loopfov <number> (lfov)", ""}, function(arg)
+if fovcon then fovcon:Disconnect() fovcon=nil end
+fovcon=RunService.RenderStepped:connect(function()
+	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
+end)
+end)
+
+cmd.add({"unloopfov", "unlfov"}, {"unloopfov <number> (unlfov)", ""}, function()
+if fovcon then fovcon:Disconnect() fovcon=nil end
+end)
+local tfovcon=nil
+cmd.add({"looptweenfov", "ltfov"}, {"looptweenfov <number> (ltfov)", ""}, function(arg)
+if tfovcon then tfovcon:Disconnect() tfovcon=nil end
+tfovcon=RunService.RenderStepped:connect(function()
+local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0.5, Enum.EasingStyle.Linear), {FieldOfView=tonumber(arg[1])})
+hh:Play()
+end)
+end)
+
+cmd.add({"unlooptweenfov", "unltfov"}, {"unlooptweenfov <number> (unltfov)", ""}, function()
+if fovcon then fovcon:Disconnect() fovcon=nil end
 end)
 
 cmd.add({"homebrew"}, {"homebrew", "Executes homebrew admin"}, function()
