@@ -15178,19 +15178,29 @@ end)
 
 -- tween works better for some reason
 
-cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(arg)
+cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(...)
+	number = {...}
+
+	local field = number[1] or 70
 	--workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
-	local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Circular), {FieldOfView=tonumber(arg[1])})
+	if isNumber(field) then
+	local hh=game:GetService("TweenService"):Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Linear), {FieldOfView=field})
 	hh:Play()
+	end
 end)
 
 local fovcon=nil
 
-cmd.add({"loopfov", "lfov"}, {"loopfov <number> (lfov)", ""}, function(arg)
+cmd.add({"loopfov", "lfov"}, {"loopfov <number> (lfov)", ""}, function(...)
+	number = {...}
+
+	local field = number[1] or 70
 if fovcon then fovcon:Disconnect() fovcon=nil end
-	fovcon=RunService.RenderStepped:connect(function()
-		local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Circular), {FieldOfView=tonumber(arg[1])})
+	fovcon=game:GetService("RunService").RenderStepped:connect(function()
+		if isNumber(field) then
+		local hh=game:GetService("TweenService"):Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Linear), {FieldOfView=field})
 		hh:Play()
+		end
 	end)
 end)
 
