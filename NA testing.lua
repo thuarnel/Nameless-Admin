@@ -298,8 +298,11 @@ local function getBp()
 end
 
 local function getHum()
-	local hum = game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	return hum
+	if game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+		return game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	else
+		return false
+	end
 end
 
 function isNumber(str)

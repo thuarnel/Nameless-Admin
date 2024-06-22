@@ -282,7 +282,11 @@ local function getBp()
 end
 
 local function getHum()
-	return game:GetService("Players").LocalPlayer.Character.Humanoid
+	if game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+		return game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	else
+		return false
+	end
 end
 
 function isNumber(str)
@@ -15233,12 +15237,12 @@ cmd.add({"ws", "speed", "walkspeed"}, {"walkspeed <number> (speed, ws)", "Makes 
 	if args[2] then
 		local speed = args[2] or 16
 		if isNumber(speed) then
-			speaker.Character:FindFirstChildOfClass('Humanoid').WalkSpeed = speed
+			getHum().WalkSpeed = speed
 		end
 	else
 		local speed = args[1] or 16
 		if isNumber(speed) then
-			speaker.Character:FindFirstChildOfClass('Humanoid').WalkSpeed = speed
+			getHum().WalkSpeed = speed
 		end
 	end
 end)
@@ -15271,10 +15275,10 @@ cmd.add({"jp", "jumppower"}, {"jumppower <number> (jp)", "Makes your JumpPower w
 	local args = {...}
 	local jpower = args[1] or 50
 	if isNumber(jpower) then
-		if Player.Character:FindFirstChildOfClass('Humanoid').UseJumpPower then
-			Player.Character:FindFirstChildOfClass('Humanoid').JumpPower = jpower
+		if getHum().UseJumpPower then
+			getHum().JumpPower = jpower
 		else
-			Player.Character:FindFirstChildOfClass('Humanoid').JumpHeight  = jpower
+			getHum().JumpHeight  = jpower
 		end
 	end
 end)
