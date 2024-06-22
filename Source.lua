@@ -10627,7 +10627,7 @@ cmd.add({"loopwalkspeed", "loopws", "lws"}, {"loopwalkspeed <number> (loopws, lw
 	loopws = true
 	if wsLoop then wsLoop:Disconnect() wsLoop=nil end
 	wsLoop = RunService.RenderStepped:connect(function()
-		if loopws then
+		if loopws and getHum() then
 			getHum().WalkSpeed = NamelessWs
 		end
 	end)
@@ -10647,7 +10647,7 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	loopjp = true
 	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 	jpLoop = RunService.RenderStepped:connect(function()
-		if loopjp then
+		if loopjp and getHum() then
 			getHum().JumpPower = NamelessJP
 		end
 	end)
@@ -15160,30 +15160,25 @@ cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes
 	end
 end)
 
+-- tween works better for some reason
+
 cmd.add({"fov"}, {"fov <number>", "Makes your FOV to something custom you want (1-120 FOV)"}, function(arg)
-	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
+	--workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
+	local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Circular), {FieldOfView=tonumber(arg[1])})
+	hh:Play()
 end)
+
 local fovcon=nil
+
 cmd.add({"loopfov", "lfov"}, {"loopfov <number> (lfov)", ""}, function(arg)
 if fovcon then fovcon:Disconnect() fovcon=nil end
-fovcon=RunService.RenderStepped:connect(function()
-	workspace.CurrentCamera.FieldOfView = tonumber(arg[1])
-end)
+	fovcon=RunService.RenderStepped:connect(function()
+		local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0, Enum.EasingStyle.Circular), {FieldOfView=tonumber(arg[1])})
+		hh:Play()
+	end)
 end)
 
 cmd.add({"unloopfov", "unlfov"}, {"unloopfov <number> (unlfov)", ""}, function()
-if fovcon then fovcon:Disconnect() fovcon=nil end
-end)
-local tfovcon=nil
-cmd.add({"looptweenfov", "ltfov"}, {"looptweenfov <number> (ltfov)", ""}, function(arg)
-if tfovcon then tfovcon:Disconnect() tfovcon=nil end
-tfovcon=RunService.RenderStepped:connect(function()
-local hh=TweenService:Create(workspace.CurrentCamera, TweenInfo.new(0.5, Enum.EasingStyle.Linear), {FieldOfView=tonumber(arg[1])})
-hh:Play()
-end)
-end)
-
-cmd.add({"unlooptweenfov", "unltfov"}, {"unlooptweenfov <number> (unltfov)", ""}, function()
 if fovcon then fovcon:Disconnect() fovcon=nil end
 end)
 
@@ -15199,7 +15194,7 @@ end)
 cmd.add({"savetools", "stools"}, {"savetools (stools)", "puts your tools in players.localplayer"}, function()
 	for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if (v:IsA("Tool")) then
-			v.Parent = game.Players.LocalPlayer
+			v.Parent = Players.LocalPlayer
 		end
 	end
 end)
