@@ -22,7 +22,7 @@ local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 
 prtGrab.Name = "prtGrab"
-prtGrab.Parent = game.CoreGui
+prtGrab.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 prtGrab.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Main.Name = "Main"
