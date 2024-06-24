@@ -15667,7 +15667,7 @@ elseif COREGUI:FindFirstChild('RobloxGui') then
 else
 	local Main = uiModel
 	Main.Name = randomString()
-	Main.Parent = COREGUI
+	Main.Parent = (COREGUI or PlrGui)
 	ScreenGui = Main
 end
 if ScreenGui then ScreenGui.DisplayOrder=9999 end
