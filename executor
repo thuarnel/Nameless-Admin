@@ -29,7 +29,7 @@ local UICorner_7 = Instance.new("UICorner")
 local UIAspectRatioConstraint_8 = Instance.new("UIAspectRatioConstraint")
 
 realCodex.Name = "realCodex"
-realCodex.Parent = game.CoreGui
+realCodex.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 realCodex.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Executor.Name = "Executor"
