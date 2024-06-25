@@ -9,7 +9,7 @@ local GetService = game.GetService
 local iamcore = game:GetService("CoreGui")
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
-	waiting.Parent = iamcore
+	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui"))
 	waiting.Text = 'Nameless Admin is waiting for the game to load'
 	game.Loaded:Wait()
 	waiting:Destroy()
@@ -97,6 +97,7 @@ local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player:FindFirstChild("PlayerGui")
+local SolaraCheck = (COREGUI or PlrGui)
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character
@@ -289,6 +290,14 @@ local function getHum()
 	end
 end
 
+local function getPlrHum(plr)
+	if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
+		return game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	else
+		return false
+	end
+end
+
 function isNumber(str)
 	if tonumber(str) ~= nil or str == 'inf' then
 		return true
@@ -371,16 +380,16 @@ end
 
 function ESP(plr)
 	task.spawn(function()
-		for i,v in pairs(COREGUI:GetChildren()) do
+		for i,v in pairs(SolaraCheck:GetChildren()) do
 			if v.Name == plr.Name..'_ESP' then
 				v:Destroy()
 			end
 		end
 		wait()
-		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
+		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not SolaraCheck:FindFirstChild(plr.Name..'_ESP') then
 			local ESPholder = Instance.new("Folder")
 			ESPholder.Name = plr.Name..'_ESP'
-			ESPholder.Parent = COREGUI
+			ESPholder.Parent = SolaraCheck
 			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
 
 			local a = Instance.new("Highlight")
@@ -424,7 +433,7 @@ function ESP(plr)
 					end
 				end)
 				local function espLoop()
-					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+					if SolaraCheck:FindFirstChild(plr.Name..'_ESP') then
 						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
 							TextLabel.Text = '@'..plr.Name .. ' | ' .. plr.DisplayName ..' | Studs: '..pos
@@ -442,14 +451,14 @@ function ESP(plr)
 end
 
 function removeESP()
-	for i,c in pairs(COREGUI:GetChildren()) do
+	for i,c in pairs(SolaraCheck:GetChildren()) do
 		if string.sub(c.Name, -4) == '_ESP' then
 			c:Destroy()
 		end
 	end
 end
 
-local Signal1, Signal2 = nil,nil
+local Signal1,Signal2=nil,nil
 
 function mobilefly(speed)
 	local controlModule = require(game.Players.LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
@@ -1011,7 +1020,7 @@ cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(..
 	else
 		opt.prefix = PrefixChange
 		Notify({
-			Description = "Prefix set to " .. PrefixChange .. "";
+			Description = "Prefix set to",PrefixChange;
 			Title = "Nameless Admin";
 			Duration = 5;
 
@@ -1041,7 +1050,7 @@ cmd.add({"saveprefix"}, {"saveprefix <prefix>", "Saves the prefix to what u want
 		writefile("Nameless-Admin\\Prefix.txt", PrefixChange)
 		opt.prefix = PrefixChange
 		Notify({
-			Description = "Prefix saved to '" .. PrefixChange .. "'";
+			Description = "Prefix saved to",PrefixChange;
 			Title = "Nameless Admin";
 			Duration = 5;
 
@@ -1089,7 +1098,7 @@ cmd.add({"hatorbit", "ho"}, {"hatorbit (ho)", "Hat orbit"}, function()
 		Duration = 10;
 
 	});
-	local LC = game.Players.LocalPlayer
+	local LC = LocalPlayer
 	local Name = LC.Name
 	local Char = LC.Character
 
@@ -4874,7 +4883,7 @@ cmd.add({"triggerbot", "tbot"}, {"triggerbot (tbot)", "Executes a script that au
 	local On = Instance.new("TextLabel")
 	local uicorner = Instance.new("UICorner")
 	GUI.Name = "GUI"
-	GUI.Parent = (COREGUI or PlrGui)
+	GUI.Parent = SolaraCheck
 	On.Name = "On"
 	On.Parent = GUI
 	On.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
@@ -5281,7 +5290,7 @@ cmd.add({"synapsedex", "sdex"}, {"synapsedex (sdex)", "Loads SynapseX's dex expl
 
 	local Dex = game:GetObjects("rbxassetid://9553291002")[1]
 	Dex.Name = RandomCharacters(rng:NextInteger(5, 20))
-	Dex.Parent = game:GetService("CoreGui")
+	Dex.Parent = SolaraCheck
 
 	local function Load(Obj, Url)
 		local function GiveOwnGlobals(Func, Script)
@@ -5880,7 +5889,13 @@ cmd.add({"esp"}, {"esp", "locate where the players are"}, function()
 	end
 end)
 
-cmd.add({"unesp"}, {"unesp", "Disables esp"}, function()
+cmd.add({"locate"}, {"locate <username>", "locate where the players are"}, function(...)
+	Username = (...)
+	local target = getPlr(Username)
+	ESP(target)
+end)
+
+cmd.add({"unesp", "unlocate"}, {"unesp (unlocate)", "Disables esp"}, function()
 	ESPenabled = false
 	removeESP()
 end)
@@ -6645,7 +6660,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 	local copy = Instance.new("TextButton")
 
 	FunctionSpy.Name = "FunctionSpy"
-	FunctionSpy.Parent = (COREGUI or PlrGui)
+	FunctionSpy.Parent = SolaraCheck
 	FunctionSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 	Main.Name = "Main"
@@ -7016,17 +7031,14 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 			Duration = 5;
 		});
 
-		if rahh then
-			rahh:Destroy()
-			rahh=nil
-		end
+		if rahh then rahh:Destroy() rahh=nil end
 
 		rahh = Instance.new("ScreenGui")
 		local TextButton = Instance.new("TextButton")
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
 
-		rahh.Parent = (COREGUI or PlrGui)
+		rahh.Parent = SolaraCheck
 		rahh.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		rahh.ResetOnSpawn = false
 
@@ -7064,10 +7076,10 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
+		gui.draggable(TextButton)
 	else
 		mobilefly(speed)
 	end
-	gui.draggable(TextButton)
 end)
 
 cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
@@ -8803,7 +8815,7 @@ cmd.add({"antichatlogger", "acl"}, {"antichatlogger (acl)", "Anti chat logger"},
 				end
 
 				ACLWarning.Name = "ACL Warning"
-				ACLWarning.Parent = CoreGui
+				ACLWarning.Parent = SolaraCheck
 				ACLWarning.Enabled = false
 				ACLWarning.DisplayOrder = -2147483648
 
@@ -14950,7 +14962,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 		--Properties:
 
-		ScreenGui.Parent = (COREGUI or PlrGui)
+		ScreenGui.Parent = SolaraCheck
 		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 		ScreenGui.ResetOnSpawn = false
 
@@ -15647,14 +15659,17 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	Main.Parent = COREGUI
 	ScreenGui = Main
 elseif COREGUI:FindFirstChild('RobloxGui') then
-	ScreenGui = COREGUI.RobloxGui
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = COREGUI.RobloxGui
+	ScreenGui = Main
 else
 	local Main = uiModel
 	Main.Name = randomString()
-	Main.Parent = (COREGUI or PlrGui)
+	Main.Parent = SolaraCheck
 	ScreenGui = Main
 end
-if ScreenGui then ScreenGui.DisplayOrder=9999 end
+if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
 local centerBar = cmdBar.CenterBar
@@ -15955,7 +15970,7 @@ gui.shiftlock = function(sLock)
 	local g = nil
 	local GameSettings = UserSettings():GetService("UserGameSettings")
 	local J = nil
-	
+
 	local function ForceShiftLock()
 		local i, k = pcall(function()
 			return GameSettings.RotationType
@@ -16103,7 +16118,7 @@ gui.shiftlock(ShiftlockUi)
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
 -- table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
-if table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform()) then 
+if IsOnMobile then 
 else
 	gui.resizeable(chatLogsFrame, Vector2.new(173,58), Vector2.new(1000,1000))
 	gui.resizeable(commandsFrame, Vector2.new(184,84), Vector2.new(1000,1000))
@@ -16174,7 +16189,7 @@ task.spawn(function()
 
 	delay(0.3, function()
 		Notify({
-			Description = "Welcome to Nameless Admin V"..curVer.."";
+			Description = "Welcome to Nameless Admin V"..curVer;
 			Title = rngMsg().." "..hh.."";
 			Duration = 5;
 		});
@@ -16201,7 +16216,7 @@ task.spawn(function()
 			btn.MouseButton1Click:Connect(function()
 				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
 				Notify({
-					Description = "Teleporting To Place: "..place.Name;
+					Description = "Teleporting To Place:",place.Name;
 					Title = "Nameless Admin";
 					Duration = 5;
 				});
@@ -16226,7 +16241,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	TextClickButton.Position = UDim2.new(0.5, 0, 0, 0)
 	TextClickButton.Size = UDim2.new(0, 2, 0, 33)
 	TextClickButton.Font = Enum.Font.SourceSansBold
-	TextClickButton.Text = "Nameless Admin V" .. curVer .. ""
+	TextClickButton.Text = "Nameless Admin V"..curVer
 	TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextClickButton.TextSize = 20.000
 	TextClickButton.TextWrapped = true
