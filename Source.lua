@@ -1020,7 +1020,7 @@ cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(..
 	else
 		opt.prefix = PrefixChange
 		Notify({
-			Description = "Prefix set to",PrefixChange;
+			Description = "Prefix set to: "..PrefixChange;
 			Title = "Nameless Admin";
 			Duration = 5;
 
@@ -1050,7 +1050,7 @@ cmd.add({"saveprefix"}, {"saveprefix <prefix>", "Saves the prefix to what u want
 		writefile("Nameless-Admin\\Prefix.txt", PrefixChange)
 		opt.prefix = PrefixChange
 		Notify({
-			Description = "Prefix saved to",PrefixChange;
+			Description = "Prefix saved to: "..PrefixChange;
 			Title = "Nameless Admin";
 			Duration = 5;
 
@@ -16216,7 +16216,7 @@ task.spawn(function()
 			btn.MouseButton1Click:Connect(function()
 				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
 				Notify({
-					Description = "Teleporting To Place:",place.Name;
+					Description = "Teleporting To Place: "..place.Name;
 					Title = "Nameless Admin";
 					Duration = 5;
 				});
