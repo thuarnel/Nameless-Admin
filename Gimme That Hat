@@ -11,14 +11,14 @@ local plr = game:GetService"Players".LocalPlayer
 function mOut(txt, type)
 	if type == 1 then
 		spawn(function()
-			local m = Instance.new("Message", game.CoreGui)
+			local m = Instance.new("Message", (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
 			m.Text = txt
 			task.wait(3)
 			m:Destroy()
 		end)
 	elseif type == 2 then
 		spawn(function()
-			local h = Instance.new("Hint", game.CoreGui)
+			local h = Instance.new("Hint", (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
 			h.Text = txt
 			task.wait(3)
 			h:Destroy()
