@@ -13157,7 +13157,11 @@ cmd.add({"gotopart", "topart", "toprt"}, {"gotopart {partname} (topart, toprt)",
 
 	for _, descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower() == grr:lower() then
-			if getHum() then humanoid.Sit = false wait(0.1) end
+			if getHum() then 
+			getHum().Sit = false 
+			wait(.1)
+			else
+			end
 			if getChar() then getChar():PivotTo(descendant:GetPivot()) end
 			wait(.2);
 		end
@@ -13170,7 +13174,11 @@ cmd.add({"tweengotopart", "tgotopart", "ttopart", "ttoprt"}, {"tweengotopart {pa
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
-			if getHum() then getHum().Sit = false wait(.1) end
+			if getHum() then 
+			getHum().Sit = false 
+			wait(.1)
+			else
+			end
 			TweenService:Create(getRoot(getChar()), TweenInfo.new(1, Enum.EasingStyle.Linear), {CFrame = v.CFrame}):Play()
 			wait(1);
 		end
@@ -13184,7 +13192,11 @@ cmd.add({"gotopartclass", "gpc", "gotopartc", "gotoprtc"}, {"gotopartclass {clas
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.ClassName:lower() == pooooo:lower() and v:IsA("BasePart") then
-			if getHum() then getHum().Sit = false wait(.1) end
+			if getHum() then 
+			getHum().Sit = false 
+			wait(.1)
+			else
+			end
 			--getRoot(Player.Character).CFrame = v.CFrame
 			if getChar() then getChar():PivotTo(v:GetPivot()) end
 			wait(.2);
@@ -13220,7 +13232,11 @@ cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == i_love_models:lower() and v:IsA("Model") then
-			if getHum() then getHum().Sit = false wait(.1) end
+			if getHum() then 
+			getHum().Sit = false 
+			wait(.1)
+			else
+			end
 			if getChar() then getChar():PivotTo(v:GetPivot()) end
 			wait(.2);
 		end
