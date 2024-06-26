@@ -15707,17 +15707,20 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	syn.protect_gui(Main)
 	Main.Parent = COREGUI
 	ScreenGui = Main
-elseif COREGUI then
-	--[[local Main = uiModel
+--[[elseif COREGUI then
+	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = COREGUI.RobloxGui
 	ScreenGui = Main]]
-protect(ScreenGui)
 else
+	if game:GetService("CoreGui") then
+	protect(ScreenGui)
+	else
  	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
+	end
 end
 
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
