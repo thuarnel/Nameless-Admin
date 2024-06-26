@@ -15707,12 +15707,12 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	syn.protect_gui(Main)
 	Main.Parent = COREGUI
 	ScreenGui = Main
-elseif COREGUI and COREGUI:FindFirstChild('RobloxGui') then
+elseif COREGUI then
 	--[[local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = COREGUI.RobloxGui
 	ScreenGui = Main]]
-protect(uiModel)
+ScreenGui = protect(uiModel)
 else
 	local Main = uiModel
 	Main.Name = randomString()
