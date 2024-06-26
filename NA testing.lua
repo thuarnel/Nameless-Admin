@@ -15661,29 +15661,6 @@ else
 	ScreenGui = player:FindFirstChild("AdminUI", true)
 end]]
 
-if get_hidden_gui or gethui then
-	local hiddenUI = get_hidden_gui or gethui
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = hiddenUI()
-	ScreenGui = Main
-elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
-	local Main = uiModel
-	Main.Name = randomString()
-	syn.protect_gui(Main)
-	Main.Parent = COREGUI
-	ScreenGui = Main
-elseif COREGUI:FindFirstChild('RobloxGui') then
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = COREGUI.RobloxGui
-	ScreenGui = Main
-else
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = SolaraCheck
-	ScreenGui = Main
-end
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
@@ -15726,14 +15703,15 @@ resizeFrame.Parent = nil
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection = {}
 
---[[pcall(function()
-	for i, v in pairs(ScreenGui:GetDescendants()) do
+function protect(sGui)
+pcall(function()
+	for i, v in pairs(sGui:GetDescendants()) do
 		coreGuiProtection[v] = rPlayer.Name
 	end
-	ScreenGui.DescendantAdded:Connect(function(v)
+	sGui.DescendantAdded:Connect(function(v)
 		coreGuiProtection[v] = rPlayer.Name
 	end)
-	coreGuiProtection[ScreenGui] = rPlayer.Name
+	coreGuiProtection[sGui] = rPlayer.Name
 
 	local meta = getrawmetatable(game)
 	local tostr = meta.__tostring
@@ -15750,11 +15728,37 @@ if not RunService:IsStudio() then
 	newGui.DescendantAdded:Connect(function(v)
 		coreGuiProtection[v] = rPlayer.Name
 	end)
-	for i, v in pairs(ScreenGui:GetChildren()) do
+	for i, v in pairs(sGui:GetChildren()) do
 		v.Parent = newGui
 	end
-	ScreenGui = newGui
-end]]
+	sGui = newGui
+end
+end
+
+if get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	ScreenGui = Main
+elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
+	local Main = uiModel
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	ScreenGui = Main
+elseif COREGUI:FindFirstChild('RobloxGui') then
+	--[[local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = COREGUI.RobloxGui
+	ScreenGui = Main]]
+ScreenGui = protect(ScreenGui)
+else
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = SolaraCheck
+	ScreenGui = Main
+end
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
