@@ -13158,7 +13158,7 @@ cmd.add({"gotopart", "topart", "toprt"}, {"gotopart {partname} (topart, toprt)",
 	for _, descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower() == grr:lower() then
 			if getHum() then humanoid.Sit = false wait(0.1) end
-			if getChar() then getChar():SetPrimaryPartCFrame(descendant:GetPivot()) end
+			if getChar() then getChar():PivotTo(descendant:GetPivot()) end
 			wait(.2);
 		end
 	end
@@ -13186,7 +13186,7 @@ cmd.add({"gotopartclass", "gpc", "gotopartc", "gotoprtc"}, {"gotopartclass {clas
 		if v.ClassName:lower() == pooooo:lower() and v:IsA("BasePart") then
 			if getHum() then getHum().Sit = false wait(.1) end
 			--getRoot(Player.Character).CFrame = v.CFrame
-			if getChar() then getChar():SetPrimaryPartCFrame(v.CFrame) end
+			if getChar() then getChar():PivotTo(v:GetPivot()) end
 			wait(.2);
 		end
 	end
@@ -13198,7 +13198,7 @@ cmd.add({"bringpart", "bpart", "bprt"}, {"bringpart {partname} (bpart, bprt)", "
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == bringmeit:lower() and v:IsA("BasePart") then
-			v:PivotTo(getChar():GetPivot())
+			if getChar() then v:PivotTo(getChar():GetPivot()) end
 		end
 	end
 end)
@@ -13221,7 +13221,7 @@ cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == i_love_models:lower() and v:IsA("Model") then
 			if getHum() then getHum().Sit = false wait(.1) end
-			if getChar() then getChar():SetPrimaryPartCFrame(v:GetModelCFrame()) end
+			if getChar() then getChar():PivotTo(v:GetPivot()) end
 			wait(.2);
 		end
 	end
