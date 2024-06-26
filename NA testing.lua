@@ -15654,54 +15654,14 @@ end
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
 local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
+local rPlayer = Players:FindFirstChildWhichIsA("Player")
+local coreGuiProtection = {}
 --[[if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
 end]]
-
-if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
-local description = ScreenGui.Description
-local cmdBar = ScreenGui.CmdBar
-local centerBar = cmdBar.CenterBar
-local cmdInput = centerBar.Input
-local cmdAutofill = cmdBar.Autofill
-local cmdExample = cmdAutofill.Cmd
-local leftFill = cmdBar.LeftFill
-local rightFill = cmdBar.RightFill
-local chatLogsFrame = ScreenGui.ChatLogs
-local chatLogs = chatLogsFrame.Container.Logs
-local chatExample = chatLogs.TextLabel
-local commandsFrame = ScreenGui.Commands
-local commandsFilter = commandsFrame.Container.Filter
-local commandsList = commandsFrame.Container.List
-local commandExample = commandsList.TextLabel
-local UniverseViewerFrame = ScreenGui.UniverseViewer
-local UniverseList = UniverseViewerFrame.Container.List
-local UniverseExample = UniverseList.TextButton
-local ShiftlockUi = ScreenGui.LockButton
-local resizeFrame = ScreenGui.Resizeable
-local resizeXY = {
-	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
-	Bottom	= {Vector2.new(0, 1),	Vector2.new(0, 0),	"rbxassetid://2911850935"},
-	Left	= {Vector2.new(-1, 0),	Vector2.new(1, 0),	"rbxassetid://2911851464"},
-	Right	= {Vector2.new(1, 0),	Vector2.new(0, 0),	"rbxassetid://2911851464"},
-
-	TopLeft		= {Vector2.new(-1, -1),	Vector2.new(1, -1),	"rbxassetid://2911852219"},
-	TopRight	= {Vector2.new(1, -1),	Vector2.new(0, -1),	"rbxassetid://2911851859"},
-	BottomLeft	= {Vector2.new(-1, 1),	Vector2.new(1, 0),	"rbxassetid://2911851859"},
-	BottomRight	= {Vector2.new(1, 1),	Vector2.new(0, 0),	"rbxassetid://2911852219"},
-}
-
-cmdExample.Parent = nil
-chatExample.Parent = nil
-commandExample.Parent = nil
-UniverseExample.Parent = nil
-resizeFrame.Parent = nil
-
-local rPlayer = Players:FindFirstChildWhichIsA("Player")
-local coreGuiProtection = {}
 
 function protect(sGui)
 pcall(function()
@@ -15752,13 +15712,52 @@ elseif COREGUI and COREGUI:FindFirstChild('RobloxGui') then
 	Main.Name = randomString()
 	Main.Parent = COREGUI.RobloxGui
 	ScreenGui = Main]]
-protect(ScreenGui)
+protect(uiModel)
 else
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
 end
+
+if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
+local description = ScreenGui.Description
+local cmdBar = ScreenGui.CmdBar
+local centerBar = cmdBar.CenterBar
+local cmdInput = centerBar.Input
+local cmdAutofill = cmdBar.Autofill
+local cmdExample = cmdAutofill.Cmd
+local leftFill = cmdBar.LeftFill
+local rightFill = cmdBar.RightFill
+local chatLogsFrame = ScreenGui.ChatLogs
+local chatLogs = chatLogsFrame.Container.Logs
+local chatExample = chatLogs.TextLabel
+local commandsFrame = ScreenGui.Commands
+local commandsFilter = commandsFrame.Container.Filter
+local commandsList = commandsFrame.Container.List
+local commandExample = commandsList.TextLabel
+local UniverseViewerFrame = ScreenGui.UniverseViewer
+local UniverseList = UniverseViewerFrame.Container.List
+local UniverseExample = UniverseList.TextButton
+local ShiftlockUi = ScreenGui.LockButton
+local resizeFrame = ScreenGui.Resizeable
+local resizeXY = {
+	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
+	Bottom	= {Vector2.new(0, 1),	Vector2.new(0, 0),	"rbxassetid://2911850935"},
+	Left	= {Vector2.new(-1, 0),	Vector2.new(1, 0),	"rbxassetid://2911851464"},
+	Right	= {Vector2.new(1, 0),	Vector2.new(0, 0),	"rbxassetid://2911851464"},
+
+	TopLeft		= {Vector2.new(-1, -1),	Vector2.new(1, -1),	"rbxassetid://2911852219"},
+	TopRight	= {Vector2.new(1, -1),	Vector2.new(0, -1),	"rbxassetid://2911851859"},
+	BottomLeft	= {Vector2.new(-1, 1),	Vector2.new(1, 0),	"rbxassetid://2911851859"},
+	BottomRight	= {Vector2.new(1, 1),	Vector2.new(0, 0),	"rbxassetid://2911852219"},
+}
+
+cmdExample.Parent = nil
+chatExample.Parent = nil
+commandExample.Parent = nil
+UniverseExample.Parent = nil
+resizeFrame.Parent = nil
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
