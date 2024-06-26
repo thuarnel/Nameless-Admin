@@ -15752,7 +15752,7 @@ elseif COREGUI:FindFirstChild('RobloxGui') then
 	Main.Name = randomString()
 	Main.Parent = COREGUI.RobloxGui
 	ScreenGui = Main]]
-ScreenGui = protect(ScreenGui)
+protect(ScreenGui)
 else
 	local Main = uiModel
 	Main.Name = randomString()
