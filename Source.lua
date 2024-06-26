@@ -16187,11 +16187,19 @@ task.spawn(function()
 	end
 
 	delay(0.3, function()
+		if identifyexecutor then -- idk why i made it as a check
 		Notify({
-			Description = "Welcome to Nameless Admin V"..curVer;
-			Title = rngMsg().." "..hh.."";
+			Description = "Welcome to Nameless Admin V"..curVer.."\nExecutor: "..identifyexecutor();
+			Title = rngMsg().." "..hh;
 			Duration = 5;
 		});
+		else
+		Notify({
+			Description = "Welcome to Nameless Admin V"..curVer;
+			Title = rngMsg().." "..hh;
+			Duration = 5;
+		});
+		end
 		Notify({
 			Description = goof();
 			Title = "Random Goofy Message";
