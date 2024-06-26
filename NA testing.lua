@@ -15656,12 +15656,12 @@ local ScreenGui=nil
 local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
 local rPlayer = Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection = {}
---[[if not RunService:IsStudio() then
+if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
-end]]
+end
 
 function protect(sGui)
 pcall(function()
@@ -15712,9 +15712,9 @@ elseif COREGUI then
 	Main.Name = randomString()
 	Main.Parent = COREGUI.RobloxGui
 	ScreenGui = Main]]
-ScreenGui = protect(uiModel)
+protect(ScreenGui)
 else
-	local Main = uiModel
+ 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
