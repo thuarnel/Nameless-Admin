@@ -13043,8 +13043,7 @@ function descendantadd(part)
 			part:Destroy()
 		end
 	else
-		autormv:Disconnect()
-		autormv = nil
+	if autormv then autormv:Disconnect() autormv = nil end
 	end
 end
 
@@ -13066,8 +13065,7 @@ cmd.add({"autodelete", "autoremove", "autodel"}, {"autodelete {partname} (autore
 end)
 
 cmd.add({"unautodelete", "unautoremove", "unautodel"}, {"unautodelete {partname} (unautoremove, unautodel)", "disables autodelete"}, function()
-	autormv:Disconnect()
-	autormv = nil
+	if autormv then autormv:Disconnect() autormv = nil end
 	autoRemover = {}
 end)
 
@@ -13102,8 +13100,7 @@ function idkClass(part)
 			part:Destroy()
 		end
 	else
-		autoclass:Disconnect()
-		autoclass = nil
+	if autoclass then autoclass:Disconnect() autoclass = nil end
 	end
 end
 
@@ -13126,12 +13123,11 @@ cmd.add({"autodeleteclass", "autoremoveclass", "autodc"}, {"autodeleteclass {Cla
 end)
 
 cmd.add({"unautodeleteclass", "unautoremoveclass", "unautodc"}, {"unautodeleteclass {ClassName} (unautoremoveclass, unautodc)", "disabled autodeleteclass"}, function(...)
-	autoclass:Disconnect()
-	autoclass = nil
+	if autoclass then autoclass:Disconnect() autoclass = nil end
 	autoclassic = {}
 end)
 
-cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove"}, {"chardelete {partname} (charremove, chardel, cdelete, cremove)", "Removes any part with a certain name from your character"}, function(...)
+cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove", "cdel"}, {"chardelete {partname} (charremove, chardel, cdelete, cremove, cdel)", "Removes any part with a certain name from your character"}, function(...)
 	local chardelprt = 0
 	args = {...}
 	hh = args[1]
@@ -13151,7 +13147,7 @@ cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove"}, {"chardel
 	});
 end)
 
-cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname"}, {"chardeleteclass {ClassName} (charremoveclass, chardeleteclassname)", "Removes any part with a certain classname from your character"}, function(...)
+cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname", "cds"}, {"chardeleteclass {ClassName} (charremoveclass, chardeleteclassname, cds)", "Removes any part with a certain classname from your character"}, function(...)
 	local charclass = 0
 	local grr = {...}
 	local poopy = grr[1]
@@ -13171,77 +13167,65 @@ cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname"}, {"chardel
 	});
 end)
 
-cmd.add({"gotopart", "topart"}, {"gotopart {partname} (topart)", "Makes you teleport to a part you want"}, function(...)
+cmd.add({"gotopart", "topart", "toprt"}, {"gotopart {partname} (topart, toprt)", "Makes you teleport to a part you want"}, function(...)
 	args = {...}
 	grr = args[1]
 
 	for _, descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower() == grr:lower() then
-			local character = Player.Character
-			if character and character:FindFirstChildOfClass("Humanoid") then
-				local humanoid = character:FindFirstChildOfClass("Humanoid")
-				if humanoid.SeatPart then
-					humanoid.Sit = false
-					wait(0.1)
-				end
-				character:SetPrimaryPartCFrame(descendant.CFrame)
-				wait(0.2)
-			end
+			if getHum() then humanoid.Sit = false wait(0.1) end
+			if getChar() then getChar():PivotTo(descendant:GetPivot()) end
+			wait(.2);
 		end
 	end
 end)
 
-cmd.add({"tweengotopart", "tgotopart", "ttopart"}, {"tweengotopart {partname} (tgotopart, ttopart)", "Tweens your character to a part or multiple parts"}, function(...)
+cmd.add({"tweengotopart", "tgotopart", "ttopart", "ttoprt"}, {"tweengotopart {partname} (tgotopart, ttopart, ttoprt)", "Tweens your character to a part or multiple parts"}, function(...)
 	arg = {...}
 	lol = arg[1]
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
-			if speaker.Character:FindFirstChildOfClass('Humanoid') and speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart then
-				speaker.Character:FindFirstChildOfClass('Humanoid').Sit = false
-				wait(.1)
-			end
-			wait(1)
-			TweenService:Create(getRoot(speaker.Character), TweenInfo.new(1, Enum.EasingStyle.Linear), {CFrame = v.CFrame}):Play()
+			if getHum() then getHum().Sit = false wait(.1) end
+			TweenService:Create(getRoot(getChar()), TweenInfo.new(1, Enum.EasingStyle.Linear), {CFrame = v.CFrame}):Play()
+			wait(1);
 		end
 	end
 end)
 
-cmd.add({"gotopartclass", "gpc", "gotopartc"}, {"gotopartclass {classname} (gpc, gotopartc)", "Moves your character to a part or multiple parts based on classname"}, function(...)
+cmd.add({"gotopartclass", "gpc", "gotopartc", "gotoprtc"}, {"gotopartclass {classname} (gpc, gotopartc, gotoprtc)", "Moves your character to a part or multiple parts based on classname"}, function(...)
 	local args = {...}
 
 	local pooooo = args[1]
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.ClassName:lower() == pooooo:lower() and v:IsA("BasePart") then
-			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
-				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
-				wait(.1)
-			end
-			wait(0.2)
-			getRoot(Player.Character).CFrame = v.CFrame
+			if getHum() then getHum().Sit = false wait(.1) end
+			--getRoot(Player.Character).CFrame = v.CFrame
+			if getChar() then getChar():PivotTo(v:GetPivot()) end
+			wait(.2);
 		end
 	end
 end)
 
-cmd.add({"bringpart", "bpart"}, {"bringpart {partname} (bpart)", "Brings the parts to you"}, function(...)
+cmd.add({"bringpart", "bpart", "bprt"}, {"bringpart {partname} (bpart, bprt)", "Brings the part(s) to you"}, function(...)
 	lol = {...}
 	bringmeit = lol[1]
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == bringmeit:lower() and v:IsA("BasePart") then
-			v.CFrame = getRoot(Player.Character).CFrame
+			if getChar() then v:PivotTo(getChar():GetPivot()) end
 		end
 	end
 end)
 
-cmd.add({"bringmodel", "bmodel"}, {"bringmodel {modelname} (bmodel)", "Brings the model to you"}, function(...)
+cmd.add({"bringmodel", "bmodel"}, {"bringmodel {modelname} (bmodel)", "Brings the model(s) to you"}, function(...)
 	idklol = {...}
 	givemethemodel = idklol[1]
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == givemethemodel:lower() and v:IsA("Model") then
-			v:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot())
+			if getChar() then v:PivotTo(getChar():GetPivot()) end
 		end
 	end
 end)
@@ -13252,12 +13236,9 @@ cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == i_love_models:lower() and v:IsA("Model") then
-			if Player.Character:FindFirstChildOfClass('Humanoid') and Player.Character:FindFirstChildOfClass('Humanoid').SeatPart then
-				Player.Character:FindFirstChildOfClass('Humanoid').Sit = false
-				wait(.1)
-			end
-			wait(0.2)
-			getRoot(Player.Character).CFrame = v:GetModelCFrame()
+			if getHum() then getHum().Sit = false wait(.1) end
+			if getChar() then getChar():PivotTo(v:GetPivot()) end
+			wait(.2);
 		end
 	end
 end)
@@ -13265,48 +13246,52 @@ end)
 cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
 	speaker = game.Players.LocalPlayer
 	game.Workspace.Gravity = 0
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
-	speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Swimming)
-	game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (...)
+	if getHum() then 
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Running,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
+	getHum():ChangeState(Enum.HumanoidStateType.Swimming)
+	getHum().WalkSpeed = (...) 
+	end
 	if (...) == nil then
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+		if getHum() then getHum().WalkSpeed = 16 end
 	end
 end)
 
 cmd.add({"unswim"}, {"unswim", "Stops the swim script"}, function(...)
 	speaker = Player
 	game.Workspace.Gravity = 168
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Flying,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Landed,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Physics,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Running,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
-	speaker.Character.Humanoid:SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
-	speaker.Character.Humanoid:ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
-	speaker.Character.Humanoid.WalkSpeed = 16
+	if getHum() then 
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Running,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+	getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+	getHum():ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+	getHum().WalkSpeed = 16 
+	end
 end)
 
 local espParts = {}
@@ -13331,13 +13316,12 @@ function partAdded(part)
 				a.Adornee = part
 				a.AlwaysOnTop = true
 				a.ZIndex = 0
-				a.Transparency = 0.45
+				a.Transparency = 0.40
 			else
 			end
 		end
 	else
-		partEspTrigger:Disconnect()
-		partEspTrigger = nil
+		if partEspTrigger then partEspTrigger:Disconnect() partEspTrigger = nil end
 	end
 end
 
@@ -13366,7 +13350,7 @@ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "
 				a.Adornee = v
 				a.AlwaysOnTop = true
 				a.ZIndex = 0
-				a.Transparency = 0.45
+				a.Transparency = 0.25
 			end
 		end
 	end
@@ -13376,8 +13360,7 @@ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "
 end)
 
 cmd.add({"unesppart", "unpartesp", "unpesp"}, {"unesppart (unpartesp, unpesp)", "Removes the esp from the parts"}, function()
-	partEspTrigger:Disconnect()
-	partEspTrigger = nil
+	if partEspTrigger then partEspTrigger:Disconnect() partEspTrigger = nil end
 	espParts = {}
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v:IsA("BoxHandleAdornment") and v.Name:sub(-5) == '_PESP' then
@@ -13410,8 +13393,8 @@ cmd.add({"viewpart", "viewp", "vpart"}, {"viewpart {partname} (viewp, vpart)", "
 end)
 
 cmd.add({"unviewpart", "unviewp"}, {"unviewpart (unviewp)", "Unviews the part"}, function()
-	cam = game.Workspace.CurrentCamera
-	cam.CameraSubject=Player.Character
+	local cam = workspace.CurrentCamera
+	cam.CameraSubject=getHum()
 end)
 
 cmd.add({"console"}, {"console", "Opens developer console"}, function()
@@ -13449,11 +13432,11 @@ cmd.add({"hitbox", "hbox"}, {"hitbox {amount}", "Makes everyones hitbox as much 
 			if loophitbox then
 				for i,v in next, game:GetService('Players'):GetPlayers() do
 					if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-						v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-						v.Character.HumanoidRootPart.Transparency = 0.9
-						v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
-						v.Character.HumanoidRootPart.Material = "Neon"
-						v.Character.HumanoidRootPart.CanCollide = false
+						getRoot(v.Character).Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+						getRoot(v.Character).Transparency = 0.9
+						getRoot(v.Character).BrickColor = BrickColor.new("Really black")
+						getRoot(v.Character).Material = "Neon"
+						getRoot(v.Character).CanCollide = false
 					end
 				end
 			end
@@ -13461,11 +13444,11 @@ cmd.add({"hitbox", "hbox"}, {"hitbox {amount}", "Makes everyones hitbox as much 
 	else
 		game:GetService("RunService").Stepped:Connect(function()
 			if loophitbox then
-				Plr.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-				Plr.Character.HumanoidRootPart.Transparency = 0.7
-				Plr.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
-				Plr.Character.HumanoidRootPart.Material = "Neon"
-				Plr.Character.HumanoidRootPart.CanCollide = false
+				getRoot(Plr.Character).Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+				getRoot(Plr.Character).Transparency = 0.7
+				getRoot(Plr.Character).BrickColor = BrickColor.new("Really black")
+				getRoot(Plr.Character).Material = "Neon"
+				getRoot(Plr.Character).CanCollide = false
 
 			end
 		end)
@@ -13485,19 +13468,19 @@ cmd.add({"unhitbox", "unhbox"}, {"unhitbox", "Disables hitbox"}, function(h)
 	if Username == "all" or Username == "others" then
 		for i,v in next, game:GetService('Players'):GetPlayers() do
 			if v.Name ~= game:GetService('Players').LocalPlayer.Name then
-				v.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-				v.Character.HumanoidRootPart.Transparency = 1
-				v.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
-				v.Character.HumanoidRootPart.Material = "Neon"
-				v.Character.HumanoidRootPart.CanCollide = false
+				getRoot(v.Character).Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+				getRoot(v.Character).Transparency = 1
+				getRoot(v.Character).BrickColor = BrickColor.new("Really black")
+				getRoot(v.Character).Material = "Neon"
+				getRoot(v.Character).CanCollide = false
 			end
 		end
 	else
-		Plr.Character.HumanoidRootPart.Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
-		Plr.Character.HumanoidRootPart.Transparency = 1
-		Plr.Character.HumanoidRootPart.BrickColor = BrickColor.new("Really black")
-		Plr.Character.HumanoidRootPart.Material = "Neon"
-		Plr.Character.HumanoidRootPart.CanCollide = false
+		getRoot(Plr.Character).Size = Vector3.new(_G.HeadSize,_G.HeadSize,_G.HeadSize)
+		getRoot(Plr.Character).Transparency = 1
+		getRoot(Plr.Character).BrickColor = BrickColor.new("Really black")
+		getRoot(Plr.Character).Material = "Neon"
+		getRoot(Plr.Character).CanCollide = false
 	end
 end)
 
