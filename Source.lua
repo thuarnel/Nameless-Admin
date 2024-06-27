@@ -97,7 +97,7 @@ local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player:FindFirstChild("PlayerGui")
-local SolaraCheck = (COREGUI or PlrGui)
+local SolaraCheck = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character
@@ -15540,8 +15540,6 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 		game.StarterGui:SetCoreGuiEnabled(0, true)
 	end)
 
-	wait(.2);
-
 	Notify({
 		Description = "UserId set to: "..ownId.."\nUsername set to: "..ownUser;
 		Title = "Nameless Admin";
@@ -15638,15 +15636,17 @@ end
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
 local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
---[[if not RunService:IsStudio() then
+local rPlayer = Players:FindFirstChildWhichIsA("Player")
+local coreGuiProtection = {}
+if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
 	repeat wait() until player:FindFirstChild("AdminUI", true)
 	ScreenGui = player:FindFirstChild("AdminUI", true)
-end]]
+end
 
-if get_hidden_gui or gethui then
-	local hiddenUI = get_hidden_gui or gethui
+if (get_hidden_gui or gethui) then
+	local hiddenUI = (get_hidden_gui or gethui)
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = hiddenUI()
@@ -15655,18 +15655,45 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	local Main = uiModel
 	Main.Name = randomString()
 	syn.protect_gui(Main)
-	Main.Parent = COREGUI
+	Main.Parent = game:GetService("CoreGui")
 	ScreenGui = Main
-elseif COREGUI:FindFirstChild('RobloxGui') then
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = COREGUI.RobloxGui
-	ScreenGui = Main
-else
+elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
+	pcall(function()
+	for i, v in pairs(ScreenGui:GetDescendants()) do
+		coreGuiProtection[v] = rPlayer.Name
+	end
+	ScreenGui.DescendantAdded:Connect(function(v)
+		coreGuiProtection[v] = rPlayer.Name
+	end)
+	coreGuiProtection[ScreenGui] = rPlayer.Name
+
+	local meta = getrawmetatable(game)
+	local tostr = meta.__tostring
+	setreadonly(meta, false)
+	meta.__tostring = newcclosure(function(t)
+		if coreGuiProtection[t] and not checkcaller() then
+			return coreGuiProtection[t]
+		end
+		return tostr(t)
+	end)
+end)
+if not RunService:IsStudio() then
+	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
+	newGui.DescendantAdded:Connect(function(v)
+		coreGuiProtection[v] = rPlayer.Name
+	end)
+	for i, v in pairs(ScreenGui:GetChildren()) do
+		v.Parent = newGui
+	end
+	ScreenGui = newGui
+end
+elseif SolaraCheck then
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
+else
+warn'no guis?'
 end
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
@@ -15706,9 +15733,6 @@ chatExample.Parent = nil
 commandExample.Parent = nil
 UniverseExample.Parent = nil
 resizeFrame.Parent = nil
-
-local rPlayer = Players:FindFirstChildWhichIsA("Player")
-local coreGuiProtection = {}
 
 --[[pcall(function()
 	for i, v in pairs(ScreenGui:GetDescendants()) do
