@@ -15556,8 +15556,6 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 		game.StarterGui:SetCoreGuiEnabled(0, true)
 	end)
 
-	wait(.2);
-
 	Notify({
 		Description = "UserId set to: "..ownId.."\nUsername set to: "..ownUser;
 		Title = "Nameless Admin";
@@ -15654,6 +15652,8 @@ end
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
 local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
+local rPlayer = Players:FindFirstChildWhichIsA("Player")
+local coreGuiProtection = {}
 if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
@@ -15661,8 +15661,8 @@ else
 	ScreenGui = player:FindFirstChild("AdminUI", true)
 end
 
-if get_hidden_gui or gethui then
-	local hiddenUI = get_hidden_gui or gethui
+if (get_hidden_gui or gethui) then
+	local hiddenUI = (get_hidden_gui or gethui)
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = hiddenUI()
@@ -15671,9 +15671,9 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	local Main = uiModel
 	Main.Name = randomString()
 	syn.protect_gui(Main)
-	Main.Parent = COREGUI
+	Main.Parent = game:GetService("CoreGui")
 	ScreenGui = Main
-elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChild('RobloxGui',true) then
+elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 	pcall(function()
 	for i, v in pairs(ScreenGui:GetDescendants()) do
 		coreGuiProtection[v] = rPlayer.Name
@@ -15703,11 +15703,13 @@ if not RunService:IsStudio() then
 	end
 	ScreenGui = newGui
 end
-else
+elseif SolaraCheck then
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
+else
+warn'no guis?'
 end
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
@@ -15747,9 +15749,6 @@ chatExample.Parent = nil
 commandExample.Parent = nil
 UniverseExample.Parent = nil
 resizeFrame.Parent = nil
-
-local rPlayer = Players:FindFirstChildWhichIsA("Player")
-local coreGuiProtection = {}
 
 --[[pcall(function()
 	for i, v in pairs(ScreenGui:GetDescendants()) do
