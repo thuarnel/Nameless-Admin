@@ -113,7 +113,7 @@ local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player:FindFirstChild("PlayerGui")
-local SolaraCheck = (COREGUI or PlrGui)
+local SolaraCheck = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character
@@ -15654,8 +15654,6 @@ end
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
 local uiModel = game:GetObjects("rbxassetid://17101871669")[1]
-local rPlayer = Players:FindFirstChildWhichIsA("Player")
-local coreGuiProtection = {}
 if not RunService:IsStudio() then
 	ScreenGui = uiModel
 else
@@ -15663,15 +15661,27 @@ else
 	ScreenGui = player:FindFirstChild("AdminUI", true)
 end
 
-function protect(sGui)
-pcall(function()
-	for i, v in pairs(sGui:GetDescendants()) do
+if get_hidden_gui or gethui then
+	local hiddenUI = get_hidden_gui or gethui
+	local Main = uiModel
+	Main.Name = randomString()
+	Main.Parent = hiddenUI()
+	ScreenGui = Main
+elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
+	local Main = uiModel
+	Main.Name = randomString()
+	syn.protect_gui(Main)
+	Main.Parent = COREGUI
+	ScreenGui = Main
+elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChild('RobloxGui',true) then
+	pcall(function()
+	for i, v in pairs(ScreenGui:GetDescendants()) do
 		coreGuiProtection[v] = rPlayer.Name
 	end
-	sGui.DescendantAdded:Connect(function(v)
+	ScreenGui.DescendantAdded:Connect(function(v)
 		coreGuiProtection[v] = rPlayer.Name
 	end)
-	coreGuiProtection[sGui] = rPlayer.Name
+	coreGuiProtection[ScreenGui] = rPlayer.Name
 
 	local meta = getrawmetatable(game)
 	local tostr = meta.__tostring
@@ -15688,41 +15698,17 @@ if not RunService:IsStudio() then
 	newGui.DescendantAdded:Connect(function(v)
 		coreGuiProtection[v] = rPlayer.Name
 	end)
-	for i, v in pairs(sGui:GetChildren()) do
+	for i, v in pairs(ScreenGui:GetChildren()) do
 		v.Parent = newGui
 	end
-	sGui = newGui
+	ScreenGui = newGui
 end
-end
-
-if get_hidden_gui or gethui then
-	local hiddenUI = get_hidden_gui or gethui
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = hiddenUI()
-	ScreenGui = Main
-elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
-	local Main = uiModel
-	Main.Name = randomString()
-	syn.protect_gui(Main)
-	Main.Parent = COREGUI
-	ScreenGui = Main
---[[elseif COREGUI then
-	local Main = uiModel
-	Main.Name = randomString()
-	Main.Parent = COREGUI.RobloxGui
-	ScreenGui = Main]]
 else
-	if game:GetService("CoreGui") then
-	protect(ScreenGui)
-	else
- 	local Main = uiModel
+	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
-	end
 end
-
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
 local cmdBar = ScreenGui.CmdBar
@@ -15761,6 +15747,39 @@ chatExample.Parent = nil
 commandExample.Parent = nil
 UniverseExample.Parent = nil
 resizeFrame.Parent = nil
+
+local rPlayer = Players:FindFirstChildWhichIsA("Player")
+local coreGuiProtection = {}
+
+--[[pcall(function()
+	for i, v in pairs(ScreenGui:GetDescendants()) do
+		coreGuiProtection[v] = rPlayer.Name
+	end
+	ScreenGui.DescendantAdded:Connect(function(v)
+		coreGuiProtection[v] = rPlayer.Name
+	end)
+	coreGuiProtection[ScreenGui] = rPlayer.Name
+
+	local meta = getrawmetatable(game)
+	local tostr = meta.__tostring
+	setreadonly(meta, false)
+	meta.__tostring = newcclosure(function(t)
+		if coreGuiProtection[t] and not checkcaller() then
+			return coreGuiProtection[t]
+		end
+		return tostr(t)
+	end)
+end)
+if not RunService:IsStudio() then
+	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
+	newGui.DescendantAdded:Connect(function(v)
+		coreGuiProtection[v] = rPlayer.Name
+	end)
+	for i, v in pairs(ScreenGui:GetChildren()) do
+		v.Parent = newGui
+	end
+	ScreenGui = newGui
+end]]
 
 --[[ GUI FUNCTIONS ]]--
 gui = {}
