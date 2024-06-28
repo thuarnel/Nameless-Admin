@@ -474,6 +474,8 @@ function removeESP()
 	end
 end
 
+
+
 local Signal1,Signal2=nil,nil
 
 function mobilefly(speed)
@@ -597,7 +599,7 @@ plr = cmdlp
 
 local cmdm = plr:GetMouse()
 
---[[function sFLY(vfly)
+function sFLY(vfly)
 	FLYING = false
 	speedofthefly = 10
 	speedofthevfly = 10
@@ -701,7 +703,7 @@ local cmdm = plr:GetMouse()
 		end
 	end)
 	FLY()
-end]]
+end
 
 
 local tool=nil
@@ -7094,7 +7096,21 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 		coroutine.wrap(FEPVI_fake_script)()
 		gui.draggable(TextButton)
 	else
-		mobilefly(speed)
+		FLYING = false
+		cmdlp.Character.Humanoid.PlatformStand = false
+		wait();
+
+		Notify({
+			Description = "Fly enabled";
+			Title = "Nameless Admin";
+			Duration = 5;
+
+		});
+		sFLY(true)
+		speedofthevfly = (...)
+		if (...) == nil then
+			speedofthevfly = 2
+		end
 	end
 end)
 
@@ -7109,17 +7125,17 @@ cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
 		});
 	else
 		Notify({
-			Description = "Flying is disabled";
+			Description = "Not flying anymore";
 			Title = "Nameless Admin";
 			Duration = 5;
+
 		});
+		FLYING = false
+		cmdlp.Character.Humanoid.PlatformStand = false
 	end
 	unmobilefly()
 	on=false
-	if rahh then
-		rahh:Destroy()
-		rahh=nil
-	end
+	if rahh then rahh:Destroy() rahh=nil end
 end)
 
 cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "nil"}, function()
@@ -13043,7 +13059,7 @@ function descendantadd(part)
 			part:Destroy()
 		end
 	else
-	if autormv then autormv:Disconnect() autormv = nil end
+		if autormv then autormv:Disconnect() autormv = nil end
 	end
 end
 
@@ -13100,7 +13116,7 @@ function idkClass(part)
 			part:Destroy()
 		end
 	else
-	if autoclass then autoclass:Disconnect() autoclass = nil end
+		if autoclass then autoclass:Disconnect() autoclass = nil end
 	end
 end
 
@@ -13174,8 +13190,8 @@ cmd.add({"gotopart", "topart", "toprt"}, {"gotopart {partname} (topart, toprt)",
 	for _, descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower() == grr:lower() then
 			if getHum() then 
-			getHum().Sit = false 
-			wait(.1)
+				getHum().Sit = false 
+				wait(.1)
 			else
 			end
 			if getChar() then getChar():PivotTo(descendant:GetPivot()) end
@@ -13191,8 +13207,8 @@ cmd.add({"tweengotopart", "tgotopart", "ttopart", "ttoprt"}, {"tweengotopart {pa
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == lol:lower() and v:IsA("BasePart") then
 			if getHum() then 
-			getHum().Sit = false 
-			wait(.1)
+				getHum().Sit = false 
+				wait(.1)
 			else
 			end
 			TweenService:Create(getRoot(getChar()), TweenInfo.new(1, Enum.EasingStyle.Linear), {CFrame = v.CFrame}):Play()
@@ -13209,8 +13225,8 @@ cmd.add({"gotopartclass", "gpc", "gotopartc", "gotoprtc"}, {"gotopartclass {clas
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.ClassName:lower() == pooooo:lower() and v:IsA("BasePart") then
 			if getHum() then 
-			getHum().Sit = false 
-			wait(.1)
+				getHum().Sit = false 
+				wait(.1)
 			else
 			end
 			--getRoot(Player.Character).CFrame = v.CFrame
@@ -13249,8 +13265,8 @@ cmd.add({"gotomodel", "tomodel"}, {"gotomodel {modelname} (tomodel)", "Teleports
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower() == i_love_models:lower() and v:IsA("Model") then
 			if getHum() then 
-			getHum().Sit = false 
-			wait(.1)
+				getHum().Sit = false 
+				wait(.1)
 			else
 			end
 			if getChar() then getChar():PivotTo(v:GetPivot()) end
@@ -13263,23 +13279,23 @@ cmd.add({"swim"}, {"swim {speed}", "Swim in the air"}, function(...)
 	speaker = game.Players.LocalPlayer
 	game.Workspace.Gravity = 0
 	if getHum() then 
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Running,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
-	getHum():ChangeState(Enum.HumanoidStateType.Swimming)
-	getHum().WalkSpeed = (...) 
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Running,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,false)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,false)
+		getHum():ChangeState(Enum.HumanoidStateType.Swimming)
+		getHum().WalkSpeed = (...) 
 	end
 	if (...) == nil then
 		if getHum() then getHum().WalkSpeed = 16 end
@@ -13290,23 +13306,23 @@ cmd.add({"unswim"}, {"unswim", "Stops the swim script"}, function(...)
 	speaker = Player
 	game.Workspace.Gravity = 168
 	if getHum() then 
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Running,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
-	getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
-	getHum():ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
-	getHum().WalkSpeed = 16 
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Climbing,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.FallingDown,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Flying,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Freefall,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.GettingUp,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Jumping,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Landed,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Physics,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.PlatformStanding,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Ragdoll,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Running,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.RunningNoPhysics,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.StrafingNoPhysics,true)
+		getHum():SetStateEnabled(Enum.HumanoidStateType.Swimming,true)
+		getHum():ChangeState(Enum.HumanoidStateType.RunningNoPhysics)
+		getHum().WalkSpeed = 16 
 	end
 end)
 
@@ -15675,41 +15691,41 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	ScreenGui = Main
 elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 	pcall(function()
-	for i, v in pairs(ScreenGui:GetDescendants()) do
-		coreGuiProtection[v] = rPlayer.Name
-	end
-	ScreenGui.DescendantAdded:Connect(function(v)
-		coreGuiProtection[v] = rPlayer.Name
-	end)
-	coreGuiProtection[ScreenGui] = rPlayer.Name
-
-	local meta = getrawmetatable(game)
-	local tostr = meta.__tostring
-	setreadonly(meta, false)
-	meta.__tostring = newcclosure(function(t)
-		if coreGuiProtection[t] and not checkcaller() then
-			return coreGuiProtection[t]
+		for i, v in pairs(ScreenGui:GetDescendants()) do
+			coreGuiProtection[v] = rPlayer.Name
 		end
-		return tostr(t)
+		ScreenGui.DescendantAdded:Connect(function(v)
+			coreGuiProtection[v] = rPlayer.Name
+		end)
+		coreGuiProtection[ScreenGui] = rPlayer.Name
+
+		local meta = getrawmetatable(game)
+		local tostr = meta.__tostring
+		setreadonly(meta, false)
+		meta.__tostring = newcclosure(function(t)
+			if coreGuiProtection[t] and not checkcaller() then
+				return coreGuiProtection[t]
+			end
+			return tostr(t)
+		end)
 	end)
-end)
-if not RunService:IsStudio() then
-	local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
-	newGui.DescendantAdded:Connect(function(v)
-		coreGuiProtection[v] = rPlayer.Name
-	end)
-	for i, v in pairs(ScreenGui:GetChildren()) do
-		v.Parent = newGui
+	if not RunService:IsStudio() then
+		local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
+		newGui.DescendantAdded:Connect(function(v)
+			coreGuiProtection[v] = rPlayer.Name
+		end)
+		for i, v in pairs(ScreenGui:GetChildren()) do
+			v.Parent = newGui
+		end
+		ScreenGui = newGui
 	end
-	ScreenGui = newGui
-end
 elseif SolaraCheck then
 	local Main = uiModel
 	Main.Name = randomString()
 	Main.Parent = SolaraCheck
 	ScreenGui = Main
 else
-warn'no guis?'
+	warn'no guis?'
 end
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 local description = ScreenGui.Description
@@ -16228,17 +16244,17 @@ task.spawn(function()
 
 	delay(0.3, function()
 		if identifyexecutor then -- idk why i made it as a check
-		Notify({
-			Description = "Welcome to Nameless Admin V"..curVer.."\nExecutor: "..identifyexecutor();
-			Title = rngMsg().." "..hh;
-			Duration = 5;
-		});
+			Notify({
+				Description = "Welcome to Nameless Admin V"..curVer.."\nExecutor: "..identifyexecutor();
+				Title = rngMsg().." "..hh;
+				Duration = 5;
+			});
 		else
-		Notify({
-			Description = "Welcome to Nameless Admin V"..curVer;
-			Title = rngMsg().." "..hh;
-			Duration = 5;
-		});
+			Notify({
+				Description = "Welcome to Nameless Admin V"..curVer;
+				Title = rngMsg().." "..hh;
+				Duration = 5;
+			});
 		end
 		Notify({
 			Description = goof();
