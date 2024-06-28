@@ -93,7 +93,12 @@ local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
 
-local updLogs = {}
+local updLogs = {
+	log1="added this update log frame lol",
+	log2="added some solara support",
+	log3="fireproximityprompts commands fixed for Solara",
+	log4="setclipboard fix for Fluxus (literally added tostring() so it would copy 💀)"
+}
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -16354,7 +16359,7 @@ pcall(function()
 			local btn = template:Clone()
 			btn.Parent = list
 			btn.Name = name
-			btn.Text = txt
+			btn.Text = "- "..txt
 		end
 	else
 		print("no upd logs :<")
