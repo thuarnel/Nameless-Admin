@@ -14,7 +14,7 @@
                                                                                              
 
 ]]
-if NamelessLoaded then
+if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
@@ -342,7 +342,9 @@ local getPlr = function(Name)
 	if Name:lower() == "random" then
 		return Players:GetPlayers()[math.random(#Players:GetPlayers())]
 	elseif Name:lower() == "me" then
-		return Player
+		return game:GetService("Players").LocalPlayer
+	elseif Name == nil then
+		return game:GetService("Players").LocalPlayer
 	else
 		Name = Name:lower():gsub("%s", "")
 		for _, x in next, Players:GetPlayers() do
@@ -6445,7 +6447,7 @@ end)
 cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
 	local jobId = 'Roblox.GameLauncher.joinGameInstance('..PlaceId..', "'..JobId..'")'
 	if setclipboard then
-		setclipboard(jobId)
+		setclipboard(tostring(jobId))
 		wait();
 
 		Notify({
@@ -6852,7 +6854,7 @@ cmd.add({"functionspy"}, {"functionspy", "Check console"}, function()
 
 		script.Parent.RightPanel.copy.MouseButton1Click:Connect(function()
 			if currentInfo ~= nil then
-				setclipboard(currentInfo)
+				setclipboard(tostring(currentInfo))
 			end
 		end)
 
@@ -8007,8 +8009,28 @@ cmd.add({"tooldance", "td"}, {"tooldance <mode> <size>", "Make your tools dance\
 	end
 end)
 
-cmd.add({"copygameid", "cgameid"}, {"copygameid (cgameid)", "Copies the id of the game youre in"}, function()
-	setclipboard(game.PlaceId)
+cmd.add({"placeid", "pid"}, {"placeid (pid)", "Copies the PlaceId of the game you're in"}, function()
+	setclipboard(tostring(game.PlaceId))
+
+	wait();
+
+	Notify({
+		Description = "Copied the game's PlaceId: "..game.PlaceId;
+		Title = "Nameless Admin";
+		Duration = 7;
+	});
+end)
+
+cmd.add({"gameid", "universeid", "gid"}, {"gameid (universeid, gid)", "Copies the GameId/Universe Id of the game you're in"}, function()
+	setclipboard(tostring(game.GameId))
+
+	wait();
+
+	Notify({
+		Description = "Copied the game's GameId: "..game.GameId;
+		Title = "Nameless Admin";
+		Duration = 7;
+	});
 end)
 
 cmd.add({"lowhold"}, {"lowhold", "Boombox low hold"}, function()
@@ -8028,49 +8050,56 @@ end)
 
 cmd.add({"copyname", "cname"}, {"copyname <player> (cname)", "Copies the username of the target"}, function(...)
 	Username = (...)
+	if (...) == nil then
+		Username = plr.Name
+	end
 	target = getPlr(Username)
 
-	setclipboard(target.Name)
+	setclipboard(tostring(target.Name))
 
 	wait();
 
 	Notify({
-		Description = "Copied the username of " .. target.DisplayName .. "";
+		Description = "Copied the username of "..target.DisplayName;
 		Title = "Nameless Admin";
 		Duration = 7;
-
 	});
 end)
 
 cmd.add({"copydisplay", "cdisplay"}, {"copydisplay <player> (cdisplay)", "Copies the display name of the target"}, function(...)
 	Username = (...)
+	if (...) == nil then
+		Username = plr.Name
+	end
 	target = getPlr(Username)
 
-	setclipboard(target.DisplayName)
+	setclipboard(tostring(target.DisplayName))
 
 	wait();
 
 	Notify({
-		Description = "Copied the display name of " .. target.Name .. "";
+		Description = "Copied the display name of "..target.Name;
 		Title = "Nameless Admin";
 		Duration = 7;
-
 	});
 end)
 
 cmd.add({"copyid", "id"}, {"copyid <player> (id)", "Copies the UserId of the target"}, function(...)
 	Username = (...)
+
+	if (...) == nil then
+		Username = plr.Name
+	end
 	target = getPlr(Username)
 
-	setclipboard(target.UserId)
+	setclipboard(tostring(target.UserId))
 
 	wait();
 
 	Notify({
-		Description = "Copied the UserId of " .. target.Name .. "";
+		Description = "Copied the UserId of "..target.name;
 		Title = "Nameless Admin";
 		Duration = 7;
-
 	});
 end)
 
@@ -9787,9 +9816,6 @@ cmd.add({"pp", "penis"}, {"penis (pp)", "benis :flushed:"}, function()
 end)
 
 cmd.add({"stealaudio", "getaudio", "steal", "logaudio"}, {"stealaudio <player> (getaudio, logaudio, steal)", "Save all sounds a player is playing to a file  -Cyrus"}, function(p)
-
-
-
 	wait();
 
 	Notify({
@@ -9810,7 +9836,7 @@ cmd.add({"stealaudio", "getaudio", "steal", "logaudio"}, {"stealaudio <player> (
 			end
 		end
 	end
-	setclipboard(audios)
+	setclipboard(tostring(audios))
 end)
 
 cmd.add({"follow", "stalk", "walk"}, {"follow <player>", "Follow a player wherever they go"}, function(p)
