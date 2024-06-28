@@ -15673,7 +15673,7 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	syn.protect_gui(Main)
 	Main.Parent = game:GetService("CoreGui")
 	ScreenGui = Main
-elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
+elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") and not identifyexecutor() == "Solara" then
 	pcall(function()
 		for i, v in pairs(ScreenGui:GetDescendants()) do
 			coreGuiProtection[v] = rPlayer.Name
