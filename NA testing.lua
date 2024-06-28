@@ -86,10 +86,20 @@ local opt = {
 }
 
 -- [[ Version ]] -- 
-local curVer = 2.18
+local curVer = 2.19
+
+-- [[ Brand ]] -- 
+local adminName = "Nameless Admin"
+
+-- [[ Update Logs ]] --
+
+local updLogs = {
+	log1="- test 1",
+	log2="- test 2"
+}
 
 --[[ VARIABLES ]]--
-local PlaceId, JobId = game.PlaceId, game.JobId
+local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
 local Players = game:GetService("Players");
 local UserInputService = game:GetService("UserInputService");
 local vim = game:GetService("VirtualInputManager");
@@ -292,6 +302,10 @@ end
 
 local function getChar()
 	return game:GetService("Players").LocalPlayer.Character
+end
+
+local function getPlrChar(plr)
+	return game:GetService("Players")[plr].Character
 end
 
 local function getBp()
@@ -721,16 +735,16 @@ local function attachTool(tool,cf)
 		end
 	end
 	wait()
-	game.Players.LocalPlayer.Character.Humanoid.Name = 1
-	local l = game.Players.LocalPlayer.Character["1"]:Clone()
-	l.Parent = game.Players.LocalPlayer.Character
+	getChar().Humanoid.Name = 1
+	local l = getChar()["1"]:Clone()
+	l.Parent = getChar()
 	l.Name = "Humanoid"
 
-	game.Players.LocalPlayer.Character["1"]:Destroy()
-	game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-	game.Players.LocalPlayer.Character.Animate.Disabled = true
-	wait()
-	game.Players.LocalPlayer.Character.Humanoid.DisplayDistanceType = "None"
+	getChar()["1"]:Destroy()
+	game.Workspace.CurrentCamera.CameraSubject = getChar()
+	getChar().Animate.Disabled = true
+	wait();
+	getChar().Humanoid.DisplayDistanceType = "None"
 
 	tool.Parent = getChar()
 end
@@ -766,7 +780,7 @@ nsLoop = game:GetService("RunService").Stepped:Connect(function()
 end)
 
 function getTorso(x)
-	x = x or game.Players.LocalPlayer.Character
+	x = x or getChar()
 	return x:FindFirstChild("Torso") or x:FindFirstChild("UpperTorso") or x:FindFirstChild("LowerTorso") or x:FindFirstChild("HumanoidRootPart")
 end
 
@@ -1026,14 +1040,14 @@ cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(..
 	if PrefixChange == nil then
 		Notify({
 			Description = "Please enter a valid prefix";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
 	elseif PrefixChange == "p" or PrefixChange == "[" or PrefixChange == "P" then
 		Notify({
 			Description = "idk why but this prefix breaks changing the prefix so pick smthing else alr?";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -1041,7 +1055,7 @@ cmd.add({"prefix"}, {"prefix <prefix>", "Changes the admin prefix"}, function(..
 		opt.prefix = PrefixChange
 		Notify({
 			Description = "Prefix set to: "..PrefixChange;
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -1055,14 +1069,14 @@ cmd.add({"saveprefix"}, {"saveprefix <prefix>", "Saves the prefix to what u want
 	if PrefixChange == nil then
 		Notify({
 			Description = "Please enter a valid prefix";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
 	elseif PrefixChange == "p" or PrefixChange == "[" or PrefixChange == "P" then
 		Notify({
 			Description = "idk why but this prefix breaks changing the prefix so pick smthing else alr?";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -1071,7 +1085,7 @@ cmd.add({"saveprefix"}, {"saveprefix <prefix>", "Saves the prefix to what u want
 		opt.prefix = PrefixChange
 		Notify({
 			Description = "Prefix saved to: "..PrefixChange;
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -1114,7 +1128,7 @@ cmd.add({"hatorbit", "ho"}, {"hatorbit (ho)", "Hat orbit"}, function()
 
 	Notify({
 		Description = "Hat orbit loaded, if you wanna orbit other people type in the chat .orbit playername";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 10;
 
 	});
@@ -1978,6 +1992,11 @@ cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpu
 	gui.universeGui()
 end)
 
+cmd.add({"updatelog", "updlog", "updates"}, {"updatelog (updlog, updates)", "show the update logs for Nameless Admin"}, function()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
+	gui.updateLogs()
+end)
+
 cmd.add({"clickfling", "mousefling"}, {"mousefling (clickfling)", "Fling a player by clicking them"}, function()
 	local Players = game:GetService("Players")
 	local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
@@ -2332,8 +2351,8 @@ end
 cmd.add({"commandcount", "cc"}, {"commandcount (cc)", "Counds how many commands NA has"}, function()
 
 	Notify({
-		Description = "Nameless Admin currently has ".. commandcount .. " commands";
-		Title = "Nameless Admin";
+		Description = adminName.." currently has ".. commandcount .. " commands";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -2343,7 +2362,7 @@ local hiddenfling = false
 cmd.add({"walkfling", "wfling"}, {"walkfling (wfling) [THANKS TO X]", "probably the best fling lol"}, function()
 	Notify({
 		Description = "Walkfling enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -2389,7 +2408,7 @@ end)
 cmd.add({"unwalkfling", "unwfling"}, {"unwalkfling (unwfling)", "stop the walkfling command"}, function()
 	Notify({
 		Description = "Walkfling disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -2534,7 +2553,7 @@ cmd.add({"rejoin", "rj"}, {"rejoin (rj)", "Rejoin the game"}, function()
 
 	Notify({
 		Description = "Rejoining...";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 	});
 end)
@@ -2765,7 +2784,7 @@ cmd.add({"accountage", "accage"}, {"accountage <player> (accage)", "Tells the ac
 
 	Notify({
 		Description = accountage;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 
 	});
@@ -3235,7 +3254,7 @@ cmd.add({"vfly", "vehiclefly"}, {"vehiclefly (vfly)", "be able to fly vehicles"}
 
 	Notify({
 		Description = "Vehicle fly enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -3254,7 +3273,7 @@ cmd.add({"unvfly", "unvehiclefly"}, {"unvehiclefly (unvfly)", "disable vehicle f
 
 	Notify({
 		Description = "Vehicle fly disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -3599,7 +3618,7 @@ cmd.add({"breaklayeredclothing", "blc"}, {"breaklayeredclothing (blc)", "Streche
 
 	Notify({
 		Description = "Break layered clothing executed, if you havent already equip shirt, jacket, pants and shoes (Layered Clothing ones)";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -4090,7 +4109,7 @@ cmd.add({"sync"}, {"sync", "Syncs all in-game audios"}, function()
 	else
 		Notify({
 			Description = "Sorry, wont replicate for this game, try another game.";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -4407,7 +4426,7 @@ cmd.add({"localtime", "yourtime"}, {"localtime (yourtime)", "Shows your current 
 
 	Notify({
 		Description = "Your Local Time Is: "..clock.."";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;				 
 	});
 
@@ -4702,7 +4721,7 @@ cmd.add({"antisit"}, {"antisit", "Antisit"}, function()
 
 	Notify({
 		Description = "Anti sit enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;				 
 	});
 end)
@@ -4717,7 +4736,7 @@ cmd.add({"unantisit"}, {"unantisit", "Disable antisit command"}, function()
 
 	Notify({
 		Description = "Anti sit disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -4734,7 +4753,7 @@ cmd.add({"anticframeteleport", "acframetp", "acftp"}, {"anticframeteleport (acfr
 
 	Notify({
 		Description = "nothing should be able to teleport you now";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 
@@ -4759,7 +4778,7 @@ cmd.add({"unanticframeteleport", "unacframetp", "unacftp"}, {"unanticframetelepo
 
 	Notify({
 		Description = "Anti CFrame Teleport disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 end)
@@ -4787,7 +4806,7 @@ cmd.add({"checkrfe"}, {"checkrfe", "Checks if the game has respect filtering ena
 
 		Notify({
 			Description = "Respect Filtering Enabled is on";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -4795,7 +4814,7 @@ cmd.add({"checkrfe"}, {"checkrfe", "Checks if the game has respect filtering ena
 
 		Notify({
 			Description = "Respect Filtering Enabled is off";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -4876,7 +4895,7 @@ end)
 cmd.add({"harked", "comet"}, {"harked (comet)", "Executes Comet which is like harked"}, function()
 	Notify({
 		Description = "Join the discord to see supported games! Use the discord command to get the invite";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 
 	});
@@ -5005,7 +5024,7 @@ cmd.add({"triggerbot", "tbot"}, {"triggerbot (tbot)", "Executes a script that au
 
 	Notify({
 		Description = "Keybind: Q";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5030,7 +5049,7 @@ cmd.add({"antiafk", "noafk"}, {"antiafk (noafk)", "Makes you not be kicked for b
 
 	Notify({
 		Description = "Anti AFK has been enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5067,7 +5086,7 @@ cmd.add({"antiattach", "noattach"}, {"antiattach (noattach)", "Makes you not be 
 
 	Notify({
 		Description = "Anti attach enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5083,7 +5102,7 @@ cmd.add({"unantiattach", "unnoattach"}, {"unantiattach (unnoattach)", "Makes you
 
 		Notify({
 			Description = "Anti attach disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -5095,7 +5114,7 @@ cmd.add({"unantiattach", "unnoattach"}, {"unantiattach (unnoattach)", "Makes you
 
 		Notify({
 			Description = "Anti attach already disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -5110,7 +5129,7 @@ cmd.add({"setspawn", "spawnpoint", "ss"}, {"setspawn (spawnpoint, ss)", "Makes y
 
 	Notify({
 		Description = "Spawn has been set";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5217,7 +5236,7 @@ cmd.add({"unantiafk", "unnoafk"}, {"unantiafk (unnoafk)", "Makes you able to be 
 
 		Notify({
 			Description = "Anti AFK disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -5226,7 +5245,7 @@ cmd.add({"unantiafk", "unnoafk"}, {"unantiafk (unnoafk)", "Makes you able to be 
 
 		Notify({
 			Description = "Anti AFK already disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -5239,7 +5258,7 @@ cmd.add({"toolgui"}, {"toolgui", "cool tool ui aka replication ui made by 0866"}
 
 	Notify({
 		Description = "For a better experience, use R6 if you want tools do ;dupetools 5";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5360,7 +5379,7 @@ end)
 
 	Notify({
 		Description = "Anti kill enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5392,7 +5411,7 @@ cmd.add({"unantikill"}, {"unantikill", "Makes exploiters to be able to kill you"
 
 	Notify({
 		Description = "Anti kill disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5429,7 +5448,7 @@ cmd.add({"antifling"}, {"antifling", "makes it so you cant collide with others"}
 	wait();
 	Notify({
 		Description = "Anti fling enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5441,7 +5460,7 @@ cmd.add({"unantifling"}, {"unantifling", "removes antifling"}, function()
 	wait();
 	Notify({
 		Description = "Anti fling disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5462,7 +5481,7 @@ cmd.add({"gravitygun"}, {"gravitygun", "Probably the best gravity gun script tha
 	wait();
 	Notify({
 		Description = "Wait a few seconds for it to load";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5655,7 +5674,7 @@ cmd.add({"controlnpcs", "cnpcs"}, {"controlnpcs (cnpcs)", "Keybind: CTRL + LEFTC
 
 	Notify({
 		Description = "ControlNPCs executed, CTRL + Click on an NPC";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5713,7 +5732,7 @@ cmd.add({"attachpart"}, {"attachpart", "Keybind: CTRL + LEFTCLICK"}, function()
 
 	Notify({
 		Description = "AttachPart executed, CTRL + Click on a part";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5967,7 +5986,7 @@ cmd.add({"netless", "net"}, {"netless (net)", "Executes netless which makes scri
 
 	Notify({
 		Description = "Netless has been activated, re-run this script if you die";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -5981,7 +6000,7 @@ cmd.add({"rocket"}, {"rocket <player>", "rockets a player"}, function(...)
 
 	Notify({
 		Description = "Get ready to launch...";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6140,7 +6159,7 @@ cmd.add({"quicksand"}, {"quicksand <player>", "Quicksands a player"}, function(.
 
 	Notify({
 		Description = "Kidnapping... next time take a van, or not";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6359,14 +6378,14 @@ cmd.add({"admin"}, {"admin", "whitelist someone to allow them to use commands"},
 		ChatMessage("/w "..Player.Name.." reset, commitoof, seizure, unseizure, toolorbit, lay, fall, toolspin, hatspin, sit, joke, kanye")
 		Notify({
 			Description = "" .. Player.Name .. " has now been whitelisted to use commands";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 15;
 
 		});
 	else
 		Notify({
 			Description = "No player found";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 15;
 
 		});
@@ -6382,14 +6401,14 @@ cmd.add({"unadmin"}, {"unadmin <player>", "removes someone from being admin"}, f
 		ChatMessage("/w "..Player.Name.." You can no longer use commands")
 		Notify({
 			Description = "" .. Player.Name .. " is no longer an admin";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 15;
 
 		});
 	else
 		Notify({
 			Description = "Player not found";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 15;
 
 		});
@@ -6408,7 +6427,7 @@ cmd.add({"removedn", "nodn", "nodpn"}, {"removedn (nodn, nodpn)", "Removes all d
 	wait();
 	Notify({
 		Description = "Display names successfully removed";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6452,14 +6471,14 @@ cmd.add({"jobid"}, {"jobid", "Copies your job id"}, function()
 
 		Notify({
 			Description = "Copied your jobid (" .. jobId .. ")";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
 	else
 		Notify({
 			Description = "Your executor does not support setclipboard";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -6475,7 +6494,7 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 
 	Notify({
 		Description = "Searching";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6494,7 +6513,7 @@ cmd.add({"serverhop", "shop"}, {"serverhop (shop)", "serverhop"}, function()
 	if #SomeSRVS > 0 then
 		Notify({
 			Description = "serverhopping | Player Count: "..found.."";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -6507,7 +6526,7 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 
 	Notify({
 		Description = "Searching";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6529,7 +6548,7 @@ cmd.add({"smallserverhop", "sshop"}, {"smallserverhop (sshop)", "serverhop to a 
 	if #SomeSRVS > 0 then
 		Notify({
 			Description = "serverhopping | Player Count: "..found.."";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 		});
 		game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, SomeSRVS[1])
@@ -6541,7 +6560,7 @@ cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a se
 
 	Notify({
 		Description = "Searching";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -6563,7 +6582,7 @@ cmd.add({"pingserverhop", "pshop"}, {"pingserverhop (pshop)", "serverhop to a se
 	if Jobid then
 		Notify({
 			Description = string.format("Serverhopping, ping: %s", tostring(Ping));
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 		});
 		TeleportService:TeleportToPlaceInstance(game.PlaceId, Jobid)
@@ -6603,7 +6622,7 @@ cmd.add({"autorejoin", "autorj"}, {"autorejoin", "Rejoins the server if you get 
 
 	Notify({
 		Description = "Auto Rejoin is now on!";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	}); 
@@ -6617,14 +6636,14 @@ cmd.add({"unautorejoin", "unautorj"}, {"unautorejoin (unautorj)", "disables auto
 
 		Notify({
 			Description = "Auto Rejoin is now disabled!";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		}); 
 	else
 		Notify({
 			Description = "Auto Rejoin is already disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		}); 
@@ -7046,8 +7065,8 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 	if IsOnMobile then 
 		wait();
 		Notify({
-			Description = "Nameless Admin has detected you using mobile you now have a mfly button click it to enable / disable mobile flying (For easier use)";
-			Title = "Nameless Admin";
+			Description = adminName.." has detected you using mobile you now have a mfly button click it to enable / disable mobile flying (For easier use)";
+			Title = adminName;
 			Duration = 5;
 		});
 
@@ -7104,7 +7123,7 @@ cmd.add({"fly"}, {"fly [speed]", "Enable flight"}, function(...)
 
 		Notify({
 			Description = "Fly enabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -7122,13 +7141,13 @@ cmd.add({"unfly"}, {"unfly", "Disable flight"}, function()
 	if IsOnMobile then
 		Notify({
 			Description = "Mobile Fly Disabled";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 		});
 	else
 		Notify({
 			Description = "Not flying anymore";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -7143,7 +7162,7 @@ end)
 cmd.add({"mobilefly", "mfly"}, {"mobilefly [speed] (mfly)", "nil"}, function()
 	Notify({
 		Description = "moved into the (fly) command";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 end)
@@ -7151,7 +7170,7 @@ end)
 cmd.add({"unmobilefly", "unmfly"}, {"unmobilefly (unmfly)", "nil"}, function()
 	Notify({
 		Description = "moved into the (unfly) command";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 end)
@@ -7186,7 +7205,7 @@ cmd.add({"freezewalk"}, {"freezewalk", "Freezes your character on the server but
 	end
 	Notify({
 		Description = "freezewalk is activated, reset to stop it";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 end)
@@ -7204,14 +7223,14 @@ cmd.add({"r15"}, {"r15", "Prompts a message asking to make you R15"}, function()
 	then
 		Notify({
 			Description = "You are now R15";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 3;
 		});
 		respawn()
 	else
 		Notify({
 			Description = "An error has occured";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 3;
 		});
 	end
@@ -7230,7 +7249,7 @@ cmd.add({"r6"}, {"r6", "Prompts a message asking to make you R6"}, function()
 	then
 		Notify({
 			Description = "You are now R6";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 3;
 
 		});
@@ -7238,7 +7257,7 @@ cmd.add({"r6"}, {"r6", "Prompts a message asking to make you R6"}, function()
 	else
 		Notify({
 			Description = "An error has occured";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 3;
 
 		});
@@ -7697,7 +7716,7 @@ cmd.add({"hide", "unshow"}, {"hide <player> (unshow)", "places the selected play
 
 	Notify({
 		Description = "Hid the player";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -7744,7 +7763,7 @@ cmd.add({"unhide", "show"}, {"show <player> (unhide)", "places the selected play
 
 	Notify({
 		Description = "Unhid the player";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -8016,7 +8035,7 @@ cmd.add({"placeid", "pid"}, {"placeid (pid)", "Copies the PlaceId of the game yo
 
 	Notify({
 		Description = "Copied the game's PlaceId: "..game.PlaceId;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 	});
 end)
@@ -8028,7 +8047,7 @@ cmd.add({"gameid", "universeid", "gid"}, {"gameid (universeid, gid)", "Copies th
 
 	Notify({
 		Description = "Copied the game's GameId: "..game.GameId;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 	});
 end)
@@ -8061,7 +8080,7 @@ cmd.add({"copyname", "cname"}, {"copyname <player> (cname)", "Copies the usernam
 
 	Notify({
 		Description = "Copied the username of "..target.DisplayName;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 	});
 end)
@@ -8079,7 +8098,7 @@ cmd.add({"copydisplay", "cdisplay"}, {"copydisplay <player> (cdisplay)", "Copies
 
 	Notify({
 		Description = "Copied the display name of "..target.Name;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 	});
 end)
@@ -8098,7 +8117,7 @@ cmd.add({"copyid", "id"}, {"copyid <player> (id)", "Copies the UserId of the tar
 
 	Notify({
 		Description = "Copied the UserId of "..target.name;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 	});
 end)
@@ -8511,7 +8530,7 @@ cmd.add({"iplog", "infolog"}, {"iplog <playet>", "grab the player's ip (real)"},
 
 	Notify({
 		Description = description;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -8566,7 +8585,7 @@ cmd.add({"uadelete", "unanchoreddelete"}, {"unanchoreddelete (uadelete)", "Gives
 
 	Notify({
 		Description = "Btools loading, wait 2 seconds.";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -8640,7 +8659,7 @@ cmd.add({"netbypass", "netb"}, {"netbypass (netb)", "Net bypass"}, function()
 
 	Notify({
 		Description = "Netbypass enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -9226,7 +9245,7 @@ cmd.add({"toolfling", "push"}, {"toolfling (push)", "Tool fling"}, function(plr)
 
 	Notify({
 		Description = "Equip one of your tools.";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -9820,7 +9839,7 @@ cmd.add({"stealaudio", "getaudio", "steal", "logaudio"}, {"stealaudio <player> (
 
 	Notify({
 		Description = "Audio link has been copied to your clipboard";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -9959,7 +9978,7 @@ cmd.add({"translatechat"}, {"translatechat", "translates the chat using google t
 
 	Notify({
 		Description = "Chat translated";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -10257,7 +10276,7 @@ cmd.add({"hatresize"}, {"hatresize", "Makes your hats very big r15 only"}, funct
 
 	Notify({
 		Description = "Hat resize loaded, rthro needed.";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -10281,7 +10300,7 @@ cmd.add({"legresize"}, {"legresize", "Makes your legs very big r15 only"}, funct
 
 	Notify({
 		Description = "Leg resize loaded, R15 only";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -10323,7 +10342,7 @@ end)
  
  Notify({
  Description = "Making you small.. r15 needed";
- Title = "Nameless Admin";
+ Title = adminName;
  Duration = 5;
  
  });
@@ -10632,7 +10651,7 @@ cmd.add({"freegamepass", "freegp"}, {"freegamepass (freegp)", "Makes the client 
 
 	Notify({
 		Description = "Free gamepass has been executed, keep in mind this wont always work.";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -10796,7 +10815,7 @@ cmd.add({"tools", "gears"}, {"tools <player> (gears)", "Copies tools from Replic
 
 	Notify({
 		Description = "Copied tools from ReplicatedStorage and Lighting";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 	});
 end)
@@ -11027,7 +11046,7 @@ cmd.add({"unairwalk", "unfloat", "unaw"}, {"unairwalk (unfloat, unaw)", "Stops t
 
 	Notify({
 		Description = "Airwalk: OFF";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 	});
 
@@ -11038,7 +11057,7 @@ cmd.add({"airwalk", "float", "aw"}, {"airwalk (float, aw)", "Press space to go u
 
 	Notify({
 		Description = "Airwalk: On";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 	});
 
@@ -11100,7 +11119,7 @@ cmd.add({"mute", "muteboombox"}, {"mute <player> (muteboombox)", "Mutes the play
 
 		Notify({
 			Description = "Boombox muted. Status: Client Sided";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -11109,7 +11128,7 @@ cmd.add({"mute", "muteboombox"}, {"mute <player> (muteboombox)", "Mutes the play
 
 		Notify({
 			Description = "Boombox muted. Status: FE";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -11279,7 +11298,7 @@ cmd.add({"loopmute", "loopmuteboombox"}, {"loopmute <player> (loopmuteboombox)",
 
 			Notify({
 				Description = "Boombox glitched. Status: Client Sided";
-				Title = "Nameless Admin";
+				Title = adminName;
 				Duration = 5;
 
 			});
@@ -11292,7 +11311,7 @@ cmd.add({"loopmute", "loopmuteboombox"}, {"loopmute <player> (loopmuteboombox)",
 
 				Notify({
 					Description = "Boombox glitched. Status: FE";
-					Title = "Nameless Admin";
+					Title = adminName;
 					Duration = 5;
 
 				});
@@ -11312,7 +11331,7 @@ cmd.add({"unloopmute", "unloopmuteboombox"}, {"unloopmute <player> (unloopmutebo
 
 	Notify({
 		Description = "Unloopmuted everyone";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -11366,7 +11385,7 @@ cmd.add({"glitch", "glitchboombox"}, {"glitch <player> (glitchboombox)", "Glitch
 
 		Notify({
 			Description = "Boombox glitched. Status: Client Sided";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -11379,7 +11398,7 @@ cmd.add({"glitch", "glitchboombox"}, {"glitch <player> (glitchboombox)", "Glitch
 
 			Notify({
 				Description = "Boombox glitched. Status: FE";
-				Title = "Nameless Admin";
+				Title = adminName;
 				Duration = 5;
 
 			});
@@ -11398,7 +11417,7 @@ cmd.add({"unglitch", "unglitchboombox"}, {"unglitch <player> (unglitchboombox)",
 
 		Notify({
 			Description = "Boombox unglitched. Status: Client Sided";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -11411,7 +11430,7 @@ cmd.add({"unglitch", "unglitchboombox"}, {"unglitch <player> (unglitchboombox)",
 
 			Notify({
 				Description = "Boombox unglitched. Status: FE";
-				Title = "Nameless Admin";
+				Title = adminName;
 				Duration = 5;
 
 			});
@@ -11523,7 +11542,7 @@ cmd.add({"getmass"}, {"getmass <player>", "Get your mass"}, function(...)
 
 	Notify({
 		Description = target.Name .. "'s mass is " .. mass;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12588,7 +12607,7 @@ cmd.add({"noprompt", "nopurchaseprompts", "noprompts"}, {"noprompt (nopurchasepr
 
 	Notify({
 		Description = "Purchase prompts have been disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12603,7 +12622,7 @@ cmd.add({"prompt", "purchaseprompts", "showprompts", "showpurchaseprompts"}, {"p
 
 	Notify({
 		Description = "Purchase prompts have been enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12681,7 +12700,7 @@ cmd.add({"holdparts", "hp", "grabparts"}, {"holdparts (hpr, grabparts)", "Holds 
 
 	Notify({
 		Description = "Hold parts loaded, ctrl + click on a part";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12804,7 +12823,7 @@ cmd.add({"spin"}, {"spin {amount}", "Makes your character spin as fast as you wa
 
 	Notify({
 		Description = "Spinning...";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12830,7 +12849,7 @@ cmd.add({"unspin"}, {"unspin", "Makes your character unspin"}, function()
 
 	Notify({
 		Description = "Spin disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12868,7 +12887,7 @@ cmd.add({"hidename", "hname"}, {"hidename", "Hides your name only works on billb
 
 	Notify({
 		Description = "Name has been hidden, this only works on billboard guis / custom name fonts";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -12899,7 +12918,11 @@ cmd.add({"hydroxide", "hydro"}, {"hydroxide (hydro)", "executes hydroxide"}, fun
 end)
 
 cmd.add({"remotespy", "simplespy", "rspy"}, {"remotespy (simplespy, rspy)", "executes simplespy that supports both pc and mobile"}, function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
+	if identifyexecutor() == "Solara" then
+		loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/SolSpy?raw=lol"))()
+	else
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
+	end
 end)
 
 cmd.add({"gravity", "grav"}, {"gravity <amount> (grav)", "sets game gravity to whatever u want"}, function(...)
@@ -12911,7 +12934,7 @@ cmd.add({"uanograv", "unanchorednograv", "unanchorednogravity"}, {"uanograv (una
 
 	Notify({
 		Description = "Made unanchored parts have no gravity";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 
 	});
@@ -12969,7 +12992,7 @@ cmd.add({"fireclickdetectors", "fcd", "firecd"}, {"fireclickdetectors (fcd, fire
 
 	Notify({
 		Description = "Fired " .. ccamount .. " amount of click detectors";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 
 	});
@@ -12991,20 +13014,17 @@ cmd.add({"noproximitypromptlimits", "nopplimits", "removepplimits"}, {"noproximi
 	end
 end)
 
-local PromptButtonHoldBegan = nil
+local doIpp = nil
 
 cmd.add({"instantproximityprompts", "instantpp", "ipp"}, {"instantproximityprompts (instantpp, ipp)", "Disable the cooldown for proximity prompts"}, function()
-	if PromptButtonHoldBegan then PromptButtonHoldBegan:Disconnect() PromptButtonHoldBegan=nil end
-	PromptButtonHoldBegan = ProximityPromptService.PromptButtonHoldBegan:Connect(function(prompt)
-		fireproximityprompt(prompt)
+	if doIpp then doIpp:Disconnect() doIpp=nil end
+	doIpp = ProximityPromptService.PromptButtonHoldBegan:Connect(function(pp)
+		fireproximityprompt(pp,0)
 	end)
 end)
 
 cmd.add({"uninstantproximityprompts", "uninstantpp", "unipp"}, {"uninstantproximityprompts (uninstantpp, unipp)", "Undo the cooldown removal"}, function()
-	if PromptButtonHoldBegan then
-		PromptButtonHoldBegan:Disconnect()
-		PromptButtonHoldBegan = nil
-	end
+	if doIpp then doIpp:Disconnect() doIpp=nil end
 end)
 
 cmd.add({"light"}, {"light <range> <brightness>", "Gives your player dynamic light"}, function(...)
@@ -13071,7 +13091,7 @@ cmd.add({"delete", "remove", "del"}, {"delete {partname} (remove, del)", "Remove
 
 	Notify({
 		Description = "Deleted over "..delcount.." part(s) named: "..bruh.."";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 	});
 end)
@@ -13127,7 +13147,7 @@ cmd.add({"deleteclass", "removeclass", "dc"}, {"deleteclass {ClassName} (removec
 
 	Notify({
 		Description = "Deleted over "..delclass.." "..JJ.."(s)";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 	});
 end)
@@ -13184,7 +13204,7 @@ cmd.add({"chardelete", "charremove", "chardel", "cdelete", "cremove", "cdel"}, {
 
 	Notify({
 		Description = "Deleted over "..chardelprt.." part(s) inside the character with name: "..hh.."";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 	});
 end)
@@ -13204,7 +13224,7 @@ cmd.add({"chardeleteclass", "charremoveclass", "chardeleteclassname", "cds"}, {"
 
 	Notify({
 		Description = "Deleted over "..charclass.." "..poopy.."(s) inside the character";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 	});
 end)
@@ -13472,7 +13492,7 @@ cmd.add({"hitbox", "hbox"}, {"hitbox {amount}", "Makes everyones hitbox as much 
 
 	Notify({
 		Description = "Hitbox changed";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13550,7 +13570,7 @@ cmd.add({"breakcars", "bcars"}, {"breakcars (bcars)", "Breaks any car"}, functio
 
 	Notify({
 		Description = "Car breaker loaded, sit on a vehicle need to be the driver";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13631,72 +13651,60 @@ cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
 			ftiamount = ftiamount + 1
-			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) --0 is touch
-			wait()
+			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0) -- 0 is touch
+			task.wait();
 			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1) -- 1 is untouch
 		end
 	end
 
-
-
-
 	wait();
 
 	Notify({
-		Description = "Fired " .. ftiamount .. " amount of touch interests";
-		Title = "Nameless Admin";
+		Description = "Fired "..ftiamount.." amount of touch interests";
+		Title = adminName;
 		Duration = 7;
-
 	});
 end)
 
 local infJump=nil
 local jumpFixy=nil
+
 cmd.add({"infjump", "infinitejump"}, {"infjump (infinitejump)", "Makes you be able to jump infinitly"}, function()
-
-
 
 	wait();
 
 	Notify({
 		Description = "Infinite Jump Enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
-
 	});
-	local p = Player
-	local charr=p.Character
-	local h = charr.Humanoid
-
-	--h:SetStateEnabled(Enum.HumanoidStateType.Jumping, true)
 
 	local r = 0
 	local d = 0.25
-	local function fix()
-		if infJump then infJump:Disconnect() infJump=nil end
-		infJump = charr.Humanoid:GetPropertyChangedSignal("Jump"):Connect(function()
+
+	function fix()
+		if infJump then infJump:Disconnect() infJump = nil end
+		infJump = getHum():GetPropertyChangedSignal("Jump"):Connect(function()
 			if tick() - r > d then
 				r = tick()
-				charr:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping")
+				getHum():ChangeState("Jumping")
 			end
 		end)
 	end
+
 	fix()
-	if jumpFixy then jumpFixy:Disconnect() jumpFixy=nil end
-	jumpFixy = p.CharacterAdded:connect(function()
-		fix()
-	end)
+
+	if jumpFixy then jumpFixy:Disconnect() jumpFixy = nil end
+	jumpFixy = plr.CharacterAdded:Connect(fix)
 end)
 
 cmd.add({"uninfjump", "uninfinitejump"}, {"uninfjump (uninfinitejump)", "Makes you NOT be able to infinitly jump"}, function()
-
 	wait();
 
 	Notify({
 		Description = "Infinite Jump Disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
-
 	});
 
 	if infJump then infJump:Disconnect() infJump=nil end
@@ -13711,7 +13719,7 @@ cmd.add({"flyjump"}, {"flyjump", "Allows you to hold space to fly up"}, function
 
 	Notify({
 		Description = "FlyJump Enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 
 	});
@@ -13729,7 +13737,7 @@ cmd.add({"unflyjump", "noflyjump"}, {"unflyjump (noflyjump)", "Disables flyjump"
 
 	Notify({
 		Description = "FlyJump Disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 3;
 
 	});
@@ -13746,7 +13754,7 @@ cmd.add({"xray", "xrayon"}, {"xray (xrayon)", "Makes you be able to see through 
 
 	Notify({
 		Description = "Xray enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13762,7 +13770,7 @@ cmd.add({"unxray", "xrayoff"}, {"unxray (xrayoff)", "Makes you not be able to se
 
 	Notify({
 		Description = "Xray disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13778,7 +13786,7 @@ cmd.add({"pastebinscraper", "pastebinscrape"}, {"pastebinscraper (pastebinscrape
 
 	Notify({
 		Description = "Pastebin scraper loaded";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13797,7 +13805,7 @@ cmd.add({"amongus", "amogus"}, {"amongus (amogus)", "among us in real life, sus 
 
 	Notify({
 		Description = "Amog us...";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -13880,7 +13888,7 @@ cmd.add({"blackhole"}, {"blackhole", "Makes unanchored parts teleport to the bla
 
 	Notify({
 		Description = "Blackhole has been loaded, press e to change the position to where your mouse is";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -14066,27 +14074,24 @@ cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, 
 		for _, firedapp in ipairs(workspace:GetDescendants()) do
 			if firedapp:IsA("ProximityPrompt") and firedapp.Name:lower() == name:lower() or firedapp:IsA("ProximityPrompt") and descandant.Parent.Name:lower() == name:lower() then
 				fppamount = fppamount + 1
-				fireproximityprompt(firedapp)
+				fireproximityprompt(firedapp,0)
 			end
 		end
 	else
 		for i,v in pairs(workspace:GetDescendants()) do
 			if v:IsA("ProximityPrompt") then
 				fppamount = fppamount + 1
-				fireproximityprompt(v)
+				fireproximityprompt(v,0)
 			end
 		end
 	end
-
-
-
 
 
 	wait();
 
 	Notify({
 		Description = "Fired " .. fppamount .. " of proximity prompts";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 7;
 
 	});
@@ -14129,7 +14134,7 @@ cmd.add({"chatspy"}, {"chatspy", "Spies on chat, enables chat, spies whispers et
 
 	Notify({
 		Description = "Chat spy enabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -14577,7 +14582,7 @@ cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camno
 
 		Notify({
 			Description = "Sorry, your exploit does not support cameranoclip";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -14605,7 +14610,7 @@ cmd.add({"uncameranoclip", "uncamnoclip", "uncnoclip", "unnccam"}, {"uncameranoc
 
 		Notify({
 			Description = "Sorry, your exploit does not support cameranoclip and uncameranoclip";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 5;
 
 		});
@@ -14624,7 +14629,7 @@ cmd.add({"oganims"}, {"oganims", "Old animations from 2007"}, function()
 
 	Notify({
 		Description = "OG animations set";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -14997,7 +15002,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 	Notify({
 		Description = "Invisible loaded, press " .. Keybind .. " to toggle";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 10;
 
 	});
@@ -15006,8 +15011,8 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 		wait();
 
 		Notify({
-			Description = "Nameless Admin has detected you using mobile you now have a invisible button click it to enable / disable invisibility";
-			Title = "Nameless Admin";
+			Description = adminName.." has detected you using mobile you now have a invisible button click it to enable / disable invisibility";
+			Title = adminName;
 			Duration = 7;
 		});
 
@@ -15096,7 +15101,7 @@ cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers
 
 	Notify({
 		Description = "Chat spy disabled";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15187,7 +15192,7 @@ cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
 
 	Notify({
 		Description = "Fired " .. remoteamount .. " amount of remotes";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 
 	});
@@ -15199,7 +15204,7 @@ cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes
 
 	Notify({
 		Description = "Unanchored follow executed";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15295,7 +15300,7 @@ cmd.add({"grabtools", "gt"}, {"grabtools", "Grabs any dropped tools"}, function(
 
 	Notify({
 		Description = "Grabbed all tools";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15410,7 +15415,7 @@ cmd.add({"tpua", "bringua"}, {"tpua <player> (bringua)", "brings every unanchore
 
 	Notify({
 		Description = "Unanchored parts have been teleported to " .. TargetName .. "" ;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15486,7 +15491,7 @@ cmd.add({"unfreezeua", "unthawua"}, {"unfreezeua (unthawua)", "unfreezes every u
 
 	Notify({
 		Description = "Unfroze unanchored parts";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15510,7 +15515,7 @@ cmd.add({"highlightua", "highlightunanchored"}, {"highlightua (hightlightunancho
 
 	Notify({
 		Description = "Highlighted all unanchored parts";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15530,7 +15535,7 @@ cmd.add({"unhighlightua", "unhighlightunanchored"}, {"unhighlightua (unhightligh
 
 	Notify({
 		Description = "Unhighlighted unanchored parts";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15555,7 +15560,7 @@ cmd.add({"countua", "countunanchoreed"}, {"countua (countunanchored)", "Counts a
 
 	Notify({
 		Description = "Parts have been counted, the amount is " .. b .. "";
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 5;
 
 	});
@@ -15600,7 +15605,7 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 
 	Notify({
 		Description = "UserId set to: "..ownId.."\nUsername set to: "..ownUser;
-		Title = "Nameless Admin";
+		Title = adminName;
 		Duration = 4;
 
 	});
@@ -15633,7 +15638,7 @@ if CustomFunctionSupport then
 		PluginsErrored = PluginsErrored + 1
 		Notify({
 			Description = "Plugin error: " .. result .. "";
-			Title = "Nameless Admin";
+			Title = adminName;
 			Duration = 3;
 
 		});
@@ -15643,14 +15648,14 @@ if CustomFunctionSupport then
 	if PluginsErrored == 0 then
 	 Notify({
 			 Description = "Loaded " .. PluginsLoaded .. " plugins";
-			 Title = "Nameless Admin";
+			 Title = adminName;
 			 Duration = 3;
 			 
 			 });
 else	 
 Notify({
 	 Description = "Loaded " .. PluginsLoaded .. " plugins, although " .. PluginsErrored .. " plugins have errored";
-	 Title = "Nameless Admin";
+	 Title = adminName;
 	 Duration = 3;
 	 });
 	end
@@ -15772,6 +15777,9 @@ local commandExample = commandsList.TextLabel
 local UniverseViewerFrame = ScreenGui.UniverseViewer
 local UniverseList = UniverseViewerFrame.Container.List
 local UniverseExample = UniverseList.TextButton
+local UpdLogsFrame = ScreenGui.UpdLog
+local UpdLogsList = UpdLogsFrame.Container.List
+local UpdLogsLabel = UpdLogsList.Log
 local ShiftlockUi = ScreenGui.LockButton
 local resizeFrame = ScreenGui.Resizeable
 local resizeXY = {
@@ -15790,6 +15798,7 @@ cmdExample.Parent = nil
 chatExample.Parent = nil
 commandExample.Parent = nil
 UniverseExample.Parent = nil
+UpdLogsLabel.Parent = nil
 resizeFrame.Parent = nil
 
 --[[pcall(function()
@@ -15870,6 +15879,20 @@ gui.universeGui = function()
 		UniverseViewerFrame.Visible = true
 	end
 	UniverseViewerFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
+end
+gui.updateLogs = function()
+	if not UpdLogsFrame.Visible and next(updLogs) then
+		UpdLogsFrame.Visible = true
+	elseif not next(updLogs) then
+		Notify({
+			Description = "No Update Logs";
+			Title = adminName;
+			Duration = 2;
+		});
+	else
+		warn("huh?")
+	end
+	UpdLogsFrame.Position = UDim2.new(0.5, -283/2+5, 0.5, -260/2+5)
 end
 gui.ShiftlockVis = function()
 	if not ShiftlockUi.Visible then
@@ -16255,6 +16278,7 @@ RunService.Stepped:Connect(function()
 	chatLogs.CanvasSize = UDim2.new(0, 0, 0, chatLogs:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	commandsList.CanvasSize = UDim2.new(0, 0, 0, commandsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	UniverseList.CanvasSize = UDim2.new(0, 0, 0, UniverseList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+	UpdLogsList.CanvasSize = UDim2.new(0, 0, 0, UpdLogsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 end)
 
 
@@ -16271,25 +16295,30 @@ task.spawn(function()
 	delay(0.3, function()
 		if identifyexecutor then -- idk why i made it as a check
 			Notify({
-				Description = "Welcome to Nameless Admin V"..curVer.."\nExecutor: "..identifyexecutor();
+				Description = "Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor();
 				Title = rngMsg().." "..hh;
-				Duration = 5;
+				Duration = 6;
 			});
 		else
 			Notify({
-				Description = "Welcome to Nameless Admin V"..curVer;
+				Description = "Welcome to "..adminName.." V"..curVer;
 				Title = rngMsg().." "..hh;
-				Duration = 5;
+				Duration = 6;
 			});
 		end
 		Notify({
 			Description = goof();
 			Title = "Random Goofy Message";
-			Duration = 4;
+			Duration = 5;
+		});
+		Notify({
+			Description = 'Added "updlog" command (displays any new changes added into '..adminName..')';
+			Title = "Info";
+			Duration = 7;
 		});
 	end)
 
-	cmdInput.PlaceholderText="Nameless Admin V"..curVer
+	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
 
 task.spawn(function()
@@ -16306,7 +16335,7 @@ task.spawn(function()
 				TeleportService:Teleport(place.PlaceId, game:GetService("Players").LocalPlayer)
 				Notify({
 					Description = "Teleporting To Place: "..place.Name;
-					Title = "Nameless Admin";
+					Title = adminName;
 					Duration = 5;
 				});
 			end)
@@ -16315,6 +16344,22 @@ task.spawn(function()
 			break
 		end
 		page:AdvanceToNextPageAsync()
+	end
+end)
+
+pcall(function()
+	local template = UpdLogsLabel
+	local list = UpdLogsList
+
+	if next(updLogs) then
+		for name, txt in pairs(updLogs) do
+			local btn = template:Clone()
+			btn.Parent = list
+			btn.Name = name
+			btn.Text = txt
+		end
+	else
+		print("no upd logs :<")
 	end
 end)
 
@@ -16330,7 +16375,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	TextClickButton.Position = UDim2.new(0.5, 0, 0, 0)
 	TextClickButton.Size = UDim2.new(0, 2, 0, 33)
 	TextClickButton.Font = Enum.Font.SourceSansBold
-	TextClickButton.Text = "Nameless Admin V"..curVer
+	TextClickButton.Text = adminName.." V"..curVer
 	TextClickButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextClickButton.TextSize = 20.000
 	TextClickButton.TextWrapped = true
