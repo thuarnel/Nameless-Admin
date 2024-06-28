@@ -14,7 +14,7 @@
                                                                                              
 
 ]]
-if NamelessLoaded then --checks if Nameless Admin is already loaded
+if NamelessLoaded then
 	return
 end
 
@@ -16350,6 +16350,7 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
+end}
 
 -- @ltseverydayyou (maxype)
 -- @MuhXd (Viper)
