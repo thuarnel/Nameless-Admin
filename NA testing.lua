@@ -16217,6 +16217,7 @@ cmdBar.Visible = true
 gui.menuifyv2(chatLogsFrame)
 gui.menuify(commandsFrame)
 gui.menuify(UniverseViewerFrame)
+gui.menuify(UpdLogsFrame)
 gui.shiftlock(ShiftlockUi)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
