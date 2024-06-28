@@ -93,10 +93,7 @@ local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
 
-local updLogs = {
-	log1="- test 1",
-	log2="- test 2"
-}
+local updLogs = {}
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -16315,7 +16312,7 @@ task.spawn(function()
 		Notify({
 			Description = 'Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title = "Info";
-			Duration = 7;
+			Duration = 10;
 		});
 	end)
 
