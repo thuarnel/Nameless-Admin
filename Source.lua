@@ -76,12 +76,11 @@ local curVer = 2.19
 local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
-
 local updLogs = {
-	log1="added this update log frame lol",
-	log2="added some solara support",
-	log3="fireproximityprompts commands fixed for Solara",
-	log4="setclipboard fix for Fluxus (literally added tostring() so it would copy 💀)"
+	log1="Added some solara support",
+	log2="fireproximityprompt commands fixed for Solara",
+	log3="setclipboard commands fixed for Fluxus",
+	log4="Fixed Nameless Admin not loading properly on Solara"
 }
 
 --[[ VARIABLES ]]--

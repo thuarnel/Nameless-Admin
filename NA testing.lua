@@ -92,13 +92,14 @@ local curVer = 2.19
 local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
-
 local updLogs = {
-	log1="added this update log frame lol",
-	log2="added some solara support",
-	log3="fireproximityprompts commands fixed for Solara",
-	log4="setclipboard fix for Fluxus (literally added tostring() so it would copy 💀)"
+	log1="Added some solara support",
+	log2="fireproximityprompt commands fixed for Solara",
+	log3="setclipboard commands fixed for Fluxus",
+	log4="Fixed Nameless Admin not loading properly on Solara"
 }
+
+local updDate = "29/6/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -15780,6 +15781,7 @@ local UniverseViewerFrame = ScreenGui.UniverseViewer
 local UniverseList = UniverseViewerFrame.Container.List
 local UniverseExample = UniverseList.TextButton
 local UpdLogsFrame = ScreenGui.UpdLog
+local UpdLogsTitle = UpdLogsFrame.Topbar.TopBar.Title
 local UpdLogsList = UpdLogsFrame.Container.List
 local UpdLogsLabel = UpdLogsList.Log
 local ShiftlockUi = ScreenGui.LockButton
@@ -16350,9 +16352,11 @@ task.spawn(function()
 	end
 end)
 
-pcall(function()
+task.spawn(function()
 	local template = UpdLogsLabel
 	local list = UpdLogsList
+
+	UpdLogsTitle.Text=UpdLogsTitle.Text.." "..updDate
 
 	if next(updLogs) then
 		for name, txt in pairs(updLogs) do
