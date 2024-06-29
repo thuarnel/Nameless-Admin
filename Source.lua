@@ -5,7 +5,7 @@ end
 if not gethui then
 gethui = function() 
 return game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui") 
-end)
+end;
 end
 pcall(function() getgenv().NamelessLoaded = true end)
 
