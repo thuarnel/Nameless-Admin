@@ -93,14 +93,14 @@ local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
 local updLogs = {
-	log1="Added some solara support",
-	log2="fireproximityprompt commands fixed for Solara",
-	log3="setclipboard commands fixed for Fluxus",
-	log4="Fixed Nameless Admin not loading properly on Solara",
-	log5="Command Predictions (WIP)"
+	log1="fireproximityprompt commands fixed for Solara",
+	log2="setclipboard commands fixed for Fluxus",
+	log3="Fixed Nameless Admin not loading properly on Solara",
+	log4="Command Predictions (WIP)",
+	log5="Added (sremotespy) command [logs all the events from the remotes that got fired by the server]"
 }
 
-local updDate = "29/6/2024"
+local updDate = "30/6/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -258,7 +258,7 @@ function didYouMean(arg)
 			closer = alias
 		end
 	end
-	
+
 	return closer
 end
 
@@ -2051,6 +2051,10 @@ end)
 cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpui, universeviewer, uviewer)", "Gives an UI that grabs all places and teleports you by clicking a simple button"}, function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
 	gui.universeGui()
+end)
+
+cmd.add({"serverremotespy", "srp", "sremotespy"}, {"serverremotespy (srp, sremotespy)", "Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"}, function()
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/Server%20Spy?raw=spy"))()
 end)
 
 cmd.add({"updatelog", "updlog", "updates"}, {"updatelog (updlog, updates)", "show the update logs for Nameless Admin"}, function()
@@ -16101,38 +16105,38 @@ gui.menuify = function(menu)
 	gui.draggable(menu, menu.Topbar)
 	menu.Visible = false
 end
-gui.menuifyv2 = function(menu)
-	local exit = menu:FindFirstChild("Exit", true)
-	local mini = menu:FindFirstChild("Minimize", true)
-	local clear = menu:FindFirstChild("Clear", true);
-	local minimized = false
-	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
-	mini.MouseButton1Click:Connect(function()
-		minimized = not minimized
-		if minimized then
-			sizeX.Value = menu.Size.X.Offset
-			sizeY.Value = menu.Size.Y.Offset
-			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
-		else
-			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
-		end
-	end)
-	exit.MouseButton1Click:Connect(function()
-		menu.Visible = false
-	end)
-	if clear then 
-		clear.MouseButton1Click:Connect(function()
-			local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
-			for _,v in ipairs(t.Parent:GetChildren()) do
-				if v:IsA("TextLabel") then
-					v:Destroy()
-				end
+	gui.menuifyv2 = function(menu)
+		local exit = menu:FindFirstChild("Exit", true)
+		local mini = menu:FindFirstChild("Minimize", true)
+		local clear = menu:FindFirstChild("Clear", true);
+		local minimized = false
+		local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
+		mini.MouseButton1Click:Connect(function()
+			minimized = not minimized
+			if minimized then
+				sizeX.Value = menu.Size.X.Offset
+				sizeY.Value = menu.Size.Y.Offset
+				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
+			else
+				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
 			end
 		end)
+		exit.MouseButton1Click:Connect(function()
+			menu.Visible = false
+		end)
+		if clear then 
+			clear.MouseButton1Click:Connect(function()
+				local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
+				for _,v in ipairs(t.Parent:GetChildren()) do
+					if v:IsA("TextLabel") then
+						v:Destroy()
+					end
+				end
+			end)
+		end
+		gui.draggable(menu, menu.Topbar)
+		menu.Visible = false
 	end
-	gui.draggable(menu, menu.Topbar)
-	menu.Visible = false
-end
 
 gui.shiftlock = function(sLock)
 	local V = false
