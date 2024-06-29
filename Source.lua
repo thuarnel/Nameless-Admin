@@ -13005,7 +13005,7 @@ local doIpp = nil
 cmd.add({"instantproximityprompts", "instantpp", "ipp"}, {"instantproximityprompts (instantpp, ipp)", "Disable the cooldown for proximity prompts"}, function()
 	if doIpp then doIpp:Disconnect() doIpp=nil end
 	doIpp = ProximityPromptService.PromptButtonHoldBegan:Connect(function(pp)
-		fireproximityprompt(pp,0)
+		fireproximityprompt(pp,1)
 	end)
 end)
 
@@ -14060,14 +14060,14 @@ cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, 
 		for _, firedapp in ipairs(workspace:GetDescendants()) do
 			if firedapp:IsA("ProximityPrompt") and firedapp.Name:lower() == name:lower() or firedapp:IsA("ProximityPrompt") and descandant.Parent.Name:lower() == name:lower() then
 				fppamount = fppamount + 1
-				fireproximityprompt(firedapp,0)
+				fireproximityprompt(firedapp,1)
 			end
 		end
 	else
 		for i,v in pairs(workspace:GetDescendants()) do
 			if v:IsA("ProximityPrompt") then
 				fppamount = fppamount + 1
-				fireproximityprompt(v,0)
+				fireproximityprompt(v,1)
 			end
 		end
 	end
