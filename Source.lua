@@ -83,6 +83,8 @@ local updLogs = {
 	log4="Fixed Nameless Admin not loading properly on Solara"
 }
 
+local updDate = "29/6/2024"
+
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
 local Players = game:GetService("Players");
@@ -15763,6 +15765,7 @@ local UniverseViewerFrame = ScreenGui.UniverseViewer
 local UniverseList = UniverseViewerFrame.Container.List
 local UniverseExample = UniverseList.TextButton
 local UpdLogsFrame = ScreenGui.UpdLog
+local UpdLogsTitle = UpdLogsFrame.Topbar.TopBar.Title
 local UpdLogsList = UpdLogsFrame.Container.List
 local UpdLogsLabel = UpdLogsList.Log
 local ShiftlockUi = ScreenGui.LockButton
@@ -16333,9 +16336,11 @@ task.spawn(function()
 	end
 end)
 
-pcall(function()
+task.spawn(function()
 	local template = UpdLogsLabel
 	local list = UpdLogsList
+
+	UpdLogsTitle.Text=UpdLogsTitle.Text.." "..updDate
 
 	if next(updLogs) then
 		for name, txt in pairs(updLogs) do
