@@ -18,11 +18,17 @@ if NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
+if not gethui then
+	gethui = function() 
+		return game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui") 
+	end;
+end	
+
 pcall(function() getgenv().NamelessLoaded = true end)
 
 -- Waits until game is loaded
 local GetService = game.GetService
-local iamcore = game:GetService("CoreGui") or gethui()
+local iamcore = game:GetService("CoreGui") or gethui() or nil
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
 	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui"))
@@ -119,15 +125,15 @@ local SoundService = game:GetService("SoundService");
 local Lighting = game:GetService("Lighting");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local GuiService = game:GetService("GuiService");
-local COREGUI = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
-local CoreGui = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
-local coregui = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
+local COREGUI = (game:GetService("CoreGui") or gethui());
+local CoreGui = (game:GetService("CoreGui") or gethui());
+local coregui = (game:GetService("CoreGui") or gethui());
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player:FindFirstChild("PlayerGui")
-local SolaraCheck = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
+local SolaraCheck = (game:GetService("CoreGui") or gethui());
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character = Player.Character
