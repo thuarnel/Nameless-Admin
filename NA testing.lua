@@ -218,6 +218,49 @@ local Goofer = {
 	"unreal",
 }
 
+--[[ prediction ]] --
+function levenshtein(s, t)
+	local d = {}
+	local lenS, lenT = #s, #t
+	for i = 0, lenS do
+		d[i] = {}
+		d[i][0] = i
+	end
+	for j = 0, lenT do
+		d[0][j] = j
+	end
+	for i = 1, lenS do
+		for j = 1, lenT do
+			local cost = (s:sub(i, i) == t:sub(j, j)) and 0 or 1
+			d[i][j] = math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost)
+		end
+	end
+	return d[lenS][lenT]
+end
+
+function didYouMean(arg)
+	local closestMatch = nil
+	local minDistance = math.huge
+
+	for cmd in pairs(Commands) do
+		local distance = levenshtein(arg, cmd)
+		if distance < minDistance then
+			minDistance = distance
+			closestMatch = cmd
+		end
+	end
+
+	for alias in pairs(Aliases) do
+		local distance = levenshtein(arg, alias)
+		if distance < minDistance then
+			minDistance = distance
+			closestMatch = alias
+		end
+	end
+
+	return closestMatch
+end
+
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount = 0
 cmd = {}
@@ -236,15 +279,29 @@ end
 
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
+	if not caller then return end
 	local success, msg = pcall(function()
-		if Commands[caller:lower()] then
-			Commands[caller:lower()][1](unpack(arguments))
-		elseif Aliases[caller:lower()] then
-			Aliases[caller:lower()][1](unpack(arguments))
+		local command = Commands[caller:lower()] or Aliases[caller:lower()]
+		if command then
+			command[1](unpack(arguments))
+		else
+			local closestMatch = didYouMean(caller:lower())
+			if closestMatch then
+				Notify({
+					Description = "Did you mean ("..caller..") ?";
+					Title = adminName;
+					Duration = 2;
+				});
+			else
+				Notify({
+					Description = "Command ("..caller..") not found";
+					Title = adminName;
+					Duration = 2;
+				});
+			end
 		end
 	end)
-	if not success then
-	end
+	if not success then end
 end
 function randomString()
 	local length = math.random(10,20)
