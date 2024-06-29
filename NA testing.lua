@@ -22,7 +22,7 @@ pcall(function() getgenv().NamelessLoaded = true end)
 
 -- Waits until game is loaded
 local GetService = game.GetService
-local iamcore = game:GetService("CoreGui")
+local iamcore = game:GetService("CoreGui") or gethui()
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
 	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui"))
