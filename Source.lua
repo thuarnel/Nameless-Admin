@@ -273,16 +273,16 @@ cmd.run = function(args)
 			local closest = didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description = "Did you mean ("..closest..")?";
+					Description = "Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
 					Title = adminName;
 					Duration = 4;
 				});
 			else
-				Notify({
+				--[[Notify({
 					Description = "Command ("..caller..") not found";
 					Title = adminName;
 					Duration = 4;
-				});
+				});]]
 			end
 		end
 	end)
