@@ -80,7 +80,8 @@ local updLogs = {
 	log1="Added some solara support",
 	log2="fireproximityprompt commands fixed for Solara",
 	log3="setclipboard commands fixed for Fluxus",
-	log4="Fixed Nameless Admin not loading properly on Solara"
+	log4="Fixed Nameless Admin not loading properly on Solara",
+	log5="Command Predictions (WIP)"
 }
 
 local updDate = "29/6/2024"
@@ -223,26 +224,26 @@ function levenshtein(s, t)
 end
 
 function didYouMean(arg)
-	local closestMatch = nil
-	local minDistance = math.huge
+	local closer = nil
+	local min = math.huge
 
 	for cmd in pairs(Commands) do
-		local distance = levenshtein(arg, cmd)
-		if distance < minDistance then
-			minDistance = distance
-			closestMatch = cmd
+		local j = levenshtein(arg, cmd)
+		if j < min then
+			min = j
+			closer = cmd
 		end
 	end
 
 	for alias in pairs(Aliases) do
-		local distance = levenshtein(arg, alias)
-		if distance < minDistance then
-			minDistance = distance
-			closestMatch = alias
+		local j = levenshtein(arg, alias)
+		if j < min then
+			min = j
+			closer = alias
 		end
 	end
-
-	return closestMatch
+	
+	return closer
 end
 
 --[[ COMMAND FUNCTIONS ]]--
