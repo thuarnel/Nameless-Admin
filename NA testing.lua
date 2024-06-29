@@ -279,7 +279,6 @@ end
 
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
-	if not caller then return end
 
 	local success, msg = pcall(function()
 		local command = Commands[caller:lower()] or Aliases[caller:lower()]
