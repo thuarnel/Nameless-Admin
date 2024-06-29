@@ -275,13 +275,13 @@ cmd.run = function(args)
 				Notify({
 					Description = "Did you mean ("..closest..")?";
 					Title = adminName;
-					Duration = 2;
+					Duration = 4;
 				});
 			else
 				Notify({
 					Description = "Command ("..caller..") not found";
 					Title = adminName;
-					Duration = 2;
+					Duration = 4;
 				});
 			end
 		end
@@ -14594,16 +14594,20 @@ cmd.add({"bhop"}, {"bhop", "bhop bhop bhop bhop bhop bhop bhop bla bla bla idk w
 end)
 
 cmd.add({"firstp", "1stp", "firstperson", "fp"}, {"firstperson (1stp, firstp, fp)", "Makes you go in first person mode"}, function()
-	game.Players.LocalPlayer.CameraMode = "LockFirstPerson"
+	Player.CameraMode = "LockFirstPerson"
 end)
 
 cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes you go in third person mode"}, function()
-	game.Players.LocalPlayer.CameraMaxZoomDistance = math.huge
-	game.Players.LocalPlayer.CameraMode = "Classic"
+	Player.CameraMaxZoomDistance = math.huge
+	Player.CameraMode = "Classic"
 end)
 
-cmd.add({"maxzoom", "camzoom"}, {"maxzoom <amount> (camzoom)", "Set your maximum camera distance"}, function(arg)
-	Player.CameraMaxZoomDistance = arg[1]
+cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, function(arg)
+	Player.CameraMaxZoomDistance = tonumber(arg[1])
+end)
+
+cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(arg)
+	Player.CameraMinZoomDistance = tonumber(arg[1])
 end)
 
 cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camnoclip, cnoclip, nccam)", "Makes your camera clip through walls"}, function()
@@ -14629,7 +14633,6 @@ cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camno
 			Description = "Sorry, your exploit does not support cameranoclip";
 			Title = adminName;
 			Duration = 5;
-
 		});
 	end
 end)
