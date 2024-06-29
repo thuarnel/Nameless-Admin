@@ -280,15 +280,16 @@ end
 cmd.run = function(args)
 	local caller, arguments = args[1], args; table.remove(args, 1);
 	if not caller then return end
+
 	local success, msg = pcall(function()
 		local command = Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
 			command[1](unpack(arguments))
 		else
-			local closestMatch = didYouMean(caller:lower())
-			if closestMatch then
+			local closest = didYouMean(caller:lower())
+			if closest then
 				Notify({
-					Description = "Did you mean ("..caller..") ?";
+					Description = "Did you mean ("..closest..")?";
 					Title = adminName;
 					Duration = 2;
 				});
