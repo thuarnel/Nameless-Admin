@@ -14613,11 +14613,11 @@ cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes
 end)
 
 cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, function(arg)
-	Player.CameraMaxZoomDistance = tonumber(arg[1])
+	Player.CameraMaxZoomDistance = arg[1]
 end)
 
 cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(arg)
-	Player.CameraMinZoomDistance = tonumber(arg[1])
+	Player.CameraMinZoomDistance = arg[1]
 end)
 
 cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camnoclip, cnoclip, nccam)", "Makes your camera clip through walls"}, function()
