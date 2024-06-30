@@ -2043,7 +2043,7 @@ cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpu
 	gui.universeGui()
 end)
 
-cmd.add({"serverremotespy", "srp", "sremotespy"}, {"serverremotespy (srp, sremotespy)", "Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"}, function()
+cmd.add({"serverremotespy", "srs", "sremotespy"}, {"serverremotespy (srs, sremotespy)", "Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"}, function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/Server%20Spy?raw=spy"))()
 end)
 
