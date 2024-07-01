@@ -15261,19 +15261,21 @@ cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
 local remoteamount = 0
 
 for _, v in pairs(game:GetDescendants()) do
-    if v:IsA("RemoteEvent") then
-        remoteamount = remoteamount + 1
-        v:FireServer()
-    elseif v:IsA("BindableEvent") then
-        remoteamount = remoteamount + 1
-        v:Fire()
-    elseif v:IsA("RemoteFunction") then
-        remoteamount = remoteamount + 1
-        v:InvokeServer()
+    if not v:IsDescendantOf(game.CoreGui) then
+        if v:IsA("RemoteEvent") then
+            remoteamount = remoteamount + 1
+            v:FireServer()
+        elseif v:IsA("BindableEvent") then
+            remoteamount = remoteamount + 1
+            v:Fire()
+        elseif v:IsA("RemoteFunction") then
+            remoteamount = remoteamount + 1
+            v:InvokeServer()
+        end
     end
 end
 
-wait()
+wait();
 
 Notify({
     Description = "Fired "..remoteamount.." amount of remotes";
