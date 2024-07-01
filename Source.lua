@@ -2044,7 +2044,7 @@ cmd.add({"teleportgui", "tpui", "universeviewer", "uviewer"}, {"teleportgui (tpu
 end)
 
 cmd.add({"serverremotespy", "srs", "sremotespy"}, {"serverremotespy (srs, sremotespy)", "Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"}, function()
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/Server%20Spy?raw=spy"))()
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/Server%20Spy.lua?raw=spy"))()
 end)
 
 cmd.add({"updatelog", "updlog", "updates"}, {"updatelog (updlog, updates)", "show the update logs for Nameless Admin"}, function()
