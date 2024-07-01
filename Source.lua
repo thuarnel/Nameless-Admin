@@ -15242,30 +15242,28 @@ cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers
 end)
 
 cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
-	local remoteamount = 0
+local remoteamount = 0
 
-	for i,v in pairs(game:GetDescendants()) do
-		if v:IsA("RemoteEvent") then
-			remoteamount = remoteamount + 1
-			v:FireServer()
-			if v:IsA("BindableEvent") then
-				remoteamount = remoteamount + 1
-				v:Fire()
-				if v:IsA("RemoteFunction") then
-					remoteamount = remoteamount + 1
-					v:InvokeServer()
-				end
-			end
-		end
-	end
-	wait();
+for _, v in pairs(game:GetDescendants()) do
+    if v:IsA("RemoteEvent") then
+        remoteamount = remoteamount + 1
+        v:FireServer()
+    elseif v:IsA("BindableEvent") then
+        remoteamount = remoteamount + 1
+        v:Fire()
+    elseif v:IsA("RemoteFunction") then
+        remoteamount = remoteamount + 1
+        v:InvokeServer()
+    end
+end
 
-	Notify({
-		Description = "Fired " .. remoteamount .. " amount of remotes";
-		Title = adminName;
-		Duration = 4;
+wait()
 
-	});
+Notify({
+    Description = "Fired "..remoteamount.." amount of remotes";
+    Title = adminName;
+    Duration = 4;
+})
 end)
 
 
