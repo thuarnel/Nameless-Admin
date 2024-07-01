@@ -99,14 +99,10 @@ local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
 local updLogs = {
-	log1="fireproximityprompt commands fixed for Solara",
-	log2="setclipboard commands fixed for Fluxus",
-	log3="Fixed Nameless Admin not loading properly on Solara",
-	log4="Command Predictions (WIP)",
-	log5="Added (sremotespy) command [logs all the events from the remotes that got fired by the server]"
+	log1="Added (sremotespy) command [logs all the events from the remotes that got fired by the server]"
 }
 
-local updDate = "30/6/2024"
+local updDate = "7/01/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -14628,12 +14624,21 @@ cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes
 	Player.CameraMode = "Classic"
 end)
 
-cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, function(arg)
-	Player.CameraMaxZoomDistance = arg[1]
+cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, function(...)
+	num = {...}
+
+	if num == nil then
+		num = math.huge
+	end
+	game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = tonumber(num)
 end)
 
-cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(arg)
-	Player.CameraMinZoomDistance = arg[1]
+cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(...)
+	num = {...}
+	if num == nil then
+		num = 0
+	end
+	game:GetService("Players").LocalPlayer.CameraMinZoomDistance = tonumber(num)
 end)
 
 cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camnoclip, cnoclip, nccam)", "Makes your camera clip through walls"}, function()
