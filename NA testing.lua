@@ -15261,23 +15261,33 @@ cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote"}, function()
 local rem = 0
 
 for _, v in pairs(game:GetDescendants()) do
+    if not v:IsDescendantOf(game.CoreGui) then
         if v:IsA("RemoteEvent") then
+            local success, err = pcall(function()
+                v:FireServer()
+            end)
             rem = rem + 1
-            v:FireServer()
+        elseif v:IsA("BindableEvent") then
+            local success, err = pcall(function()
+                v:Fire()
+            end)
+            rem = rem + 1
         elseif v:IsA("RemoteFunction") then
+            local success, err = pcall(function()
+                v:InvokeServer()
+            end)
             rem = rem + 1
-            v:InvokeServer()
-	end
+        end
+    end
 end
 
-wait();
+wait()
 
 Notify({
-    Description = "Fired "..rem.." amount of remotes";
+    Description = "Fired " .. rem .. " amount of remotes";
     Title = adminName;
     Duration = 4;
 })
-
 end)
 
 cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes unanchored parts follow you"}, function() 
