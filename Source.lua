@@ -14609,18 +14609,25 @@ cmd.add({"thirdp", "3rdp", "thirdperson"}, {"thirdperson (3rdp, thirdp)", "Makes
 end)
 
 cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, function(...)
-	num = {...}
+	local args = {...}
+	local num = args[1]
 
 	if num == nil then
 		num = math.huge
+	else
+		num = tonumber(num)
 	end
 	game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = num
 end)
 
 cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(...)
-	num = {...}
+	local args = {...}
+	local num = args[1]
+
 	if num == nil then
 		num = 0
+	else
+		num = tonumber(num)
 	end
 	game:GetService("Players").LocalPlayer.CameraMinZoomDistance = num
 end)
