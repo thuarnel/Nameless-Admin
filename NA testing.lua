@@ -15257,31 +15257,27 @@ cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers
 	chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 end)
 
-cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote."}, function()
-local remoteamount = 0
+cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote"}, function()
+local rem = 0
 
 for _, v in pairs(game:GetDescendants()) do
-    if not v:IsDescendantOf(game.CoreGui) then
         if v:IsA("RemoteEvent") then
-            remoteamount = remoteamount + 1
+            rem = rem + 1
             v:FireServer()
-        elseif v:IsA("BindableEvent") then
-            remoteamount = remoteamount + 1
-            v:Fire()
         elseif v:IsA("RemoteFunction") then
-            remoteamount = remoteamount + 1
+            rem = rem + 1
             v:InvokeServer()
-        end
-    end
+	end
 end
 
 wait();
 
 Notify({
-    Description = "Fired "..remoteamount.." amount of remotes";
+    Description = "Fired "..rem.." amount of remotes";
     Title = adminName;
     Duration = 4;
 })
+
 end)
 
 cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes unanchored parts follow you"}, function() 
