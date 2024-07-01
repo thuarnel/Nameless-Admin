@@ -14630,7 +14630,7 @@ cmd.add({"maxzoom"}, {"maxzoom <amount>", "Set your maximum camera distance"}, f
 	if num == nil then
 		num = math.huge
 	end
-	game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = tonumber(num)
+	game:GetService("Players").LocalPlayer.CameraMaxZoomDistance = num
 end)
 
 cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, function(...)
@@ -14638,7 +14638,7 @@ cmd.add({"minzoom"}, {"minzoom <amount>", "Set your minimum camera distance"}, f
 	if num == nil then
 		num = 0
 	end
-	game:GetService("Players").LocalPlayer.CameraMinZoomDistance = tonumber(num)
+	game:GetService("Players").LocalPlayer.CameraMinZoomDistance = num
 end)
 
 cmd.add({"cameranoclip", "camnoclip", "cnoclip", "nccam"}, {"cameranoclip (camnoclip, cnoclip, nccam)", "Makes your camera clip through walls"}, function()
