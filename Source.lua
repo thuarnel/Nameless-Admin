@@ -10791,7 +10791,11 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	if jpLoop then jpLoop:Disconnect() jpLoop=nil end
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp and getHum() then
+			if getHum().UseJumpPower then
 			getHum().JumpPower = NamelessJP
+		else
+			getHum().JumpHeight  = NamelessJP
+		end
 		end
 	end)
 end)
