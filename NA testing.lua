@@ -16276,7 +16276,7 @@ gui.searchCommands = function()
 	local lastFrame
 	for _, v in ipairs(cmdAutofill:GetChildren()) do
 		if v:IsA("Frame") and index < 5 then
-			local cmd = Commands[v.Name] or Aliases[v.Name]
+			local cmd = Commands[v.Name] and Aliases[v.Name]
 			local name = cmd and cmd[2][1] or ""
 			v.Input.Text = str ~= "" and (v.Name:find(str) == 1 or v.Name:find(str) == 2) and v.Name or name
 			v.Visible = str == "" or v.Name:find(str)
