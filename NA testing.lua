@@ -16271,34 +16271,36 @@ end
 
 -- [[ AUTOFILL SEARCHER ]] --
 gui.searchCommands = function()
-	local str = (cmdInput.Text:gsub(prefixCheck, "")):lower()
-	local index = 0
-	local lastFrame
+    local str = (cmdInput.Text:gsub(";", "")):lower()
+    local index = 0
+    local lastFrame
 
-	for _, v in ipairs(cmdAutofill:GetChildren()) do
-		if v:IsA("Frame") and index < 5 then
-			local cmdName = v.Name
-			local cmd = Commands[cmdName] or Commands[Aliases[cmdName]]
-			local name = cmd and cmd[2][1] or ""
+    for _, v in ipairs(cmdAutofill:GetChildren()) do
+        if v:IsA("Frame") and index < 5 then
+            local cmdName = v.Name
+            local cmd = Commands[cmdName] or Commands[Aliases[cmdName]]
 
-			local visible = str == "" or cmdName:lower():find(str) == 1
-
-			v.Input.Text = cmd and (visible and cmdName or name) or ""
-			v.Visible = visible
-
-			if v.Visible then
-				index = index + 1
-				local n = math.sqrt(index) * 125
-				local yPos = (index - 1) * 28
-				local newPos = UDim2.new(0.5, 0, 0, yPos)
-				gui.tween(v, "Quint", "Out", 0.3, {
-					Size = UDim2.new(0.5, n, 0, 25),
-					Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
-				})
-				lastFrame = v
-			end
-		end
-	end
+            local dName = cmd and (Commands[cmdName] and cmdName or Aliases[cmdName]) or ""
+            local name = cmd and cmd[2][1] or ""
+            
+            local visible = str == "" or dName:lower():find(str) == 1
+            
+            v.Input.Text = visible and dName or name
+            v.Visible = visible
+            
+            if v.Visible then
+                index = index + 1
+                local n = math.sqrt(index) * 125
+                local yPos = (index - 1) * 28
+                local newPos = UDim2.new(0.5, 0, 0, yPos)
+                gui.tween(v, "Quint", "Out", 0.3, {
+                    Size = UDim2.new(0.5, n, 0, 25),
+                    Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
+                })
+                lastFrame = v
+            end
+        end
+    end
 end
 
 --[[ GUI FUNCTIONALITY ]]--
