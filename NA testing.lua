@@ -16271,28 +16271,31 @@ end
 
 -- [[ AUTOFILL SEARCHER ]] --
 gui.searchCommands = function()
-	local str = (cmdInput.Text:gsub(";", "")):lower()
-	local index = 0
-	local lastFrame
-	for _, v in ipairs(cmdAutofill:GetChildren()) do
-		if v:IsA("Frame") and index < 5 then
-			local cmd = Commands[v.Name]
-			local name = cmd and cmd[2][1] or ""
-			v.Input.Text = str ~= "" and v.Name:find(str) == 1 and v.Name or name
-			v.Visible = str == "" or v.Name:find(str)
-			if v.Visible then
-				index = index + 1
-				local n = math.sqrt(index) * 125
-				local yPos = (index - 1) * 28
-				local newPos = UDim2.new(0.5, 0, 0, yPos)
-				gui.tween(v, "Quint", "Out", 0.3, {
-					Size = UDim2.new(0.5, n, 0, 25),
-					Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
-				})
-				lastFrame = v
-			end
-		end
-	end
+    local str = (cmdInput.Text:gsub(";", "")):lower()
+    local index = 0
+    local lastFrame
+    for _, v in ipairs(cmdAutofill:GetChildren()) do
+        if v:IsA("Frame") and index < 5 then
+            local cmd = Commands[v.Name] or Commands[Aliases[v.Name]]
+            local name = cmd and cmd[2][1] or ""
+            local cmdName = cmd and (Commands[v.Name] and v.Name or Aliases[v.Name]) or ""
+            
+            v.Input.Text = str ~= "" and cmdName:lower():find(str) == 1 and cmdName or name
+            v.Visible = str == "" or cmdName:lower():find(str) == 1
+
+            if v.Visible then
+                index = index + 1
+                local n = math.sqrt(index) * 125
+                local yPos = (index - 1) * 28
+                local newPos = UDim2.new(0.5, 0, 0, yPos)
+                gui.tween(v, "Quint", "Out", 0.3, {
+                    Size = UDim2.new(0.5, n, 0, 25),
+                    Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
+                })
+                lastFrame = v
+            end
+        end
+    end
 end
 
 --[[ GUI FUNCTIONALITY ]]--
