@@ -10808,10 +10808,10 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp and getHum() then
 			if getHum().UseJumpPower then
-			getHum().JumpPower = NamelessJP
-		else
-			getHum().JumpHeight  = NamelessJP
-		end
+				getHum().JumpPower = NamelessJP
+			else
+				getHum().JumpHeight  = NamelessJP
+			end
 		end
 	end)
 end)
@@ -15262,36 +15262,36 @@ cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers
 end)
 
 cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote"}, function()
-local rem = 0
+	local rem = 0
 
-for _, v in pairs(game:GetDescendants()) do
-    if not v:IsDescendantOf(game.CoreGui) then
-        if v:IsA("RemoteEvent") then
-            local success, err = pcall(function()
-                v:FireServer()
-            end)
-            rem = rem + 1
-        elseif v:IsA("BindableEvent") then
-            local success, err = pcall(function()
-                v:Fire()
-            end)
-            rem = rem + 1
-        elseif v:IsA("RemoteFunction") then
-            local success, err = pcall(function()
-                v:InvokeServer()
-            end)
-            rem = rem + 1
-        end
-    end
-end
+	for _, v in pairs(game:GetDescendants()) do
+		if not v:IsDescendantOf(game.CoreGui) then
+			if v:IsA("RemoteEvent") then
+				local success, err = pcall(function()
+					v:FireServer()
+				end)
+				rem = rem + 1
+			elseif v:IsA("BindableEvent") then
+				local success, err = pcall(function()
+					v:Fire()
+				end)
+				rem = rem + 1
+			elseif v:IsA("RemoteFunction") then
+				local success, err = pcall(function()
+					v:InvokeServer()
+				end)
+				rem = rem + 1
+			end
+		end
+	end
 
-wait()
+	wait()
 
-Notify({
-    Description = "Fired " .. rem .. " amount of remotes";
-    Title = adminName;
-    Duration = 4;
-})
+	Notify({
+		Description = "Fired " .. rem .. " amount of remotes";
+		Title = adminName;
+		Duration = 4;
+	})
 end)
 
 cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes unanchored parts follow you"}, function() 
@@ -16132,38 +16132,38 @@ gui.menuify = function(menu)
 	gui.draggable(menu, menu.Topbar)
 	menu.Visible = false
 end
-	gui.menuifyv2 = function(menu)
-		local exit = menu:FindFirstChild("Exit", true)
-		local mini = menu:FindFirstChild("Minimize", true)
-		local clear = menu:FindFirstChild("Clear", true);
-		local minimized = false
-		local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
-		mini.MouseButton1Click:Connect(function()
-			minimized = not minimized
-			if minimized then
-				sizeX.Value = menu.Size.X.Offset
-				sizeY.Value = menu.Size.Y.Offset
-				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
-			else
-				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
+gui.menuifyv2 = function(menu)
+	local exit = menu:FindFirstChild("Exit", true)
+	local mini = menu:FindFirstChild("Minimize", true)
+	local clear = menu:FindFirstChild("Clear", true);
+	local minimized = false
+	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
+	mini.MouseButton1Click:Connect(function()
+		minimized = not minimized
+		if minimized then
+			sizeX.Value = menu.Size.X.Offset
+			sizeY.Value = menu.Size.Y.Offset
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
+		else
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
+		end
+	end)
+	exit.MouseButton1Click:Connect(function()
+		menu.Visible = false
+	end)
+	if clear then 
+		clear.MouseButton1Click:Connect(function()
+			local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
+			for _,v in ipairs(t.Parent:GetChildren()) do
+				if v:IsA("TextLabel") then
+					v:Destroy()
+				end
 			end
 		end)
-		exit.MouseButton1Click:Connect(function()
-			menu.Visible = false
-		end)
-		if clear then 
-			clear.MouseButton1Click:Connect(function()
-				local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
-				for _,v in ipairs(t.Parent:GetChildren()) do
-					if v:IsA("TextLabel") then
-						v:Destroy()
-					end
-				end
-			end)
-		end
-		gui.draggable(menu, menu.Topbar)
-		menu.Visible = false
 	end
+	gui.draggable(menu, menu.Topbar)
+	menu.Visible = false
+end
 
 gui.shiftlock = function(sLock)
 	local V = false
@@ -16207,40 +16207,40 @@ end
 
 
 gui.loadCommands = function()
-    for i, v in pairs(cmdAutofill:GetChildren()) do
-        if v.Name ~= "UIListLayout" then
-            Destroy(v)
-        end
-    end
-    local i = 0
-    for name, tbl in pairs(Commands) do
-        local info = tbl[2]
-        local btn = cmdExample:Clone()
-        btn.Parent = cmdAutofill
-        btn.Name = name
-        btn.Input.Text = info[1]
-        i = i + 1
+	for i, v in pairs(cmdAutofill:GetChildren()) do
+		if v.Name ~= "UIListLayout" then
+			Destroy(v)
+		end
+	end
+	local i = 0
+	for name, tbl in pairs(Commands) do
+		local info = tbl[2]
+		local btn = cmdExample:Clone()
+		btn.Parent = cmdAutofill
+		btn.Name = name
+		btn.Input.Text = info[1]
+		i = i + 1
 
-        local size = btn.Size
-        btn.Size = UDim2.new(0, 0, 0, 25)
-        btn.Size = size
-    end
-    
-    for alias, cmdName in pairs(Aliases) do
-        local cmd = Commands[cmdName]
-        if cmd then
-            local info = cmd[2]
-            local btn = cmdExample:Clone()
-            btn.Parent = cmdAutofill
-            btn.Name = alias
-            btn.Input.Text = info[1]
-            i = i + 1
+		local size = btn.Size
+		btn.Size = UDim2.new(0, 0, 0, 25)
+		btn.Size = size
+	end
 
-            local size = btn.Size
-            btn.Size = UDim2.new(0, 0, 0, 25)
-            btn.Size = size
-        end
-    end
+	for alias, cmdName in pairs(Aliases) do
+		local cmd = Commands[cmdName]
+		if cmd then
+			local info = cmd[2]
+			local btn = cmdExample:Clone()
+			btn.Parent = cmdAutofill
+			btn.Name = alias
+			btn.Input.Text = info[1]
+			i = i + 1
+
+			local size = btn.Size
+			btn.Size = UDim2.new(0, 0, 0, 25)
+			btn.Size = size
+		end
+	end
 end
 
 gui.loadCommands()
@@ -16271,30 +16271,35 @@ end
 
 -- [[ AUTOFILL SEARCHER ]] --
 gui.searchCommands = function()
-    local str = (cmdInput.Text:gsub(";", "")):lower()
-    local index = 0
-    local lastFrame
-    for _, v in ipairs(cmdAutofill:GetChildren()) do
-        if v:IsA("Frame") and index < 5 then
-            local cmdName = v.Name
-            local cmd = Commands[cmdName] or Commands[Aliases[cmdName]]
-            local name = cmd and cmd[2][1] or ""
-            v.Input.Text = str ~= "" and v.Name:find(str) == 1 and v.Name or name
-            v.Visible = str == "" or v.Name:find(str)
-            if v.Visible then
-                index = index + 1
-                local n = math.sqrt(index) * 125
-                local yPos = (index - 1) * 28
-                local newPos = UDim2.new(0.5, 0, 0, yPos)
-                gui.tween(v, "Quint", "Out", 0.3, {
-                    Size = UDim2.new(0.5, n, 0, 25),
-                    Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
-                })
-                lastFrame = v
-            end
-        end
-    end
-end	
+	local str = (cmdInput.Text:gsub(prefixCheck, "")):lower()
+	local index = 0
+	local lastFrame
+
+	for _, v in ipairs(cmdAutofill:GetChildren()) do
+		if v:IsA("Frame") and index < 5 then
+			local cmdName = v.Name
+			local cmd = Commands[cmdName] or Commands[Aliases[cmdName]]
+			local name = cmd and cmd[2][1] or ""
+
+			local visible = str == "" or cmdName:lower():find(str) == 1
+
+			v.Input.Text = cmd and (visible and cmdName or name) or ""
+			v.Visible = visible
+
+			if v.Visible then
+				index = index + 1
+				local n = math.sqrt(index) * 125
+				local yPos = (index - 1) * 28
+				local newPos = UDim2.new(0.5, 0, 0, yPos)
+				gui.tween(v, "Quint", "Out", 0.3, {
+					Size = UDim2.new(0.5, n, 0, 25),
+					Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
+				})
+				lastFrame = v
+			end
+		end
+	end
+end
 
 --[[ GUI FUNCTIONALITY ]]--
 
