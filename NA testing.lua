@@ -16207,25 +16207,40 @@ end
 
 
 gui.loadCommands = function()
-	for i, v in pairs(cmdAutofill:GetChildren()) do
-		if v.Name ~= "UIListLayout" then
-			Destroy(v)
-		end
-	end
-	local last = nil
-	local i = 0
-	for name, tbl in pairs(Commands) do
-		local info = tbl[2]
-		local btn = cmdExample:Clone()
-		btn.Parent = cmdAutofill
-		btn.Name = name
-		btn.Input.Text = info[1]
-		i = i + 1
+    for i, v in pairs(cmdAutofill:GetChildren()) do
+        if v.Name ~= "UIListLayout" then
+            Destroy(v)
+        end
+    end
+    local i = 0
+    for name, tbl in pairs(Commands) do
+        local info = tbl[2]
+        local btn = cmdExample:Clone()
+        btn.Parent = cmdAutofill
+        btn.Name = name
+        btn.Input.Text = info[1]
+        i = i + 1
 
-		local size = btn.Size
-		btn.Size = UDim2.new(0, 0, 0, 25)
-		btn.Size = size
-	end
+        local size = btn.Size
+        btn.Size = UDim2.new(0, 0, 0, 25)
+        btn.Size = size
+    end
+    
+    for alias, cmdName in pairs(Aliases) do
+        local cmd = Commands[cmdName]
+        if cmd then
+            local info = cmd[2]
+            local btn = cmdExample:Clone()
+            btn.Parent = cmdAutofill
+            btn.Name = alias
+            btn.Input.Text = info[1]
+            i = i + 1
+
+            local size = btn.Size
+            btn.Size = UDim2.new(0, 0, 0, 25)
+            btn.Size = size
+        end
+    end
 end
 
 gui.loadCommands()
@@ -16256,29 +16271,30 @@ end
 
 -- [[ AUTOFILL SEARCHER ]] --
 gui.searchCommands = function()
-	local str = (cmdInput.Text:gsub(";", "")):lower()
-	local index = 0
-	local lastFrame
-	for _, v in ipairs(cmdAutofill:GetChildren()) do
-		if v:IsA("Frame") and index < 5 then
-			local cmd = Commands[v.Name]
-			local name = cmd and cmd[2][1] or ""
-			v.Input.Text = str ~= "" and v.Name:find(str) == 1 and v.Name or name
-			v.Visible = str == "" or v.Name:find(str)
-			if v.Visible then
-				index = index + 1
-				local n = math.sqrt(index) * 125
-				local yPos = (index - 1) * 28
-				local newPos = UDim2.new(0.5, 0, 0, yPos)
-				gui.tween(v, "Quint", "Out", 0.3, {
-					Size = UDim2.new(0.5, n, 0, 25),
-					Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
-				})
-				lastFrame = v
-			end
-		end
-	end
-end
+    local str = (cmdInput.Text:gsub(";", "")):lower()
+    local index = 0
+    local lastFrame
+    for _, v in ipairs(cmdAutofill:GetChildren()) do
+        if v:IsA("Frame") and index < 5 then
+            local cmdName = v.Name
+            local cmd = Commands[cmdName] or Commands[Aliases[cmdName]]
+            local name = cmd and cmd[2][1] or ""
+            v.Input.Text = str ~= "" and v.Name:find(str) == 1 and v.Name or name
+            v.Visible = str == "" or v.Name:find(str)
+            if v.Visible then
+                index = index + 1
+                local n = math.sqrt(index) * 125
+                local yPos = (index - 1) * 28
+                local newPos = UDim2.new(0.5, 0, 0, yPos)
+                gui.tween(v, "Quint", "Out", 0.3, {
+                    Size = UDim2.new(0.5, n, 0, 25),
+                    Position = lastFrame and newPos or UDim2.new(0.5, 0, 0, yPos),
+                })
+                lastFrame = v
+            end
+        end
+    end
+end	
 
 --[[ GUI FUNCTIONALITY ]]--
 
