@@ -164,16 +164,12 @@ local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 local player, plr, lp = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer
 
-pcall(function()
+task.spawn(function()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 		character = c
 		Character = c
 	end)
 end)
-
-local genv = function() 
-	return ((getgenv and getgenv()) or shared or _G);
-end
 
 local bringc = {}
 
@@ -184,12 +180,12 @@ local msg = {
 	"Hi",
 	"wsp",
 	"Hi there",
+	"Welcome"
 }
 
 -- goofy text lol
 local Goofer = {
 	"Egg",
-	"Among Us",
 	"i am a goofy goober",
 	"mmmm lasagna",
 	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -201,6 +197,8 @@ local Goofer = {
 	"(╯°□°)╯︵ ┻━┻",
 	"freaky",
 	"unreal",
+	"😔",
+	"F in the chat"
 }
 
 --[[ prediction ]] --
@@ -417,11 +415,11 @@ local getPlr = function(Name)
 end
 
 -- [[ MORE VARIABLES ]] --
-local plr = Player
-local speaker = Player
-local char = plr.Character
+local plr = Player;
+local speaker = Player;
+local char = plr.Character;
 local JSONEncode, JSONDecode = HttpService.JSONEncode, HttpService.JSONDecode
-local con = game.Loaded.Connect
+local con = game.Loaded.Connect;
 local LoadTime = tick();
 
 RunService.Stepped:connect(function()
