@@ -5,7 +5,7 @@ end
 if not gethui then
 	gethui = function() 
 		return game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui") 
-	end;
+	end
 end	
 
 pcall(function() getgenv().NamelessLoaded = true end)
@@ -15,7 +15,7 @@ local GetService = game.GetService
 local iamcore = game:GetService("CoreGui") or gethui() or nil
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
-	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+	waiting.Parent = (iamcore or gethui())
 	waiting.Text = 'Nameless Admin is waiting for the game to load'
 	game.Loaded:Wait()
 	waiting:Destroy()
@@ -26,7 +26,7 @@ end
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
 end)]]
 
-pcall(function() --automatically load nameless admin when teleported
+task.spawn(function() --automatically load nameless admin when teleported
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
@@ -82,11 +82,9 @@ local curVer = 2.19
 local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
-local updLogs = {
-	log1="Added (sremotespy) command [logs all the events from the remotes that got fired by the server]"
-}
+local updLogs = {}
 
-local updDate = "7/01/2024"
+local updDate = "7/11/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
@@ -109,7 +107,7 @@ local COREGUI = (game:GetService("CoreGui") or gethui());
 local CoreGui = (game:GetService("CoreGui") or gethui());
 local coregui = (game:GetService("CoreGui") or gethui());
 local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
-local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
+local sethidden = (sethiddenproperty or set_hidden_property or set_hidden_prop)
 local Player = game:GetService("Players").LocalPlayer
 local plr = game:GetService("Players").LocalPlayer
 local PlrGui = Player:FindFirstChild("PlayerGui")
@@ -166,16 +164,12 @@ local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 local player, plr, lp = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer
 
-pcall(function()
+task.spawn(function()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 		character = c
 		Character = c
 	end)
 end)
-
-local genv = function() 
-	return ((getgenv and getgenv()) or shared or _G);
-end
 
 local bringc = {}
 
@@ -10792,10 +10786,10 @@ cmd.add({"loopjumppower", "loopjp", "ljp"}, {"loopjumppower <number> (loopjp, lj
 	jpLoop = RunService.RenderStepped:connect(function()
 		if loopjp and getHum() then
 			if getHum().UseJumpPower then
-			getHum().JumpPower = NamelessJP
-		else
-			getHum().JumpHeight  = NamelessJP
-		end
+				getHum().JumpPower = NamelessJP
+			else
+				getHum().JumpHeight  = NamelessJP
+			end
 		end
 	end)
 end)
@@ -14122,7 +14116,7 @@ cmd.add({"givehat", "givehatui"}, {"givehat (givehatui)", "Executes a hat giver 
 end)
 
 cmd.add({"fireproximityprompts", "fpp", "firepp"}, {"fireproximityprompts (fpp, firepp)", "Fires every Proximity Prompt that's in workspace"}, function(...)
-	fppamount = 0
+	local fppamount = 0
 	local fppname = (...)
 	if fppname then
 		local name = fppname
@@ -15173,35 +15167,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 	end
 end)
 
-cmd.add({"visible"}, {"visible", "removes invisibility"}, function()
-	if btnn then btnn:Destroy() btnn=nil end
-	if inpCon1 then inpCon1:Disconnect() inpCon1=nil end
-	if invisDied then invisDied:Disconnect() invisDied=nil end
-	if invisFix then invisFix:Disconnect() invisFix=nil end
-		if IsInvis == false then return end
-		invisFix:Disconnect()
-		invisDied:Disconnect()
-		CF = workspace.CurrentCamera.CFrame
-		Player=game.Players.LocalPlayer
-		Character = game.Players.LocalPlayer.Character
-		local CF_1 = Player.Character.HumanoidRootPart.CFrame
-		Character.HumanoidRootPart.CFrame = CF_1
-		if InvisibleCharacter then InvisibleCharacter.Parent = game.Lighting end
-		Player.Character = Character
-		Character.Parent = workspace
-		IsInvis = false
-		Player.Character.Animate.Disabled = true
-		Player.Character.Animate.Disabled = false
-		invisDied = Character:FindFirstChildOfClass'Humanoid'.Died:Connect(function()
-			Respawn()
-			invisDied:Disconnect()
-		end)
-		invisRunning = false
-end)
-
 cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers etc."}, function()
-
-
 
 	wait();
 
@@ -15279,36 +15245,36 @@ end)
 
 cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote"}, function()
 
-local rem = 0
+	local rem = 0
 
-for _, v in pairs(game:GetDescendants()) do
-    if not v:IsDescendantOf(game.CoreGui) then
-        if v:IsA("RemoteEvent") then
-            local success, err = pcall(function()
-                v:FireServer()
-            end)
-            rem = rem + 1
-        elseif v:IsA("BindableEvent") then
-            local success, err = pcall(function()
-                v:Fire()
-            end)
-            rem = rem + 1
-        elseif v:IsA("RemoteFunction") then
-            local success, err = pcall(function()
-                v:InvokeServer()
-            end)
-            rem = rem + 1
-        end
-    end
-end
+	for _, v in pairs(game:GetDescendants()) do
+		if not v:IsDescendantOf(game.CoreGui) then
+			if v:IsA("RemoteEvent") then
+				local success, err = pcall(function()
+					v:FireServer()
+				end)
+				rem = rem + 1
+			elseif v:IsA("BindableEvent") then
+				local success, err = pcall(function()
+					v:Fire()
+				end)
+				rem = rem + 1
+			elseif v:IsA("RemoteFunction") then
+				local success, err = pcall(function()
+					v:InvokeServer()
+				end)
+				rem = rem + 1
+			end
+		end
+	end
 
-wait()
+	wait()
 
-Notify({
-    Description = "Fired " .. rem .. " amount of remotes";
-    Title = adminName;
-    Duration = 4;
-})
+	Notify({
+		Description = "Fired " .. rem .. " amount of remotes";
+		Title = adminName;
+		Duration = 4;
+	})
 
 end)
 
@@ -15691,7 +15657,7 @@ end)
 cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give special things"}, function()
 	local ownId = "unknown"
 	local ownUser = "unknown"
-	pcall(function()
+	local s,r = pcall(function()
 		if game.CreatorType == Enum.CreatorType.User then
 			Player.UserId = game.CreatorId
 			Player.Name = game.CreatorName
@@ -15699,7 +15665,10 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = game.CreatorName
 		end
 	end)
-	pcall(function()
+	if r then
+		error("err: "..r)
+	end
+	local s,e = pcall(function()
 		if game.CreatorType == Enum.CreatorType.Group then
 			local groupId = game.CreatorId
 			local groupInfo = game:GetService("GroupService"):GetGroupInfoAsync(groupId)
@@ -15710,12 +15679,18 @@ cmd.add({"ownerid"}, {"ownerid", "Changes the client id to the owner's. Can give
 			ownUser = owner.Name
 		end
 	end)
-	pcall(function()
+	if e then
+		error("err: "..e)
+	end
+	local s,h = pcall(function()
 		task.wait(1);
 		game.StarterGui:SetCoreGuiEnabled(0, false)
 		wait(3);
 		game.StarterGui:SetCoreGuiEnabled(0, true)
 	end)
+	if h then
+		error("err: "..h)
+	end
 
 	Notify({
 		Description = "UserId set to: "..ownId.."\nUsername set to: "..ownUser;
@@ -16151,38 +16126,38 @@ gui.menuify = function(menu)
 	gui.draggable(menu, menu.Topbar)
 	menu.Visible = false
 end
-	gui.menuifyv2 = function(menu)
-		local exit = menu:FindFirstChild("Exit", true)
-		local mini = menu:FindFirstChild("Minimize", true)
-		local clear = menu:FindFirstChild("Clear", true);
-		local minimized = false
-		local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
-		mini.MouseButton1Click:Connect(function()
-			minimized = not minimized
-			if minimized then
-				sizeX.Value = menu.Size.X.Offset
-				sizeY.Value = menu.Size.Y.Offset
-				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
-			else
-				gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
+gui.menuifyv2 = function(menu)
+	local exit = menu:FindFirstChild("Exit", true)
+	local mini = menu:FindFirstChild("Minimize", true)
+	local clear = menu:FindFirstChild("Clear", true);
+	local minimized = false
+	local sizeX, sizeY = Instance.new("IntValue", menu), Instance.new("IntValue", menu)
+	mini.MouseButton1Click:Connect(function()
+		minimized = not minimized
+		if minimized then
+			sizeX.Value = menu.Size.X.Offset
+			sizeY.Value = menu.Size.Y.Offset
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, 283, 0, 25)})
+		else
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)})
+		end
+	end)
+	exit.MouseButton1Click:Connect(function()
+		menu.Visible = false
+	end)
+	if clear then 
+		clear.MouseButton1Click:Connect(function()
+			local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
+			for _,v in ipairs(t.Parent:GetChildren()) do
+				if v:IsA("TextLabel") then
+					v:Destroy()
+				end
 			end
 		end)
-		exit.MouseButton1Click:Connect(function()
-			menu.Visible = false
-		end)
-		if clear then 
-			clear.MouseButton1Click:Connect(function()
-				local t=menu:FindFirstChild("Container",true):FindFirstChildOfClass("ScrollingFrame"):FindFirstChildOfClass("UIListLayout",true)
-				for _,v in ipairs(t.Parent:GetChildren()) do
-					if v:IsA("TextLabel") then
-						v:Destroy()
-					end
-				end
-			end)
-		end
-		gui.draggable(menu, menu.Topbar)
-		menu.Visible = false
 	end
+	gui.draggable(menu, menu.Topbar)
+	menu.Visible = false
+end
 
 gui.shiftlock = function(sLock)
 	local V = false
@@ -16505,7 +16480,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 
 	local function mainNameless()
 		local script = Instance.new('LocalScript', TextClickButton)
-		textclickbutton = script.Parent
+		local textclickbutton = script.Parent
 		textclickbutton.Size = UDim2.new(0, 2, 0, 33)
 		textclickbutton.BackgroundTransparency = 0.14
 
