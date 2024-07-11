@@ -14,7 +14,7 @@
                                                                                              
 
 ]]
-if NamelessLoaded then --checks if Nameless Admin is already loaded
+if getgenv().NamelessLoaded then --checks if Nameless Admin is already loaded
 	return
 end
 
