@@ -15104,11 +15104,11 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 		--Properties:
 
-		ScreenGui.Parent = SolaraCheck
-		ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		ScreenGui.ResetOnSpawn = false
+		btnn.Parent = SolaraCheck
+		btnn.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		btnn.ResetOnSpawn = false
 
-		TextButton.Parent = ScreenGui
+		TextButton.Parent = btnn
 		TextButton.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 		TextButton.BackgroundTransparency = 0.140
 		TextButton.Position = UDim2.new(0.933, 0,0.621, 0)
@@ -15128,7 +15128,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 		UIAspectRatioConstraint.AspectRatio = 1.060
 
 		-- Scripts:
-
+		gui.draggable(TextButton)
 		local function FEPVI_fake_script()
 			local script = Instance.new('LocalScript', TextButton)
 
