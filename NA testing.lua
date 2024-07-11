@@ -14938,7 +14938,13 @@ cmd.add({"toolinvisible", "tinvis"}, {"toolinvisible (tinvis)", "Be invisible wh
 	)
 end)
 
-
+local btnn=nil
+local inpCon1=nil
+local invisFix=nil
+local invisDied=nil
+local invisRunning=false
+local IsInvis = false
+local InvisibleCharacter=nil
 cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scare people or something"}, function()
 	Keybind = "E"
 
@@ -14952,15 +14958,15 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 	repeat wait(.1) until game.Players.LocalPlayer.Character
 	local Character = game.Players.LocalPlayer.Character
 	Character.Archivable = true
-	local IsInvis = false
+	IsInvis = false
 	local IsRunning = true
-	local InvisibleCharacter = Character:Clone()
+	InvisibleCharacter = Character:Clone()
 	InvisibleCharacter.Parent = game.Lighting
 	local Void = workspace.FallenPartsDestroyHeight
 	InvisibleCharacter.Name = ""
 	local CF
-
-	local invisFix = game:GetService("RunService").Stepped:Connect(function()
+	if invisFix then invisFix:Disconnect() invisFix=nil end
+	invisFix = game:GetService("RunService").Stepped:Connect(function()
 		pcall(function()
 			local IsInteger
 			if tostring(Void):find'-' then
@@ -15019,7 +15025,7 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 		end
 	end
 
-	local invisDied
+	if invisDied then invisDied:Disconnect() invisDied=nil end
 	invisDied = InvisibleCharacter:FindFirstChildOfClass'Humanoid'.Died:Connect(function()
 		Respawn()
 		invisDied:Disconnect()
@@ -15050,10 +15056,10 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 
 	local CS = game:GetService("CollectionService")
 	local UIS = game:GetService("UserInputService")
-
-	UIS.InputBegan:Connect(function(input, gameProcessed)
+	if inpCon1 then inpCon1:Disconnect() inpCon1=nil end
+	inpCon1=UIS.InputBegan:Connect(function(input, gameProcessed)
 		if input.UserInputType == Enum.UserInputType.Keyboard then
-			if input.KeyCode == Enum.KeyCode.E and not gameProcessed then
+			if input.KeyCode == Enum.KeyCode[Keybind] and not gameProcessed then
 				if IsInvis == false then
 					IsInvis = true
 					CF = game.Workspace.CurrentCamera.CFrame
@@ -15106,8 +15112,8 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 			Duration = 7;
 		});
 
-
-		local ScreenGui = Instance.new("ScreenGui")
+		if btnn then btnn:Destroy() btnn=nil end
+		btnn = Instance.new("ScreenGui")
 		local TextButton = Instance.new("TextButton")
 		local UICorner = Instance.new("UICorner")
 		local UIAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
@@ -15181,6 +15187,32 @@ cmd.add({"invisible", "invis"}, {"invisible (invis)", "Sets invisibility to scar
 		coroutine.wrap(FEPVI_fake_script)()
 	else
 	end
+end)
+
+cmd.add({"visible"}, {"visible", "removes invisibility"}, function()
+	if btnn then btnn:Destroy() btnn=nil end
+	if inpCon1 then inpCon1:Disconnect() inpCon1=nil end
+	if invisDied then invisDied:Disconnect() invisDied=nil end
+	if invisFix then invisFix:Disconnect() invisFix=nil end
+		if IsInvis == false then return end
+		invisFix:Disconnect()
+		invisDied:Disconnect()
+		CF = workspace.CurrentCamera.CFrame
+		Player=game.Players.LocalPlayer
+		Character = game.Players.LocalPlayer.Character
+		local CF_1 = Player.Character.HumanoidRootPart.CFrame
+		Character.HumanoidRootPart.CFrame = CF_1
+		if InvisibleCharacter then InvisibleCharacter.Parent = game.Lighting end
+		Player.Character = Character
+		Character.Parent = workspace
+		IsInvis = false
+		Player.Character.Animate.Disabled = true
+		Player.Character.Animate.Disabled = false
+		invisDied = Character:FindFirstChildOfClass'Humanoid'.Died:Connect(function()
+			Respawn()
+			invisDied:Disconnect()
+		end)
+		invisRunning = false
 end)
 
 cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers etc."}, function()
