@@ -4,7 +4,7 @@ end
 
 if not gethui then
 	gethui = function() 
-		return game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui") 
+		return game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui") 
 	end;
 end	
 
@@ -15,7 +15,7 @@ local GetService = game.GetService
 local iamcore = game:GetService("CoreGui") or gethui() or nil
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
-	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui"))
+	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 	waiting.Text = 'Nameless Admin is waiting for the game to load'
 	game.Loaded:Wait()
 	waiting:Destroy()

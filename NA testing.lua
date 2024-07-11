@@ -20,7 +20,7 @@ end
 
 if not gethui then
 	gethui = function() 
-		return game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui") 
+		return game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui") 
 	end;
 end	
 
@@ -31,7 +31,7 @@ local GetService = game.GetService
 local iamcore = game:GetService("CoreGui") or gethui() or nil
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
-	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("PlayerGui"))
+	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 	waiting.Text = 'Nameless Admin is waiting for the game to load'
 	game.Loaded:Wait()
 	waiting:Destroy()
@@ -15262,6 +15262,7 @@ cmd.add({"unchatspy"}, {"unchat", "Unspies on chat, enables chat, spies whispers
 end)
 
 cmd.add({"fireremotes"}, {"fireremotes", "Fires every remote"}, function()
+
 local rem = 0
 
 for _, v in pairs(game:GetDescendants()) do
@@ -15292,7 +15293,9 @@ Notify({
     Title = adminName;
     Duration = 4;
 })
+
 end)
+
 
 cmd.add({"uafollow", "unanchoredfollow"}, {"uafollow (unanchoredfollow)", "Makes unanchored parts follow you"}, function() 
 	wait();
@@ -16207,40 +16210,25 @@ end
 
 
 gui.loadCommands = function()
-    for i, v in pairs(cmdAutofill:GetChildren()) do
-        if v.Name ~= "UIListLayout" then
-            Destroy(v)
-        end
-    end
-    local i = 0
-    for name, tbl in pairs(Commands) do
-        local info = tbl[2]
-        local btn = cmdExample:Clone()
-        btn.Parent = cmdAutofill
-        btn.Name = name
-        btn.Input.Text = info[1]
-        i = i + 1
+	for i, v in pairs(cmdAutofill:GetChildren()) do
+		if v.Name ~= "UIListLayout" then
+			Destroy(v)
+		end
+	end
+	local last = nil
+	local i = 0
+	for name, tbl in pairs(Commands) do
+		local info = tbl[2]
+		local btn = cmdExample:Clone()
+		btn.Parent = cmdAutofill
+		btn.Name = name
+		btn.Input.Text = info[1]
+		i = i + 1
 
-        local size = btn.Size
-        btn.Size = UDim2.new(0, 0, 0, 25)
-        btn.Size = size
-    end
-    
-    for alias, cmdName in pairs(Aliases) do
-        local cmd = Commands[cmdName]
-        if cmd then
-            local info = cmd[2]
-            local btn = cmdExample:Clone()
-            btn.Parent = cmdAutofill
-            btn.Name = alias
-            btn.Input.Text = info[1]
-            i = i + 1
-
-            local size = btn.Size
-            btn.Size = UDim2.new(0, 0, 0, 25)
-            btn.Size = size
-        end
-    end
+		local size = btn.Size
+		btn.Size = UDim2.new(0, 0, 0, 25)
+		btn.Size = size
+	end
 end
 
 gui.loadCommands()
