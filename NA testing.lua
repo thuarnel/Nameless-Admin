@@ -24,7 +24,26 @@ if not gethui then
 		local h=(game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 		return h
 	end
-end	
+end
+
+if identifyexecutor()=="Solara" then --proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
+	getgenv().fireproximityprompt=function(pp)
+		local oldenabled=pp.Enabled
+		local oldhold=pp.HoldDuration
+		local oldrlos=pp.RequiresLineOfSight
+		pp.Enabled=true
+		pp.HoldDuration=0
+		pp.RequiresLineOfSight=false
+		wait(.23)
+		pp:InputHoldBegin()
+		task.wait()
+		pp:InputHoldEnd()
+		wait(.1)
+		pp.Enabled=pp.Enabled
+		pp.HoldDuration=pp.HoldDuration
+		pp.RequiresLineOfSight=pp.RequiresLineOfSight
+	end
+end
 
 pcall(function() getgenv().NamelessLoaded = true end)
 
@@ -90,9 +109,11 @@ local curVer = 2.19
 local adminName = "Nameless Admin"
 
 -- [[ Update Logs ]] --
-local updLogs = {}
+local updLogs = {
+	log1="fireproximityprompt fix for Solara | Credits: Benomat (https://scriptblox.com/u/benomat)"
+}
 
-local updDate = "7/11/2024"
+local updDate = "7/12/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId, JobId, GameId = game.PlaceId, game.JobId, game.GameId
