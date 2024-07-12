@@ -15,7 +15,6 @@
 
 ]]
 local loaded, failed = pcall(function()
-print'begin'
 if getgenv().NamelessLoaded then
 	return
 end
@@ -26,8 +25,7 @@ if not gethui then
 		return h
 	end
 end
-		
-print'hui'
+
 if identifyexecutor()=="Solara" then --proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
 	getgenv().fireproximityprompt=function(pp)
 		local oldenabled=pp.Enabled
@@ -68,7 +66,7 @@ pcall(function()
 		end
 	end)
 end)
-print'queue'
+
 
 -- Notification library
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
@@ -167,7 +165,7 @@ local Loopmute = false
 local Loopglitch = false
 local Watch = false
 local Admin = {}
-print'vars'
+
 -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
 local Offset = 10
 local Rotation = 0
@@ -201,7 +199,6 @@ local s, r = pcall(function()
 		Character = c
 	end)
 end)
-print'this?'
 if r then error(r) end
 
 local bringc = {}
@@ -15854,7 +15851,6 @@ local UpdLogsList = UpdLogsFrame:WaitForChild("Container"):WaitForChild("List");
 local UpdLogsLabel = UpdLogsList:WaitForChild("Log");
 local ShiftlockUi = ScreenGui:WaitForChild("LockButton");
 local resizeFrame = ScreenGui:WaitForChild("Resizeable");
-print'got the guis'
 local resizeXY = {
 	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
 	Bottom	= {Vector2.new(0, 1),	Vector2.new(0, 0),	"rbxassetid://2911850935"},
@@ -15903,7 +15899,7 @@ if not RunService:IsStudio() then
 	end
 	ScreenGui = newGui
 end]]
-print'passed'
+
 --[[ GUI FUNCTIONS ]]--
 gui = {}
 gui.txtSize = function(ui, x, y)
@@ -16256,7 +16252,7 @@ gui.searchCommands = function()
 		end
 	end
 end
-print'did functions'
+
 --[[ GUI FUNCTIONALITY ]]--
 
 -- [[ OPEN THE COMMAND BAR ]] -- 
@@ -16292,7 +16288,7 @@ gui.menuify(commandsFrame)
 gui.menuify(UniverseViewerFrame)
 gui.menuify(UpdLogsFrame)
 gui.shiftlock(ShiftlockUi)
-print'menuify'
+
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
 -- table.find({Enum.Platform.IOS, Enum.Platform.Android}, game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
@@ -16355,7 +16351,7 @@ RunService.Stepped:Connect(function()
 	UpdLogsList.CanvasSize = UDim2.new(0, 0, 0, UpdLogsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 end)
 
-print'almost'
+
 task.spawn(function()
 	local display = Player.DisplayName
 	local name = Player.Name
@@ -16493,8 +16489,7 @@ end
 -- @MuhXd (Viper)
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
-		
-print('')
+print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
 end)
 if loaded then
 print([[
@@ -16505,6 +16500,6 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
-elseif failed then
+elseif not loaded then
 print("Error loading Nameless Admin: "..failed)
 end
