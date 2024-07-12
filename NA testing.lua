@@ -172,16 +172,13 @@ local camtype = camera.CameraType
 local Commands, Aliases = {}, {}
 local player, plr, lp = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer
 
-pcall(function()
+local s, r = pcall(function()
 	game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function(c)
 		character = c
 		Character = c
 	end)
 end)
-
-local genv = function() 
-	return ((getgenv and getgenv()) or shared or _G);
-end
+if r then error(r) end
 
 local bringc = {}
 
@@ -15710,44 +15707,6 @@ cmd.add({"errorchat"}, {"errorchat", "Makes the chat error appear when roblox ch
 	end
 end)
 
--- [[ PLUGIN LOADER ]] -- 
---[[local PluginsLoaded = 0
-local PluginsErrored = 0
-
-if CustomFunctionSupport then
-	local success, result = pcall(function()
-		for i,v in pairs(listfiles("Nameless-Admin/Plugins")) do
-			loadstring(readfile(listfiles("Nameless-Admin/Plugins")[i]))();
-			PluginsLoaded = PluginsLoaded + 1
-		end
-	end)
-
-	if not success then
-		PluginsErrored = PluginsErrored + 1
-		Notify({
-			Description = "Plugin error: " .. result .. "";
-			Title = adminName;
-			Duration = 3;
-
-		});
-	end
-
-	-- PLUGINS LOADED NOTIFICATION --
-	if PluginsErrored == 0 then
-	 Notify({
-			 Description = "Loaded " .. PluginsLoaded .. " plugins";
-			 Title = adminName;
-			 Duration = 3;
-			 
-			 });
-else	 
-Notify({
-	 Description = "Loaded " .. PluginsLoaded .. " plugins, although " .. PluginsErrored .. " plugins have errored";
-	 Title = adminName;
-	 Duration = 3;
-	 });
-	end
-end]]
 
 --[[ FUNCTIONALITY ]]--
 localPlayer.Chatted:Connect(function(str)
@@ -15808,7 +15767,7 @@ elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	syn.protect_gui(Main)
 	Main.Parent = game:GetService("CoreGui")
 	ScreenGui = Main
-elseif game:GetService("CoreGui") and game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") and not identifyexecutor() == "Solara" then
+elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 	pcall(function()
 		for i, v in pairs(ScreenGui:GetDescendants()) do
 			coreGuiProtection[v] = rPlayer.Name
@@ -15847,30 +15806,30 @@ else
 	warn'no guis?'
 end
 if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
-local description = ScreenGui.Description
-local cmdBar = ScreenGui.CmdBar
-local centerBar = cmdBar.CenterBar
-local cmdInput = centerBar.Input
-local cmdAutofill = cmdBar.Autofill
-local cmdExample = cmdAutofill.Cmd
-local leftFill = cmdBar.LeftFill
-local rightFill = cmdBar.RightFill
-local chatLogsFrame = ScreenGui.ChatLogs
-local chatLogs = chatLogsFrame.Container.Logs
-local chatExample = chatLogs.TextLabel
-local commandsFrame = ScreenGui.Commands
-local commandsFilter = commandsFrame.Container.Filter
-local commandsList = commandsFrame.Container.List
-local commandExample = commandsList.TextLabel
-local UniverseViewerFrame = ScreenGui.UniverseViewer
-local UniverseList = UniverseViewerFrame.Container.List
-local UniverseExample = UniverseList.TextButton
-local UpdLogsFrame = ScreenGui.UpdLog
-local UpdLogsTitle = UpdLogsFrame.Topbar.TopBar.Title
-local UpdLogsList = UpdLogsFrame.Container.List
-local UpdLogsLabel = UpdLogsList.Log
-local ShiftlockUi = ScreenGui.LockButton
-local resizeFrame = ScreenGui.Resizeable
+local description = ScreenGui:WaitForChild("Description");
+local cmdBar = ScreenGui:WaitForChild("CmdBar");
+local centerBar = cmdBar:WaitForChild("CenterBar");
+local cmdInput = centerBar:WaitForChild("Input");
+local cmdAutofill = cmdBar:WaitForChild("Autofill");
+local cmdExample = cmdAutofill:WaitForChild("Cmd");
+local leftFill = cmdBar:WaitForChild("LeftFill");
+local rightFill = cmdBar:WaitForChild("RightFill");
+local chatLogsFrame = ScreenGui:WaitForChild("ChatLogs");
+local chatLogs = chatLogsFrame:WaitForChild("Container"):WaitForChild("Logs");
+local chatExample = chatLogs:WaitForChild("TextLabel");
+local commandsFrame = ScreenGui:WaitForChild("Commands");
+local commandsFilter = commandsFrame:WaitForChild("Container"):WaitForChild("Filter");
+local commandsList = commandsFrame:WaitForChild("Container"):WaitForChild("List");
+local commandExample = commandsList:WaitForChild("TextLabel");
+local UniverseViewerFrame = ScreenGui:WaitForChild("UniverseViewer");
+local UniverseList = UniverseViewerFrame:WaitForChild("Container"):WaitForChild("List");
+local UniverseExample = UniverseList:WaitForChild("TextButton");
+local UpdLogsFrame = ScreenGui:WaitForChild("UpdLog");
+local UpdLogsTitle = UpdLogsFrame:WaitForChild("Topbar"):WaitForChild("TopBar"):WaitForChild("Title");
+local UpdLogsList = UpdLogsFrame:WaitForChild("Container"):WaitForChild("List");
+local UpdLogsLabel = UpdLogsList:WaitForChild("Log");
+local ShiftlockUi = ScreenGui:WaitForChild("LockButton");
+local resizeFrame = ScreenGui:WaitForChild("Resizeable");
 local resizeXY = {
 	Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
 	Bottom	= {Vector2.new(0, 1),	Vector2.new(0, 0),	"rbxassetid://2911850935"},
@@ -16521,7 +16480,6 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
-end
-if failed then
-warn("Error loading Nameless Admin: "..failed)
+elseif failed then
+print("Error loading Nameless Admin: "..failed)
 end
