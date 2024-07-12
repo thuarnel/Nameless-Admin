@@ -15,6 +15,7 @@
 
 ]]
 local loaded, failed = pcall(function()
+print'begin'
 if getgenv().NamelessLoaded then
 	return
 end
@@ -25,7 +26,8 @@ if not gethui then
 		return h
 	end
 end
-
+		
+print'hui'
 if identifyexecutor()=="Solara" then --proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
 	getgenv().fireproximityprompt=function(pp)
 		local oldenabled=pp.Enabled
@@ -66,7 +68,7 @@ pcall(function()
 		end
 	end)
 end)
-
+print'queue'
 
 -- Notification library
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
@@ -165,7 +167,7 @@ local Loopmute = false
 local Loopglitch = false
 local Watch = false
 local Admin = {}
-
+print'vars'
 -- [[ HAT ORBIT (PATCHED IN MOST GAMES) ]]
 local Offset = 10
 local Rotation = 0
@@ -199,6 +201,7 @@ local s, r = pcall(function()
 		Character = c
 	end)
 end)
+print'this?'
 if r then error(r) end
 
 local bringc = {}
