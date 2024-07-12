@@ -14,21 +14,23 @@
                                                                                              
 
 ]]
-if NamelessLoaded then --checks if Nameless Admin is already loaded
+local loaded, failed = pcall(function()
+if getgenv().NamelessLoaded then
 	return
 end
 
 if not gethui then
-	gethui = function() 
-		return game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui") 
-	end;
+	gethui = function()
+		local h=(game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+		return h
+	end
 end	
 
 pcall(function() getgenv().NamelessLoaded = true end)
 
 -- Waits until game is loaded
 local GetService = game.GetService
-local iamcore = game:GetService("CoreGui") or gethui() or nil
+local iamcore = gethui()
 if not game:IsLoaded() then
 	local waiting = Instance.new("Message")
 	waiting.Parent = (iamcore or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
@@ -37,16 +39,11 @@ if not game:IsLoaded() then
 	waiting:Destroy()
 end
 
---[[task.spawn(function() -- disabled for testing purposes
-	task.wait(1)
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/save%20instance%20support%20v2?raw=viper"))();
-end)]]
-
-pcall(function() --automatically load nameless admin when teleported
+pcall(function()
 	local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))();]])
+			queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))()]])
 		end
 	end)
 end)
@@ -66,11 +63,6 @@ if FileSupport then
 		makefolder('Nameless-Admin')
 	else
 	end
-
-	--[[if not isfolder('Nameless-Admin/Plugins') then
-		makefolder('Nameless-Admin/Plugins')
-	else
-	end]]
 
 	if not isfile("Nameless-Admin/Prefix.txt") then
 		writefile("Nameless-Admin/Prefix.txt", ';')
@@ -119,18 +111,18 @@ local SoundService = game:GetService("SoundService");
 local Lighting = game:GetService("Lighting");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local GuiService = game:GetService("GuiService");
-local COREGUI = (game:GetService("CoreGui") or gethui());
-local CoreGui = (game:GetService("CoreGui") or gethui());
-local coregui = (game:GetService("CoreGui") or gethui());
-local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform())
+local COREGUI = gethui();
+local CoreGui = gethui();
+local coregui = gethui();
+local IsOnMobile = table.find({Enum.Platform.IOS, Enum.Platform.Android}, UserInputService:GetPlatform());
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
-local Player = game:GetService("Players").LocalPlayer
-local plr = game:GetService("Players").LocalPlayer
-local PlrGui = Player:FindFirstChild("PlayerGui")
-local SolaraCheck = (game:GetService("CoreGui") or gethui());
+local Player = game:GetService("Players").LocalPlayer;
+local plr = game:GetService("Players").LocalPlayer;
+local PlrGui = Player:FindFirstChild("PlayerGui");
+local SolaraCheck = gethui();
 local speaker = Player
 local IYLOADED = false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
-local Character = Player.Character
+local Character = Player.Character;
 local Humanoid = Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked = true
 _G.Spam = false
@@ -302,7 +294,7 @@ cmd.run = function(args)
 			end
 		end
 	end)
-	if not success then end
+	if not success then warn(adminName..": "..msg) end
 end
 function randomString()
 	local length = math.random(10,20)
@@ -16517,7 +16509,10 @@ end
 -- @MuhXd (Viper)
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
-
+		
+print('')
+end)
+if loaded then
 print([[
 ╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
 ┃┃╰╮┃┃        ┃┃          ┃╭━╮┃ ┃┃
@@ -16526,3 +16521,7 @@ print([[
 ┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 ╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 ]])
+end
+if failed then
+warn("Error loading Nameless Admin: "..failed)
+end
