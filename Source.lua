@@ -13450,7 +13450,7 @@ local loaded, failed = pcall(function()
 					a.Size = part.Size
 					a.Transparency = 0.45
 					a.Color = BrickColor.new("Lime green")
-				elseif (part:IsA("Model") or part:IsA("Folder")) then
+				elseif part:IsA("Model") then
 					local a = Instance.new("BoxHandleAdornment")
 					a.Name = part.Name:lower().."_PESP"
 					a.Parent = part
