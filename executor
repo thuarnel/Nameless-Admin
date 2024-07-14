@@ -187,38 +187,6 @@ ImageLabel_2.Size = UDim2.new(0, 12, 0, 16)
 ImageLabel_2.Image = "http://www.roblox.com/asset/?id=10555881849"
 ImageLabel_2.ImageColor3 = Color3.fromRGB(12, 4, 20)
 ImageLabel_2.ImageTransparency = 0.500
-
--- Scripts:
-
-local function QRBFYM_fake_script() -- Editor.LocalScript 
-	local script = Instance.new('LocalScript', Editor)
-
-	local function updTxtScale()
-		local width = script.Parent.AbsoluteSize.X
-		local text = script.Parent.Text
-		local font = script.Parent.Font
-		local textSize = script.Parent.TextSize
-		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
-		
-		if textBounds.X < 191 then
-			script.Parent.Size = UDim2.new(1, 0, 0, 191)
-		else
-			script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
-		end
-	end
-	
-	script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
-	
-	game:GetService("RunService").Stepped:Connect(function()
-		local uiListLayout = script.Parent.Parent:FindFirstChildOfClass("UIListLayout")
-		if uiListLayout then
-			script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
-		end
-	end)
-	
-	updTxtScale()
-	
-end
 coroutine.wrap(QRBFYM_fake_script)()
 local function AGTP_fake_script() -- Executor.LocalScript 
 	local script = Instance.new('LocalScript', Executor)
@@ -268,9 +236,38 @@ coroutine.wrap(PDTOI_fake_script)()
 local function XMCXEE_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
-	end)
+	con1,con2=nil,nil
+script.Parent.MouseButton1Click:Connect(function()
+	script.Parent.Parent.Parent.Parent:Destroy()
+	if con1 then con1:Disconnect() con1=nil end
+	if con2 then con2:Disconnect() con2=nil end
+end)
+
+
+local function updTxtScale()
+	local width = script.Parent.AbsoluteSize.X
+	local text = script.Parent.Text
+	local font = script.Parent.Font
+	local textSize = script.Parent.TextSize
+	local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
+
+	if textBounds.X < 191 then
+		script.Parent.Size = UDim2.new(1, 0, 0, 191)
+	else
+		script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
+	end
+end
+
+con1=script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
+
+con2=game:GetService("RunService").Stepped:Connect(function()
+	local uiListLayout = script.Parent.Parent:FindFirstChildOfClass("UIListLayout")
+	if uiListLayout then
+		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
+	end
+end)
+
+updTxtScale()
 end
 coroutine.wrap(XMCXEE_fake_script)()
 local function XYVIHV_fake_script() -- Minimize.LocalScript 
