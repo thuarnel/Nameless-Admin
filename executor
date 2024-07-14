@@ -193,23 +193,31 @@ ImageLabel_2.ImageTransparency = 0.500
 local function QRBFYM_fake_script() -- Editor.LocalScript 
 	local script = Instance.new('LocalScript', Editor)
 
-	function updTxtScale()
+	local function updTxtScale()
 		local width = script.Parent.AbsoluteSize.X
 		local text = script.Parent.Text
 		local font = script.Parent.Font
 		local textSize = script.Parent.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
-		if textBounds < 191 then
-			textBounds=191
+		
+		if textBounds.X < 191 then
+			script.Parent.Size = UDim2.new(1, 0, 0, 191)
+		else
+			script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
 		end
-		script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
 	end
 	
 	script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 	
 	game:GetService("RunService").Stepped:Connect(function()
-		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, script.Parent.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+		local uiListLayout = script.Parent.Parent:FindFirstChildOfClass("UIListLayout")
+		if uiListLayout then
+			script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
+		end
 	end)
+	
+	updTxtScale()
+	
 end
 coroutine.wrap(QRBFYM_fake_script)()
 local function AGTP_fake_script() -- Executor.LocalScript 
