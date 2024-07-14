@@ -236,7 +236,7 @@ coroutine.wrap(PDTOI_fake_script)()
 local function XMCXEE_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
-	local editor = script.Parent.Parent.Parent.Parent.EditorScroller.Editor
+	local editor = script.Parent.Parent.Parent.EditorScroller.Editor
 
 	local con1, con2
 
@@ -259,7 +259,7 @@ local function XMCXEE_fake_script() -- Exit.LocalScript
 		local textSize = editor.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
 
-		if textBounds.X < 191 then
+		if textBounds.Y <= 191 then
 			editor.Size = UDim2.new(1, 0, 0, 191)
 		else
 			editor.Size = UDim2.new(1, 0, 0, textBounds.Y)
@@ -268,7 +268,7 @@ local function XMCXEE_fake_script() -- Exit.LocalScript
 
 	con1 = editor:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 
-	con2 = game:GetService("RunService").Stepped:Connect(function()
+	con2 = game:GetService("RunService").Heartbeat:Connect(function()
 		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	end)
 
