@@ -236,12 +236,19 @@ coroutine.wrap(PDTOI_fake_script)()
 local function XMCXEE_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
-	local con1, con2 = nil, nil
-	local editor=script.Parent.Parent.Parent.EditorScroller.Editor
+	local editor = script.Parent.Parent.Parent.Parent.EditorScroller.Editor
+
+	local con1, con2
 
 	script.Parent.MouseButton1Click:Connect(function()
-		if con1 then con1:Disconnect() con1 = nil end
-		if con2 then con2:Disconnect() con2 = nil end
+		if con1 then
+			con1:Disconnect()
+			con1 = nil
+		end
+		if con2 then
+			con2:Disconnect()
+			con2 = nil
+		end
 		script.Parent.Parent.Parent.Parent:Destroy()
 	end)
 
@@ -259,10 +266,8 @@ local function XMCXEE_fake_script() -- Exit.LocalScript
 		end
 	end
 
-	if con1 then con1:Disconnect() con1 = nil end
 	con1 = editor:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 
-	if con2 then con2:Disconnect() con2 = nil end
 	con2 = game:GetService("RunService").Stepped:Connect(function()
 		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	end)
