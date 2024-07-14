@@ -200,8 +200,8 @@ local function NGTTQL_fake_script() -- Executor.LocalScript
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
-	
-	
+
+
 end
 coroutine.wrap(NGTTQL_fake_script)()
 local function NPDQSIZ_fake_script() -- Clear.LocalScript 
@@ -227,7 +227,7 @@ local function PDTOI_fake_script() -- Execute.LocalScript
 
 	local execute = script.Parent
 	Editor = script.Parent.Parent.EditorScroller.Editor
-	
+
 	execute.MouseButton1Click:Connect(function()
 		assert(loadstring(Editor.Text))()
 	end)
@@ -236,38 +236,37 @@ coroutine.wrap(PDTOI_fake_script)()
 local function XMCXEE_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
-	con1,con2=nil,nil
-script.Parent.MouseButton1Click:Connect(function()
-	script.Parent.Parent.Parent.Parent:Destroy()
-	if con1 then con1:Disconnect() con1=nil end
-	if con2 then con2:Disconnect() con2=nil end
-end)
+	local con1, con2 = nil, nil
 
+	script.Parent.MouseButton1Click:Connect(function()
+		if con1 then con1:Disconnect() con1 = nil end
+		if con2 then con2:Disconnect() con2 = nil end
+		script.Parent.Parent.Parent.Parent:Destroy()
+	end)
 
-local function updTxtScale()
-	local width = script.Parent.AbsoluteSize.X
-	local text = script.Parent.Text
-	local font = script.Parent.Font
-	local textSize = script.Parent.TextSize
-	local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
+	local function updTxtScale()
+		local width = script.Parent.AbsoluteSize.X
+		local text = script.Parent.Text
+		local font = script.Parent.Font
+		local textSize = script.Parent.TextSize
+		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
 
-	if textBounds.X < 191 then
-		script.Parent.Size = UDim2.new(1, 0, 0, 191)
-	else
-		script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
+		if textBounds.X < 191 then
+			script.Parent.Size = UDim2.new(1, 0, 0, 191)
+		else
+			script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
+		end
 	end
-end
 
-con1=script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
+	if con1 then con1:Disconnect() con1 = nil end
+	con1 = script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 
-con2=game:GetService("RunService").Stepped:Connect(function()
-	local uiListLayout = script.Parent.Parent:FindFirstChildOfClass("UIListLayout")
-	if uiListLayout then
-		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, uiListLayout.AbsoluteContentSize.Y)
-	end
-end)
+	if con2 then con2:Disconnect() con2 = nil end
+	con2 = game:GetService("RunService").Stepped:Connect(function()
+		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, script.Parent.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+	end)
 
-updTxtScale()
+	updTxtScale()
 end
 coroutine.wrap(XMCXEE_fake_script)()
 local function XYVIHV_fake_script() -- Minimize.LocalScript 
