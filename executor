@@ -237,6 +237,7 @@ local function XMCXEE_fake_script() -- Exit.LocalScript
 	local script = Instance.new('LocalScript', Exit)
 
 	local con1, con2 = nil, nil
+	local editor=script.Parent.Parent.Parent.EditorScroller.Editor
 
 	script.Parent.MouseButton1Click:Connect(function()
 		if con1 then con1:Disconnect() con1 = nil end
@@ -245,25 +246,25 @@ local function XMCXEE_fake_script() -- Exit.LocalScript
 	end)
 
 	local function updTxtScale()
-		local width = script.Parent.AbsoluteSize.X
-		local text = script.Parent.Text
-		local font = script.Parent.Font
-		local textSize = script.Parent.TextSize
+		local width = editor.AbsoluteSize.X
+		local text = editor.Text
+		local font = editor.Font
+		local textSize = editor.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
 
 		if textBounds.X < 191 then
-			script.Parent.Size = UDim2.new(1, 0, 0, 191)
+			editor.Size = UDim2.new(1, 0, 0, 191)
 		else
-			script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
+			editor.Size = UDim2.new(1, 0, 0, textBounds.Y)
 		end
 	end
 
 	if con1 then con1:Disconnect() con1 = nil end
-	con1 = script.Parent:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
+	con1 = editor:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 
 	if con2 then con2:Disconnect() con2 = nil end
 	con2 = game:GetService("RunService").Stepped:Connect(function()
-		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, script.Parent.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	end)
 
 	updTxtScale()
