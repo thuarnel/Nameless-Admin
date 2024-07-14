@@ -1,4 +1,4 @@
-local realCodex = Instance.new("ScreenGui")
+local exec = Instance.new("ScreenGui")
 local Executor = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
 local Down = Instance.new("Frame")
@@ -24,13 +24,13 @@ local ImageLabel = Instance.new("ImageLabel")
 local Minimize = Instance.new("TextButton")
 local ImageLabel_2 = Instance.new("ImageLabel")
 
-realCodex.Name = "exec"
-realCodex.Parent = (game:GetService("CoreGui") or game.Players.LocalPlayer:WaitForChild("PlayerGui"))
-realCodex.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-realCodex.ResetOnSpawn = false
+exec.Name = "exec"
+exec.Parent = (game:GetService("CoreGui") or game.Players.LocalPlayer:FindFirstChild("PlayerGui"))
+exec.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+exec.ResetOnSpawn = false
 
 Executor.Name = "Executor"
-Executor.Parent = realCodex
+Executor.Parent = exec
 Executor.Active = true
 Executor.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 Executor.BackgroundTransparency = 0.120
@@ -187,24 +187,26 @@ ImageLabel_2.Size = UDim2.new(0, 12, 0, 16)
 ImageLabel_2.Image = "http://www.roblox.com/asset/?id=10555881849"
 ImageLabel_2.ImageColor3 = Color3.fromRGB(12, 4, 20)
 ImageLabel_2.ImageTransparency = 0.500
-coroutine.wrap(QRBFYM_fake_script)()
-local function AGTP_fake_script() -- Executor.LocalScript 
+
+-- Scripts:
+
+local function TJUXECO_fake_script() -- Executor.LocalScript 
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 	script.Parent.Parent.ResetOnSpawn = false
 end
-coroutine.wrap(AGTP_fake_script)()
-local function NGTTQL_fake_script() -- Executor.LocalScript 
+coroutine.wrap(TJUXECO_fake_script)()
+local function CZXUM_fake_script() -- Executor.LocalScript 
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
-
-
+	
+	
 end
-coroutine.wrap(NGTTQL_fake_script)()
-local function NPDQSIZ_fake_script() -- Clear.LocalScript 
+coroutine.wrap(CZXUM_fake_script)()
+local function INJLLH_fake_script() -- Clear.LocalScript 
 	local script = Instance.new('LocalScript', Clear)
 
 	Clear = script.Parent
@@ -212,8 +214,8 @@ local function NPDQSIZ_fake_script() -- Clear.LocalScript
 		script.Parent.Parent.EditorScroller.Editor.Text = ""
 	end)
 end
-coroutine.wrap(NPDQSIZ_fake_script)()
-local function HXMNFN_fake_script() -- Copy.LocalScript 
+coroutine.wrap(INJLLH_fake_script)()
+local function IQOSZN_fake_script() -- Copy.LocalScript 
 	local script = Instance.new('LocalScript', Copy)
 
 	Copy = script.Parent
@@ -221,61 +223,55 @@ local function HXMNFN_fake_script() -- Copy.LocalScript
 		setclipboard(script.Parent.Parent.EditorScroller.Editor.Text)
 	end)
 end
-coroutine.wrap(HXMNFN_fake_script)()
-local function PDTOI_fake_script() -- Execute.LocalScript 
+coroutine.wrap(IQOSZN_fake_script)()
+local function MVBS_fake_script() -- Execute.LocalScript 
 	local script = Instance.new('LocalScript', Execute)
 
 	local execute = script.Parent
 	Editor = script.Parent.Parent.EditorScroller.Editor
-
+	
 	execute.MouseButton1Click:Connect(function()
 		assert(loadstring(Editor.Text))()
 	end)
 end
-coroutine.wrap(PDTOI_fake_script)()
-local function XMCXEE_fake_script() -- Exit.LocalScript 
+coroutine.wrap(MVBS_fake_script)()
+local function VLSJXUV_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
 	local editor = script.Parent.Parent.Parent.EditorScroller.Editor
-
-	local con1, con2
-
+	
+	local con1, con2 = nil, nil
+	
 	script.Parent.MouseButton1Click:Connect(function()
-		if con1 then
-			con1:Disconnect()
-			con1 = nil
-		end
-		if con2 then
-			con2:Disconnect()
-			con2 = nil
-		end
+		if con1 then con1:Disconnect() con1 = nil end
+		if con2 then con2:Disconnect() con2 = nil end
 		script.Parent.Parent.Parent.Parent:Destroy()
 	end)
-
+	
 	local function updTxtScale()
 		local width = editor.AbsoluteSize.X
 		local text = editor.Text
 		local font = editor.Font
 		local textSize = editor.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
-
+	
 		if textBounds.Y <= 191 then
 			editor.Size = UDim2.new(1, 0, 0, 191)
 		else
 			editor.Size = UDim2.new(1, 0, 0, textBounds.Y)
 		end
 	end
-
+	
 	con1 = editor:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
-
-	con2 = game:GetService("RunService").Heartbeat:Connect(function()
+	
+	con2 = game:GetService("RunService").Stepped:Connect(function()
 		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	end)
-
+	
 	updTxtScale()
 end
-coroutine.wrap(XMCXEE_fake_script)()
-local function XYVIHV_fake_script() -- Minimize.LocalScript 
+coroutine.wrap(VLSJXUV_fake_script)()
+local function PWJRPAS_fake_script() -- Minimize.LocalScript 
 	local script = Instance.new('LocalScript', Minimize)
 
 	p = false
@@ -289,4 +285,4 @@ local function XYVIHV_fake_script() -- Minimize.LocalScript
 		end
 	end)
 end
-coroutine.wrap(XYVIHV_fake_script)()
+coroutine.wrap(PWJRPAS_fake_script)()
