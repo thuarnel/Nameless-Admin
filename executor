@@ -24,8 +24,8 @@ local ImageLabel = Instance.new("ImageLabel")
 local Minimize = Instance.new("TextButton")
 local ImageLabel_2 = Instance.new("ImageLabel")
 
-realCodex.Name = "realCodex"
-realCodex.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+realCodex.Name = "exec"
+realCodex.Parent = (game:GetService("CoreGui") or game.Players.LocalPlayer:WaitForChild("PlayerGui"))
 realCodex.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 realCodex.ResetOnSpawn = false
 
@@ -36,7 +36,7 @@ Executor.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
 Executor.BackgroundTransparency = 0.120
 Executor.ClipsDescendants = true
 Executor.Draggable = true
-Executor.Position = UDim2.new(0.307999998, 0, 0.261999995, 0)
+Executor.Position = UDim2.new(0.307999998, 0, 2, 0)
 Executor.Size = UDim2.new(0, 481, 0, 287)
 
 UICorner.Parent = Executor
@@ -134,6 +134,7 @@ TopBar.Name = "TopBar"
 TopBar.Parent = Executor
 TopBar.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 TopBar.BackgroundTransparency = 0.600
+TopBar.Position = UDim2.new(0.00207900209, 0, 0, 0)
 TopBar.Size = UDim2.new(0, 481, 0, 35)
 TopBar.Font = Enum.Font.SourceSansItalic
 TopBar.Text = "Executor"
@@ -189,7 +190,7 @@ ImageLabel_2.ImageTransparency = 0.500
 
 -- Scripts:
 
-local function ULLNTO_fake_script() -- Editor.LocalScript 
+local function QRBFYM_fake_script() -- Editor.LocalScript 
 	local script = Instance.new('LocalScript', Editor)
 
 	function updTxtScale()
@@ -198,6 +199,9 @@ local function ULLNTO_fake_script() -- Editor.LocalScript
 		local font = script.Parent.Font
 		local textSize = script.Parent.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
+		if textBounds < 191 then
+			textBounds=191
+		end
 		script.Parent.Size = UDim2.new(1, 0, 0, textBounds.Y)
 	end
 	
@@ -207,24 +211,24 @@ local function ULLNTO_fake_script() -- Editor.LocalScript
 		script.Parent.Parent.CanvasSize = UDim2.new(0, 0, 0, script.Parent.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 	end)
 end
-coroutine.wrap(ULLNTO_fake_script)()
-local function LQIZY_fake_script() -- Executor.LocalScript 
+coroutine.wrap(QRBFYM_fake_script)()
+local function AGTP_fake_script() -- Executor.LocalScript 
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent.Active = true
 	script.Parent.Draggable = true
 	script.Parent.Parent.ResetOnSpawn = false
 end
-coroutine.wrap(LQIZY_fake_script)()
-local function RVYK_fake_script() -- Executor.LocalScript 
+coroutine.wrap(AGTP_fake_script)()
+local function NGTTQL_fake_script() -- Executor.LocalScript 
 	local script = Instance.new('LocalScript', Executor)
 
 	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 	
 	
 end
-coroutine.wrap(RVYK_fake_script)()
-local function YPLQEG_fake_script() -- Clear.LocalScript 
+coroutine.wrap(NGTTQL_fake_script)()
+local function NPDQSIZ_fake_script() -- Clear.LocalScript 
 	local script = Instance.new('LocalScript', Clear)
 
 	Clear = script.Parent
@@ -232,8 +236,8 @@ local function YPLQEG_fake_script() -- Clear.LocalScript
 		script.Parent.Parent.EditorScroller.Editor.Text = ""
 	end)
 end
-coroutine.wrap(YPLQEG_fake_script)()
-local function UYXP_fake_script() -- Copy.LocalScript 
+coroutine.wrap(NPDQSIZ_fake_script)()
+local function HXMNFN_fake_script() -- Copy.LocalScript 
 	local script = Instance.new('LocalScript', Copy)
 
 	Copy = script.Parent
@@ -241,8 +245,8 @@ local function UYXP_fake_script() -- Copy.LocalScript
 		setclipboard(script.Parent.Parent.EditorScroller.Editor.Text)
 	end)
 end
-coroutine.wrap(UYXP_fake_script)()
-local function ZJVQ_fake_script() -- Execute.LocalScript 
+coroutine.wrap(HXMNFN_fake_script)()
+local function PDTOI_fake_script() -- Execute.LocalScript 
 	local script = Instance.new('LocalScript', Execute)
 
 	local execute = script.Parent
@@ -252,16 +256,16 @@ local function ZJVQ_fake_script() -- Execute.LocalScript
 		assert(loadstring(Editor.Text))()
 	end)
 end
-coroutine.wrap(ZJVQ_fake_script)()
-local function LUWJAUT_fake_script() -- Exit.LocalScript 
+coroutine.wrap(PDTOI_fake_script)()
+local function XMCXEE_fake_script() -- Exit.LocalScript 
 	local script = Instance.new('LocalScript', Exit)
 
 	script.Parent.MouseButton1Click:Connect(function()
 		script.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
-coroutine.wrap(LUWJAUT_fake_script)()
-local function IDHK_fake_script() -- Minimize.LocalScript 
+coroutine.wrap(XMCXEE_fake_script)()
+local function XYVIHV_fake_script() -- Minimize.LocalScript 
 	local script = Instance.new('LocalScript', Minimize)
 
 	p = false
@@ -275,4 +279,4 @@ local function IDHK_fake_script() -- Minimize.LocalScript
 		end
 	end)
 end
-coroutine.wrap(IDHK_fake_script)()
+coroutine.wrap(XYVIHV_fake_script)()
