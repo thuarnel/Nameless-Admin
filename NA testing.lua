@@ -13500,7 +13500,7 @@ cmd.add({"esppart", "partesp", "pesp"}, {"esppart {partname} (partesp, pesp)", "
 				a.Size = v.Size
 				a.Transparency = 0.45
 				a.Color = BrickColor.new("Lime green")
-			elseif (v:IsA("Model") or v:IsA("Folder")) and v.Name:lower() == partEspName then
+			elseif v:IsA("Model") and v.Name:lower() == partEspName then
 				local a = Instance.new("BoxHandleAdornment")
 				a.Name = partEspName.."_PESP"
 				a.Parent = v
