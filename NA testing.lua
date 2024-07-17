@@ -242,7 +242,7 @@ NACaller(function()
 	}
 
 	-- [[ Prediction ]] --
-	local function levenshtein(s,t)
+	function levenshtein(s,t)
 		local d = {}
 		local lenS, lenT = #s, #t
 		for i = 0, lenS do
@@ -261,7 +261,7 @@ NACaller(function()
 		return d[lenS][lenT]
 	end
 
-	local function didYouMean(arg)
+	function didYouMean(arg)
 		local closer = nil
 		local min = math.huge
 
@@ -326,7 +326,7 @@ NACaller(function()
 		end)
 		if not success then warn(adminName..": "..msg) end
 	end
-	local function randomString()
+	function randomString()
 		local length = math.random(10,20)
 		local array = {}
 		for i = 1, length do
@@ -352,7 +352,7 @@ NACaller(function()
 		return (tick() - t), t
 	end
 
-	local function r15(plr)
+	function r15(plr)
 		plr = plr or game:GetService("Players").LocalPlayer
 		if plr then
 			if plr.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
@@ -361,7 +361,7 @@ NACaller(function()
 		end
 	end
 
-	local function r6(Player)
+	function r6(Player)
 		Player = Player or game:GetService("Players").LocalPlayer
 		if Player then
 			if Player.Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
@@ -370,32 +370,32 @@ NACaller(function()
 		end
 	end
 
-	local function rngMsg()
+	function rngMsg()
 		return msg[math.random(1, #msg)]
 	end
 
-	local function goof()
+	function goof()
 		return Goofer[math.random(1, #Goofer)]
 	end
 
-	local function getRoot(char)
+	function getRoot(char)
 		local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
 		return rootPart
 	end
 
-	local function getChar()
+	function getChar()
 		return game:GetService("Players").LocalPlayer.Character
 	end
 
-	local function getPlrChar(plr)
+	function getPlrChar(plr)
 		return game:GetService("Players")[plr].Character
 	end
 
-	local function getBp()
+	function getBp()
 		return game:GetService("Players").LocalPlayer.Backpack
 	end
 
-	local function getHum()
+	function getHum()
 		if game:GetService("Players").LocalPlayer and game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 			return game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 		else
@@ -403,7 +403,7 @@ NACaller(function()
 		end
 	end
 
-	local function getPlrHum(plr)
+	function getPlrHum(plr)
 		if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
 			return game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 		else
@@ -411,13 +411,13 @@ NACaller(function()
 		end
 	end
 
-	local function isNumber(str)
+	function isNumber(str)
 		if tonumber(str) ~= nil or str == 'inf' then
 			return true
 		end
 	end
 
-	local function FindInTable(tbl,val)
+	function FindInTable(tbl,val)
 		if tbl == nil then return false end
 		for _,v in pairs(tbl) do
 			if v == val then return true end
@@ -425,7 +425,7 @@ NACaller(function()
 		return false
 	end
 
-	local function GetInTable(Table, Name)
+	function GetInTable(Table, Name)
 		for i = 1, #Table do
 			if Table[i] == Name then
 				return i
@@ -488,12 +488,12 @@ NACaller(function()
 	local ESPenabled = false
 
 
-	local function round(num, numDecimalPlaces)
+	function round(num, numDecimalPlaces)
 		local mult = 10^(numDecimalPlaces or 0)
 		return math.floor(num * mult + 0.5) / mult
 	end
 	
-	local function getIdentity() -- returns the number of the identity
+	function getIdentity() -- returns the number of the identity
 		local LogService = game:GetService("LogService")
 		local output = ""
 		local con=nil
@@ -512,7 +512,7 @@ NACaller(function()
 		return output
 	end
 
-	local function removeESP()
+	function removeESP()
 		for i,c in pairs(COREGUI:GetChildren()) do
 			if string.sub(c.Name, -4) == '_ESP' then
 				c:Destroy()
@@ -520,7 +520,7 @@ NACaller(function()
 		end
 	end
 
-	local function ESP(plr)
+	function ESP(plr)
 		task.spawn(function()
 			removeESP()
 			wait()
@@ -570,7 +570,7 @@ NACaller(function()
 							addedFunc:Disconnect()
 						end
 					end)
-					local function espLoop()
+					function espLoop()
 						if COREGUI:FindFirstChild(plr.Name..'_ESP') then
 							if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 								local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
@@ -724,7 +724,7 @@ NACaller(function()
 		local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
 		local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
 		local SPEED = 0
-		local function FLY()
+		function FLY()
 			FLYING = true
 			local BG = Instance.new('BodyGyro', T)
 			local BV = Instance.new('BodyVelocity', T)
@@ -826,7 +826,7 @@ NACaller(function()
 		tool = getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 	end)
 
-	local function attachTool(tool,cf)
+	function attachTool(tool,cf)
 		for i,v in pairs(tool:GetDescendants()) do
 			if not (v:IsA("BasePart") or v:IsA("Mesh") or v:IsA("SpecialMesh")) then
 				v:Destroy()
@@ -1200,7 +1200,7 @@ NACaller(function()
 	cmd.add({"gotocampos", "tocampos", "tcp"}, {"gotocampos (tocampos, tcp)", "Teleports you to your camera position works with free cam but freezes you"}, function()
 		local player = game.Players.LocalPlayer
 		local UserInputService = game:GetService("UserInputService")
-		local function teleportPlayer()
+		function teleportPlayer()
 			local character = player.Character or player.CharacterAdded:wait(1)
 			local camera = game.Workspace.CurrentCamera
 			local cameraPosition = camera.CFrame.Position
@@ -1614,7 +1614,7 @@ NACaller(function()
 			detection = Instance.new("Decal")
 			detection.Name = "juisdfj0i32i0eidsuf0iok"
 			detection.Parent = game:GetService("ReplicatedStorage")
-			local function fling()
+			function fling()
 				local hrp, c, vel, movel = nil, nil, nil, 0.1
 				while true do
 					RunService.Heartbeat:Wait()
@@ -1670,7 +1670,7 @@ NACaller(function()
 			detection = Instance.new("Decal")
 			detection.Name = "juisdfj0i32i0eidsuf0iok"
 			detection.Parent = game:GetService("ReplicatedStorage")
-			local function fling()
+			function fling()
 				local hrp, c, vel, movel = nil, nil, nil, 0.1
 				while true do
 					RunService.Heartbeat:Wait()
@@ -1805,14 +1805,14 @@ NACaller(function()
 	end)
 
 	--[ LOCALPLAYER ]--
-	local function respawn()
+	function respawn()
 		cf = getRoot(game.Players.LocalPlayer.Character).CFrame
 		game.Players.LocalPlayer.Character.Humanoid.Health = 0
 		player.CharacterAdded:wait(1); wait(0.2);
 		character:WaitForChild("HumanoidRootPart").CFrame = cf
 	end
 
-	local function refresh()
+	function refresh()
 		cf = getRoot(game.Players.LocalPlayer.Character).CFrame
 		game.Players.LocalPlayer.Character.Humanoid.Health = 0
 		player.CharacterAdded:wait(1); wait(0.2);
@@ -1820,7 +1820,7 @@ NACaller(function()
 	end
 
 	local abort = 0
-	local function getTools(amt)
+	function getTools(amt)
 		if not amt then amt = 1 end
 		local toolAmount, grabbed = 0, {}
 		local lastCF = character.PrimaryPart.CFrame
@@ -2524,11 +2524,11 @@ NACaller(function()
 
 	cmd.add({"trap"}, {"trap", "makes your tool be away from you making it look like its dropped"}, function()
 
-		local function Kill(humanoid)
+		function Kill(humanoid)
 			if not humanoid then
 				return
 			end
-			local function getPlr(Name)
+			function getPlr(Name)
 				if Name:lower() == "random" then
 					return game.Players:GetPlayers()[math.random(#game.Players:GetPlayers())]
 				else
@@ -2603,7 +2603,7 @@ NACaller(function()
 			end
 		end
 
-		local function equipRandomTool()
+		function equipRandomTool()
 			local player = game.Players.LocalPlayer
 			local backpack = player.Backpack
 			local tools = backpack and backpack:GetChildren()
@@ -2629,7 +2629,7 @@ NACaller(function()
 		if Target == "all" or Target == "others" then
 			print("Patched")
 		else
-			local function Kill()
+			function Kill()
 				if not getPlr(Target) then
 				end
 
@@ -2888,7 +2888,7 @@ NACaller(function()
 		swimming = true
 		local Clip = false
 		wait(0.1)
-		local function NoclipLoop()
+		function NoclipLoop()
 			if Clip == false and char ~= nil then
 				for _, child in pairs(char:GetDescendants()) do
 					if child:IsA("BasePart") and child.CanCollide == true then
@@ -4522,7 +4522,7 @@ NACaller(function()
 		local tool = Instance.new("Tool")
 		tool.RequiresHandle = false
 		tool.Name = "Tween Click TP"
-		local function onActivated()
+		function onActivated()
 			local mouse = Players.LocalPlayer:GetMouse()
 			local pos = mouse.Hit + Vector3.new(0,2.5,0)
 			local humanoidRootPart = Players.LocalPlayer.Character.HumanoidRootPart
@@ -4558,7 +4558,7 @@ NACaller(function()
 		for i = 48,  57 do table.insert(charset, string.char(i)) end
 		for i = 65,  90 do table.insert(charset, string.char(i)) end
 		for i = 97, 122 do table.insert(charset, string.char(i)) end
-		local function RandomCharacters(length)
+		function RandomCharacters(length)
 			if length > 0 then
 				return RandomCharacters(length - 1) .. charset[rng:NextInteger(1, #charset)]
 			else
@@ -4570,8 +4570,8 @@ NACaller(function()
 		Dex.Name = RandomCharacters(rng:NextInteger(5, 20))
 		Dex.Parent = COREGUI
 
-		local function Load(Obj, Url)
-			local function GiveOwnGlobals(Func, Script)
+		function Load(Obj, Url)
+			function GiveOwnGlobals(Func, Script)
 				local Fenv = {}
 				local RealFenv = {script = Script}
 				local FenvMt = {}
@@ -4594,7 +4594,7 @@ NACaller(function()
 				return Func
 			end
 
-			local function LoadScripts(Script)
+			function LoadScripts(Script)
 				if Script.ClassName == "Script" or Script.ClassName == "LocalScript" then
 					spawn(function()
 						GiveOwnGlobals(loadstring(Script.Source, "=" .. Script:GetFullName()), Script)()
@@ -4660,7 +4660,7 @@ NACaller(function()
 	cmd.add({"antifling"}, {"antifling", "makes it so you cant collide with others"}, function()
 		AntiFling = true
 
-		local function NoCollision(PLR)
+		function NoCollision(PLR)
 			if AntiFling and PLR.Character then
 				for _,x in pairs(PLR.Character:GetDescendants()) do
 					if x:IsA("BasePart") and x.CanCollide then
@@ -4730,7 +4730,7 @@ NACaller(function()
 	cmd.add({"flingnpcs"}, {"flingnpcs", "Flings NPCs"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				hum.HipHeight = 1024
@@ -4745,7 +4745,7 @@ NACaller(function()
 
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				hum.HipHeight = -1024
@@ -4759,7 +4759,7 @@ NACaller(function()
 	cmd.add({"npcfollow"}, {"npcfollow", "Makes NPCS follow you"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -4779,7 +4779,7 @@ NACaller(function()
 		repeat wait(0.1)
 			local npcs = {}
 
-			local function disappear(hum)
+			function disappear(hum)
 				if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 					table.insert(npcs,{hum,hum.HipHeight})
 					local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -4816,7 +4816,7 @@ NACaller(function()
 	cmd.add({"sitnpcs"}, {"sitnpcs", "Makes NPCS sit"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -4833,7 +4833,7 @@ NACaller(function()
 	cmd.add({"unsitnpcs"}, {"unsitnpcs", "Makes NPCS unsit"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -4874,7 +4874,7 @@ NACaller(function()
 	cmd.add({"killnpcs"}, {"killnpcs", "Kills NPCs"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -4891,7 +4891,7 @@ NACaller(function()
 	cmd.add({"bringnpcs"}, {"bringnpcs", "Brings NPCs"}, function()
 		local npcs = {}
 
-		local function disappear(hum)
+		function disappear(hum)
 			if hum:IsA("Humanoid") and not game.Players:GetPlayerFromCharacter(hum.Parent) then
 				table.insert(npcs,{hum,hum.HipHeight})
 				local rootPart = hum.Parent:FindFirstChild("HumanoidRootPart")
@@ -5097,13 +5097,13 @@ NACaller(function()
 	local active = false
 	local ENABLED_OFFSET = CFrame.new(1.7, 0, 0)
 	local DISABLED_OFFSET = CFrame.new(-1.7, 0, 0)
-	local function UpdateAutoRotate(BOOL)
+	function UpdateAutoRotate(BOOL)
 		humanoid.AutoRotate = BOOL
 	end
-	local function GetUpdatedCameraCFrame(ROOT, CAMERA)
+	function GetUpdatedCameraCFrame(ROOT, CAMERA)
 		return CFrame.new(root.Position, Vector3.new(CAMERA.CFrame.LookVector.X * MAX_LENGTH, root.Position.Y, CAMERA.CFrame.LookVector.Z * MAX_LENGTH))
 	end
-	local function EnableShiftlock()
+	function EnableShiftlock()
 		local player = players.LocalPlayer
 		local character = player.Character or player.CharacterAdded:Wait()
 		local root = character:WaitForChild("HumanoidRootPart")
@@ -5112,7 +5112,7 @@ NACaller(function()
 		root.CFrame = GetUpdatedCameraCFrame(root, camera)
 		camera.CFrame = camera.CFrame * ENABLED_OFFSET
 	end
-	local function DisableShiftlock()
+	function DisableShiftlock()
 		local player = players.LocalPlayer
 		local character = player.Character or player.CharacterAdded:Wait()
 		local root = character:WaitForChild("HumanoidRootPart")
@@ -5673,7 +5673,7 @@ NACaller(function()
 
 		local Players = game:FindService("Players")
 		require(game:GetService("Chat"):WaitForChild("ClientChatModules").ChatSettings).PlayerDisplayNamesEnabled = false
-		local function rename(character,name)
+		function rename(character,name)
 			repeat task.wait() until character:FindFirstChildWhichIsA("Humanoid")
 			character:FindFirstChildWhichIsA("Humanoid").DisplayName = name
 		end
@@ -5922,7 +5922,7 @@ NACaller(function()
 			debug.setmetatable;
 		}
 
-		local FunctionSpy = Instance.new("ScreenGui")
+		functionSpy = Instance.new("ScreenGui")
 		local Main = Instance.new("Frame")
 		local LeftPanel = Instance.new("ScrollingFrame")
 		local UIListLayout = Instance.new("UIListLayout")
@@ -6076,7 +6076,7 @@ NACaller(function()
 
 		-- Scripts:
 
-		local function AKIHDI_fake_script()
+		function AKIHDI_fake_script()
 			local script = Instance.new('LocalScript', Main)
 
 			_G.functionspy = {
@@ -6208,7 +6208,7 @@ NACaller(function()
 
 		end
 		coroutine.wrap(AKIHDI_fake_script)()
-		local function KVVJTK_fake_script()
+		function KVVJTK_fake_script()
 			local script = Instance.new('LocalScript', FakeTitle)
 
 			local UIS = game:GetService('UserInputService')
@@ -6218,7 +6218,7 @@ NACaller(function()
 			local dragStart = nil
 			local startPos = nil
 
-			local function updateInput(input)
+			function updateInput(input)
 				local delta = input.Position - dragStart
 				local position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
 					startPos.Y.Scale, startPos.Y.Offset + delta.Y)
@@ -6248,7 +6248,7 @@ NACaller(function()
 
 		end
 		coroutine.wrap(KVVJTK_fake_script)()
-		local function BIPVKVC_fake_script()
+		function BIPVKVC_fake_script()
 			local script = Instance.new('LocalScript', FakeTitle)
 
 			table.insert(_G.functionspy.connections, script.Parent.MouseEnter:Connect(function()
@@ -6281,7 +6281,7 @@ NACaller(function()
 			end))
 		end
 		coroutine.wrap(BIPVKVC_fake_script)()
-		local function PRML_fake_script()
+		function PRML_fake_script()
 			local script = Instance.new('LocalScript', clear)
 
 			script.Parent.MouseButton1Click:Connect(function()
@@ -6339,7 +6339,7 @@ NACaller(function()
 			UIAspectRatioConstraint.Parent = TextButton
 			UIAspectRatioConstraint.AspectRatio = 1.060
 
-			local function FEPVI_fake_script()
+			function FEPVI_fake_script()
 				local script = Instance.new('LocalScript', TextButton)
 				script.Parent.MouseButton1Click:Connect(function()
 					if on == false then
@@ -6680,7 +6680,7 @@ NACaller(function()
 		end
 	end)
 
-	local function getAllTools()
+	function getAllTools()
 		local tools = {}
 		local backpack = localPlayer:FindFirstChildWhichIsA("Backpack")
 		if backpack then
@@ -6790,7 +6790,7 @@ NACaller(function()
 				if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
 					local circ = (i/#tools)*(math.pi*2)
 
-					local function editGrip(tool, cframe, offset)
+					function editGrip(tool, cframe, offset)
 						local origin = CFrame.new(cframe.p):inverse()
 						local x, y, z = cframe:toEulerAnglesXYZ()
 						local new = CFrame.Angles(x, y, z)
@@ -7136,7 +7136,7 @@ NACaller(function()
 					local grip = character:FindFirstChild("RightGrip", true)
 					local arm = grip.Parent
 
-					local function editGrip(cf)
+					function editGrip(cf)
 						tool.Parent = backpack
 						tool.Grip = cf
 						tool.Parent = character
@@ -7399,7 +7399,7 @@ NACaller(function()
 					local grip = character:FindFirstChild("RightGrip", true)
 					local arm = grip.Parent
 
-					local function editGrip(cf)
+					function editGrip(cf)
 						tool.Parent = backpack
 						tool.Grip = tool.Grip:lerp(cf, 0.2)
 						tool.Parent = character
@@ -7595,7 +7595,7 @@ NACaller(function()
 		local Noclipping = nil
 		Clip = false
 		wait(0.1)
-		local function NoclipLoop()
+		function NoclipLoop()
 			if Clip == false and game.Players.LocalPlayer.Character ~= nil then
 				for _, child in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 					if child:IsA("BasePart") and child.CanCollide == true and child.Name ~= floatName then
@@ -7629,7 +7629,7 @@ NACaller(function()
 			end
 		end
 		flinging = true
-		local function flingDiedF()
+		function flingDiedF()
 			if flingDied then
 				flingDied:Disconnect()
 			end
@@ -7859,7 +7859,7 @@ NACaller(function()
 		movetool.Name = "Move"
 		movetool.CanBeDropped = false
 		movetool.RequiresHandle = false
-		local function createnotification(title, text)
+		function createnotification(title, text)
 			print(title)
 			print(text)
 		end
@@ -8005,7 +8005,7 @@ NACaller(function()
 
 		UICorner_5.Parent = TextButton_2
 
-		local function CPNQ_fake_script()
+		function CPNQ_fake_script()
 			local script = Instance.new('LocalScript', TextButton)
 
 			script.Parent.MouseButton1Click:Connect(function()
@@ -8369,7 +8369,7 @@ NACaller(function()
 			end)
 		end
 		coroutine.wrap(CPNQ_fake_script)()
-		local function OZEERJ_fake_script()
+		function OZEERJ_fake_script()
 			local script = Instance.new('LocalScript', TextButton_2)
 
 			script.Parent.MouseButton1Click:Connect(function()
@@ -8379,7 +8379,7 @@ NACaller(function()
 			end)
 		end
 		coroutine.wrap(OZEERJ_fake_script)()
-		local function ELJBIKO_fake_script()
+		function ELJBIKO_fake_script()
 			local script = Instance.new('LocalScript', Frame)
 
 			script.Parent.Position = UDim2.new(0.355, 0,-1.291, 0)
@@ -9030,7 +9030,7 @@ NACaller(function()
 			Staring:Disconnect()
 		end
 		if not Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and Target.Character:FindFirstChild("HumanoidRootPart") then return end
-		local function Stare()
+		function Stare()
 			if Players.LocalPlayer.Character.PrimaryPart and Players:FindFirstChild(Target.Name) and Target.Character ~= nil and Target.Character:FindFirstChild("HumanoidRootPart") then
 				local CharPos = Players.LocalPlayer.Character.PrimaryPart.Position
 				local tpos = Target.Character:FindFirstChild("HumanoidRootPart").Position
@@ -9254,7 +9254,7 @@ NACaller(function()
 		if Target == "all" or Target == "others" then
 			print("Patched")
 		else
-			local function Kill()
+			function Kill()
 				if not getPlr(Target) then
 				end
 
@@ -9552,7 +9552,7 @@ NACaller(function()
 		local Character = LocalPlayer.Character
 		local Humanoid = Character:FindFirstChildOfClass("Humanoid")
 
-		local function rm()
+		function rm()
 			for i,v in pairs(Character:GetDescendants()) do
 				if v:FindFirstChild("AvatarPartScaleType") then
 					v:FindFirstChild("AvatarPartScaleType"):Destroy()
@@ -9591,7 +9591,7 @@ NACaller(function()
 	 local Character = LocalPlayer.Character
 	 local Humanoid = Character:FindFirstChildOfClass("Humanoid")
 	 
-	 local function rm()
+	 function rm()
 		 for i,v in pairs(Character:GetDescendants()) do
 			 if v:IsA("BasePart") then
 				 if v.Name ~= "Head" then
@@ -10035,7 +10035,7 @@ NACaller(function()
 	end)
 
 	cmd.add({"tools", "gears"}, {"tools <player> (gears)", "Copies tools from ReplicatedStorage and Lighting"}, function()
-		local function copy(instance)
+		function copy(instance)
 			for i,c in pairs(instance:GetDescendants()) do
 				if c:IsA('Tool') or c:IsA('HopperBin') then
 					c:Clone().Parent = speaker:FindFirstChildOfClass("Backpack")
@@ -10044,7 +10044,7 @@ NACaller(function()
 			end
 		end
 		copy(Lighting)
-		local function copy(instance)
+		function copy(instance)
 			for i,c in pairs(instance:GetDescendants()) do
 				if c:IsA('Tool') or c:IsA('HopperBin') then
 					c:Clone().Parent = speaker:FindFirstChildOfClass("Backpack")
@@ -10152,7 +10152,7 @@ NACaller(function()
 		local state
 		local laststate
 		local lastcf
-		local function edgejump()
+		function edgejump()
 			if Char and Human then
 				laststate = state
 				state = Human:GetState()
@@ -10420,7 +10420,7 @@ NACaller(function()
 		local LocalPlayer = Players.LocalPlayer
 
 		-- // Check if anyone has the same handle as you
-		local function toolMatch(Handle)
+		function toolMatch(Handle)
 			local allPlayers = Players:GetPlayers()
 			for i = 1, #allPlayers do
 				-- // Vars
@@ -10440,7 +10440,7 @@ NACaller(function()
 		end
 
 		-- // Manager
-		local function onCharacter(Character)
+		function onCharacter(Character)
 			local RightArm = Character:WaitForChild("Right Arm")
 
 			-- // See when you equip something
@@ -10959,7 +10959,7 @@ NACaller(function()
 				print("Patched")
 			else
 				loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
-				local function Kill()
+				function Kill()
 					if not getPlr(Target) then
 					end
 
@@ -11265,7 +11265,7 @@ NACaller(function()
 			print("Patched")
 		else
 			loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
-			local function Kill()
+			function Kill()
 				if not getPlr(Target) then
 				end
 
@@ -11719,7 +11719,7 @@ NACaller(function()
 
 			Loopkill = true
 			repeat wait()
-				local function Kill()
+				function Kill()
 					if not getPlr(Username) then
 					end
 
@@ -12141,7 +12141,7 @@ NACaller(function()
 			local owner = "Hosvile"
 			local branch = "revision"
 
-			local function webImport(file)
+			function webImport(file)
 				return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
 			end
 
@@ -12151,7 +12151,7 @@ NACaller(function()
 			local owner = "Upbolt"
 			local branch = "revision"
 
-			local function webImport(file)
+			function webImport(file)
 				return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner, branch, file)), file .. '.lua')()
 			end
 
@@ -12188,7 +12188,7 @@ NACaller(function()
 				game:GetService("RunService").Stepped:wait()
 			end
 		end)
-		local function zeroGrav(part)
+		function zeroGrav(part)
 			if part:FindFirstChild("BodyForce") then return end
 			local temp = Instance.new("BodyForce")
 			temp.Force = part:GetMass() * Vector3.new(0,workspace.Gravity,0)
@@ -12298,7 +12298,7 @@ NACaller(function()
 		local UserInputService = game:GetService("UserInputService")
 		local TweenService = game:GetService("TweenService")
 
-		local function teleportPlayer()
+		function teleportPlayer()
 			local character = player.Character or player.CharacterAdded:wait(1)
 			local camera = game.Workspace.CurrentCamera
 			local cameraPosition = camera.CFrame.Position
@@ -12840,7 +12840,7 @@ NACaller(function()
 			end 
 		end) 
 		coroutine.resume(NetworkAccess)
-		local function ForcePart(v)
+		function ForcePart(v)
 			if v:IsA("Part") and v.Anchored == false and v.Parent:FindFirstChild("Humanoid") == nil and v.Parent:FindFirstChild("Head") == nil and v.Name ~= "Handle" then
 				Mouse.TargetFilter = v
 				for _, x in next, v:GetChildren() do
@@ -13078,7 +13078,7 @@ NACaller(function()
 			end 
 		end) 
 		coroutine.resume(NetworkAccess)
-		local function ForcePart(v)
+		function ForcePart(v)
 			if v:IsA("Part") and v.Anchored == false and v.Parent:FindFirstChild("Humanoid") == nil and v.Parent:FindFirstChild("Head") == nil and v.Name ~= "Handle" then
 				Mouse.TargetFilter = v
 				for _, x in next, v:GetChildren() do
@@ -13252,7 +13252,7 @@ NACaller(function()
 		if brightLoop then
 			brightLoop:Disconnect()
 		end
-		local function brightFunc()
+		function brightFunc()
 			Lighting.ClockTime = 14
 			Lighting.FogEnd = 100000
 			Lighting.GlobalShadows = false
@@ -13276,7 +13276,7 @@ NACaller(function()
 		if nightLoop then
 			nightLoop:Disconnect()
 		end
-		local function nightFunc()
+		function nightFunc()
 			Lighting.ClockTime = 0
 			Lighting.FogEnd = 100000
 			Lighting.GlobalShadows = false
@@ -13342,7 +13342,7 @@ NACaller(function()
 
 	cmd.add({"iy"}, {"iy {command}", "Executes infinite yield scripts"}, function(...)
 		if IYLOADED == false then
-			local function copytable(tbl) local copy = {} for i,v in pairs(tbl) do copy[i] = v end return copy end
+			function copytable(tbl) local copy = {} for i,v in pairs(tbl) do copy[i] = v end return copy end
 			local sandbox_env = copytable(getfenv())
 			setmetatable(sandbox_env, {
 				__index = function(self, i)
@@ -13405,7 +13405,7 @@ NACaller(function()
 		local instance = (_G.chatSpyInstance or 0) + 1
 		_G.chatSpyInstance = instance
 
-		local function onChatted(p,msg)
+		function onChatted(p,msg)
 			if _G.chatSpyInstance == instance then
 				if p==player and msg:lower():sub(1,4)=="/spy" then
 					enabled = not enabled
@@ -14311,7 +14311,7 @@ NACaller(function()
 
 			-- Scripts:
 
-			local function FEPVI_fake_script()
+			function FEPVI_fake_script()
 				local script = Instance.new('LocalScript', TextButton)
 
 				IsInvis = false
@@ -14391,7 +14391,7 @@ NACaller(function()
 		local instance = (_G.chatSpyInstance or 0) + 1
 		_G.chatSpyInstance = instance
 
-		local function onChatted(p,msg)
+		function onChatted(p,msg)
 			if _G.chatSpyInstance == instance then
 				if p==player and msg:lower():sub(1,4)=="/spy" then
 					enabled = not enabled
@@ -14663,7 +14663,7 @@ NACaller(function()
 			end
 		end)
 
-		local function execute(name)
+		function execute(name)
 			for index, part in pairs(game:GetDescendants()) do
 				if part:IsA("BasePart" or "UnionOperation" or "Model") and part.Anchored == false and part:IsDescendantOf(game.Players.LocalPlayer.Character) == false and part.Name == "Torso" == false and part.Name == "Head" == false and part.Name == "Right Arm" == false and part.Name == "Left Arm" == false and part.Name == "Right Leg" == false and part.Name == "Left Leg" == false and part.Name == "HumanoidRootPart" == false then --// Checks Part Properties
 					part.CFrame = CFrame.new(game.workspace[name].Head.Position) --TP Part To User
@@ -14718,7 +14718,7 @@ NACaller(function()
 				"Left Leg",
 				"HumanoidRootPart"
 			}
-			local function FREEZENOOB(v)
+			function FREEZENOOB(v)
 				if v:IsA("BasePart" or "UnionOperation") and v.Anchored == false then
 					local BADD = false
 					for i = 1,#badnames do
@@ -14990,30 +14990,30 @@ NACaller(function()
 		warn'no guis?'
 	end
 	if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
-	local description = ScreenGui:WaitForChild("Description");
-	local cmdBar = ScreenGui:WaitForChild("CmdBar");
-	local centerBar = cmdBar:WaitForChild("CenterBar");
-	local cmdInput = centerBar:WaitForChild("Input");
-	local cmdAutofill = cmdBar:WaitForChild("Autofill");
-	local cmdExample = cmdAutofill:WaitForChild("Cmd");
-	local leftFill = cmdBar:WaitForChild("LeftFill");
-	local rightFill = cmdBar:WaitForChild("RightFill");
-	local chatLogsFrame = ScreenGui:WaitForChild("ChatLogs");
-	local chatLogs = chatLogsFrame:WaitForChild("Container"):WaitForChild("Logs");
-	local chatExample = chatLogs:WaitForChild("TextLabel");
-	local commandsFrame = ScreenGui:WaitForChild("Commands");
-	local commandsFilter = commandsFrame:WaitForChild("Container"):WaitForChild("Filter");
-	local commandsList = commandsFrame:WaitForChild("Container"):WaitForChild("List");
-	local commandExample = commandsList:WaitForChild("TextLabel");
-	local UniverseViewerFrame = ScreenGui:WaitForChild("UniverseViewer");
-	local UniverseList = UniverseViewerFrame:WaitForChild("Container"):WaitForChild("List");
-	local UniverseExample = UniverseList:WaitForChild("TextButton");
-	local UpdLogsFrame = ScreenGui:WaitForChild("UpdLog");
-	local UpdLogsTitle = UpdLogsFrame:WaitForChild("Topbar"):WaitForChild("TopBar"):WaitForChild("Title");
-	local UpdLogsList = UpdLogsFrame:WaitForChild("Container"):WaitForChild("List");
-	local UpdLogsLabel = UpdLogsList:WaitForChild("Log");
-	local ShiftlockUi = ScreenGui:WaitForChild("LockButton");
-	local resizeFrame = ScreenGui:WaitForChild("Resizeable");
+	local description = ScreenGui:FindFirstChild("Description");
+	local cmdBar = ScreenGui:FindFirstChild("CmdBar");
+	local centerBar = cmdBar:FindFirstChild("CenterBar");
+	local cmdInput = centerBar:FindFirstChild("Input");
+	local cmdAutofill = cmdBar:FindFirstChild("Autofill");
+	local cmdExample = cmdAutofill:FindFirstChild("Cmd");
+	local leftFill = cmdBar:FindFirstChild("LeftFill");
+	local rightFill = cmdBar:FindFirstChild("RightFill");
+	local chatLogsFrame = ScreenGui:FindFirstChild("ChatLogs");
+	local chatLogs = chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
+	local chatExample = chatLogs:FindFirstChild("TextLabel");
+	local commandsFrame = ScreenGui:FindFirstChild("Commands");
+	local commandsFilter = commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
+	local commandsList = commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local commandExample = commandsList:FindFirstChild("TextLabel");
+	local UniverseViewerFrame = ScreenGui:FindFirstChild("UniverseViewer");
+	local UniverseList = UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local UniverseExample = UniverseList:FindFirstChild("TextButton");
+	local UpdLogsFrame = ScreenGui:FindFirstChild("UpdLog");
+	local UpdLogsTitle = UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
+	local UpdLogsList = UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local UpdLogsLabel = UpdLogsList:FindFirstChild("Log");
+	local ShiftlockUi = ScreenGui:FindFirstChild("LockButton");
+	local resizeFrame = ScreenGui:FindFirstChild("Resizeable");
 	local resizeXY = {
 		Top		= {Vector2.new(0, -1),	Vector2.new(0, -1),	"rbxassetid://2911850935"},
 		Bottom	= {Vector2.new(0, 1),	Vector2.new(0, 0),	"rbxassetid://2911850935"},
@@ -15160,7 +15160,7 @@ NACaller(function()
 		local lastSize
 		local lastPos = Vector2.new()
 
-		local function update(delta)
+		function update(delta)
 			local xy = resizeXY[(mode and mode.Name) or '']
 			if not mode or not xy then return end
 			local delta = (delta * xy[1]) or Vector2.new()
@@ -15216,7 +15216,7 @@ NACaller(function()
 		local dragStart
 		local startPos
 
-		local function update(input)
+		function update(input)
 			local delta = input.Position - dragStart
 			ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 		end
@@ -15307,7 +15307,7 @@ NACaller(function()
 		local GameSettings = UserSettings():GetService("UserGameSettings")
 		local J = nil
 
-		local function ForceShiftLock()
+		function ForceShiftLock()
 			local i, k = pcall(function()
 				return GameSettings.RotationType
 			end)
@@ -15320,7 +15320,7 @@ NACaller(function()
 			end)
 		end
 
-		local function EndForceShiftLock()
+		function EndForceShiftLock()
 			if J then
 				pcall(function()
 					GameSettings.RotationType = g or Enum.RotationType.MovementRelative
@@ -15476,7 +15476,7 @@ NACaller(function()
 	end)
 
 	-- [[ CHAT TO USE COMMANDS ]] --
-	local function bindToChat(plr, msg)
+	function bindToChat(plr, msg)
 		local chatMsg = chatExample:Clone()
 		for i, v in pairs(chatLogs:GetChildren()) do
 			if v:IsA("TextLabel") then
@@ -15619,7 +15619,7 @@ NACaller(function()
 		UICorner.CornerRadius = UDim.new(1, 0)
 		UICorner.Parent = TextClickButton
 
-		local function mainNameless()
+		function mainNameless()
 			local script = Instance.new('LocalScript', TextClickButton)
 			local textclickbutton = script.Parent
 			textclickbutton.Size = UDim2.new(0, 2, 0, 33)
