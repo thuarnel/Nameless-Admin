@@ -3453,7 +3453,7 @@ NACaller(function()
 			end)
 			repeat
 				firetouchinterest(MainTool.Handle, TRootPart, 0)
-				4(MainTool.Handle, TRootPart, 1)
+				firetouchinterest(MainTool.Handle, TRootPart, 1)
 				wait()
 			until flag
 		else
