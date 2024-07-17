@@ -65,7 +65,7 @@ NACaller(function()
 		local teleportConnection = game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 			if (not teleportedServers) then
 				local queueonteleport = syn and syn.queue_on_teleport or queue_on_teleport or function() end
-				queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]])
+				queueonteleport([[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))();]])
 			end
 		end)
 	end)
@@ -3399,7 +3399,7 @@ NACaller(function()
 				flag = true
 			end)
 			repeat
-				4(MainTool.Handle, TRootPart, 0)
+				firetouchinterest(MainTool.Handle, TRootPart, 0)
 				firetouchinterest(MainTool.Handle, TRootPart, 1)
 				wait()
 			until flag
