@@ -15101,7 +15101,7 @@ NACaller(function()
 			UpdLogsFrame.Visible = true
 		elseif not next(updLogs) then
 			Notify({
-				Description = "no upd logs for now :<";
+				Description = "no upd logs for now :(";
 				Title = adminName;
 				Duration = 5;
 			});
@@ -15230,8 +15230,48 @@ NACaller(function()
 				update(input)
 			end
 		end)
-	end
-	gui.menuify = function(menu)
+end
+gui.BtnDrag = function(ui, dragui) -- need it for the mobile button drag
+		if not dragui then dragui = ui end
+		local UserInputService = game:GetService("UserInputService")
+
+		local dragging
+		local dragInput
+		local dragStart
+		local startPos
+
+		function update(input)
+			local delta = input.Position - dragStart
+			ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		end
+
+		dragui.InputBegan:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+				dragging = true
+				dragStart = input.Position
+				startPos = ui.Position
+
+				input.Changed:Connect(function()
+					if input.UserInputState == Enum.UserInputState.End then
+						dragging = false
+					end
+				end)
+			end
+		end)
+
+		dragui.InputChanged:Connect(function(input)
+			if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+				dragInput = input
+			end
+		end)
+
+		UserInputService.InputChanged:Connect(function(input)
+			if input == dragInput and dragging then
+				update(input)
+			end
+		end)
+end
+gui.menuify = function(menu)
 		local exit = menu:FindFirstChild("Exit", true)
 		local mini = menu:FindFirstChild("Minimize", true)
 		local minimized = false
@@ -15619,7 +15659,7 @@ NACaller(function()
 			wait(0.4)
 			textclickbutton.Text = "NA"
 			textclickbutton.Active = true
-			gui.draggable(textclickbutton)
+			gui.BtnDrag(textclickbutton)
 		end
 		coroutine.wrap(mainNameless)()
 
