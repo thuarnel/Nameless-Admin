@@ -14,24 +14,14 @@
                                                                                              
 
 ]]
-local function NACaller(pp) -- helps me log better
-	-- Waits until game is loaded
-	if (not game:IsLoaded()) then
-		local waiting=Instance.new("Message")
-		waiting.Parent=iamcore
-		waiting.Text='Nameless Admin is waiting for the game to load'
-		game.Loaded:Wait()
-		waiting:Destroy()
-	end
+if getgenv().NamelessLoaded then return end
 
+
+local function NACaller(pp) -- helps me log better
 	local s, err = pcall(pp)
-	if not s then
-		warn("NA script err: "..err)
-	end
+	if not s then warn("NA script err: "..err) end
 end
 
-NACaller(function()
-	if getgenv().NamelessLoaded then return end
 
 	if not gethui then
 		getgenv().gethui=function()
@@ -63,13 +53,13 @@ NACaller(function()
 
 	local GetService=game.GetService
 	local iamcore=gethui()
-	--[[if (not game:IsLoaded()) then
+	if (not game:IsLoaded()) then
 		local waiting=Instance.new("Message")
 		waiting.Parent=iamcore
 		waiting.Text='Nameless Admin is waiting for the game to load'
 		game.Loaded:Wait()
 		waiting:Destroy()
-	end]]
+end
 
 	NACaller(function()
 		local teleportConnection=game.Players.LocalPlayer.OnTeleport:Connect(function(State)
@@ -91,7 +81,7 @@ NACaller(function()
 	local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 	local Notify=Notification.Notify;
 
-	wait(); -- added wait due to the Http being a bit delayed on returning
+	wait(); -- added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
 
 	-- Custom file functions checker checker
 	local CustomFunctionSupport=isfile and isfolder and writefile and readfile and listfiles
@@ -353,9 +343,9 @@ NACaller(function()
 			array[i]=string.char(math.random(32, 126))
 		end
 		return table.concat(array)
-	end
+end
 
-	--[[ LIBRARY FUNCTIONS ]]--
+--[[ LIBRARY FUNCTIONS ]]--
 	local lib={}
 	lib.wrap=function(f)
 		return coroutine.wrap(f)()
@@ -15680,4 +15670,3 @@ NACaller(function()
 	┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 	╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 	]])
-end)
