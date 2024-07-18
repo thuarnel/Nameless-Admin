@@ -26,7 +26,7 @@ local function NACaller(pp) -- helps me log better
 
 	local s, err = pcall(pp)
 	if not s then
-		warn("script err: "..err)
+		warn("NA script err: "..err)
 	end
 end
 
@@ -139,9 +139,11 @@ NACaller(function()
 	local adminName="Nameless Admin"
 
 	-- [[ Update Logs ]] --
-	local updLogs={}
+	local updLogs={
+	log1="Fixed "..adminName.." not loading for Delta (bcuz of stupid missing functions 💀)"
+	}
 
-	local updDate="7/17/2024"
+	local updDate="7/18/2024"
 
 	--[[ VARIABLES ]]--
 	local PlaceId, JobId, GameId=game.PlaceId, game.JobId, game.GameId
