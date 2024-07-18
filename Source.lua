@@ -37,13 +37,13 @@ end
 
 	local GetService=game.GetService
 	local iamcore=gethui()
-	--[[if (not game:IsLoaded()) then
+	if (not game:IsLoaded()) then
 		local waiting=Instance.new("Message")
 		waiting.Parent=iamcore
 		waiting.Text='Nameless Admin is waiting for the game to load'
 		game.Loaded:Wait()
 		waiting:Destroy()
-	end]]
+end
 
 	NACaller(function()
 		local teleportConnection=game.Players.LocalPlayer.OnTeleport:Connect(function(State)
