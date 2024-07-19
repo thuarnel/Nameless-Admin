@@ -187,7 +187,7 @@ local Looptornado=false
 local Loopmute=false
 local Loopglitch=false
 local Watch=false
-local Admin={156256804,530829101,229501685}
+local Admin={}
 
 
 --[[ Some more variables ]]--
@@ -282,7 +282,9 @@ function didYouMean(arg)
 
 	return closer
 end
-
+Admin[156256804]
+Admin[530829101]
+Admin[229501685]
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
