@@ -88,16 +88,6 @@ NACaller(function()
 	end)
 end)
 
-task.spawn(function()
-	NACaller(function() -- better saveinstance support
-		if identifyexecutor()=="Solara" then -- solara broke this bra
-		else
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
-		end
-	end)
-end)
-
-
 -- Notification library
 local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 local Notify=Notification.Notify;
@@ -15703,6 +15693,14 @@ end
 -- @MuhXd (Viper)
 
 -- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
+task.spawn(function()
+	NACaller(function() -- better saveinstance support
+		if identifyexecutor()=="Solara" then -- solara broke this bra
+		else
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
+		end
+	end)
+end)
 
 print([[
 	╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
