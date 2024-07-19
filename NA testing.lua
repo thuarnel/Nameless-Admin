@@ -1019,9 +1019,12 @@ end
 lib.parseText=function(text,watch,rPlr)
 	local parsed={}
 	if not text then return nil end
-	local prefix = isRelAdmin(rPlr) and ";" or opt.prefix
-	if isRelAdmin(rPlr) then
+	local prefix
+	if rPlr then
+		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
 		watch=prefix
+	else
+		prefix=opt.prefix
 	end
 	for arg in text:gmatch("[^" .. watch .. "]+") do
 		arg=arg:gsub("-","%%-")
@@ -1041,7 +1044,12 @@ end
 
 lib.parseCommand=function(text,rPlr)
 	wrap(function()
-		local commands=lib.parseText(text,opt.prefix,rPlr)
+		local commands
+		if rPlr then
+			commands=lib.parseText(text,opt.prefix,rPlr)
+		else
+			commands=lib.parseText(text,opt.prefix)
+		end
 		for _,parsed in pairs(commands) do
 			local args={}
 			for arg in parsed:gmatch("[^ ]+") do
@@ -14994,7 +15002,7 @@ end)
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
 	if Admin[Player.UserId] or isRelAdmin(Player) then
-		print(Message)
+		print(isRelAdmin(Player))
 		lib.parseCommand(Message,Player)
 	end
 end
