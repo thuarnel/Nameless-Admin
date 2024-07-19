@@ -65,7 +65,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
-local NA_storage = instance.new("Folder") -- just in case something is added before the important naming and parenting
+local NA_storage = Instance.new("Folder") -- just in case something is added before the important naming and parenting
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
