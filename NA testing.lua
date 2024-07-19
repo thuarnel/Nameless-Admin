@@ -937,13 +937,18 @@ lib.LocalPlayerChat = function(...)
 					end
 				end
 			end
-			print(sendto)
+			--print(sendto)
 			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
 				end)
 				task.wait(0.5)
+				local gplr = getPlr(args[2])
+				if (gplr) then
 				lib.LocalPlayerChat(...)
+				else
+				return nil
+				end
 			end
 		end
 		sendto:SendAsync(args[1] or "")
