@@ -955,7 +955,7 @@ lib.LocalPlayerChat = function(...)
 		end
 		sendto:SendAsync(args[1] or "")
 	else
-		if args[2] then
+		if args[2] and args[2] ~= "All" then
 			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "", "All")
 		else
 			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "", "All")
