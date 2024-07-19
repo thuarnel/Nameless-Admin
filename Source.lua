@@ -1,6 +1,6 @@
 
 if getgenv().NamelessLoaded then return end
-
+ 
 local function NACaller(pp) -- helps me log better
 	local s,err = pcall(pp)
 	if not s then warn("NA script err: "..err) end
