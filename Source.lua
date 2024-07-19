@@ -1,6 +1,6 @@
 
 if getgenv().NamelessLoaded then return end
- 
+
 local function NACaller(pp) -- helps me log better
 	local s,err = pcall(pp)
 	if not s then warn("NA script err: "..err) end
@@ -909,6 +909,62 @@ local lp=game:GetService("Players").LocalPlayer
 
 
 -- [[ LIB FUNCTIONS ]] --
+chatmsgshooks = {}
+Playerchats = {}
+
+lib.LocalPlayerChat = function(...)
+	local args = {...} 
+	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
+		local sendto = game:GetService("TextChatService").TextChannels.RBXGeneral
+		if args[2] ~= nil and  args[2] ~= "All"  then
+			if not Playerchats[args[2]] then
+				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
+					if string.find(v.Name,"RBXWhisper:") then
+						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+							sendto = v
+							Playerchats[args[2]] = v
+							break
+						end
+					end
+				end
+			else
+				sendto = Playerchats[args[2]]
+			end
+			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
+				chatmsgshooks[#chatmsgshooks+1] = {args[1],args}
+				task.spawn(function()
+					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
+				end)
+				return "Hooking"
+			end
+		end
+		sendto:SendAsync(args[1] or "")
+	else
+		if args[2] and args[2] ~= "All" then
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "", "All")
+		else
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "", "All")
+		end
+	end
+end
+
+if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
+	game:GetService("TextChatService").TextChannels.ChildAdded:Connect(function(v)
+		if string.find(v.Name,"RBXWhisper:") then
+			task.wait(1)
+			for id,va in pairs(chatmsgshooks) do
+				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+					Playerchats[va[1]] = v
+					lib.LocalPlayerChat(va[2])
+					break
+				end
+			end
+		end
+	end)
+end
+
+lib.lpchat = lib.LocalPlayerChat
+
 lib.lock=function(instance,par)
 	locks[instance]=true
 	instance.Parent=par or instance.Parent
@@ -1240,7 +1296,7 @@ cmd.add({"kanye"},{"kanye","Random kanye quote"},function()
 	local final=game:HttpGet(check)
 	local final2=string.gsub(final,'"quote"',"")
 	local final3=string.gsub(final2,"[%{%:%}]","")
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(final3.." - Kanye West",'All')
+	lib.LocalPlayerChat(final3.." - Kanye West",'All')
 end)
 
 cmd.add({"godmode","god"},{"godmode (god)","Makes you unable to be killed"},function()
@@ -1879,6 +1935,8 @@ function getTools(amt)
 	return grabbed
 end
 
+
+
 cmd.add({"joke"},{"joke","Random joke generator"},function()
 	coroutine.wrap(function()
 		local HttpService=game:GetService('HttpService')
@@ -1886,10 +1944,9 @@ cmd.add({"joke"},{"joke","Random joke generator"},function()
 		local final1=game:HttpGet(check)
 		local final=string.gsub(final1,"[%[%]]","")
 		local decoded=HttpService:JSONDecode(final)
-
-		game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(decoded.setup,'All')
+		lib.LocalPlayerChat(decoded.setup,'All')
 		wait(2)
-		game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(decoded.punchline,'All')
+		lib.LocalPlayerChat(decoded.punchline,'All')
 	end)()
 
 end)
@@ -1906,13 +1963,13 @@ cmd.add({"idiot"},{"idiot <player>","Tell someone that they are an idiot"},funct
 
 	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame * CFrame.new(0,1,4)
 	local message="Hey " .. target.Name .. ""
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message,'All')
+	lib.LocalPlayerChat(message,'All')
 	wait(1)
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('Sorry to tell you this,but..','All')
+	lib.LocalPlayerChat('Sorry to tell you this,but..','All')
 	wait(1)
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('You are an idiot!','All')
+	lib.LocalPlayerChat('You are an idiot!','All')
 	wait(1)
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer('HAHAHA!','All')
+	lib.LocalPlayerChat('HAHAHA!','All')
 	wait(1)
 	getChar():WaitForChild("HumanoidRootPart").CFrame=old
 
@@ -4636,7 +4693,7 @@ cmd.add({"gayrate"},{"gayrate <player>","Gay scale of a player"},function(...)
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
 	rate=target.Name .. ' is ' .. coolPercentage .. '% gay'
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(rate,'All')
+	lib.LocalPlayerChat(rate,'All')
 end)
 
 cmd.add({"coolrate"},{"coolrate <player>","Cool scale of a player"},function(...)
@@ -4644,7 +4701,7 @@ cmd.add({"coolrate"},{"coolrate <player>","Cool scale of a player"},function(...
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
 	rate=target.Name .. ' is ' .. coolPercentage .. '% cool'
-	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(rate,'All')
+	lib.LocalPlayerChat(rate,'All')
 end)
 
 cmd.add({"unantikill"},{"unantikill","Makes exploiters to be able to kill you"},function()
@@ -5613,15 +5670,15 @@ cmd.add({"saveinstance","savegame"},{"saveinstance (savegame)","if it bugs out t
 end)
 
 cmd.add({"admin"},{"admin","whitelist someone to allow them to use commands"},function(...)
-	function ChatMessage(Message,Whisper)	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message,Whisper or "ALl")
+	function ChatMessage(Message,Whisper)	lib.LocalPlayerChat(Message,Whisper or "All")
 	end
 	local Player=getPlr(...)
 	if Player ~= nil and not Admin[Player.UserId] then
 		Admin[Player.UserId]={Player=Player}
-		ChatMessage("/w "..Player.Name.." [Nameless Admin] You've got admin. Prefix: ';'")
+		ChatMessage("[Nameless Admin] You've got admin. Prefix: ';'",Player.Name)
 		wait(0.2)
-		ChatMessage("/w "..Player.Name.." [Nameless Admin Commands] glue,unglue,fling,fling2,spinfling,unspinfling,fcd,fti,fpp,fireremotes,holdhat")
-		ChatMessage("/w "..Player.Name.." reset,commitoof,seizure,unseizure,toolorbit,lay,fall,toolspin,hatspin,sit,joke,kanye")
+		ChatMessage("[Nameless Admin Commands] glue,unglue,fling,fling2,spinfling,unspinfling,fcd,fti,fpp,fireremotes,holdhat",Player.Name)
+		ChatMessage("reset,commitoof,seizure,unseizure,toolorbit,lay,fall,toolspin,hatspin,sit,joke,kanye",Player.Name)
 		Notify({
 			Description="" .. Player.Name .. " has now been whitelisted to use commands";
 			Title=adminName;
@@ -14901,7 +14958,7 @@ end)
 
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
-	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685 or Player.UserId==3470956640) then
+	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
 		lib.parseCommand(Message,Player)
 	end
 end
