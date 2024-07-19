@@ -9062,18 +9062,15 @@ end)
 cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSELF SCRIPT this will be bad when taken out of context"},function()
 	local A_1="Okay.. i will do it."
 	local A_2="All"
-	local Event=game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1,A_2)
+	lib.LocalPlayerChat(A_1,A_2)
 	wait(1)
 	local A_1="I will oof"
 	local A_2="All"
-	local Event=game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1,A_2)
+	lib.LocalPlayerChat(A_1,A_2)
 	wait(1)
 	local A_1="Goodbye."
 	local A_2="All"
-	local Event=game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
-	Event:FireServer(A_1,A_2)
+	lib.LocalPlayerChat (A_1,A_2)
 	wait(1)
 	LocalPlayer=game:GetService("Players").LocalPlayer
 	LocalPlayer.Character.Humanoid:MoveTo(LocalPlayer.Character.HumanoidRootPart.Position + LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 10)
