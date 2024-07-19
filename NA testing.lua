@@ -89,9 +89,11 @@ NACaller(function()
 end)
 
 task.spawn(function()
-	NACaller(function() -- better saveinstance support
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
-	end)
+	if not identifyexecutor()=="Solara" then -- solara doesn't support this sadly
+		NACaller(function() -- better saveinstance support
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
+		end)
+	end
 end)
 
 
