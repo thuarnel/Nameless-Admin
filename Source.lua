@@ -1,3 +1,19 @@
+--[[
+
+ ________  ________   ______  ________        _______   __    __  ______  __        _______  
+|        \|        \ /      \|        \      |       \ |  \  |  \|      \|  \      |       \ 
+ \$$$$$$$$| $$$$$$$$|  $$$$$$\\$$$$$$$$      | $$$$$$$\| $$  | $$ \$$$$$$| $$      | $$$$$$$\
+   | $$   | $$__    | $$___\$$  | $$         | $$__/ $$| $$  | $$  | $$  | $$      | $$  | $$
+   | $$   | $$  \    \$$    \   | $$         | $$    $$| $$  | $$  | $$  | $$      | $$  | $$
+   | $$   | $$$$$    _\$$$$$$\  | $$         | $$$$$$$\| $$  | $$  | $$  | $$      | $$  | $$
+   | $$   | $$_____ |  \__| $$  | $$         | $$__/ $$| $$__/ $$ _| $$_ | $$_____ | $$__/ $$
+   | $$   | $$     \ \$$    $$  | $$         | $$    $$ \$$    $$|   $$ \| $$     \| $$    $$
+    \$$    \$$$$$$$$  \$$$$$$    \$$          \$$$$$$$   \$$$$$$  \$$$$$$ \$$$$$$$$ \$$$$$$$ 
+                                                                                             
+                                                                                             
+                                                                                             
+
+]]
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
@@ -49,6 +65,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
+local NA_storage = instance.new("Folder") -- just in case something is added before the important naming and parenting
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
@@ -317,6 +334,10 @@ function randomString()
 	end
 	return table.concat(array)
 end
+
+--[[ Fully setup Nameless admin storage ]]
+NA_storage.Name = randomString()
+NA_storage.Parent = iamcore
 
 --[[ LIBRARY FUNCTIONS ]]--
 local lib={}
@@ -1608,13 +1629,13 @@ cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the
 		Duration=5;
 
 	});
-	if game:GetService("ReplicatedStorage"):FindFirstChild("juisdfj0i32i0eidsuf0iok") then
+	if NA_storage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 		hiddenfling=true
 	else
 		hiddenfling=true
 		detection=Instance.new("Decal")
 		detection.Name="juisdfj0i32i0eidsuf0iok"
-		detection.Parent=game:GetService("ReplicatedStorage")
+		detection.Parent=NA_storage
 		function fling()
 			local hrp,c,vel,movel=nil,nil,nil,0.1
 			while true do
@@ -1665,12 +1686,12 @@ cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
 
 	hiddenfling=true
 
-	if game:GetService("ReplicatedStorage"):FindFirstChild("juisdfj0i32i0eidsuf0iok") then
+	if NA_storage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 		hiddenfling=true
 	else
 		detection=Instance.new("Decal")
 		detection.Name="juisdfj0i32i0eidsuf0iok"
-		detection.Parent=game:GetService("ReplicatedStorage")
+		detection.Parent=NA_storage
 		function fling()
 			local hrp,c,vel,movel=nil,nil,nil,0.1
 			while true do
@@ -14895,16 +14916,17 @@ end)
 
 -- [[ Admin Player]]
 function AdminChatted(Message,Player)
-	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
 		lib.parseCommand(Message,Player)
-	end
 end
 
 function CheckPermissions(Player)
-	Player.Chatted:Connect(function(Message)
-		AdminChatted(Message,Player)
-	end)
+	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
+		Player.Chatted:Connect(function(Message)
+			AdminChatted(Message,Player)
+		end)
+	end
 end
+
 Players.PlayerAdded:Connect(function(plr)
 	CheckPermissions(plr)
 end)
