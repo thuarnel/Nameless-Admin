@@ -255,17 +255,17 @@ local function VLSJXUV_fake_script() -- Exit.LocalScript
 		local textSize = editor.TextSize
 		local textBounds = game:GetService("TextService"):GetTextSize(text, textSize, font, Vector2.new(width, math.huge))
 	
-		if textBounds.Y <= 191 then
-			editor.Size = UDim2.new(1, 0, 0, 191)
+		if textBounds.Y <= 200 then
+			editor.Size = UDim2.new(1, 0, 0, 200)
 		else
-			editor.Size = UDim2.new(1, 0, 0, textBounds.Y)
+			editor.Size = UDim2.new(1, 0, 0, textBounds.Y+15)
 		end
 	end
 	
 	con1 = editor:GetPropertyChangedSignal("Text"):Connect(updTxtScale)
 	
 	con2 = game:GetService("RunService").Stepped:Connect(function()
-		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+		editor.Parent.CanvasSize = UDim2.new(0, 0, 0, editor.Parent:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y+30)
 	end)
 	
 	updTxtScale()
