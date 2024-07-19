@@ -14900,16 +14900,16 @@ localPlayer.Chatted:Connect(function(str)
 end)
 
 -- [[ Admin Player]]
-function AdminChatted(Message,Player)
+function IsAdminAndRun(Message,Player)
+	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
 		lib.parseCommand(Message,Player)
+	end
 end
 
 function CheckPermissions(Player)
-	if Admin[Player.UserId] or (Player.UserId==156256804 or Player.UserId==530829101 or Player.UserId==229501685) then
 		Player.Chatted:Connect(function(Message)
-			AdminChatted(Message,Player)
+			IsAdminAndRun(Message,Player)
 		end)
-	end
 end
 
 Players.PlayerAdded:Connect(function(plr)
