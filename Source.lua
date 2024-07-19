@@ -14986,7 +14986,6 @@ end)
 -- [[ Admin Player]]
 function IsAdminAndRun(Message,Player)
 	if Admin[Player.UserId] or isRelAdmin(Player) then
-		print(isRelAdmin(Player))
 		lib.parseCommand(Message,Player)
 	end
 end
