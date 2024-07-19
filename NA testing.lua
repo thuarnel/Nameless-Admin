@@ -20,6 +20,7 @@ local function NACaller(pp) -- helps me log better
 	local s,err = pcall(pp)
 	if not s then warn("NA script err: "..err) end
 end
+
 NACaller(function() getgenv().NamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
@@ -27,9 +28,9 @@ NACaller(function() getgenv().NATestingVer=true end)
 local curVer=2.19
 
 -- [[ Brand ]] -- 
-local mainName="Nameless Admin"
-local testingName="NA Testing"
-local adminName=''
+local mainName='Nameless Admin'
+local testingName='NA Testing'
+local adminName='NA'
 if getgenv().NATestingVer then
 	adminName=testingName
 else
@@ -73,18 +74,16 @@ if not game:IsLoaded() then
 end
 local loader=''
 if getgenv().NATestingVer then
-	loader="https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"
+	loader=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))();]]
 else
-	loader="https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"
+	loader=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]]
 end
-local lString=loadstring(game:HttpGet(loader))()
-print(lString)
 
 NACaller(function()
 	local teleportConnection=game.Players.LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport=syn and syn.queue_on_teleport or queue_on_teleport or function() end
-			queueonteleport(lString)
+			queueonteleport(loader)
 		end
 	end)
 end)
