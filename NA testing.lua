@@ -15553,24 +15553,24 @@ NACaller(function()
 			Notify({
 				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate;
 				Title=rngMsg().." "..hh;
-				Duration=6;
+				Duration=8;
 			});
 		else
 			Notify({
 				Description="Welcome to "..adminName.." V"..curVer;
 				Title=rngMsg().." "..hh;
-				Duration=6;
+				Duration=8;
 			});
 		end
 		Notify({
 			Description=goof();
 			Title="Random Goofy Message";
-			Duration=5;
+			Duration=6;
 		});
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=6;
+			Duration=8;
 		});
 	end)
 
