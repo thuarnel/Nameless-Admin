@@ -171,7 +171,7 @@ local Looptornado=false
 local Loopmute=false
 local Loopglitch=false
 local Watch=false
-local Admin={}
+local Admin={156256804,530829101,229501685}
 
 
 --[[ Some more variables ]]--
