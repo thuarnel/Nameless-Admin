@@ -924,8 +924,8 @@ local lp=game:GetService("Players").LocalPlayer
 
 
 -- [[ LIB FUNCTIONS ]] --
-local chatmsgshooks = {}
-local Playerchats = {}
+chatmsgshooks = {}
+Playerchats = {}
 
 lib.LocalPlayerChat = function(...)
 	local args = {...} 
@@ -946,11 +946,10 @@ lib.LocalPlayerChat = function(...)
 				sendto = Playerchats[args[2]]
 			end
 			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
-				chatmsgshooks[args[1]] = {args[1],args}
+				chatmsgshooks[#chatmsgshooks+1] = {args[1],args}
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
 				end)
-				task.wait(0.5)
 				return "Hooking"
 			end
 		end
@@ -964,14 +963,13 @@ lib.LocalPlayerChat = function(...)
 	end
 end
 
-if game:GetService("TextChatService").TextChannels then
+if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 	game:GetService("TextChatService").TextChannels.ChildAdded:Connect(function(v)
 		if string.find(v.Name,"RBXWhisper:") then
 			task.wait(1)
 			for id,va in pairs(chatmsgshooks) do
 				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
 					Playerchats[va[1]] = v
-					chatmsgshooks[va[1]] = nil
 					lib.LocalPlayerChat(va[2])
 					break
 				end
