@@ -924,31 +924,34 @@ local lp=game:GetService("Players").LocalPlayer
 
 
 -- [[ LIB FUNCTIONS ]] --
+local chatmsgshooks = {}
+local Playerchats = {}
+
 lib.LocalPlayerChat = function(...)
 	local args = {...} 
 	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 		local sendto = game:GetService("TextChatService").TextChannels.RBXGeneral
 		if args[2] ~= nil and  args[2] ~= "All"  then
-			for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
-				if string.find(v.Name,"RBXWhisper:") then
-					if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-						sendto = v
-						break
+			if not Playerchats[args[2]] then
+				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
+					if string.find(v.Name,"RBXWhisper:") then
+						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+							sendto = v
+							Playerchats[args[2]] = v
+							break
+						end
 					end
 				end
+			else
+				sendto = Playerchats[args[2]]
 			end
-			--print(sendto)
 			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
+				chatmsgshooks[args[1]] = {args[1],args}
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
 				end)
 				task.wait(0.5)
-				local gplr = getPlr(args[2])
-				if (gplr) then
-				lib.LocalPlayerChat(...)
-				else
-				return nil
-				end
+				return "Hooking"
 			end
 		end
 		sendto:SendAsync(args[1] or "")
@@ -958,7 +961,23 @@ lib.LocalPlayerChat = function(...)
 		else
 			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "", "All")
 		end
+	end
+end
+
+if game:GetService("TextChatService").TextChannels then
+	game:GetService("TextChatService").TextChannels.ChildAdded:Connect(function(v)
+		if string.find(v.Name,"RBXWhisper:") then
+			task.wait(1)
+			for id,va in pairs(chatmsgshooks) do
+				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+					Playerchats[va[1]] = v
+					chatmsgshooks[va[1]] = nil
+					lib.LocalPlayerChat(va[2])
+					break
+				end
+			end
 		end
+	end)
 end
 
 lib.lpchat = lib.LocalPlayerChat
