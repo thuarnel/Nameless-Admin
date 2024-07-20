@@ -321,31 +321,40 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args; table.remove(args,1);
+	local caller,arguments=args[1],args
+	table.remove(args,1)
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			command[1](unpack(arguments))
+			local result={ command[1](unpack(arguments)) }
+			return result
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
-					Title=adminName;
-					Duration=4;
-				});
+					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?",
+					Title=adminName,
+					Duration=4,
+				})
 			else
-					--[[Notify({
-						Description="Command ("..caller..") not found";
-						Title=adminName;
-						Duration=4;
-					});]]
+                --[[Notify({
+                    Description="Command ("..caller..") not found",
+                    Title=adminName,
+                    Duration=4,
+                })]]
 			end
 		end
 	end)
-	if not success then warn(adminName..": "..msg) end
+
+	if not success then
+		warn(adminName..": "..msg)
+		return nil,msg
+	end
+
+	return unpack(msg)
 end
+
 function randomString()
 	local length=math.random(10,20)
 	local array={}
@@ -1017,49 +1026,47 @@ lib.find=function(t,v)	-- mmmmmm
 	return nil
 end
 
-lib.parseText = function(text, watch, rPlr)
-	local parsed = {}
+lib.parseText=function(text,watch,rPlr)
+	local parsed={}
 	if not text then return nil end
 	local prefix
 	if rPlr then
-		prefix = isRelAdmin(rPlr) and ";" or opt.prefix
-		watch = prefix
+		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
+		watch=prefix
 	else
-		prefix = opt.prefix
+		prefix=opt.prefix
 	end
-	for arg in text:gmatch("[^" .. watch .. "]+") do
-		arg = arg:gsub("-", "%%-")
-		local pos = text:find(arg)
-		arg = arg:gsub("%%", "")
+	for arg in text:gmatch("[^"..watch.."]+") do
+		arg=arg:gsub("-","%%-")
+		local pos=text:find(arg)
+		arg=arg:gsub("%%","")
 		if pos then
-			local find = text:sub(pos - prefix:len(), pos - 1)
+			local find=text:sub(pos - prefix:len(),pos - 1)
 			if (find == prefix and watch == prefix) or watch ~= prefix then
-				table.insert(parsed, arg)
+				table.insert(parsed,arg)
 			end
 		else
-			table.insert(parsed, nil)
+			table.insert(parsed,nil)
 		end
 	end
 	return parsed
 end
 
-lib.parseCommand = function(text, rPlr)
+lib.parseCommand=function(text,rPlr)
 	wrap(function()
 		local commands
 		if rPlr then
-			commands = lib.parseText(text, opt.prefix, rPlr)
+			commands=lib.parseText(text,opt.prefix,rPlr)
 		else
-			commands = lib.parseText(text, opt.prefix)
+			commands=lib.parseText(text,opt.prefix)
 		end
-		for _, parsed in pairs(commands) do
-			local args = {}
+		for _,parsed in pairs(commands) do
+			local args={}
 			for arg in parsed:gmatch("[^ ]+") do
-				table.insert(args, arg)
+				table.insert(args,arg)
 			end
-			local results = {cmd.run(args)}
-			if results[1] ~= nil then
-				print("Command results:", table.concat(results, ", "))
-			end
+			local results={cmd.run(args)}
+			if results[1] ~= nil then end
 		end
 	end)
 end
@@ -8491,7 +8498,7 @@ end)
 
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
 	local A_1=""
-	local table = {...}
+	local table={...}
 	for i,v in pairs(table) do
 		if i ~= 1 then
 			A_1=A_1.." "..tostring(v)
