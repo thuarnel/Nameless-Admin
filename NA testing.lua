@@ -1025,27 +1025,27 @@ lib.find=function(t,v)	-- mmmmmm
 end
 
 lib.parseText = function(text, rPlr)
-	local parsed = {}
-	if not text then return nil end
+    local parsed = {}
+    if not text then return nil end
 
-	local prefix
-	if rPlr and isRelAdmin(rPlr) then
-		prefix = ";"
-	else
-		prefix = opt.prefix
-	end
+    local prefix
+    if rPlr and isRelAdmin(rPlr) then
+        prefix = ";"
+    else
+        prefix = opt.prefix
+    end
 
-	local strippedText = text:match("^%s*" .. prefix .. "(.*)")
-	if strippedText then
-		text = strippedText
-	end
+    local strippedText = text:match("^%s*" .. prefix .. "(.*)")
+    if strippedText then
+        text = strippedText
+    end
 
-	for arg in text:gmatch("%s*([^" .. opt.tupleSeparator .. "]+)%s*") do
-		arg = arg:gsub("%%-", "-"):gsub("%%", "")
-		table.insert(parsed, arg)
-	end
+    for arg in text:gmatch("%s*([^" .. opt.tupleSeparator .. "]+)%s*") do
+        arg = arg:gsub("^%-+", ""):gsub("-+$", "")
+        table.insert(parsed, arg)
+    end
 
-	return parsed
+    return parsed
 end
 
 lib.parseCommand = function(text, rPlr)
