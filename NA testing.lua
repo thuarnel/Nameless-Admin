@@ -321,26 +321,31 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args; table.remove(args,1);
+	local caller,arguments=args[1],args
+	table.remove(args,1)
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			command[1](unpack(arguments))
+			local commandFunction,commandArguments=command[1],{}
+			for i,arg in ipairs(arguments) do
+				table.insert(commandArguments,arg)
+			end
+			commandFunction(unpack(commandArguments))
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
+					Description="Command ["..caller.."] doesn't exist\nDid you mean ["..closest.."]?";
 					Title=adminName;
 					Duration=4;
-				});
+				})
 			else
-					--[[Notify({
-						Description="Command ("..caller..") not found";
-						Title=adminName;
-						Duration=4;
-					});]]
+				-- Notify({
+				--     Description="Command ("..caller..") not found";
+				--     Title=adminName;
+				--     Duration=4;
+				-- })
 			end
 		end
 	end)
@@ -1042,18 +1047,18 @@ lib.parseText=function(text,watch,rPlr)
 end
 
 lib.parseCommand=function(text,rPlr)
-	wrap(function()
-		local commands
-		if rPlr then
-			commands=lib.parseText(text,opt.prefix,rPlr)
-		else
-			commands=lib.parseText(text,opt.prefix)
-		end
-		for _,parsed in pairs(commands) do
-			local args={table.unpack(parsed,1)}
-			cmd.run(args)
-		end
-	end)
+    wrap(function()
+        local commands
+        if rPlr then
+            commands=lib.parseText(text,opt.prefix,rPlr)
+        else
+            commands=lib.parseText(text,opt.prefix)
+        end
+        for _,parsed in pairs(commands) do
+            local args={table.unpack(parsed,1)}
+            cmd.run(args)
+        end
+    end)
 end
 
 local connections={}
