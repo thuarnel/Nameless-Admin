@@ -317,38 +317,30 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args
-	table.remove(args,1)
+	local caller,arguments=args[1],args; table.remove(args,1);
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			local result={ command[1](unpack(arguments)) }
-			return result
+			command[1](unpack(arguments))
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?",
-					Title=adminName,
-					Duration=4,
-				})
+					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
+					Title=adminName;
+					Duration=4;
+				});
 			else
-                --[[Notify({
-                    Description="Command ("..caller..") not found",
-                    Title=adminName,
-                    Duration=4,
-                })]]
+					--[[Notify({
+						Description="Command ("..caller..") not found";
+						Title=adminName;
+						Duration=4;
+					});]]
 			end
 		end
 	end)
-
-	if not success then
-		warn(adminName..": "..msg)
-		return nil,msg
-	end
-
-	return unpack(msg)
+	if not success then warn(adminName..": "..msg) end
 end
 
 function randomString()
@@ -1047,10 +1039,10 @@ lib.parseText=function(text,watch,rPlr)
 	if not text then return nil end
 	local prefix
 	if rPlr then
-		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
+		prefix=isRelAdmin(rPlr) and ";" or watch
 		watch=prefix
 	else
-		prefix=opt.prefix
+		prefix=watch
 	end
 	for arg in text:gmatch("[^"..watch.."]+") do
 		arg=arg:gsub("-","%%-")
@@ -1081,17 +1073,14 @@ lib.parseCommand=function(text,rPlr)
 			for arg in parsed:gmatch("[^ ]+") do
 				table.insert(args,arg)
 			end
-			local results={cmd.run(args)}
-			if results[1]~=nil then
-				print("Command results:",table.concat(results,","))
-			end
+			cmd.run(args)
 		end
 	end)
 end
 
 local connections={}
 
-lib.connect=function(name,connection)	-- no :(
+lib.connect=function(name,connection)
 	connections[name..tostring(math.random(1000000,9999999))]=connection
 	return connection
 end
@@ -1362,7 +1351,7 @@ end)
 --[ UTILITY ]--
 
 cmd.add({"chatlogs","clogs"},{"chatlogs (clogs)","Open the chat logs"},function()
-	gui.chatlogs()
+	chatlogs()
 end)
 
 cmd.add({"gotocampos","tocampos","tcp"},{"gotocampos (tocampos,tcp)","Teleports you to your camera position works with free cam but freezes you"},function()
@@ -1394,7 +1383,7 @@ end)
 
 cmd.add({"teleportgui","tpui","universeviewer","uviewer"},{"teleportgui (tpui,universeviewer,uviewer)","Gives an UI that grabs all places and teleports you by clicking a simple button"},function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	gui.universeGui()
+	universeGui()
 end)
 
 cmd.add({"serverremotespy","srs","sremotespy"},{"serverremotespy (srs,sremotespy)","Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"},function()
@@ -1403,7 +1392,7 @@ end)
 
 cmd.add({"updatelog","updlog","updates"},{"updatelog (updlog,updates)","show the update logs for Nameless Admin"},function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	gui.updateLogs()
+	updateLogs()
 end)
 
 cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player by clicking them"},function()
@@ -1514,7 +1503,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 								if BasePart.Velocity.Magnitude<50 then
 									Angle=Angle+100
 
-									FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+									FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 									task.wait()
 
 									FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
@@ -1556,7 +1545,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 									FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
 									task.wait()
 
-									FPos(BasePart,CFrame.new(0,-1.5 ,0),CFrame.Angles(math.rad(-90),0,0))
+									FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(math.rad(-90),0,0))
 									task.wait()
 
 									FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
@@ -1673,7 +1662,7 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	RunService.RenderStepped:Connect(function(ping) 
 		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping))) -- your ping
 	end)
-	gui.draggablev2(Pingtext)
+	draggablev2(Pingtext)
 end)
 
 cmd.add({"fps"},{"fps","Shows your fps"},function()
@@ -1711,11 +1700,11 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	RunService.RenderStepped:Connect(function(frame) 
 		script.Parent.Text=("FPS: "..math.round(1/frame)) 
 	end)
-	gui.draggablev2(Fpstext)
+	draggablev2(Fpstext)
 end)
 
 cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function()
-	gui.commands()
+	commands()
 end)
 
 cmd.add({"adonisfinder","adfind"},{"adonis finder (adfind)","Lets you see if the game has adonis admin"},function()
@@ -5293,7 +5282,7 @@ function ShiftLock()
 end
 cmd.add({"shiftlock","sl"},{"shiftlock (sl)","Enables shiftlock"},function()
 	if IsOnMobile then
-		gui.ShiftlockVis()
+		ShiftlockVis()
 	else
 		EnableShiftlock()
 	end
@@ -5301,7 +5290,7 @@ end)
 
 cmd.add({"unshiftlock","unsl"},{"unshiftlock (unsl)","Disables shiftlock"},function()
 	if IsOnMobile then
-		gui.ShiftlockInvis()
+		ShiftlockInvis()
 	else
 		DisableShiftlock()
 	end
@@ -5371,7 +5360,7 @@ end)
 
 cmd.add({"netless","net"},{"netless (net)","Executes netless which makes scripts more stable"},function()
 	for i,v in next,game:GetService("Players").LocalPlayer.Character:GetDescendants() do
-		if v:IsA("BasePart") and v.Name ~="HumanoidRootPart" then 
+		if v:IsA("BasePart") and v.Name~="HumanoidRootPart" then 
 			RunService.Heartbeat:connect(function()
 				v.Velocity=Vector3.new(-30,0,0)
 			end)
@@ -6513,7 +6502,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
-		gui.draggablev2(TextButton)
+		draggablev2(TextButton)
 	else
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
@@ -8240,7 +8229,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 				end
 			end
 
-			local Notify=function(_Title,_Text ,Time)
+			local Notify=function(_Title,_Text,Time)
 				print(_Title)
 				print(_Text)
 				print(Time)
@@ -8778,7 +8767,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 						if BasePart.Velocity.Magnitude<50 then
 							Angle=Angle+100
 
-							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
@@ -8820,7 +8809,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(0,-1.5 ,0),CFrame.Angles(math.rad(-90),0,0))
+							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(math.rad(-90),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
@@ -9003,7 +8992,7 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 						if BasePart.Velocity.Magnitude<50 then
 							Angle=Angle+100
 
-							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
@@ -9045,7 +9034,7 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(0,-1.5 ,0),CFrame.Angles(math.rad(-90),0,0))
+							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(math.rad(-90),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
@@ -9876,7 +9865,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 							if BasePart.Velocity.Magnitude<50 then
 								Angle=Angle+100
 
-								FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+								FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 								task.wait()
 
 								FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
@@ -9918,7 +9907,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 								FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
 								task.wait()
 
-								FPos(BasePart,CFrame.new(0,-1.5 ,0),CFrame.Angles(math.rad(-90),0,0))
+								FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(math.rad(-90),0,0))
 								task.wait()
 
 								FPos(BasePart,CFrame.new(0,-1.5,0),CFrame.Angles(0,0,0))
@@ -15275,12 +15264,11 @@ resizeFrame.Parent=nil
 	end]]
 
 --[[ GUI FUNCTIONS ]]--
-gui={}
-gui.txtSize=function(ui,x,y)
+txtSize=function(ui,x,y)
 	local textService=game:GetService("TextService")
 	return textService:GetTextSize(ui.Text,ui.TextSize,ui.Font,Vector2.new(x,y))
 end
-gui.commands=function()
+commands=function()
 	if not commandsFrame.Visible then
 		commandsFrame.Visible=true
 		commandsList.CanvasSize=UDim2.new(0,0,0,0)
@@ -15311,19 +15299,19 @@ gui.commands=function()
 	commandsList.CanvasSize=UDim2.new(0,0,0,i*20+10)
 	commandsFrame.Position=UDim2.new(0.5,-283/2,0.5,-260/2)
 end
-gui.chatlogs=function()
+chatlogs=function()
 	if not chatLogsFrame.Visible then
 		chatLogsFrame.Visible=true
 	end
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.universeGui=function()
+universeGui=function()
 	if not UniverseViewerFrame.Visible then
 		UniverseViewerFrame.Visible=true
 	end
 	UniverseViewerFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.updateLogs=function()
+updateLogs=function()
 	if not UpdLogsFrame.Visible and next(updLogs) then
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
@@ -15337,24 +15325,24 @@ gui.updateLogs=function()
 	end
 	UpdLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.ShiftlockVis=function()
+ShiftlockVis=function()
 	if not ShiftlockUi.Visible then
 		ShiftlockUi.Visible=true
 	end
 end
-gui.ShiftlockInvis=function()
+ShiftlockInvis=function()
 	if ShiftlockUi.Visible then
 		ShiftlockUi.Visible=false
 	end
 end
 
-gui.tween=function(obj,style,direction,duration,goal)
+tween=function(obj,style,direction,duration,goal)
 	local tweenInfo=TweenInfo.new(duration,Enum.EasingStyle[style],Enum.EasingDirection[direction])
 	local tween=TweenService:Create(obj,tweenInfo,goal)
 	tween:Play()
 	return tween
 end
-gui.mouseIn=function(guiObject,range)
+mouseIn=function(guiObject,range)
 	local pos1,pos2=guiObject.AbsolutePosition,guiObject.AbsolutePosition+guiObject.AbsoluteSize
 	local mX,mY=mouse.X,mouse.Y
 	if mX>pos1.X-range and mX<pos2.X+range and mY>pos1.Y-range and mY<pos2.Y+range then
@@ -15362,9 +15350,9 @@ gui.mouseIn=function(guiObject,range)
 	end
 	return false
 end
-gui.resizeable=function(ui,min,max)
-	local rgui=resizeFrame:Clone()
-	rgui.Parent=ui
+resizeable=function(ui,min,max)
+	local rGui=resizeFrame:Clone()
+	rGui.Parent=ui
 
 	local mode
 	local UIPos
@@ -15418,8 +15406,8 @@ gui.resizeable=function(ui,min,max)
 		end)
 	end
 end
-gui.draggable=function(ui,dragui)
-	if not dragui then dragui=ui end
+draggable=function(ui,dragUi)
+	if not dragUi then dragUi=ui end
 	local UserInputService=game:GetService("UserInputService")
 
 	local dragging
@@ -15432,7 +15420,7 @@ gui.draggable=function(ui,dragui)
 		ui.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
 	end
 
-	dragui.InputBegan:Connect(function(input)
+	dragUi.InputBegan:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
 			dragging=true
 			dragStart=input.Position
@@ -15446,7 +15434,7 @@ gui.draggable=function(ui,dragui)
 		end
 	end)
 
-	dragui.InputChanged:Connect(function(input)
+	dragUi.InputChanged:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
 			dragInput=input
 		end
@@ -15458,11 +15446,11 @@ gui.draggable=function(ui,dragui)
 		end
 	end)
 end
-gui.draggablev2=function(floght)
+draggablev2=function(floght)
 	floght.Active=true
 	floght.Draggable=true
 end
-gui.menuify=function(menu)
+menuify=function(menu)
 	local exit=menu:FindFirstChild("Exit",true)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local minimized=false
@@ -15472,18 +15460,18 @@ gui.menuify=function(menu)
 		if minimized then
 			sizeX.Value=menu.Size.X.Offset
 			sizeY.Value=menu.Size.Y.Offset
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
 		else
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible=false
 	end)
-	gui.draggablev2(menu,menu.Topbar)
+	draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
-gui.menuifyv2=function(menu)
+menuifyv2=function(menu)
 	local exit=menu:FindFirstChild("Exit",true)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local clear=menu:FindFirstChild("Clear",true);
@@ -15494,9 +15482,9 @@ gui.menuifyv2=function(menu)
 		if minimized then
 			sizeX.Value=menu.Size.X.Offset
 			sizeY.Value=menu.Size.Y.Offset
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
 		else
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
@@ -15512,11 +15500,11 @@ gui.menuifyv2=function(menu)
 			end
 		end)
 	end
-	gui.draggablev2(menu,menu.Topbar)
+	draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
 
-gui.shiftlock=function(sLock,lockImg)
+shiftlock=function(sLock,lockImg)
 	local V=false
 	local g=nil
 	local GameSettings=UserSettings():GetService("UserGameSettings")
@@ -15553,11 +15541,11 @@ gui.shiftlock=function(sLock,lockImg)
 			EndForceShiftLock()
 		end
 	end)
-	gui.draggablev2(sLock)
+	draggablev2(sLock)
 end
 
 
-gui.loadCommands=function()
+loadCommands=function()
 	for i,v in pairs(cmdAutofill:GetChildren()) do
 		if v.Name~="UIListLayout" then
 			v:Remove()
@@ -15579,34 +15567,34 @@ gui.loadCommands=function()
 	end
 end
 
-gui.loadCommands()
+loadCommands()
 for i,v in ipairs(cmdAutofill:GetChildren()) do
 	if v:IsA("Frame") then
 		v.Visible=false
 	end
 end
-gui.barSelect=function(speed)
+barSelect=function(speed)
 	centerBar.Visible=true
-	gui.tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,1,15)})
-	gui.tween(leftFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(0,0,0.5,0)})
-	gui.tween(rightFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(1,0,0.5,0)})
+	tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,1,15)})
+	tween(leftFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(0,0,0.5,0)})
+	tween(rightFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(1,0,0.5,0)})
 end
-gui.barDeselect=function(speed)
-	gui.tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,0,0)})
-	gui.tween(leftFill,"Sine","In",speed or 0.3,{Position=UDim2.new(-0.5,100,0.5,0)})
-	gui.tween(rightFill,"Sine","In",speed or 0.3,{Position=UDim2.new(1.5,-100,0.5,0)})
+barDeselect=function(speed)
+	tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,0,0)})
+	tween(leftFill,"Sine","In",speed or 0.3,{Position=UDim2.new(-0.5,100,0.5,0)})
+	tween(rightFill,"Sine","In",speed or 0.3,{Position=UDim2.new(1.5,-100,0.5,0)})
 	for i,v in ipairs(cmdAutofill:GetChildren()) do
 		if v:IsA("Frame") then
 			wrap(function()
 				wait(math.random(1,200)/2000)
-				gui.tween(v,"Back","In",0.35,{Size=UDim2.new(0,0,0,25)})
+				tween(v,"Back","In",0.35,{Size=UDim2.new(0,0,0,25)})
 			end)
 		end
 	end
 end
 
 -- [[ AUTOFILL SEARCHER ]] --
-gui.searchCommands=function()
+searchCommands=function()
 	local str=(cmdInput.Text:gsub(";","")):lower()
 	local index=0
 	local lastFrame
@@ -15621,7 +15609,7 @@ gui.searchCommands=function()
 				local n=math.sqrt(index)*125
 				local yPos=(index-1)*28
 				local newPos=UDim2.new(0.5,0,0,yPos)
-				gui.tween(v,"Quint","Out",0.3,{
+				tween(v,"Quint","Out",0.3,{
 					Size=UDim2.new(0.5,n,0,25),
 					Position=lastFrame and newPos or UDim2.new(0.5,0,0,yPos),
 				})
@@ -15636,7 +15624,7 @@ end
 -- [[ OPEN THE COMMAND BAR ]] -- 
 mouse.KeyDown:Connect(function(k)
 	if k:lower()==opt.prefix then
-		gui.barSelect()
+		barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
 		wait(0.00005)
@@ -15651,41 +15639,43 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 			lib.parseCommand(opt.prefix..cmdInput.Text)
 		end)
 	end
-	gui.barDeselect()
+	barDeselect()
 end)
 
 cmdInput.Changed:Connect(function(p)
 	if p~="Text" then return end
-	gui.searchCommands()
+	searchCommands()
 end)
 
-gui.barDeselect(0)
+barDeselect(0)
 cmdBar.Visible=true
-gui.menuifyv2(chatLogsFrame)
-gui.menuify(commandsFrame)
-gui.menuify(UniverseViewerFrame)
-gui.menuify(UpdLogsFrame)
-gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
+menuifyv2(chatLogsFrame)
+menuify(commandsFrame)
+menuify(UniverseViewerFrame)
+menuify(UpdLogsFrame)
+shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
 -- table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
-gui.autoResizeable=function(ui)
-local initialSize = ui.AbsoluteSize
-local minSize = Vector2.new(
-	math.max(100,initialSize.X*0.5),
-	math.max(100,initialSize.Y*0.5)
-)
-local maxSize = Vector2.new(
-	initialSize.X*2,
-	initialSize.Y*2
-)
+function autoResizeable(ui)
+	local initialSize = ui.AbsoluteSize
+	local minSize = Vector2.new(
+		math.max(100,initialSize.X*.3),
+		math.max(100,initialSize.Y*.3)
+	)
+	local maxSize = Vector2.new(
+		initialSize.X*1,
+		initialSize.Y*1
+	)
 
-gui.resizeable(ui,minSize,maxSize)
+	resizeable(ui,minSize,maxSize)
 end
 if not IsOnMobile then 
-	gui.autoResizeable(chatLogsFrame)
-	gui.autoResizeable(commandsFrame)
+	autoResizeable(chatLogsFrame)
+	autoResizeable(commandsFrame)
+	autoResizeable(UniverseViewerFrame)
+	autoResizeable(UpdLogsFrame)
 end
 
 -- [[ CMDS COMMANDS SEARCH FUNCTION ]] --
@@ -15713,7 +15703,7 @@ function bindToChat(plr,msg)
 	chatMsg.Parent=chatLogs
 	chatMsg.Text=("%s [@%s]: %s"):format(plr.DisplayName,plr.Name,msg)
 
-	local txtSize=gui.txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
+	local txtSize=txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
 	chatMsg.Size=UDim2.new(1,-5,0,txtSize.Y)
 end
 
@@ -15730,7 +15720,7 @@ end)
 
 mouse.Move:Connect(function()
 	description.Position=UDim2.new(0,mouse.X,0,mouse.Y)
-	local size=gui.txtSize(description,200,100)
+	local size=txtSize(description,200,100)
 	description.Size=UDim2.new(0,size.X,0,size.Y)
 end)
 
@@ -15868,7 +15858,7 @@ function Swoosh()
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
-	gui.draggablev2(imagebutton)
+	draggablev2(imagebutton)
 end
 function mainNameless()
 	local script=Instance.new('LocalScript',TextLabelLabel)
@@ -15897,7 +15887,7 @@ coroutine.wrap(mainNameless)()
 
 if IsOnMobile then
 	ImageButton.MouseButton1Click:Connect(function()
-		gui.barSelect()
+		barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
 	end)
