@@ -15362,61 +15362,63 @@ gui.mouseIn=function(guiObject,range)
 	end
 	return false
 end
-gui.resizeable = function(ui)
-	local min = ui.AbsoluteSize
-	local max = Vector2.new(min.X * 2, min.Y * 2)
-
-	local rgui = resizeFrame:Clone()
-	rgui.Parent = ui
+gui.makeResizeable=function(ui)
+	local minSize = ui.AbsoluteSize
+	local maxSize = Vector2.new(minSize.X * 2, minSize.Y * 2) -- Example: maximum size is twice the initial size
+	gui.resizeable(ui, minSize, maxSize)
+end
+gui.resizeable=function(ui,min,max)
+	local rgui=resizeFrame:Clone()
+	rgui.Parent=ui
 
 	local mode
 	local UIPos
 	local lastSize
-	local lastPos = Vector2.new()
+	local lastPos=Vector2.new()
 
 	function update(delta)
-		local xy = resizeXY[(mode and mode.Name) or '']
+		local xy=resizeXY[(mode and mode.Name) or '']
 		if not mode or not xy then return end
-		local delta = (delta * xy[1]) or Vector2.new()
-		local newSize = Vector2.new(lastSize.X + delta.X, lastSize.Y + delta.Y)
-		newSize = Vector2.new(
-			math.clamp(newSize.X, min.X, max.X),
-			math.clamp(newSize.Y, min.Y, max.Y)
+		local delta=(delta * xy[1]) or Vector2.new()
+		local newSize=Vector2.new(lastSize.X+delta.X,lastSize.Y+delta.Y)
+		newSize=Vector2.new(
+			math.clamp(newSize.X,min.X,max.X),
+			math.clamp(newSize.Y,min.Y,max.Y)
 		)
-		ui.Size = UDim2.new(0, newSize.X, 0, newSize.Y)
-		ui.Position = UDim2.new(
+		ui.Size=UDim2.new(0,newSize.X,0,newSize.Y)
+		ui.Position=UDim2.new(
 			UIPos.X.Scale,
-			UIPos.X.Offset + (-(newSize.X - lastSize.X) * xy[2]).X,
+			UIPos.X.Offset+(-(newSize.X-lastSize.X) * xy[2]).X,
 			UIPos.Y.Scale,
-			UIPos.Y.Offset + (delta * xy[2]).Y
+			UIPos.Y.Offset+(delta * xy[2]).Y
 		)
 	end
 
 	mouse.Move:Connect(function()
-		update(Vector2.new(mouse.X, mouse.Y) - lastPos)
+		update(Vector2.new(mouse.X,mouse.Y)-lastPos)
 	end)
 
-	for _, button in pairs(rgui:GetChildren()) do
-		local isIn = false
+	for _,button in pairs(rgui:GetChildren()) do
+		local isIn=false
 		button.InputBegan:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-				mode = button
-				lastPos = Vector2.new(mouse.X, mouse.Y)
-				lastSize = ui.AbsoluteSize
-				UIPos = ui.Position
+			if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+				mode=button
+				lastPos=Vector2.new(mouse.X,mouse.Y)
+				lastSize=ui.AbsoluteSize
+				UIPos=ui.Position
 			end
 		end)
 		button.InputEnded:Connect(function(input)
-			if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-				mode = nil
+			if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
+				mode=nil
 			end
 		end)
 		button.MouseEnter:Connect(function()
-			mouse.Icon = resizeXY[button.Name][3]
+			mouse.Icon=resizeXY[button.Name][3]
 		end)
 		button.MouseLeave:Connect(function()
-			if mouse.Icon == resizeXY[button.Name][3] then
-				mouse.Icon = ""
+			if mouse.Icon==resizeXY[button.Name][3] then
+				mouse.Icon=""
 			end
 		end)
 	end
@@ -15674,10 +15676,10 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 
 -- table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
 if not IsOnMobile then 
-	gui.resizeable(chatLogsFrame)
-	gui.resizeable(commandsFrame)
-	gui.resizeable(UniverseViewerFrame)
-	gui.resizeable(UpdLogsFrame)
+	gui.makeResizeable(chatLogsFrame)
+	gui.makeResizeable(commandsFrame)
+	gui.makeResizeable(UniverseViewerFrame)
+	gui.makeResizeable(UpdLogsFrame)
 end
 
 -- [[ CMDS COMMANDS SEARCH FUNCTION ]] --
