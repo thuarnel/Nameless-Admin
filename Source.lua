@@ -85,12 +85,12 @@ local FileSupport=isfile and isfolder and writefile and readfile and makefolder
 
 -- Creates folder & files for Prefix & Plugins
 if FileSupport then
-	if (not isfolder('Nameless-Admin')) then
+	if not isfolder('Nameless-Admin') then
 		makefolder('Nameless-Admin')
 	else
 	end
 
-	if (not isfile("Nameless-Admin/Prefix.txt")) then
+	if not isfile("Nameless-Admin/Prefix.txt") then
 		writefile("Nameless-Admin/Prefix.txt",';')
 	else
 	end
@@ -100,14 +100,11 @@ if FileSupport then
 	prefixCheck= readfile("Nameless-Admin/Prefix.txt",';')
 else
 	prefixCheck=";"
-	if not FileSupport then 
-		Notify({
-			Description="Your exploit does not support read/write file";
-			Title=adminName;
-			Duration=5;
-		});
-		return
-	end
+	Notify({
+		Description="Your exploit does not support read/write file";
+		Title=adminName;
+		Duration=5;
+	});
 end
 -- [[ PREFIX AND OTHER STUFF. ]] -- 
 local opt={
