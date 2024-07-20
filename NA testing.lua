@@ -8487,7 +8487,15 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 end)
 
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
-	local A_1=(...)
+	local A_1=""
+	local table = {...}
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			A_1=A_1.." "..tostring(v)
+		else
+			A_1=tostring(v)
+		end
+	end
 	local A_2="All"
 	lib.LocalPlayerChat(A_1,A_2)
 end)
