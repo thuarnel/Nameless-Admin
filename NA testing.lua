@@ -1145,7 +1145,7 @@ cmd.add({"url"},{"url <link>","Run the script using url"},function(...)
 	local table={...}
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			loadstring(game:HttpGet(h))()
 		else
 			loadstring(game:HttpGet(v))()
@@ -1157,7 +1157,7 @@ cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the lo
 	local table={...}
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			assert(loadstring(h))()
 		else
 			assert(loadstring(v))()
@@ -12444,7 +12444,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 	local bra=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			bra=h
 		else
 			bra=v
@@ -12485,7 +12485,7 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 	local bruh=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			bruh=h
 		else
 			bruh=v
@@ -12613,7 +12613,7 @@ cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Mak
 	local grr=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			grr=h
 		else
 			grr=v
@@ -12638,7 +12638,7 @@ cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partna
 	local lol=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			lol=h
 		else
 			lol=v
@@ -12682,7 +12682,7 @@ cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Bring
 	local bringmeit=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			bringmeit=h
 		else
 			bringmeit=v
@@ -12701,7 +12701,7 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 	local givemethemodel=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			givemethemodel=h
 		else
 			givemethemodel=v
@@ -12720,7 +12720,7 @@ cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports yo
 	local i_love_models=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			i_love_models=h
 		else
 			i_love_models=v
@@ -12828,7 +12828,7 @@ cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes
 	local fix=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			fix=h
 		else
 			fix=v
@@ -12879,7 +12879,7 @@ cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views
 	local args=''
 	for i,v in pairs(table) do
 		if i ~= 1 then
-			h=h.." "..tostring(v)
+			h=h.." "..v
 			args=h
 		else
 			args=v
