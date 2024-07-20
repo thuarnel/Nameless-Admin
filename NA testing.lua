@@ -16,7 +16,7 @@
 ]]
 if getgenv().NamelessLoaded then return end
 
-local function NACaller(pp) -- helps me log better
+local function NACaller(pp)--helps me log better
 	local s,err=pcall(pp)
 	if not s then warn("NA script err: "..err) end
 end
@@ -24,10 +24,10 @@ end
 NACaller(function() getgenv().NamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
--- [[ Version ]] -- 
+--[[ Version ]]--
 local curVer=2.19
 
--- [[ Brand ]] -- 
+--[[ Brand ]]--
 local mainName='Nameless Admin'
 local testingName='NA Testing'
 local adminName='NA'
@@ -44,7 +44,7 @@ if not gethui then
 	end
 end
 
-if identifyexecutor()=="Solara" then --proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
+if identifyexecutor()=="Solara" then--proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
 	getgenv().fireproximityprompt=function(pp)
 		local oldenabled=pp.Enabled
 		local oldhold=pp.HoldDuration
@@ -65,7 +65,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
-local NA_storage=Instance.new("Folder") -- just in case something is added before the important naming and parenting
+local NA_storage=Instance.new("Folder")--just in case something is added before the important naming and parenting
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
@@ -89,17 +89,17 @@ NACaller(function()
 	end)
 end)
 
--- Notification library
+--Notification library
 local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 local Notify=Notification.Notify;
 
-wait(); -- added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
+wait();--added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
 
--- Custom file functions checker checker
+--Custom file functions checker checker
 local CustomFunctionSupport=isfile and isfolder and writefile and readfile and listfiles;
 local FileSupport=isfile and isfolder and writefile and readfile and makefolder;
 
--- Creates folder & files for Prefix & Plugins
+--Creates folder & files for Prefix & Plugins
 if FileSupport then
 	if not isfolder('Nameless-Admin') then
 		makefolder('Nameless-Admin')
@@ -122,7 +122,7 @@ else
 		Duration=5;
 	});
 end
--- [[ PREFIX AND OTHER STUFF. ]] -- 
+--[[ PREFIX AND OTHER STUFF. ]]--
 local opt={
 	prefix=prefixCheck,
 	tupleSeparator=',',
@@ -130,7 +130,7 @@ local opt={
 	keybinds={},
 }
 
--- [[ Update Logs ]] --
+--[[ Update Logs ]]--
 local updLogs={
 	log1='Fixed ESP command not working properly';
 	log2='Fixed "saveprefix" command not saving your prefix properly';
@@ -164,7 +164,7 @@ local Player=game:GetService("Players").LocalPlayer;
 local plr=game:GetService("Players").LocalPlayer;
 local PlrGui=Player:FindFirstChild("PlayerGui");
 local speaker=Player
-local IYLOADED=false -- This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
+local IYLOADED=false--This is used for the ;iy command that executes infinite yield commands using this admin command script (BTW)
 local Character=Player.Character;
 local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked=true
@@ -188,15 +188,15 @@ local Loopglitch=false
 local Watch=false
 local Admin={}
 _G.NAadminsLol={
-	156256804; --v3r
-	530829101; --Viper
-	229501685; --legshot
-	3470956640; --Bart3kk
-	1456118719; --zzz
-	817571515; --Aimlock
-	144324719; --Cosmic
-	1844177730; --glexinator
-	2624269701; --Akim
+	156256804;--v3r
+	530829101;--Viper
+	229501685;--legshot
+	3470956640;--Bart3kk
+	1456118719;--zzz
+	817571515;--Aimlock
+	144324719;--Cosmic
+	1844177730;--glexinator
+	2624269701;--Akim
 }
 
 
@@ -220,7 +220,7 @@ end)
 
 local bringc={}
 
--- [[ Welcome Messages ]] --
+--[[ Welcome Messages ]]--
 local msg={
 	"Hey",
 	"Hello",
@@ -229,7 +229,7 @@ local msg={
 	"Hola",
 }
 
--- [[ Goofy Text ]] --
+--[[ Goofy Text ]]--
 local Goofer={
 	"Egg",
 	"i am a goofy goober",
@@ -248,7 +248,7 @@ local Goofer={
 	"not bothered to add a message here",
 }
 
--- [[ Prediction ]] --
+--[[ Prediction ]]--
 function levenshtein(s,t)
 	local d={}
 	local lenS,lenT=#s,#t
@@ -455,7 +455,7 @@ function GetInTable(Table,Name)
 	return false
 end
 
--- [[ FUNCTION TO GET A PLAYER ]] --
+--[[ FUNCTION TO GET A PLAYER ]]--
 local getPlr=function(Name)
 	if Name:lower()=="random" then
 		return Players:GetPlayers()[math.random(#Players:GetPlayers())]
@@ -509,7 +509,7 @@ local getPlr=function(Name)
 	end
 end
 
--- [[ MORE VARIABLES ]] --
+--[[ MORE VARIABLES ]]--
 local plr=Player
 local speaker=Player
 local char=plr.Character
@@ -548,7 +548,7 @@ function round(num,numDecimalPlaces)
 	return math.floor(num*mult+0.5) / mult
 end
 
-function getIdentity() -- returns the number of the identity
+function getIdentity()--returns the number of the identity
 	local LogService=game:GetService("LogService")
 	local output=""
 	local con=nil
@@ -846,15 +846,15 @@ function sFLY(vfly)
 			end
 		elseif KEY:lower()=='s' then
 			if vfly then
-				CONTROL.B=- speedofthevfly
+				CONTROL.B=-speedofthevfly
 			else
-				CONTROL.B=- speedofthefly
+				CONTROL.B=-speedofthefly
 			end
 		elseif KEY:lower()=='a' then
 			if vfly then
-				CONTROL.L=- speedofthevfly
+				CONTROL.L=-speedofthevfly
 			else
-				CONTROL.L=- speedofthefly
+				CONTROL.L=-speedofthefly
 			end
 		elseif KEY:lower()=='d' then
 			if vfly then
@@ -960,7 +960,7 @@ end
 local lp=game:GetService("Players").LocalPlayer
 
 
--- [[ LIB FUNCTIONS ]] --
+--[[ LIB FUNCTIONS ]]--
 chatmsgshooks={}
 Playerchats={}
 
@@ -1025,7 +1025,7 @@ end
 local lock=lib.lock
 local locks={}
 
-lib.find=function(t,v)	-- mmmmmm
+lib.find=function(t,v)	--mmmmmm
 	for i,e in pairs(t) do
 		if i==v or e==v then
 			return i
@@ -1080,7 +1080,7 @@ end
 
 local connections={}
 
-lib.connect=function(name,connection)
+lib.connect=function(name,connection)	--no :(
 	connections[name..tostring(math.random(1000000,9999999))]=connection
 	return connection
 end
@@ -1093,7 +1093,7 @@ lib.disconnect=function(name)
 	end
 end
 
-local m=math			-- prepare for annoying and unnecessary tool grip math
+local m=math			--prepare for annoying and unnecessary tool grip math
 local rad=m.rad
 local clamp=m.clamp
 local sin=m.sin
@@ -1351,7 +1351,7 @@ end)
 --[ UTILITY ]--
 
 cmd.add({"chatlogs","clogs"},{"chatlogs (clogs)","Open the chat logs"},function()
-	chatlogs()
+	gui.chatlogs()
 end)
 
 cmd.add({"gotocampos","tocampos","tcp"},{"gotocampos (tocampos,tcp)","Teleports you to your camera position works with free cam but freezes you"},function()
@@ -1383,7 +1383,7 @@ end)
 
 cmd.add({"teleportgui","tpui","universeviewer","uviewer"},{"teleportgui (tpui,universeviewer,uviewer)","Gives an UI that grabs all places and teleports you by clicking a simple button"},function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	universeGui()
+	gui.universeGui()
 end)
 
 cmd.add({"serverremotespy","srs","sremotespy"},{"serverremotespy (srs,sremotespy)","Gives an UI that logs all the remotes being called from the server (thanks SolSpy lol)"},function()
@@ -1392,7 +1392,7 @@ end)
 
 cmd.add({"updatelog","updlog","updates"},{"updatelog (updlog,updates)","show the update logs for Nameless Admin"},function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
-	updateLogs()
+	gui.updateLogs()
 end)
 
 cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player by clicking them"},function()
@@ -1660,9 +1660,9 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	local script=Instance.new('LocalScript',Pingtext)
 	local RunService=game:GetService("RunService")
 	RunService.RenderStepped:Connect(function(ping) 
-		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping))) -- your ping
+		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
 	end)
-	draggablev2(Pingtext)
+	gui.draggablev2(Pingtext)
 end)
 
 cmd.add({"fps"},{"fps","Shows your fps"},function()
@@ -1700,17 +1700,17 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	RunService.RenderStepped:Connect(function(frame) 
 		script.Parent.Text=("FPS: "..math.round(1/frame)) 
 	end)
-	draggablev2(Fpstext)
+	gui.draggablev2(Fpstext)
 end)
 
 cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function()
-	commands()
+	gui.commands()
 end)
 
 cmd.add({"adonisfinder","adfind"},{"adonis finder (adfind)","Lets you see if the game has adonis admin"},function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/AdonisScanner.lua?raw=adonfind"))()
 end)
--- Mobile Commands for the screen
+--Mobile Commands for the screen
 if IsOnMobile then
 
 	cmd.add({"SensorRotationScreen","SensorScreen","SenScreen"},{"SensorRotaionScreen (SensorScreen or SenScreen)","Changes ScreenOrientation to Sensor"},function()
@@ -1940,7 +1940,7 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
--- fixed-viper
+--fixed-viper
 cmd.add({"adonisbypass","bypassadonis","badonis","adonisb"},{"adonisbypass (bypassadonis,badonis,adonisb)","bypasses adonis admin detection"},function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/adonisbypass.lua?raw=true"))()
 end)
@@ -2143,10 +2143,10 @@ cmd.add({"bringto"},{"bringto (playertobring) [playertobringto]","Brings a playe
 	tool.AncestryChanged:Wait() 
 	if plr.Character.Humanoid.RigType==Enum.HumanoidRigType.R6 then
 		--plr.Character["Right Arm"]:Destroy()
-		game.Players.LocalPlayer.Character["Right Arm"].RightGrip:Destroy() --r6
+		game.Players.LocalPlayer.Character["Right Arm"].RightGrip:Destroy()--r6
 	elseif plr.Character.Humanoid.RigType==Enum.HumanoidRigType.R15 then
 		--plr.Character["RightHand"]:Destroy()
-		game.Players.LocalPlayer.Character.RightHand.RightGrip:Destroy() --r15
+		game.Players.LocalPlayer.Character.RightHand.RightGrip:Destroy()--r15
 	end
 	wait(0.07)
 	respawn()
@@ -2191,8 +2191,8 @@ cmd.add({"spblockspam","starterblockscam"},{"spblockspam (starterblockspam)","Sp
 end)
 
 cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
-	-- [[ THANKS TO ROUXHAVER FOR THIS ]] --
-	-- check out his github-https://github.com/rouxhaver
+	--[[ THANKS TO ROUXHAVER FOR THIS ]]--
+	--check out his github-https://github.com/rouxhaver
 	local Players=game:GetService("Players")
 	local RunService=game:GetService("RunService")
 	local LocalPlayer=Players.LocalPlayer
@@ -2219,8 +2219,8 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 		}
 
 		Network["Output"].Send(print,": Loading.")
-		Network["Velocity"]=Vector3.new(14.46262424,14.46262424,14.46262424); --exactly 25.1 magnitude
-		Network["RetainPart"]=function(Part,ReturnFakePart) --function for retaining ownership of unanchored parts
+		Network["Velocity"]=Vector3.new(14.46262424,14.46262424,14.46262424);--exactly 25.1 magnitude
+		Network["RetainPart"]=function(Part,ReturnFakePart)--function for retaining ownership of unanchored parts
 			assert(typeof(Part)=="Instance" and Part:IsA("BasePart") and Part:IsDescendantOf(workspace),Network["Output"].Prefix.."RetainPart Error : Invalid syntax: Arg1 (Part) must be a BasePart which is a descendant of workspace.")
 			assert(typeof(ReturnFakePart)=="boolean" or typeof(ReturnFakePart)=="nil",Network["Output"].Prefix.."RetainPart Error : Invalid syntax: Arg2 (ReturnFakePart) must be a boolean or nil.")
 			if not table.find(Network["BaseParts"],Part) then
@@ -2249,7 +2249,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 			end
 		end
 
-		Network["RemovePart"]=function(Part) --function for removing ownership of unanchored part
+		Network["RemovePart"]=function(Part)--function for removing ownership of unanchored part
 			assert(typeof(Part)=="Instance" and Part:IsA("BasePart"),Network["Output"].Prefix.."RemovePart Error : Invalid syntax: Arg1 (Part) must be a BasePart.")
 			local Index=table.find(Network["BaseParts"],Part)
 			if Index then
@@ -2260,7 +2260,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 			end
 		end
 
-		Network["SuperStepper"]=Instance.new("BindableEvent") --make super fast event to connect to
+		Network["SuperStepper"]=Instance.new("BindableEvent")--make super fast event to connect to
 		for _,Event in pairs({RunService.Stepped,RunService.Heartbeat}) do
 			Event:Connect(function()
 				return Network["SuperStepper"]:Fire(Network["SuperStepper"],tick())
@@ -2270,15 +2270,15 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 		Network["PartOwnership"]={};
 		Network["PartOwnership"]["PreMethodSettings"]={};
 		Network["PartOwnership"]["Enabled"]=false;
-		Network["PartOwnership"]["Enable"]=coroutine.create(function() --creating a thread for network stuff
+		Network["PartOwnership"]["Enable"]=coroutine.create(function()--creating a thread for network stuff
 			if Network["PartOwnership"]["Enabled"]==false then
-				Network["PartOwnership"]["Enabled"]=true --do cool network stuff before doing more cool network stuff
+				Network["PartOwnership"]["Enabled"]=true--do cool network stuff before doing more cool network stuff
 				Network["PartOwnership"]["PreMethodSettings"].ReplicationFocus=LocalPlayer.ReplicationFocus
 				LocalPlayer.ReplicationFocus=workspace
 				Network["PartOwnership"]["PreMethodSettings"].SimulationRadius=gethiddenproperty(LocalPlayer,"SimulationRadius")
-				Network["PartOwnership"]["Connection"]=Network["SuperStepper"].Event:Connect(function() --super fast asynchronous loop
+				Network["PartOwnership"]["Connection"]=Network["SuperStepper"].Event:Connect(function()--super fast asynchronous loop
 					sethiddenproperty(LocalPlayer,"SimulationRadius",1/0)
-					for _,Part in pairs(Network["BaseParts"]) do --loop through parts and do network stuff
+					for _,Part in pairs(Network["BaseParts"]) do--loop through parts and do network stuff
 						coroutine.wrap(function()
 							if Part:IsDescendantOf(workspace) then
 								if Network.CharacterRelative==true then
@@ -2294,7 +2294,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 										Network["Output"].Send(warn,"PartOwnership Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as the LocalPlayer Character's PrimaryPart does not exist.")
 									end
 								end
-								Part.Velocity=Network["Velocity"]+Vector3.new(0,math.cos(tick()*10)/100,0) --keep network by sending physics packets of 30 magnitude+an everchanging addition in the y level so roblox doesnt get triggered and fuck your ownership
+								Part.Velocity=Network["Velocity"]+Vector3.new(0,math.cos(tick()*10)/100,0)--keep network by sending physics packets of 30 magnitude+an everchanging addition in the y level so roblox doesnt get triggered and fuck your ownership
 							else
 								Network["RemovePart"](Part)
 							end
@@ -2328,22 +2328,22 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 
 
 
-	local lp=game.Players.LocalPlayer -- local player var
-	local char=lp.Character -- char var
+	local lp=game.Players.LocalPlayer--local player var
+	local char=lp.Character--char var
 
-	lp.Character=nil -- nil character for pdeath
-	lp.Character=char -- newvar
+	lp.Character=nil--nil character for pdeath
+	lp.Character=char--newvar
 
-	local hrp=char:FindFirstChild("HumanoidRootPart") -- hrp check
-	if hrp==nil then return end -- return if no hrp
+	local hrp=char:FindFirstChild("HumanoidRootPart")--hrp check
+	if hrp==nil then return end--return if no hrp
 
-	wait(game.Players.RespawnTime+.3) -- nil wait
+	wait(game.Players.RespawnTime+.3)--nil wait
 
-	hrp:Destroy() -- rip hrp
-	char.Torso:Destroy() -- rip torso
-	local clone=char["Body Colors"]:Clone() -- body colors clone
-	char["Body Colors"]:Destroy() -- delete any instances from char that replicates deletion
-	clone.Parent=char -- parent back in clone in case some script uses it
+	hrp:Destroy()--rip hrp
+	char.Torso:Destroy()--rip torso
+	local clone=char["Body Colors"]:Clone()--body colors clone
+	char["Body Colors"]:Destroy()--delete any instances from char that replicates deletion
+	clone.Parent=char--parent back in clone in case some script uses it
 
 
 
@@ -2996,7 +2996,7 @@ cmd.add({"notools"},{"notools","Remove your tools"},function()
 end)
 
 cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches your layered clothing"},function()
-	-- its literally just leg resize with swim
+	--its literally just leg resize with swim
 	wait();
 
 	Notify({
@@ -3119,8 +3119,8 @@ cmd.add({"fpsbooster","lowgraphics","boostfps","lowg"},{"fpsbooster (lowgraphics
 	end)
 end)
 
-	 --[[cmd.add({"vr","clovr","vrscript","fevr"},{"vr (clovr,vrscript,fevr)","FE VR SCRIPT AKA CLOVR"},function()
-		-- should be patched --
+	--[[cmd.add({"vr","clovr","vrscript","fevr"},{"vr (clovr,vrscript,fevr)","FE VR SCRIPT AKA CLOVR"},function()
+		--should be patched--
 	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/CloVR"))();
 	 end)]]
 
@@ -4027,7 +4027,7 @@ cmd.add({"seizure"},{"seizure","Gives you a seizure"},function()
 		end
 		RunService.RenderStepped:Connect(function()
 			if Lzzz==true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick()))--angle*math.sin(velocity*tick())
 			end
 		end)
 	end)
@@ -4087,7 +4087,7 @@ cmd.add({"unseizure"},{"unseizure","Stops you from having a seizure not in real 
 		end
 		RunService.RenderStepped:Connect(function()
 			if Lzzz==true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick()))--angle*math.sin(velocity*tick())
 			end
 		end)
 	end)
@@ -4126,7 +4126,7 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 end)
 
 cmd.add({"antikick","nokick"},{"antikick (nokick)","prevents you from getting kicked by LocalScripts or executed scripts"},function()
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/BetterAntiKick.lua?raw=viper"))() -- Better Version
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/BetterAntiKick.lua?raw=viper"))()--Better Version
 end)
 
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
@@ -4353,7 +4353,7 @@ cmd.add({"triggerbot","tbot"},{"triggerbot (tbot)","Executes a script that autom
 		--print("Tripped")
 	end
 	function CastRay(Mode)
-		local RaySPTR=Camera:ScreenPointToRay(Mouse.X,Mouse.Y) --Hence the var name,the magnitude of this is 1.
+		local RaySPTR=Camera:ScreenPointToRay(Mouse.X,Mouse.Y)--Hence the var name,the magnitude of this is 1.
 		local NewRay=Ray.new(RaySPTR.Origin,RaySPTR.Direction*9999)
 		local Target,Position=workspace:FindPartOnRayWithIgnoreList(NewRay,{Char,workspace.CurrentCamera})
 		if Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent) and Target.Parent.Humanoid.Health>0 or Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent.Parent) and Target.Parent.Parent.Humanoid.Health>0 then
@@ -4544,7 +4544,7 @@ cmd.add({"setspawn","spawnpoint","ss"},{"setspawn (spawnpoint,ss)","Makes your s
 end)
 
 cmd.add({"hamster"},{"hamster <number>","Hamster ball"},function(...)
-	-- [[ skidded ]] --
+	--[[ skidded ]]--
 	local UserInputService=game:GetService("UserInputService")
 	local RunService=game:GetService("RunService")
 	local Camera=workspace.CurrentCamera
@@ -4578,10 +4578,10 @@ cmd.add({"hamster"},{"hamster <number>","Hamster ball"},function(...)
 		humanoid.PlatformStand=true
 		if UserInputService:GetFocusedTextBox() then return end
 		if UserInputService:IsKeyDown("W") then
-			ball.RotVelocity -=Camera.CFrame.RightVector*delta*SPEED_MULTIPLIER
+			ball.RotVelocity-=Camera.CFrame.RightVector*delta*SPEED_MULTIPLIER
 		end
 		if UserInputService:IsKeyDown("A") then
-			ball.RotVelocity -=Camera.CFrame.LookVector*delta*SPEED_MULTIPLIER
+			ball.RotVelocity-=Camera.CFrame.LookVector*delta*SPEED_MULTIPLIER
 		end
 		if UserInputService:IsKeyDown("S") then
 			ball.RotVelocity+=Camera.CFrame.RightVector*delta*SPEED_MULTIPLIER
@@ -5059,7 +5059,7 @@ cmd.add({"controlnpcs","cnpcs"},{"controlnpcs (cnpcs)","Keybind: CTRL+LEFTCLICK"
 		Duration=5;
 
 	});
-	--- made by joshclark756#7155
+	---made by joshclark756#7155
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
 	mouse.Button1Down:Connect(function()
@@ -5117,14 +5117,14 @@ cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
 		Duration=5;
 
 	});
-	-- made by joshclark756#7155
-	-- Variables
+	--made by joshclark756#7155
+	--Variables
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
 
-	-- Connect
+	--Connect
 	mouse.Button1Down:Connect(function()
-		-- Check for Target & Left Shift
+		--Check for Target & Left Shift
 		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
 			local npc=mouse.target
 			local npcparts=mouse.target.Parent
@@ -5142,11 +5142,11 @@ cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
 					end
 				end
 			end
-			-- Variables
+			--Variables
 			local mouse=game.Players.LocalPlayer:GetMouse()
 			local uis=game:GetService("UserInputService")
 
-			-- Connect
+			--Connect
 			mouse.Button1Down:Connect(function()
 				if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
 					local npc=mouse.target
@@ -5165,7 +5165,7 @@ cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
 								wait(0)
 								local player=game.Players.LocalPlayer
 								local mouse=player:GetMouse()
-								bind="e" -- has to be lowercase
+								bind="e"--has to be lowercase
 								mouse.KeyDown:connect(function(key)
 									if key==bind then do
 											v.CanCollide=true
@@ -5282,7 +5282,7 @@ function ShiftLock()
 end
 cmd.add({"shiftlock","sl"},{"shiftlock (sl)","Enables shiftlock"},function()
 	if IsOnMobile then
-		ShiftlockVis()
+		gui.ShiftlockVis()
 	else
 		EnableShiftlock()
 	end
@@ -5290,7 +5290,7 @@ end)
 
 cmd.add({"unshiftlock","unsl"},{"unshiftlock (unsl)","Disables shiftlock"},function()
 	if IsOnMobile then
-		ShiftlockInvis()
+		gui.ShiftlockInvis()
 	else
 		DisableShiftlock()
 	end
@@ -5611,7 +5611,7 @@ cmd.add({"quicksand"},{"quicksand <player>","Quicksands a player"},function(...)
 end)
 
 cmd.add({"hatsleash","hl"},{"hatsleash","Makes you be able to carry your hats"},function()
-	-- [[ PROBABLY PATCHED ]] -- 
+	--[[ PROBABLY PATCHED ]]--
 	for _,v in pairs(game.Players.LocalPlayer.Character:getChildren()) do
 		if v.ClassName=="Accessory" then
 			for i,k in pairs(v:GetDescendants()) do
@@ -5631,7 +5631,7 @@ cmd.add({"hatsleash","hl"},{"hatsleash","Makes you be able to carry your hats"},
 end)
 
 cmd.add({"toolleash","tl"},{"toolleash","Makes you be able to carry your tools"},function()
-	-- [[ PROBABLY PATCHED ]] -- 
+	--[[ PROBABLY PATCHED ]]--
 	for _,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		v.Parent=game.Players.LocalPlayer.Character
 	end
@@ -5801,13 +5801,13 @@ cmd.add({"unadmin"},{"unadmin <player>","removes someone from being admin"},func
 end)
 
 cmd.add({"2016"},{"2016","2016 CORE GUI"},function()
-	-- [[ PLAYERBOARD IS BUGGED BUT WILL TRY TO FIX. ]] --
+	--[[ PLAYERBOARD IS BUGGED BUT WILL TRY TO FIX. ]]--
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/2016%20mode"))()
 end)
 
 cmd.add({"removedn","nodn","nodpn"},{"removedn (nodn,nodpn)","Removes all display names"},function()
 
-	-- [[ IM NOT SURE WHO MADE THIS ]] --
+	--[[ IM NOT SURE WHO MADE THIS ]]--
 
 	wait();
 	Notify({
@@ -6222,7 +6222,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	copy.TextColor3=Color3.fromRGB(255,255,255)
 	copy.TextSize=14.000
 
-	-- Scripts:
+	--Scripts:
 
 	function AKIHDI_fake_script()
 		local script=Instance.new('LocalScript',Main)
@@ -6288,23 +6288,23 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 						if _G.functionspy then
 							pcall(function() 
 								out=""
-								out=out..(v..",Args -> {")..("\n"):format()
+								out=out..(v..",Args-> {")..("\n"):format()
 								for l,k in pairs(args) do
 									if type(k)=="function" then
-										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type -> "..type(k)..",Name -> "..getinfo(k).name)..("\n"):format()
+										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Name-> "..getinfo(k).name)..("\n"):format()
 									elseif type(k)=="table" then
-										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type -> "..type(k)..",Data -> "..Seralize(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Data-> "..Seralize(k))..("\n"):format()
 									elseif type(k)=="boolean" then
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k).." -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k).."-> "..type(k))..("\n"):format()
 									elseif type(k)=="nil" then
 										out=out..("    ["..tostring(l).."] null")..("\n"):format()
 									elseif type(k)=="number" then
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k)..",Type -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k)..",Type-> "..type(k))..("\n"):format()
 									else
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k)..",Type -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k)..",Type-> "..type(k))..("\n"):format()
 									end
 								end
-								out=out..("},Result -> "..tostring(nil))..("\n"):format()
+								out=out..("},Result-> "..tostring(nil))..("\n"):format()
 								if _G.functionspy.logging==true then
 									log(v,out)
 								end
@@ -6323,23 +6323,23 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 						if _G.functionspy then
 							pcall(function() 
 								out=""
-								out=out..(getinfo(v).name..",Args -> {")..("\n"):format()
+								out=out..(getinfo(v).name..",Args-> {")..("\n"):format()
 								for l,k in pairs(args) do
 									if type(k)=="function" then
-										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type -> "..type(k)..",Name -> "..getinfo(k).name)..("\n"):format()
+										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Name-> "..getinfo(k).name)..("\n"):format()
 									elseif type(k)=="table" then
-										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type -> "..type(k)..",Data -> "..Seralize(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Data-> "..Seralize(k))..("\n"):format()
 									elseif type(k)=="boolean" then
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k).." -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k).."-> "..type(k))..("\n"):format()
 									elseif type(k)=="nil" then
 										out=out..("    ["..tostring(l).."] null")..("\n"):format()
 									elseif type(k)=="number" then
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k)..",Type -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k)..",Type-> "..type(k))..("\n"):format()
 									else
-										out=out..("    ["..tostring(l).."] Value -> "..tostring(k)..",Type -> "..type(k))..("\n"):format()
+										out=out..("    ["..tostring(l).."] Value-> "..tostring(k)..",Type-> "..type(k))..("\n"):format()
 									end
 								end
-								out=out..("},Result -> "..tostring(nil))..("\n"):format()
+								out=out..("},Result-> "..tostring(nil))..("\n"):format()
 								if _G.functionspy.logging==true then
 									log(getinfo(v).name,out)
 								end
@@ -6502,7 +6502,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
-		draggablev2(TextButton)
+		gui.draggablev2(TextButton)
 	else
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
@@ -7970,7 +7970,7 @@ cmd.add({"uadelete","unanchoreddelete"},{"unanchoreddelete (uadelete)","Gives yo
 	net=net or ssr
 	wait(1)
 	loadstring(game:HttpGet(('https://pastefy.ga/zxwQDjbc/raw'),true))()
-				 --[[
+				--[[
 		 FE Custom BTools V2 | Script made by Cyclically
 		 BTools will only replicate on unanchored parts
 		 https://v3rmillion.net/member.php?action=profile&uid=785986
@@ -8142,7 +8142,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 
 		script.Parent.MouseButton1Click:Connect(function()
 
-		 --[[
+		--[[
 			 Change-logs:
 			 8/22/2022-Fixed Chat gui glitching on some games such as Prison Life.
 			 9/30/2022-Fixed chat gui glitching AGAIN... (added better checks too)
@@ -8191,7 +8191,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 						end
 						wait(1)
 						if StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat) then
-							x:SetCoreGuiEnabled(Enum.CoreGuiType.Chat,OldSetting) -- probably defaults to false i am too tired for the making of this lol
+							x:SetCoreGuiEnabled(Enum.CoreGuiType.Chat,OldSetting)--probably defaults to false i am too tired for the making of this lol
 						end
 						ChatChanged=false
 					end
@@ -8585,7 +8585,7 @@ cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 	spawn(function()
 		carpetLoop=game:GetService('RunService').Heartbeat:Connect(function()
 			pcall(function()
-				if tTorso.Velocity.magnitude <=28 then -- if target uses netless just target their local position
+				if tTorso.Velocity.magnitude <=28 then--if target uses netless just target their local position
 					local pos={x=0,y=0,z=0}
 					pos.x=tTorso.Position.X
 					pos.y=tTorso.Position.Y
@@ -9206,7 +9206,7 @@ cmd.add({"pp","penis"},{"penis (pp)","benis :flushed:"},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/p3n1s"))()
 end)
 
-cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (getaudio,logaudio,steal)","Save all sounds a player is playing to a file  -Cyrus"},function(p)
+cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (getaudio,logaudio,steal)","Save all sounds a player is playing to a file -Cyrus"},function(p)
 	wait();
 	local players=argument.getPlayers(p)
 	local audios=""
@@ -9340,7 +9340,7 @@ cmd.add({"bubblechat"},{"bubblechat <player>","fake chat as your target"},functi
 		end
 	end	
 end)
--- patched
+--patched
 --[[cmd.add({"translatechat"},{"translatechat","translates the chat using google translate api"},function()
 	wait();
 
@@ -9658,7 +9658,7 @@ cmd.add({"exit"},{"exit","Close down roblox"},function()
 end)
 
 cmd.add({"firekey","fkey"},{"firekey <key> (fkey)","makes you fire a keybind using VirtualInputManager"},function(...)
-	local codex=(...) --real
+	local codex=(...)--real
 	vim:SendKeyEvent(true,codex,0,game)
 	vim:SendKeyEvent(false,codex,0,game)
 end)
@@ -9701,8 +9701,8 @@ cmd.add({"fat","nikocadoavocado"},{"fat (nikocadoavocado)","fat"},function()
 	wait(0.2)
 end)
 
--- patched
-	 --[[cmd.add({"small"},{"small","Makes you short r15 only"},function()
+--patched
+	--[[cmd.add({"small"},{"small","Makes you short r15 only"},function()
 		 
 	 
 	 
@@ -9714,7 +9714,7 @@ end)
 	 Duration=5;
 	 
 	 });
-		 --script made by failedmite57926
+		--script made by failedmite57926
 	 
 	 local LocalPlayer=game:GetService("Players").LocalPlayer
 	 local Character=LocalPlayer.Character
@@ -9835,7 +9835,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 					getgenv().OldPos=RootPart.CFrame
 				end
 				if THumanoid and THumanoid.Sit and not AllBool then
-					return Message("Error Occurred","Targeting is sitting",5) -- u can remove dis part if u want lol
+					return Message("Error Occurred","Targeting is sitting",5)--u can remove dis part if u want lol
 				end
 				if THead then
 					workspace.CurrentCamera.CameraSubject=THead
@@ -10193,8 +10193,8 @@ cmd.add({"tools","gears"},{"tools <player> (gears)","Copies tools from Replicate
 end)
 
 cmd.add({"waveat","wat"},{"waveat <player> (wat)","Wave to a player"},function(...)
-	-- r6 / 128777973
-	-- r15 / 507770239
+	--r6 / 128777973
+	--r15 / 507770239
 	Player=(...)
 	Target=getPlr(Player)
 	local oldcframe=getRoot(game.Players.LocalPlayer.Character).CFrame
@@ -10540,48 +10540,48 @@ cmd.add({"mute","muteboombox"},{"mute <player> (muteboombox)","Mutes the players
 end)
 
 cmd.add({"antivoid"},{"antivoid","Anti void."},function()
-	getgenv().AntiVoid=true -- // toggle it on and off
+	getgenv().AntiVoid=true--// toggle it on and off
 
-	-- // Services
+	--// Services
 	local Players=game:GetService("Players")
 
-	-- // Vars
+	--// Vars
 	local LocalPlayer=Players.LocalPlayer
 
-	-- // Check if anyone has the same handle as you
+	--// Check if anyone has the same handle as you
 	function toolMatch(Handle)
 		local allPlayers=Players:GetPlayers()
 		for i=1,#allPlayers do
-			-- // Vars
+			--// Vars
 			local Player=allPlayers[i]
-			if (Player==LocalPlayer) then continue end -- // ignore local player
+			if (Player==LocalPlayer) then continue end--// ignore local player
 
-			-- // Vars
+			--// Vars
 			local Character=Player.Character
 			local RightArm=Character:WaitForChild("Right Arm")
 			local RightGrip=RightArm:FindFirstChild("RightGrip")
 
-			-- // Check if they share the same Part1 Handle of the Grip
+			--// Check if they share the same Part1 Handle of the Grip
 			if (RightGrip and RightGrip.Part1==Handle) then
 				return Player
 			end
 		end
 	end
 
-	-- // Manager
+	--// Manager
 	function onCharacter(Character)
 		local RightArm=Character:WaitForChild("Right Arm")
 
-		-- // See when you equip something
+		--// See when you equip something
 		RightArm.ChildAdded:Connect(function(child)
 			if (child:IsA("Weld") and child.Name=="RightGrip" and getgenv().AntiVoid) then
-				-- // Vars
+				--// Vars
 				local ConnectedHandle=child.Part1
 
-				-- // Check if someone else has something equipped too with the same handle as you
+				--// Check if someone else has something equipped too with the same handle as you
 				local matched=toolMatch(ConnectedHandle)
 
-				-- // Destroy the tool,if someone is voiding you
+				--// Destroy the tool,if someone is voiding you
 				if (matched) then
 					ConnectedHandle.Parent:Destroy()
 					print(matched,"just tried to void you lol!")
@@ -10590,7 +10590,7 @@ cmd.add({"antivoid"},{"antivoid","Anti void."},function()
 		end)
 	end
 
-	-- // Initialise the script
+	--// Initialise the script
 	onCharacter(LocalPlayer.Character)
 	LocalPlayer.CharacterAdded:Connect(onCharacter)
 end)
@@ -12076,13 +12076,13 @@ cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any u
 		Duration=5;
 
 	});
-	-- made by joshclark756#7155
+	--made by joshclark756#7155
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
 
-	-- Connect
+	--Connect
 	mouse.Button1Down:Connect(function()
-		-- Check for Target & Left Shift
+		--Check for Target & Left Shift
 		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
 			local npc=mouse.target
 			local PlayerCharacter=game:GetService("Players").LocalPlayer.Character
@@ -12121,13 +12121,13 @@ cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any u
 		end
 	end)
 	wait(0.2)
-	-- made by joshclark756#7155
+	--made by joshclark756#7155
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
 
-	-- Connect
+	--Connect
 	mouse.Button1Down:Connect(function()
-		-- Check for Target & Left Shift
+		--Check for Target & Left Shift
 		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
 			local npc=mouse.target
 			local PlayerCharacter=game:GetService("Players").LocalPlayer.Character
@@ -13101,9 +13101,9 @@ cmd.add({"firetouchinterests","fti"},{"firetouchinterests (fti)","Fires every To
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
 			ftiamount=ftiamount+1
-			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.Parent,0) -- 0 is touch
+			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.Parent,0)--0 is touch
 			task.wait();
-			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.Parent,1) -- 1 is untouch
+			firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart,v.Parent,1)--1 is untouch
 		end
 	end
 
@@ -13656,7 +13656,7 @@ end)
 
 
 cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
-	-- [[ bhop functions ]] -- 
+	--[[ bhop functions ]]--
 	local player
 	local character
 	local collider
@@ -13704,7 +13704,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		playerGrounded=false
 		moveInputSum={
 			["forward"]=0,
-			["side"] 	=0 --left is positive
+			["side"] 	=0--left is positive
 		}
 
 		airAccelerate 			=10000
@@ -13868,7 +13868,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		local accelForward=cameraLook*moveInputSum["forward"]
 		local accelSide=(cameraYaw*CFrame.Angles(0,math.rad(90),0)).lookVector*moveInputSum["side"];
 		local accelDir=(accelForward+accelSide).unit;
-		if moveInputSum["forward"]==0 and moveInputSum["side"]==0 then --avoids divide 0 errors
+		if moveInputSum["forward"]==0 and moveInputSum["side"]==0 then--avoids divide 0 errors
 			accelDir=Vector3.new(0,0,0);
 		end
 
@@ -13912,11 +13912,11 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		end	
 	end
 
-	function getYaw() --returns CFrame
+	function getYaw()--returns CFrame
 		return camera.CoordinateFrame*CFrame.Angles(-getPitch(),0,0)
 	end
 
-	function getPitch() --returns number
+	function getPitch()--returns number
 		return math.pi/2-math.acos(camera.CoordinateFrame.lookVector:Dot(Vector3.new(0,1,0)))
 	end
 
@@ -13957,9 +13957,9 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 			if inputKeys[key]~=nil then
 				inputKeys[key]=inputState
 			end
-		elseif input.UserInputType==Enum.UserInputType.MouseButton1 then --LMB down
+		elseif input.UserInputType==Enum.UserInputType.MouseButton1 then--LMB down
 			inputKeys.LMB=inputState
-		elseif input.UserInputType==Enum.UserInputType.MouseButton2 then --RMB down
+		elseif input.UserInputType==Enum.UserInputType.MouseButton2 then--RMB down
 			inputKeys.RMB=inputState
 		end
 	end
@@ -13982,7 +13982,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 	local prevUpdateTime=nil
 	local updateDT=1/60
 
-	function setDeltaTime() --seconds
+	function setDeltaTime()--seconds
 		local UpdateTime=tick() 
 		if prevUpdateTime~=nil then
 			updateDT=(UpdateTime-prevUpdateTime)
@@ -14326,7 +14326,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 
 	if invisRunning then return end
 	invisRunning=true
-	-- Full credit to AmokahFox @V3rmillion
+	--Full credit to AmokahFox @V3rmillion
 	local Player=game.Players.LocalPlayer
 	repeat wait(.1) until game.Players.LocalPlayer.Character
 	local Character=game.Players.LocalPlayer.Character
@@ -14516,7 +14516,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		UIAspectRatioConstraint.Parent=TextButton
 		UIAspectRatioConstraint.AspectRatio=1.060
 
-		-- Scripts:
+		--Scripts:
 
 		function FEPVI_fake_script()
 			local script=Instance.new('LocalScript',TextButton)
@@ -14712,7 +14712,7 @@ cmd.add({"uafollow","unanchoredfollow"},{"uafollow (unanchoredfollow)","Makes un
 	end
 end)
 
--- tween works better for some reason
+--tween works better for some reason
 
 cmd.add({"fov"},{"fov <number>","Makes your FOV to something custom you want (1-120 FOV)"},function(num)
 	local field=(num or 70)
@@ -14870,8 +14870,8 @@ cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored p
 
 	function execute(name)
 		for index,part in pairs(game:GetDescendants()) do
-			if part:IsA("BasePart" or "UnionOperation" or "Model") and part.Anchored==false and part:IsDescendantOf(game.Players.LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false then --// Checks Part Properties
-				part.CFrame=CFrame.new(game.workspace[name].Head.Position) --TP Part To User
+			if part:IsA("BasePart" or "UnionOperation" or "Model") and part.Anchored==false and part:IsDescendantOf(game.Players.LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false then--// Checks Part Properties
+				part.CFrame=CFrame.new(game.workspace[name].Head.Position)--TP Part To User
 				if spam==true and part:FindFirstChild("BodyGyro")==nil then
 					local bodyPos=Instance.new("BodyPosition")
 					bodyPos.Position=part.Position
@@ -15098,7 +15098,7 @@ localPlayer.Chatted:Connect(function(str)
 	lib.parseCommand(str)
 end)
 
--- [[ Admin Player]]
+--[[ Admin Player]]
 function IsAdminAndRun(Message,Player)
 	if Admin[Player.UserId] or isRelAdmin(Player) then
 		lib.parseCommand(Message,Player)
@@ -15264,11 +15264,12 @@ resizeFrame.Parent=nil
 	end]]
 
 --[[ GUI FUNCTIONS ]]--
-txtSize=function(ui,x,y)
+gui={}
+gui.txtSize=function(ui,x,y)
 	local textService=game:GetService("TextService")
 	return textService:GetTextSize(ui.Text,ui.TextSize,ui.Font,Vector2.new(x,y))
 end
-commands=function()
+gui.commands=function()
 	if not commandsFrame.Visible then
 		commandsFrame.Visible=true
 		commandsList.CanvasSize=UDim2.new(0,0,0,0)
@@ -15299,19 +15300,19 @@ commands=function()
 	commandsList.CanvasSize=UDim2.new(0,0,0,i*20+10)
 	commandsFrame.Position=UDim2.new(0.5,-283/2,0.5,-260/2)
 end
-chatlogs=function()
+gui.chatlogs=function()
 	if not chatLogsFrame.Visible then
 		chatLogsFrame.Visible=true
 	end
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-universeGui=function()
+gui.universeGui=function()
 	if not UniverseViewerFrame.Visible then
 		UniverseViewerFrame.Visible=true
 	end
 	UniverseViewerFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-updateLogs=function()
+gui.updateLogs=function()
 	if not UpdLogsFrame.Visible and next(updLogs) then
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
@@ -15325,24 +15326,24 @@ updateLogs=function()
 	end
 	UpdLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-ShiftlockVis=function()
+gui.ShiftlockVis=function()
 	if not ShiftlockUi.Visible then
 		ShiftlockUi.Visible=true
 	end
 end
-ShiftlockInvis=function()
+gui.ShiftlockInvis=function()
 	if ShiftlockUi.Visible then
 		ShiftlockUi.Visible=false
 	end
 end
 
-tween=function(obj,style,direction,duration,goal)
+gui.tween=function(obj,style,direction,duration,goal)
 	local tweenInfo=TweenInfo.new(duration,Enum.EasingStyle[style],Enum.EasingDirection[direction])
 	local tween=TweenService:Create(obj,tweenInfo,goal)
 	tween:Play()
 	return tween
 end
-mouseIn=function(guiObject,range)
+gui.mouseIn=function(guiObject,range)
 	local pos1,pos2=guiObject.AbsolutePosition,guiObject.AbsolutePosition+guiObject.AbsoluteSize
 	local mX,mY=mouse.X,mouse.Y
 	if mX>pos1.X-range and mX<pos2.X+range and mY>pos1.Y-range and mY<pos2.Y+range then
@@ -15350,9 +15351,9 @@ mouseIn=function(guiObject,range)
 	end
 	return false
 end
-resizeable=function(ui,min,max)
-	local rGui=resizeFrame:Clone()
-	rGui.Parent=ui
+gui.resizeable=function(ui,min,max)
+	local rgui=resizeFrame:Clone()
+	rgui.Parent=ui
 
 	local mode
 	local UIPos
@@ -15406,8 +15407,8 @@ resizeable=function(ui,min,max)
 		end)
 	end
 end
-draggable=function(ui,dragUi)
-	if not dragUi then dragUi=ui end
+gui.draggable=function(ui,dragui)
+	if not dragui then dragui=ui end
 	local UserInputService=game:GetService("UserInputService")
 
 	local dragging
@@ -15420,7 +15421,7 @@ draggable=function(ui,dragUi)
 		ui.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
 	end
 
-	dragUi.InputBegan:Connect(function(input)
+	dragui.InputBegan:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
 			dragging=true
 			dragStart=input.Position
@@ -15434,7 +15435,7 @@ draggable=function(ui,dragUi)
 		end
 	end)
 
-	dragUi.InputChanged:Connect(function(input)
+	dragui.InputChanged:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
 			dragInput=input
 		end
@@ -15446,11 +15447,11 @@ draggable=function(ui,dragUi)
 		end
 	end)
 end
-draggablev2=function(floght)
+gui.draggablev2=function(floght)
 	floght.Active=true
 	floght.Draggable=true
 end
-menuify=function(menu)
+gui.menuify=function(menu)
 	local exit=menu:FindFirstChild("Exit",true)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local minimized=false
@@ -15460,18 +15461,18 @@ menuify=function(menu)
 		if minimized then
 			sizeX.Value=menu.Size.X.Offset
 			sizeY.Value=menu.Size.Y.Offset
-			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
 		else
-			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible=false
 	end)
-	draggablev2(menu,menu.Topbar)
+	gui.draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
-menuifyv2=function(menu)
+gui.menuifyv2=function(menu)
 	local exit=menu:FindFirstChild("Exit",true)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local clear=menu:FindFirstChild("Clear",true);
@@ -15482,9 +15483,9 @@ menuifyv2=function(menu)
 		if minimized then
 			sizeX.Value=menu.Size.X.Offset
 			sizeY.Value=menu.Size.Y.Offset
-			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
 		else
-			tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
@@ -15500,11 +15501,11 @@ menuifyv2=function(menu)
 			end
 		end)
 	end
-	draggablev2(menu,menu.Topbar)
+	gui.draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
 
-shiftlock=function(sLock,lockImg)
+gui.shiftlock=function(sLock,lockImg)
 	local V=false
 	local g=nil
 	local GameSettings=UserSettings():GetService("UserGameSettings")
@@ -15541,11 +15542,11 @@ shiftlock=function(sLock,lockImg)
 			EndForceShiftLock()
 		end
 	end)
-	draggablev2(sLock)
+	gui.draggablev2(sLock)
 end
 
 
-loadCommands=function()
+gui.loadCommands=function()
 	for i,v in pairs(cmdAutofill:GetChildren()) do
 		if v.Name~="UIListLayout" then
 			v:Remove()
@@ -15567,34 +15568,34 @@ loadCommands=function()
 	end
 end
 
-loadCommands()
+gui.loadCommands()
 for i,v in ipairs(cmdAutofill:GetChildren()) do
 	if v:IsA("Frame") then
 		v.Visible=false
 	end
 end
-barSelect=function(speed)
+gui.barSelect=function(speed)
 	centerBar.Visible=true
-	tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,1,15)})
-	tween(leftFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(0,0,0.5,0)})
-	tween(rightFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(1,0,0.5,0)})
+	gui.tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,1,15)})
+	gui.tween(leftFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(0,0,0.5,0)})
+	gui.tween(rightFill,"Quad","Out",speed or 0.3,{Position=UDim2.new(1,0,0.5,0)})
 end
-barDeselect=function(speed)
-	tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,0,0)})
-	tween(leftFill,"Sine","In",speed or 0.3,{Position=UDim2.new(-0.5,100,0.5,0)})
-	tween(rightFill,"Sine","In",speed or 0.3,{Position=UDim2.new(1.5,-100,0.5,0)})
+gui.barDeselect=function(speed)
+	gui.tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,0,0)})
+	gui.tween(leftFill,"Sine","In",speed or 0.3,{Position=UDim2.new(-0.5,100,0.5,0)})
+	gui.tween(rightFill,"Sine","In",speed or 0.3,{Position=UDim2.new(1.5,-100,0.5,0)})
 	for i,v in ipairs(cmdAutofill:GetChildren()) do
 		if v:IsA("Frame") then
 			wrap(function()
 				wait(math.random(1,200)/2000)
-				tween(v,"Back","In",0.35,{Size=UDim2.new(0,0,0,25)})
+				gui.tween(v,"Back","In",0.35,{Size=UDim2.new(0,0,0,25)})
 			end)
 		end
 	end
 end
 
--- [[ AUTOFILL SEARCHER ]] --
-searchCommands=function()
+--[[ AUTOFILL SEARCHER ]]--
+gui.searchCommands=function()
 	local str=(cmdInput.Text:gsub(";","")):lower()
 	local index=0
 	local lastFrame
@@ -15609,7 +15610,7 @@ searchCommands=function()
 				local n=math.sqrt(index)*125
 				local yPos=(index-1)*28
 				local newPos=UDim2.new(0.5,0,0,yPos)
-				tween(v,"Quint","Out",0.3,{
+				gui.tween(v,"Quint","Out",0.3,{
 					Size=UDim2.new(0.5,n,0,25),
 					Position=lastFrame and newPos or UDim2.new(0.5,0,0,yPos),
 				})
@@ -15621,10 +15622,10 @@ end
 
 --[[ GUI FUNCTIONALITY ]]--
 
--- [[ OPEN THE COMMAND BAR ]] -- 
+--[[ OPEN THE COMMAND BAR ]]--
 mouse.KeyDown:Connect(function(k)
 	if k:lower()==opt.prefix then
-		barSelect()
+		gui.barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
 		wait(0.00005)
@@ -15632,32 +15633,32 @@ mouse.KeyDown:Connect(function(k)
 	end
 end)
 
--- [[ CLOSE THE COMMAND BAR ]] -- 
+--[[ CLOSE THE COMMAND BAR ]]--
 cmdInput.FocusLost:Connect(function(enterPressed)
 	if enterPressed then
 		wrap(function()
 			lib.parseCommand(opt.prefix..cmdInput.Text)
 		end)
 	end
-	barDeselect()
+	gui.barDeselect()
 end)
 
 cmdInput.Changed:Connect(function(p)
 	if p~="Text" then return end
-	searchCommands()
+	gui.searchCommands()
 end)
 
-barDeselect(0)
+gui.barDeselect(0)
 cmdBar.Visible=true
-menuifyv2(chatLogsFrame)
-menuify(commandsFrame)
-menuify(UniverseViewerFrame)
-menuify(UpdLogsFrame)
-shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
+gui.menuifyv2(chatLogsFrame)
+gui.menuify(commandsFrame)
+gui.menuify(UniverseViewerFrame)
+gui.menuify(UpdLogsFrame)
+gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 
--- [[ GUI RESIZE FUNCTION ]] -- 
+--[[ GUI RESIZE FUNCTION ]]--
 
--- table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
+--table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
 function autoResizeable(ui)
 	local initialSize = ui.AbsoluteSize
 	local minSize = Vector2.new(
@@ -15669,7 +15670,7 @@ function autoResizeable(ui)
 		initialSize.Y*1
 	)
 
-	resizeable(ui,minSize,maxSize)
+	gui.resizeable(ui,minSize,maxSize)
 end
 if not IsOnMobile then 
 	autoResizeable(chatLogsFrame)
@@ -15678,7 +15679,7 @@ if not IsOnMobile then
 	autoResizeable(UpdLogsFrame)
 end
 
--- [[ CMDS COMMANDS SEARCH FUNCTION ]] --
+--[[ CMDS COMMANDS SEARCH FUNCTION ]]--
 commandsFilter.Changed:Connect(function(p)
 	if p~="Text" then return end
 	for i,v in pairs(commandsList:GetChildren()) do
@@ -15692,7 +15693,7 @@ commandsFilter.Changed:Connect(function(p)
 	end
 end)
 
--- [[ CHAT TO USE COMMANDS ]] --
+--[[ CHAT TO USE COMMANDS ]]--
 function bindToChat(plr,msg)
 	local chatMsg=chatExample:Clone()
 	for i,v in pairs(chatLogs:GetChildren()) do
@@ -15703,7 +15704,7 @@ function bindToChat(plr,msg)
 	chatMsg.Parent=chatLogs
 	chatMsg.Text=("%s [@%s]: %s"):format(plr.DisplayName,plr.Name,msg)
 
-	local txtSize=txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
+	local txtSize=gui.txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
 	chatMsg.Size=UDim2.new(1,-5,0,txtSize.Y)
 end
 
@@ -15720,7 +15721,7 @@ end)
 
 mouse.Move:Connect(function()
 	description.Position=UDim2.new(0,mouse.X,0,mouse.Y)
-	local size=txtSize(description,200,100)
+	local size=gui.txtSize(description,200,100)
 	description.Size=UDim2.new(0,size.X,0,size.Y)
 end)
 
@@ -15743,7 +15744,7 @@ NACaller(function()
 	end
 
 	delay(0.3,function()
-		if identifyexecutor then -- idk why i made it as a check
+		if identifyexecutor then--idk why i made it as a check
 			Notify({
 				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate;
 				Title=rngMsg().." "..hh;
@@ -15808,13 +15809,13 @@ NACaller(function()
 			local btn=template:Clone()
 			btn.Parent=list
 			btn.Name=name
-			btn.Text="- "..txt
+			btn.Text="-"..txt
 		end
 	else
 	end
 end)
 
--- [[ COMMAND BAR BUTTON ]] --
+--[[ COMMAND BAR BUTTON ]]--
 local TextLabelLabel=Instance.new("TextLabel")
 local UICorner=Instance.new("UICorner")
 local ImageButton=Instance.new("ImageButton")
@@ -15858,7 +15859,7 @@ function Swoosh()
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
-	draggablev2(imagebutton)
+	gui.draggablev2(imagebutton)
 end
 function mainNameless()
 	local script=Instance.new('LocalScript',TextLabelLabel)
@@ -15887,20 +15888,20 @@ coroutine.wrap(mainNameless)()
 
 if IsOnMobile then
 	ImageButton.MouseButton1Click:Connect(function()
-		barSelect()
+		gui.barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
 	end)
 end
 
--- @ltseverydayyou (maxype)
--- @MuhXd (Viper)
+--@ltseverydayyou (maxype)
+--@MuhXd (Viper)
 
--- original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
+--original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
 
 task.spawn(function()
-	NACaller(function() -- better saveinstance support
-		if identifyexecutor()=="Solara" then -- solara broke this bra
+	NACaller(function()--better saveinstance support
+		if identifyexecutor()=="Solara" then--solara broke this bra
 		else
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 		end
