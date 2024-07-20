@@ -1010,29 +1010,29 @@ lib.find=function(t,v)	-- mmmmmm
 end
 
 lib.parseText=function(text,watch,rPlr)
-    local parsed={}
-    if not text then return nil end
-    local prefix
-    if rPlr then
-        prefix=isRelAdmin(rPlr) and ";" or opt.prefix
-        watch=prefix
-    else
-        prefix=opt.prefix
-    end
-    for arg in text:gmatch("[^"..watch.."]+") do
-        arg=arg:gsub("-","%%-")
-        local pos=text:find(arg)
-        arg=arg:gsub("%%","")
-        if pos then
-            local find=text:sub(pos - prefix:len(),pos - 1)
-            if (find == prefix and watch == prefix) or watch ~= prefix then
-                table.insert(parsed,arg)
-            end
-        else
-            table.insert(parsed,nil)
-        end
-    end
-    return parsed
+	local parsed={}
+	if not text then return nil end
+	local prefix
+	if rPlr then
+		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
+		watch=prefix
+	else
+		prefix=opt.prefix
+	end
+	for arg in text:gmatch("[^"..watch.."]+") do
+		arg=arg:gsub("-","%%-")
+		local pos=text:find(arg)
+		arg=arg:gsub("%%","")
+		if pos then
+			local find=text:sub(pos - prefix:len(),pos - 1)
+			if (find == prefix and watch == prefix) or watch ~= prefix then
+				table.insert(parsed,arg)
+			end
+		else
+			table.insert(parsed,nil)
+		end
+	end
+	return parsed
 end
 
 lib.parseCommand=function(text,rPlr)
@@ -12478,7 +12478,7 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 			code = v
 		end
 	end
-	bruh
+	bruh=code
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
