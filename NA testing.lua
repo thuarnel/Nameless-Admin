@@ -553,7 +553,7 @@ local ESPenabled=false
 
 function round(num,numDecimalPlaces)
 	local mult=10^(numDecimalPlaces or 0)
-	return math.floor(num * mult+0.5) / mult
+	return math.floor(num*mult+0.5) / mult
 end
 
 function getIdentity() -- returns the number of the identity
@@ -578,7 +578,7 @@ end
 local function placeName()
 	local page=game:GetService("AssetService"):GetGamePlacesAsync()
 	while true do
-		for _, place in ipairs(page:GetCurrentPage()) do
+		for _,place in ipairs(page:GetCurrentPage()) do
 			if place.PlaceId==PlaceId then
 				return place.Name
 			end
@@ -743,10 +743,10 @@ function mobilefly(speed)
 			local newVelocity=Vector3.new()
 
 			if direction.X~=0 then
-				newVelocity=newVelocity+camera.CFrame.RightVector * (direction.X * speed)
+				newVelocity=newVelocity+camera.CFrame.RightVector*(direction.X*speed)
 			end
 			if direction.Z~=0 then
-				newVelocity=newVelocity-camera.CFrame.LookVector * (direction.Z * speed)
+				newVelocity=newVelocity-camera.CFrame.LookVector*(direction.Z*speed)
 			end
 
 			bv.Velocity=newVelocity
@@ -827,10 +827,10 @@ function sFLY(vfly)
 					SPEED=0
 				end
 				if (CONTROL.L+CONTROL.R)~=0 or (CONTROL.F+CONTROL.B)~=0 or (CONTROL.Q+CONTROL.E)~=0 then
-					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F+CONTROL.B))+((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L+CONTROL.R,(CONTROL.F+CONTROL.B+CONTROL.Q+CONTROL.E) * 0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector*(CONTROL.F+CONTROL.B))+((workspace.CurrentCamera.CoordinateFrame*CFrame.new(CONTROL.L+CONTROL.R,(CONTROL.F+CONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p))*SPEED
 					lCONTROL={F=CONTROL.F,B=CONTROL.B,L=CONTROL.L,R=CONTROL.R}
 				elseif (CONTROL.L+CONTROL.R)==0 and (CONTROL.F+CONTROL.B)==0 and (CONTROL.Q+CONTROL.E)==0 and SPEED~=0 then
-					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F+lCONTROL.B))+((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L+lCONTROL.R,(lCONTROL.F+lCONTROL.B+CONTROL.Q+CONTROL.E) * 0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector*(lCONTROL.F+lCONTROL.B))+((workspace.CurrentCamera.CoordinateFrame*CFrame.new(lCONTROL.L+lCONTROL.R,(lCONTROL.F+lCONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p))*SPEED
 				else
 					BV.velocity=Vector3.new(0,0,0)
 				end
@@ -1209,7 +1209,7 @@ cmd.add({"stand"},{"stand <player>","Makes a player your stand"},function(...)
 	local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 	if target==nil or tool==nil then return end
 	local attWeld=attachTool(tool,CFrame.new(0,0,0))
-	attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+	attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 	tool.Grip=plrtorso.CFrame
 	wait(0.07)
 	tool.Grip=CFrame.new(0,3,-1) 
@@ -1498,9 +1498,9 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 					end
 
 					local FPos=function(BasePart,Pos,Ang)
-						RootPart.CFrame=CFrame.new(BasePart.Position) * Pos * Ang
-						Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
-						RootPart.Velocity=Vector3.new(9e7,9e7 * 10,9e7)
+						RootPart.CFrame=CFrame.new(BasePart.Position)*Pos*Ang
+						Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position)*Pos*Ang)
+						RootPart.Velocity=Vector3.new(9e7,9e7*10,9e7)
 						RootPart.RotVelocity=Vector3.new(9e8,9e8,9e8)
 					end
 
@@ -1514,16 +1514,16 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 								if BasePart.Velocity.Magnitude<50 then
 									Angle=Angle+100
 
-									FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+									FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
 									task.wait()
 
-									FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+									FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 									task.wait()
 
-									FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+									FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 									task.wait()
 
-									FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+									FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 									task.wait()
 
 									FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle),0,0))
@@ -1598,8 +1598,8 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 					workspace.CurrentCamera.CameraSubject=Humanoid
 
 					repeat
-						RootPart.CFrame=getgenv().OldPos * CFrame.new(0,.5,0)
-						Character:SetPrimaryPartCFrame(getgenv().OldPos * CFrame.new(0,.5,0))
+						RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
+						Character:SetPrimaryPartCFrame(getgenv().OldPos*CFrame.new(0,.5,0))
 						Humanoid:ChangeState("GettingUp")
 						table.foreach(Character:GetChildren(),function(_,x)
 							if x:IsA("BasePart") then
@@ -1779,7 +1779,7 @@ cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the
 					end
 					if hiddenfling then
 						vel=hrp.Velocity
-						hrp.Velocity=vel * 10000+Vector3.new(0,10000,0)
+						hrp.Velocity=vel*10000+Vector3.new(0,10000,0)
 						RunService.RenderStepped:Wait()
 						if c and c.Parent and hrp and hrp.Parent then
 							hrp.Velocity=vel
@@ -1787,7 +1787,7 @@ cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the
 						game:GetService("RunService").Stepped:Wait()
 						if c and c.Parent and hrp and hrp.Parent then
 							hrp.Velocity=vel+Vector3.new(0,movel,0)
-							movel=movel * -1
+							movel=movel*-1
 						end
 					end
 				end
@@ -1835,7 +1835,7 @@ cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
 					end
 					if hiddenfling then
 						vel=hrp.Velocity
-						hrp.Velocity=vel * 10000+Vector3.new(0,10000,0)
+						hrp.Velocity=vel*10000+Vector3.new(0,10000,0)
 						RunService.RenderStepped:Wait()
 						if c and c.Parent and hrp and hrp.Parent then
 							hrp.Velocity=vel
@@ -1843,7 +1843,7 @@ cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
 						game:GetService("RunService").Stepped:Wait()
 						if c and c.Parent and hrp and hrp.Parent then
 							hrp.Velocity=vel+Vector3.new(0,movel,0)
-							movel=movel * -1
+							movel=movel*-1
 						end
 					end
 				end
@@ -1857,41 +1857,41 @@ cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
 		for _,x in next,game.Players:GetPlayers() do
 			for i=1,10 do
 				wait(0.017)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,4)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,4)
 				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,-2)
-				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame
-				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,-3)
-				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,2)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-2)
 				wait(0.01)
 				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame
 				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,-1)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-3)
 				wait(0.01)
-				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame * CFrame.new(0,0,-1)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,2)
+				wait(0.01)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame
+				wait(0.01)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-1)
+				wait(0.01)
+				getRoot(game.Players.LocalPlayer.Character).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-1)
 			end
 		end
 	else
 		for i=1,10 do
 			wait(0.017)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,4)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,4)
 			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,-2)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,-3)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,2)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-2)
 			wait(0.01)
 			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame
 			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,-1)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-3)
 			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame * CFrame.new(0,0,-1)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,2)
+			wait(0.01)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame
+			wait(0.01)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-1)
+			wait(0.01)
+			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-1)
 		end
 	end
 	sFLY(true)
@@ -2050,7 +2050,7 @@ cmd.add({"idiot"},{"idiot <player>","Tell someone that they are an idiot"},funct
 
 	target=getPlr(Username)
 
-	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame * CFrame.new(0,1,4)
+	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame*CFrame.new(0,1,4)
 	local message="Hey "..target.Name..""
 	lib.LocalPlayerChat(message,'All')
 	wait(1)
@@ -2073,7 +2073,7 @@ cmd.add({"bringto"},{"bringto (playertobring) [playertobringto]","Brings a playe
 	local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 
 	local distance=1
-	local gripPosition=getRoot(target2.Character).Position-getRoot(target2.Character).CFrame.lookVector * distance
+	local gripPosition=getRoot(target2.Character).Position-getRoot(target2.Character).CFrame.lookVector*distance
 	wait(0.2)
 
 	local Target=target1
@@ -2476,22 +2476,22 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 
 	Mgrabs.MouseDrag:Connect(function(knob,pos)
 		if knob==Enum.NormalId.Front then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector * pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector*pos
 		end
 		if knob==Enum.NormalId.Back then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector * -pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector*-pos
 		end
 		if knob==Enum.NormalId.Top then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector * pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector*pos
 		end
 		if knob==Enum.NormalId.Bottom then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector * -pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector*-pos
 		end
 		if knob==Enum.NormalId.Left then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector * -pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector*-pos
 		end
 		if knob==Enum.NormalId.Right then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector * pos
+			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector*pos
 		end
 	end)
 
@@ -2503,13 +2503,13 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 
 	Rgrabs.MouseDrag:Connect(function(knob,angle)
 		if knob==Enum.Axis.Y then
-			Active_Part.CFrame=ROGCFrame * CFrame.Angles(0,angle,0)
+			Active_Part.CFrame=ROGCFrame*CFrame.Angles(0,angle,0)
 		end
 		if knob==Enum.Axis.X then
-			Active_Part.CFrame=ROGCFrame * CFrame.Angles(angle,0,0)
+			Active_Part.CFrame=ROGCFrame*CFrame.Angles(angle,0,0)
 		end
 		if knob==Enum.Axis.Z then
-			Active_Part.CFrame=ROGCFrame * CFrame.Angles(0,0,angle)
+			Active_Part.CFrame=ROGCFrame*CFrame.Angles(0,0,angle)
 		end
 	end)
 
@@ -2547,22 +2547,22 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 			break
 		end
 		if input:IsKeyDown(Enum.KeyCode.D) then
-			current_position+=camera.CFrame.RightVector * speed
+			current_position+=camera.CFrame.RightVector*speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.A) then
-			current_position+=camera.CFrame.RightVector * -speed
+			current_position+=camera.CFrame.RightVector*-speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.W) then
-			current_position+=camera.CFrame.LookVector * speed
+			current_position+=camera.CFrame.LookVector*speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.S) then
-			current_position+=camera.CFrame.LookVector * -speed
+			current_position+=camera.CFrame.LookVector*-speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.E) then
-			current_position+=camera.CFrame.UpVector * speed
+			current_position+=camera.CFrame.UpVector*speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.Q) then
-			current_position+=camera.CFrame.UpVector * -speed
+			current_position+=camera.CFrame.UpVector*-speed
 		end
 		if input:IsKeyDown(Enum.KeyCode.LeftShift) then do
 				speed=1.5
@@ -3836,10 +3836,10 @@ cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just 
 	SPart.Size=Vector3.new(1,100,1)
 	SPart.Transparency=0.4
 	RunService.Stepped:Connect(function()
-		local Ray=Ray.new(Character.PrimaryPart.Position+Character.PrimaryPart.CFrame.LookVector * 6,Vector3.new(0,-1,0) * 4);
+		local Ray=Ray.new(Character.PrimaryPart.Position+Character.PrimaryPart.CFrame.LookVector*6,Vector3.new(0,-1,0)*4);
 		local FPOR=workspace:FindPartOnRayWithIgnoreList(Ray,{Character});
 		if (FPOR) then
-			SPart.CFrame=Character.PrimaryPart.CFrame+Character.PrimaryPart.CFrame.LookVector * 6;
+			SPart.CFrame=Character.PrimaryPart.CFrame+Character.PrimaryPart.CFrame.LookVector*6;
 		end
 		if SPart==nil then
 			Ray:destroy()
@@ -3887,8 +3887,8 @@ cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just 
 					wait()
 					if IsFlying then
 
-						flyg.CFrame=workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(-math.rad((f+0)*50*Speed/maxspeed),0,0) 
-						flyv.Velocity=workspace.CurrentCamera.CoordinateFrame.LookVector * Speed
+						flyg.CFrame=workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad((f+0)*50*Speed/maxspeed),0,0) 
+						flyv.Velocity=workspace.CurrentCamera.CoordinateFrame.LookVector*Speed
 						wait(0.1)
 
 						if Speed<0 then
@@ -3955,7 +3955,7 @@ cmd.add({"tornado"},{"tornado <player>","Tornados the player to be in the sky"},
 	local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 	if target==nil or tool==nil then return end
 	local attWeld=attachTool(tool,CFrame.new(0,0,0))
-	attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+	attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 	tool.Grip=plrtorso.CFrame
 	wait(0.07)
 	tool.Grip=CFrame.new(0,-7,-3)
@@ -4007,7 +4007,7 @@ cmd.add({"seizure"},{"seizure","Gives you a seizure"},function()
 			end
 			getgenv().currentnormal=game:GetService("Workspace").Gravity
 			game:GetService("Workspace").Gravity=196.2
-			game:GetService("Players").LocalPlayer.Character:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot() * CFrame.Angles(2,0,0))
+			game:GetService("Players").LocalPlayer.Character:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot()*CFrame.Angles(2,0,0))
 			wait(0.5)
 			game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand=true
 			game.Players.LocalPlayer.Character.Animate.Disabled=true
@@ -4038,7 +4038,7 @@ cmd.add({"seizure"},{"seizure","Gives you a seizure"},function()
 		end
 		RunService.RenderStepped:Connect(function()
 			if Lzzz==true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
 			end
 		end)
 	end)
@@ -4067,7 +4067,7 @@ cmd.add({"unseizure"},{"unseizure","Stops you from having a seizure not in real 
 			end
 			getgenv().currentnormal=game:GetService("Workspace").Gravity
 			game:GetService("Workspace").Gravity=196.2
-			game:GetService("Players").LocalPlayer.Character:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot() * CFrame.Angles(2,0,0))
+			game:GetService("Players").LocalPlayer.Character:PivotTo(game:GetService("Players").LocalPlayer.Character:GetPivot()*CFrame.Angles(2,0,0))
 			wait(0.5)
 			game:GetService("Players").LocalPlayer.Character.Humanoid.PlatformStand=true
 			game.Players.LocalPlayer.Character.Animate.Disabled=true
@@ -4098,7 +4098,7 @@ cmd.add({"unseizure"},{"unseizure","Stops you from having a seizure not in real 
 		end
 		RunService.RenderStepped:Connect(function()
 			if Lzzz==true then
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick())) --angle*math.sin(velocity*tick())
 			end
 		end)
 	end)
@@ -4182,7 +4182,7 @@ cmd.add({"lay"},{"lay","zzzzzzzz"},function()
 	if not Human then return end
 	Human.Sit=true
 	task.wait(.1)
-	Human.RootPart.CFrame=Human.RootPart.CFrame * CFrame.Angles(math.pi * .5,0,0)
+	Human.RootPart.CFrame=Human.RootPart.CFrame*CFrame.Angles(math.pi*.5,0,0)
 	for _,v in ipairs(Human:GetPlayingAnimationTracks()) do
 		v:Stop()
 	end
@@ -4190,7 +4190,7 @@ end)
 
 cmd.add({"trip"},{"trip","get up NOW"},function()
 	game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState(0)
-	game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity=game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame.LookVector * 25
+	game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Velocity=game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame.LookVector*25
 end)
 
 cmd.add({"checkrfe"},{"checkrfe","Checks if the game has respect filtering enabled off"},function()
@@ -4365,7 +4365,7 @@ cmd.add({"triggerbot","tbot"},{"triggerbot (tbot)","Executes a script that autom
 	end
 	function CastRay(Mode)
 		local RaySPTR=Camera:ScreenPointToRay(Mouse.X,Mouse.Y) --Hence the var name,the magnitude of this is 1.
-		local NewRay=Ray.new(RaySPTR.Origin,RaySPTR.Direction * 9999)
+		local NewRay=Ray.new(RaySPTR.Origin,RaySPTR.Direction*9999)
 		local Target,Position=workspace:FindPartOnRayWithIgnoreList(NewRay,{Char,workspace.CurrentCamera})
 		if Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent) and Target.Parent.Humanoid.Health>0 or Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent.Parent) and Target.Parent.Parent.Humanoid.Health>0 then
 			local TPlayer=game:GetService("Players"):GetPlayerFromCharacter(Target.Parent) or game:GetService("Players"):GetPlayerFromCharacter(Target.Parent.Parent)
@@ -4589,16 +4589,16 @@ cmd.add({"hamster"},{"hamster <number>","Hamster ball"},function(...)
 		humanoid.PlatformStand=true
 		if UserInputService:GetFocusedTextBox() then return end
 		if UserInputService:IsKeyDown("W") then
-			ball.RotVelocity -=Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+			ball.RotVelocity -=Camera.CFrame.RightVector*delta*SPEED_MULTIPLIER
 		end
 		if UserInputService:IsKeyDown("A") then
-			ball.RotVelocity -=Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+			ball.RotVelocity -=Camera.CFrame.LookVector*delta*SPEED_MULTIPLIER
 		end
 		if UserInputService:IsKeyDown("S") then
-			ball.RotVelocity+=Camera.CFrame.RightVector * delta * SPEED_MULTIPLIER
+			ball.RotVelocity+=Camera.CFrame.RightVector*delta*SPEED_MULTIPLIER
 		end
 		if UserInputService:IsKeyDown("D") then
-			ball.RotVelocity+=Camera.CFrame.LookVector * delta * SPEED_MULTIPLIER
+			ball.RotVelocity+=Camera.CFrame.LookVector*delta*SPEED_MULTIPLIER
 		end
 	end)
 
@@ -5013,9 +5013,9 @@ cmd.add({"vehiclespeed","vspeed"},{"vehiclespeed <amount> (vspeed)","Change the 
 	vehicleloopspeed=game:GetService("RunService").Stepped:Connect(function()
 		local Humanoid=workspace.CurrentCamera.CameraSubject;
 		if Humanoid:IsA("Humanoid") then
-			Humanoid.SeatPart:ApplyImpulse(Humanoid.SeatPart.CFrame.LookVector * Vector3.new(intens,intens,intens))
+			Humanoid.SeatPart:ApplyImpulse(Humanoid.SeatPart.CFrame.LookVector*Vector3.new(intens,intens,intens))
 		elseif Humanoid:IsA("BasePart") then
-			Humanoid:ApplyImpulse(Humanoid.CFrame.LookVector * Vector3.new(intens,intens,intens))
+			Humanoid:ApplyImpulse(Humanoid.CFrame.LookVector*Vector3.new(intens,intens,intens))
 		end
 	end)
 end)
@@ -5254,7 +5254,7 @@ function UpdateAutoRotate(BOOL)
 	humanoid.AutoRotate=BOOL
 end
 function GetUpdatedCameraCFrame(ROOT,CAMERA)
-	return CFrame.new(root.Position,Vector3.new(CAMERA.CFrame.LookVector.X * MAX_LENGTH,root.Position.Y,CAMERA.CFrame.LookVector.Z * MAX_LENGTH))
+	return CFrame.new(root.Position,Vector3.new(CAMERA.CFrame.LookVector.X*MAX_LENGTH,root.Position.Y,CAMERA.CFrame.LookVector.Z*MAX_LENGTH))
 end
 function EnableShiftlock()
 	local player=players.LocalPlayer
@@ -5263,7 +5263,7 @@ function EnableShiftlock()
 	local humanoid=character.Humanoid
 	UpdateAutoRotate(false)
 	root.CFrame=GetUpdatedCameraCFrame(root,camera)
-	camera.CFrame=camera.CFrame * ENABLED_OFFSET
+	camera.CFrame=camera.CFrame*ENABLED_OFFSET
 end
 function DisableShiftlock()
 	local player=players.LocalPlayer
@@ -5271,7 +5271,7 @@ function DisableShiftlock()
 	local root=character:WaitForChild("HumanoidRootPart")
 	local humanoid=character.Humanoid
 	UpdateAutoRotate(true)
-	camera.CFrame=camera.CFrame * DISABLED_OFFSET
+	camera.CFrame=camera.CFrame*DISABLED_OFFSET
 	pcall(function()
 		active:Disconnect()
 		active=nil
@@ -5343,7 +5343,7 @@ cmd.add({"creep","ctp","scare"},{"ctp <player> (creep,scare)","Teleports from a 
 
 	local target=getPlr(Username)
 
-	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame * CFrame.new(0,-10,4)
+	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame*CFrame.new(0,-10,4)
 	wait()
 	if connections["noclip"] then lib.disconnect("noclip") return end
 	lib.connect("noclip",RunService.Stepped:Connect(function()
@@ -5881,7 +5881,7 @@ cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 	end
 end)
 
-cmd.add({"joinjobid","joinjid", "jjobid", "jjid"},{"joinjobid <jobid> (joinjid,jjobid,jjid)","Joins the job id you put in"},function(...)
+cmd.add({"joinjobid","joinjid","jjobid","jjid"},{"joinjobid <jobid> (joinjid,jjobid,jjid)","Joins the job id you put in"},function(...)
 	zeId={...}
 	id=zeId[1]
 	TeleportService:TeleportToPlaceInstance(PlaceId,id)
@@ -6682,21 +6682,21 @@ cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera
 		camera.CameraSubject=primaryPart
 
 		local x,y,z=0,0,0
-		if dir.w then z=-1 * speed end
-		if dir.a then x=-1 * speed end
-		if dir.s then z=1 * speed end
-		if dir.d then x=1 * speed end
-		if dir.q then y=1 * speed end
-		if dir.e then y=-1 * speed end
+		if dir.w then z=-1*speed end
+		if dir.a then x=-1*speed end
+		if dir.s then z=1*speed end
+		if dir.d then x=1*speed end
+		if dir.q then y=1*speed end
+		if dir.e then y=-1*speed end
 
 		primaryPart.CFrame=CFrame.new(
 			primaryPart.CFrame.p,
-			(camera.CFrame * CFrame.new(0,0,-100)).p
+			(camera.CFrame*CFrame.new(0,0,-100)).p
 		)
 
 		local moveDir=CFrame.new(x,y,z)
 		cf.Value=cf.Value:lerp(moveDir,0.2)
-		primaryPart.CFrame=primaryPart.CFrame:lerp(primaryPart.CFrame * cf.Value,0.2)
+		primaryPart.CFrame=primaryPart.CFrame:lerp(primaryPart.CFrame*cf.Value,0.2)
 	end))
 	lib.connect("freecam",UserInputService.InputBegan:Connect(function(input,event)
 		if event then return end
@@ -6801,7 +6801,7 @@ cmd.add({"limbbounce"},{"limbbounce [height] [distance]","Make your limbs bounce
 				local speed=math.random(350,750)/10000
 				while part and part.Parent do
 					rotX=rotX+speed
-					a1.Position=Vector3.new(0,(tonumber(h) or 0)+math.sin(rotX) * n,0)
+					a1.Position=Vector3.new(0,(tonumber(h) or 0)+math.sin(rotX)*n,0)
 					RunService.RenderStepped:Wait(0)
 				end
 			end)
@@ -6831,7 +6831,7 @@ cmd.add({"limborbit"},{"limborbit [height] [distance]","Make your limbs orbit ar
 				local speed=math.random(35,75)/1000
 				while part and part.Parent do
 					rotX,rotY=rotX+speed,rotY+speed
-					a1.Position=Vector3.new(math.sin(rotX) * (n),tonumber(h) or 0,math.sin(rotY) * (n))
+					a1.Position=Vector3.new(math.sin(rotX)*(n),tonumber(h) or 0,math.sin(rotY)*(n))
 					RunService.RenderStepped:Wait(0)
 				end
 			end)
@@ -6953,9 +6953,9 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 					local origin=CFrame.new(cframe.p):inverse()
 					local x,y,z=cframe:toEulerAnglesXYZ()
 					local new=CFrame.Angles(x,y,z)
-					local grip=(origin * new):inverse()
+					local grip=(origin*new):inverse()
 					tool.Parent=backpack
-					tool.Grip=offset * grip
+					tool.Grip=offset*grip
 					tool.Parent=character
 
 					for i,v in pairs(tool:GetDescendants()) do
@@ -6975,11 +6975,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						x,y=x+0.1,y+0.1
 
 						local cframe=
-							center *
-							CFrame.new() *
+							center*
+							CFrame.new()*
 							CFrame.Angles(r(s.y*10),circ+r(s.y*8),r(s.x*10))
 						local offset=
-							CFrame.new(int,0,0) *
+							CFrame.new(int,0,0)*
 							CFrame.Angles(0,0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -6992,11 +6992,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						x,y=x+0.04,y+0.04
 
 						local cframe=
-							center *
-							CFrame.new(0,3,0) *
+							center*
+							CFrame.new(0,3,0)*
 							CFrame.Angles(0,circ,x)
 						local offset=
-							CFrame.new(0,0,int) *
+							CFrame.new(0,0,int)*
 							CFrame.Angles(0,0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7009,11 +7009,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						x,y=x+0.1,y+0.1
 
 						local cframe=
-							center *
-							CFrame.new(0,0,0) *
+							center*
+							CFrame.new(0,0,0)*
 							CFrame.Angles(0,0,circ+0)
 						local offset=
-							CFrame.new(s.y*6,0,int) *
+							CFrame.new(s.y*6,0,int)*
 							CFrame.Angles(r(-90),0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7025,11 +7025,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						s.y=math.sin(y)
 						x,y=x+0.1,y+0.1
 						local cframe=
-							center *
-							CFrame.new(0,0,0) *
+							center*
+							CFrame.new(0,0,0)*
 							CFrame.Angles(0,circ,0)
 						local offset=
-							CFrame.new(s.y*6,0,int) *
+							CFrame.new(s.y*6,0,int)*
 							CFrame.Angles(0,0,r(0))
 						editGrip(tool,cframe,offset)
 					end))
@@ -7042,11 +7042,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						x,y=x+0.1,y+0.1
 
 						local cframe=
-							center *
-							CFrame.new(0,0,0) *
+							center*
+							CFrame.new(0,0,0)*
 							CFrame.Angles(0,0,circ+r(x*45))
 						local offset=
-							CFrame.new(3,0,int) *
+							CFrame.new(3,0,int)*
 							CFrame.Angles(r(-90),0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7060,11 +7060,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						s.y=math.sin(y)
 						x,y=x+0.1,y+0.1
 						local cframe=
-							center *
-							CFrame.new(0,0,0) *
+							center*
+							CFrame.new(0,0,0)*
 							CFrame.Angles(r(y*25),circ,r(y*25))
 						local offset=
-							CFrame.new(0,int+random*2,0) *
+							CFrame.new(0,int+random*2,0)*
 							CFrame.Angles(r(x*15),0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7076,11 +7076,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						s.y=math.sin(y)
 						x,y=x+0.1+math.random()/10,y+0.1+math.random()/10
 						local cframe=
-							center *
-							CFrame.new(0,0,0) *
+							center*
+							CFrame.new(0,0,0)*
 							CFrame.Angles(r(y*100)+math.random(),circ,r(y*100)+math.random())
 						local offset=
-							CFrame.new(0,int+math.random()*4,0) *
+							CFrame.new(0,int+math.random()*4,0)*
 							CFrame.Angles(r(x*100),0,0)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7093,11 +7093,11 @@ cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes
 						s.y=math.sin(y)
 						x,y=x+(int/75),y+0.1
 						local cframe=
-							center *
-							CFrame.new(1.5,2,0) *
+							center*
+							CFrame.new(1.5,2,0)*
 							CFrame.Angles(r(-90-25),0,0)
 						local offset=
-							CFrame.new(0,s.x*3,-int+math.sin(y/5)*-int) *
+							CFrame.new(0,s.x*3,-int+math.sin(y/5)*-int)*
 							CFrame.Angles(r(int),s.x,-x)
 						editGrip(tool,cframe,offset)
 					end))
@@ -7299,8 +7299,8 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						local sx,sy=math.sin(x),math.sin(y)
 						editGrip(
 							CFrame.new(
-								Vector3.new(0,math.sin(x * 0.5),size+3+math.sin(y / 5) * size)
-							) * 
+								Vector3.new(0,math.sin(x*0.5),size+3+math.sin(y / 5)*size)
+							)*
 								CFrame.Angles(
 									math.rad(size),
 									math.sin(x),
@@ -7316,7 +7316,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								Vector3.new(0,size,0)
-							) * 
+							)*
 								CFrame.Angles(
 									math.deg(x/150),
 									x+rad(90),
@@ -7332,7 +7332,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								Vector3.new(0,size,0)
-							) * 
+							)*
 								CFrame.Angles(
 									x,
 									x+rad(90),
@@ -7348,7 +7348,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								Vector3.new(0,size,0)
-							) * 
+							)*
 								CFrame.Angles(
 									(y+math.sin(x)*10)/10,
 									x+rad(90),
@@ -7364,7 +7364,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								0,0,size
-							) * 
+							)*
 								CFrame.Angles(
 									0,
 									x,
@@ -7380,7 +7380,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								Vector3.new(0,0,size)
-							) * 
+							)*
 								CFrame.Angles(
 									x,
 									0,
@@ -7396,7 +7396,7 @@ cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nMo
 						editGrip(
 							CFrame.new(
 								Vector3.new(size,0,0)
-							) * 
+							)*
 								CFrame.Angles(
 									0,
 									.6+sy/3,
@@ -7565,10 +7565,10 @@ cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio 
 						CFrame.new(
 							Vector3.new(
 								0,
-								2+((sx/2) * (mt^3/15))/3-((sx+0.5)/1.5 * ((loudness/10)^2/400)),
+								2+((sx/2)*(mt^3/15))/3-((sx+0.5)/1.5*((loudness/10)^2/400)),
 								tonumber(size) or 7
 							)
-						) * 
+						)*
 							CFrame.Angles(
 								math.rad((sz+1)/2)*5,
 								((math.pi*2)*(n/t))-(a),
@@ -7671,11 +7671,11 @@ cmd.add({"toolorbit"},{"toolorbit [height] [distance] [amount]","Make your tools
 
 							part.CollisionGroupId=math.random(1000000,9999999)
 							part.Anchored=false
-							part.CFrame=head.CFrame * CFrame.new(0,3,0)
+							part.CFrame=head.CFrame*CFrame.new(0,3,0)
 
 							while part and part.Parent and tool.Parent==character do
 								rotX,rotY=rotX+speed,rotY+speed
-								a1.Position=Vector3.new(math.sin(rotX) * n,y,math.sin(rotY) * n)
+								a1.Position=Vector3.new(math.sin(rotX)*n,y,math.sin(rotY)*n)
 								RunService.RenderStepped:Wait(0)
 							end
 						end)
@@ -7861,7 +7861,7 @@ cmd.add({"orbit"},{"orbit <player> <distance>","Orbit around a player"},function
 			local sinX,sinZ=math.sin(sineX),math.sin(sineZ)
 			if thrp.Parent and hrp.Parent then
 				hrp.Velocity=Vector3.new(0,0,0)
-				hrp.CFrame=CFrame.new(sinX * dist,0,sinZ * dist) *
+				hrp.CFrame=CFrame.new(sinX*dist,0,sinZ*dist)*
 					(hrp.CFrame-hrp.CFrame.p)+
 					thrp.CFrame.p
 			end
@@ -7887,7 +7887,7 @@ cmd.add({"uporbit"},{"uporbit <player> <distance>","Orbit around a player on the
 			local sinX,sinY=math.sin(sineX),math.sin(sineY)
 			if thrp.Parent and hrp.Parent then
 				hrp.Velocity=Vector3.new(0,0,0)
-				hrp.CFrame=CFrame.new(sinX * dist,sinY * dist,0) *
+				hrp.CFrame=CFrame.new(sinX*dist,sinY*dist,0)*
 					(hrp.CFrame-hrp.CFrame.p)+
 					thrp.CFrame.p
 			end
@@ -8762,9 +8762,9 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 			end
 
 			local FPos=function(BasePart,Pos,Ang)
-				RootPart.CFrame=CFrame.new(BasePart.Position) * Pos * Ang
-				Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
-				RootPart.Velocity=Vector3.new(9e7,9e7 * 10,9e7)
+				RootPart.CFrame=CFrame.new(BasePart.Position)*Pos*Ang
+				Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position)*Pos*Ang)
+				RootPart.Velocity=Vector3.new(9e7,9e7*10,9e7)
 				RootPart.RotVelocity=Vector3.new(9e8,9e8,9e8)
 			end
 
@@ -8778,16 +8778,16 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 						if BasePart.Velocity.Magnitude<50 then
 							Angle=Angle+100
 
-							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle),0,0))
@@ -8862,8 +8862,8 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 			workspace.CurrentCamera.CameraSubject=Humanoid
 
 			repeat
-				RootPart.CFrame=getgenv().OldPos * CFrame.new(0,.5,0)
-				Character:SetPrimaryPartCFrame(getgenv().OldPos * CFrame.new(0,.5,0))
+				RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
+				Character:SetPrimaryPartCFrame(getgenv().OldPos*CFrame.new(0,.5,0))
 				Humanoid:ChangeState("GettingUp")
 				table.foreach(Character:GetChildren(),function(_,x)
 					if x:IsA("BasePart") then
@@ -8987,9 +8987,9 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 			end
 
 			local FPos=function(BasePart,Pos,Ang)
-				RootPart.CFrame=CFrame.new(BasePart.Position) * Pos * Ang
-				Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
-				RootPart.Velocity=Vector3.new(9e7,9e7 * 10,9e7)
+				RootPart.CFrame=CFrame.new(BasePart.Position)*Pos*Ang
+				Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position)*Pos*Ang)
+				RootPart.Velocity=Vector3.new(9e7,9e7*10,9e7)
 				RootPart.RotVelocity=Vector3.new(9e8,9e8,9e8)
 			end
 
@@ -9003,16 +9003,16 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 						if BasePart.Velocity.Magnitude<50 then
 							Angle=Angle+100
 
-							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
-							FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+							FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 							task.wait()
 
 							FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle),0,0))
@@ -9087,8 +9087,8 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 			workspace.CurrentCamera.CameraSubject=Humanoid
 
 			repeat
-				RootPart.CFrame=getgenv().OldPos * CFrame.new(0,.5,0)
-				Character:SetPrimaryPartCFrame(getgenv().OldPos * CFrame.new(0,.5,0))
+				RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
+				Character:SetPrimaryPartCFrame(getgenv().OldPos*CFrame.new(0,.5,0))
 				Humanoid:ChangeState("GettingUp")
 				table.foreach(Character:GetChildren(),function(_,x)
 					if x:IsA("BasePart") then
@@ -9140,7 +9140,7 @@ cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSE
 	lib.LocalPlayerChat (A_1,A_2)
 	wait(1)
 	LocalPlayer=game:GetService("Players").LocalPlayer
-	LocalPlayer.Character.Humanoid:MoveTo(LocalPlayer.Character.HumanoidRootPart.Position+LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector * 10)
+	LocalPlayer.Character.Humanoid:MoveTo(LocalPlayer.Character.HumanoidRootPart.Position+LocalPlayer.Character.HumanoidRootPart.CFrame.lookVector*10)
 	game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	wait(0.5)
 	game.Players.LocalPlayer.Character.Humanoid.Health=0
@@ -9271,7 +9271,7 @@ cmd.add({"pathfind"},{"pathfind <player>","Follow a player using the pathfinder 
 			local main=target:FindFirstChild("HumanoidRootPart")
 			if hum then
 				local targetPart=target:FindFirstChild("HumanoidRootPart") or target:FindFirstChild("Head")
-				local targetPos=(targetPart.CFrame * CFrame.new(0,0,-0.5)).p
+				local targetPos=(targetPart.CFrame*CFrame.new(0,0,-0.5)).p
 				local PathService=game:GetService("PathfindingService")
 				local path=PathService:CreatePath({
 					AgentRadius=2,
@@ -9860,9 +9860,9 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 				end
 
 				local FPos=function(BasePart,Pos,Ang)
-					RootPart.CFrame=CFrame.new(BasePart.Position) * Pos * Ang
-					Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
-					RootPart.Velocity=Vector3.new(9e7,9e7 * 10,9e7)
+					RootPart.CFrame=CFrame.new(BasePart.Position)*Pos*Ang
+					Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position)*Pos*Ang)
+					RootPart.Velocity=Vector3.new(9e7,9e7*10,9e7)
 					RootPart.RotVelocity=Vector3.new(9e8,9e8,9e8)
 				end
 
@@ -9876,16 +9876,16 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 							if BasePart.Velocity.Magnitude<50 then
 								Angle=Angle+100
 
-								FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
+								FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0 ,0))
 								task.wait()
 
-								FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+								FPos(BasePart,CFrame.new(0,-1.5,0)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 								task.wait()
 
-								FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+								FPos(BasePart,CFrame.new(2.25,1.5,-2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 								task.wait()
 
-								FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
+								FPos(BasePart,CFrame.new(-2.25,-1.5,2.25)+THumanoid.MoveDirection*BasePart.Velocity.Magnitude / 1.25,CFrame.Angles(math.rad(Angle),0,0))
 								task.wait()
 
 								FPos(BasePart,CFrame.new(0,1.5,0)+THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle),0,0))
@@ -9961,8 +9961,8 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 				workspace.CurrentCamera.CameraSubject=Humanoid
 
 				repeat
-					RootPart.CFrame=getgenv().OldPos * CFrame.new(0,.5,0)
-					Character:SetPrimaryPartCFrame(getgenv().OldPos * CFrame.new(0,.5,0))
+					RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
+					Character:SetPrimaryPartCFrame(getgenv().OldPos*CFrame.new(0,.5,0))
 					Humanoid:ChangeState("GettingUp")
 					table.foreach(Character:GetChildren(),function(_,x)
 						if x:IsA("BasePart") then
@@ -10052,7 +10052,7 @@ cmd.add({"headsit"},{"headsit <player>","Head sit."},function(...)
 
 	headSit=RunService.Heartbeat:Connect(function()
 		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(game.Players.LocalPlayer.Character) and game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').Sit==true then
-			getRoot(game.Players.LocalPlayer.Character).CFrame=players.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(0),0)* CFrame.new(0,1.6,0.4)
+			getRoot(game.Players.LocalPlayer.Character).CFrame=players.Character.HumanoidRootPart.CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,1.6,0.4)
 		else
 			headSit:Disconnect()
 		end
@@ -10077,7 +10077,7 @@ cmd.add({"headstand"},{"headstand <player>","Stand on someones head"},function(.
 	end)
 	headSit=RunService.Heartbeat:Connect(function()
 		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(game.Players.LocalPlayer.Character) then
-			getRoot(game.Players.LocalPlayer.Character).CFrame=players.Character.HumanoidRootPart.CFrame * CFrame.Angles(0,math.rad(0),0)* CFrame.new(0,4.6,0.4)
+			getRoot(game.Players.LocalPlayer.Character).CFrame=players.Character.HumanoidRootPart.CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,4.6,0.4)
 		else
 			headSit:Disconnect()
 		end
@@ -10156,7 +10156,7 @@ cmd.add({"loopwaveat","loopwat"},{"loopwaveat <player> (loopwat)","Wave to a pla
 		else
 			WaveAnim.AnimationId="rbxassetid://128777973"
 		end
-		getRoot(game.Players.LocalPlayer.Character).CFrame=targetcframe * CFrame.new(0,0,-3)
+		getRoot(game.Players.LocalPlayer.Character).CFrame=targetcframe*CFrame.new(0,0,-3)
 		local CharPos=game.Players.LocalPlayer.Character.PrimaryPart.Position
 		local tpos=getRoot(Target.Character).Position
 		local TPos=Vector3.new(tpos.X,CharPos.Y,tpos.Z)
@@ -10216,7 +10216,7 @@ cmd.add({"waveat","wat"},{"waveat <player> (wat)","Wave to a player"},function(.
 	else
 		WaveAnim.AnimationId="rbxassetid://128777973"
 	end
-	getRoot(game.Players.LocalPlayer.Character).CFrame=targetcframe * CFrame.new(0,0,-3)
+	getRoot(game.Players.LocalPlayer.Character).CFrame=targetcframe*CFrame.new(0,0,-3)
 	local CharPos=game.Players.LocalPlayer.Character.PrimaryPart.Position
 	local tpos=Target.Character:FindFirstChild("HumanoidRootPart").Position
 	local TPos=Vector3.new(tpos.X,CharPos.Y,tpos.Z)
@@ -10265,7 +10265,7 @@ cmd.add({"headbang","mouthbang","hb","mb"},{"headbang <player> (mouthbang,hb,mb)
 	bangLoop=RunService.Stepped:Connect(function()
 		pcall(function()
 			local otherRoot=game.Players[bangplr].Character.Head
-			getRoot(game.Players.LocalPlayer.Character).CFrame=otherRoot.CFrame * bangOffet
+			getRoot(game.Players.LocalPlayer.Character).CFrame=otherRoot.CFrame*bangOffet
 			local CharPos=game.Players.LocalPlayer.Character.PrimaryPart.Position
 			local tpos=getRoot(players.Character).Position
 			local TPos=Vector3.new(tpos.X,CharPos.Y,tpos.Z)
@@ -10349,7 +10349,7 @@ cmd.add({"bang","fuck"},{"bang <player> <number>","Bangs the player by attaching
 	bangLoop=RunService.Stepped:Connect(function()
 		pcall(function()
 			local otherRoot=getTorso(game.Players[bangplr].Character)
-			getRoot(game.Players.LocalPlayer.Character).CFrame=otherRoot.CFrame * bangOffet
+			getRoot(game.Players.LocalPlayer.Character).CFrame=otherRoot.CFrame*bangOffet
 		end)
 	end)
 end)
@@ -10378,7 +10378,7 @@ cmd.add({"spook","scare"},{"spook <player> (scare)","Teleports next to a player 
 	distancepl=2
 	if Target.Character and Target.Character:FindFirstChild('Humanoid') then
 		LocalPlayer.Character.HumanoidRootPart.CFrame=
-			Target.Character.HumanoidRootPart.CFrame+ Target.Character.HumanoidRootPart.CFrame.lookVector * distancepl
+			Target.Character.HumanoidRootPart.CFrame+ Target.Character.HumanoidRootPart.CFrame.lookVector*distancepl
 		LocalPlayer.Character.HumanoidRootPart.CFrame=CFrame.new(LocalPlayer.Character.HumanoidRootPart.Position,Target.Character.HumanoidRootPart.Position)
 		wait(.5)
 		LocalPlayer.Character.HumanoidRootPart.CFrame=oldCF
@@ -10398,7 +10398,7 @@ cmd.add({"loopspook","loopscare"},{"loopspook <player> (loopscare)","Teleports n
 		distancepl=2
 		if Target.Character and Target.Character:FindFirstChild('Humanoid') then
 			LocalPlayer.Character.HumanoidRootPart.CFrame=
-				Target.Character.HumanoidRootPart.CFrame+ Target.Character.HumanoidRootPart.CFrame.lookVector * distancepl
+				Target.Character.HumanoidRootPart.CFrame+ Target.Character.HumanoidRootPart.CFrame.lookVector*distancepl
 			LocalPlayer.Character.HumanoidRootPart.CFrame=CFrame.new(LocalPlayer.Character.HumanoidRootPart.Position,Target.Character.HumanoidRootPart.Position)
 			wait(.5)
 			LocalPlayer.Character.HumanoidRootPart.CFrame=oldCF
@@ -10474,7 +10474,7 @@ cmd.add({"cbring","clientbring"},{"clientbring <player> (cbring)","Brings the pl
 			for i,target in pairs(game:GetService("Players"):GetChildren()) do
 				if target.Name==game.Players.LocalPlayer.Name then
 				else
-					getRoot(target.Character).CFrame=getRoot(game.Players.LocalPlayer.Character).CFrame+getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector * 5
+					getRoot(target.Character).CFrame=getRoot(game.Players.LocalPlayer.Character).CFrame+getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector*5
 				end
 			end
 		end)
@@ -10483,7 +10483,7 @@ cmd.add({"cbring","clientbring"},{"clientbring <player> (cbring)","Brings the pl
 
 		bringc=RunService.RenderStepped:Connect(function()
 			if target.Character and getRoot(target.Character) then
-				getRoot(target.Character).CFrame=getRoot(game.Players.LocalPlayer.Character).CFrame+getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector * 3
+				getRoot(target.Character).CFrame=getRoot(game.Players.LocalPlayer.Character).CFrame+getRoot(game.Players.LocalPlayer.Character).CFrame.lookVector*3
 			end
 		end)
 	end
@@ -10619,9 +10619,9 @@ cmd.add({"tpwalk","tpwalk"},{"tpwalk <number>","More undetectable walkspeed scri
 		if TPWalk==true then
 			if game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").MoveDirection.Magnitude>0 then
 				if Speed then
-					game.Players.LocalPlayer.Character:TranslateBy(game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").MoveDirection * Speed * TPWalking * 10)
+					game.Players.LocalPlayer.Character:TranslateBy(game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").MoveDirection*Speed*TPWalking*10)
 				else
-					game.Players.LocalPlayer.Character:TranslateBy(game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").MoveDirection * TPWalking * 10)
+					game.Players.LocalPlayer.Character:TranslateBy(game.Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").MoveDirection*TPWalking*10)
 				end
 			end
 		end
@@ -11678,7 +11678,7 @@ cmd.add({"looptornado"},{"looptornado <player>","Loop tornados a player endlessl
 		local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 		if target==nil or tool==nil then return end
 		local attWeld=attachTool(tool,CFrame.new(0,0,0))
-		attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+		attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 		tool.Grip=plrtorso.CFrame
 		wait(0.07)
 		tool.Grip=CFrame.new(0,-7,-3)
@@ -11714,7 +11714,7 @@ cmd.add({"loopcuff","loopjail"},{"loopcuff <player> (loopjail)","Loop cuffs a pl
 		local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 		if target==nil or tool==nil then return end
 		local attWeld=attachTool(tool,CFrame.new(0,0,0))
-		attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+		attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 		tool.Grip=plrtorso.CFrame
 		wait(0.07)
 		tool.Grip=CFrame.new(0,-7,-3)
@@ -11746,7 +11746,7 @@ cmd.add({"loopstand"},{"loopstand <player>","Loop stands a player endlessly"},fu
 		local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 		if target==nil or tool==nil then return end
 		local attWeld=attachTool(tool,CFrame.new(0,0,0))
-		attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+		attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 		tool.Grip=plrtorso.CFrame
 		wait(0.07)
 		tool.Grip=CFrame.new(0,3,-1) 
@@ -12331,7 +12331,7 @@ cmd.add({"uanograv","unanchorednograv","unanchorednogravity"},{"uanograv (unanch
 	function zeroGrav(part)
 		if part:FindFirstChild("BodyForce") then return end
 		local temp=Instance.new("BodyForce")
-		temp.Force=part:GetMass() * Vector3.new(0,workspace.Gravity,0)
+		temp.Force=part:GetMass()*Vector3.new(0,workspace.Gravity,0)
 		temp.Parent=part
 	end
 
@@ -13753,7 +13753,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 
 		gravityForce=Instance.new("BodyForce",collider)
 		gravityForce.Name="gravityForce"
-		gravityForce.force=Vector3.new(0,(1-gravity)*196.2,0) * getCharacterMass()
+		gravityForce.force=Vector3.new(0,(1-gravity)*196.2,0)*getCharacterMass()
 	end
 
 	function update(deltaTime)
@@ -13799,10 +13799,10 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		local ignoreList={character,camera}
 		local rays={
 			Ray.new(character.HumanoidRootPart.Position,Vector3.new(0,-rayYLength,0)),
-			Ray.new((torsoCFrame * CFrame.new(-0.8,0,0)).p,Vector3.new(0,-rayYLength,0)),
-			Ray.new((torsoCFrame * CFrame.new(0.8,0,0)).p,Vector3.new(0,-rayYLength,0)),
-			Ray.new((torsoCFrame * CFrame.new(0,0,0.8)).p,Vector3.new(0,-rayYLength,0)),
-			Ray.new((torsoCFrame * CFrame.new(0,0,-0.8)).p,Vector3.new(0,-rayYLength,0))
+			Ray.new((torsoCFrame*CFrame.new(-0.8,0,0)).p,Vector3.new(0,-rayYLength,0)),
+			Ray.new((torsoCFrame*CFrame.new(0.8,0,0)).p,Vector3.new(0,-rayYLength,0)),
+			Ray.new((torsoCFrame*CFrame.new(0,0,0.8)).p,Vector3.new(0,-rayYLength,0)),
+			Ray.new((torsoCFrame*CFrame.new(0,0,-0.8)).p,Vector3.new(0,-rayYLength,0))
 		}
 		local rayReturns={}
 
@@ -13863,8 +13863,8 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		local mVelocity=collider.Velocity
 
 		if playerSpeed~=0 then
-			local drop=playerSpeed * friction * dt;
-			mVelocity=mVelocity * math.max(playerSpeed-drop,0) / playerSpeed;
+			local drop=playerSpeed*friction*dt;
+			mVelocity=mVelocity*math.max(playerSpeed-drop,0) / playerSpeed;
 		end
 
 		movementPosition.position=hitPosition+Vector3.new(0,playerTorsoToGround,0)
@@ -13876,21 +13876,21 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 	end
 
 	function getMovementVelocity(prevVelocity,accelerate,maxVelocity)
-		local accelForward=cameraLook * moveInputSum["forward"]
-		local accelSide=(cameraYaw * CFrame.Angles(0,math.rad(90),0)).lookVector * moveInputSum["side"];
+		local accelForward=cameraLook*moveInputSum["forward"]
+		local accelSide=(cameraYaw*CFrame.Angles(0,math.rad(90),0)).lookVector*moveInputSum["side"];
 		local accelDir=(accelForward+accelSide).unit;
 		if moveInputSum["forward"]==0 and moveInputSum["side"]==0 then --avoids divide 0 errors
 			accelDir=Vector3.new(0,0,0);
 		end
 
 		local projVel=prevVelocity:Dot(accelDir);
-		local accelVel=accelerate * dt;
+		local accelVel=accelerate*dt;
 
 		if (projVel+accelVel>maxVelocity) then
 			accelVel=math.max(maxVelocity-projVel,0);
 		end
 
-		return prevVelocity+accelDir * accelVel;
+		return prevVelocity+accelDir*accelVel;
 	end
 
 	function getMovementVelocityForce()
@@ -13899,8 +13899,8 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 	end
 
 	function getMovementVelocityAirForce()
-		local accelForward=cameraLook * moveInputSum["forward"];
-		local accelSide=(cameraYaw * CFrame.Angles(0,math.rad(90),0)).lookVector * moveInputSum["side"]
+		local accelForward=cameraLook*moveInputSum["forward"];
+		local accelSide=(cameraYaw*CFrame.Angles(0,math.rad(90),0)).lookVector*moveInputSum["side"]
 		local accelDir=(accelForward+accelSide).unit
 		if moveInputSum["forward"]==0 and moveInputSum["side"]==0 then
 			accelDir=Vector3.new(0,0,0);
@@ -14252,7 +14252,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				weld.C0=CFrame.new(0,offset-1.5,0)
 				setDisplayDistance(offset+100)
 				workspace.CurrentCamera.CameraSubject=handle
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,offset,0)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,offset,0)
 				game.Players.LocalPlayer.Character.Humanoid.HipHeight=offset
 				game.Players.LocalPlayer.Character.Humanoid:ChangeState(11)
 				for _,child in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
@@ -14282,7 +14282,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				heldTool=nil
 				setDisplayDistance(100)
 				workspace.CurrentCamera.CameraSubject=game.Players.LocalPlayer.Character.Humanoid
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-offset,0)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame=game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,-offset,0)
 				game.Players.LocalPlayer.Character.Humanoid.HipHeight=0
 			end
 			tool.Parent=game.Players.LocalPlayer.Backpack
@@ -14301,7 +14301,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 					track:Stop()
 				end
 				game.Players.LocalPlayer.Character.Animate.Disabled=true
-				heldTool.Grip=heldTool.Grip * (CFrame.new(0,offset-1.5,1.5) * CFrame.Angles(math.rad(-90),0,0))
+				heldTool.Grip=heldTool.Grip*(CFrame.new(0,offset-1.5,1.5)*CFrame.Angles(math.rad(-90),0,0))
 				heldTool.Parent=game.Players.LocalPlayer.Backpack
 				heldTool.Parent=game.Players.LocalPlayer.Character
 				if gripChanged then
@@ -14316,7 +14316,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 					end
 					if heldTool.Grip~=lastGrip then
 						lastGrip=
-							heldTool.Grip * (CFrame.new(0,offset-1.5,1.5) * CFrame.Angles(math.rad(-90),0,0))
+							heldTool.Grip*(CFrame.new(0,offset-1.5,1.5)*CFrame.Angles(math.rad(-90),0,0))
 						heldTool.Grip=lastGrip
 						heldTool.Parent=game.Players.LocalPlayer.Backpack
 						heldTool.Parent=game.Players.LocalPlayer.Character
@@ -14823,7 +14823,7 @@ cmd.add({"cuff","jail"},{"cuff <player> (jail)","Cuffs the player"},function(...
 	local tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool")
 	if target==nil or tool==nil then return end
 	local attWeld=attachTool(tool,CFrame.new(0,0,0))
-	attachTool(tool,CFrame.new(0,0,0.2) * CFrame.Angles(math.rad(-90),0,0))
+	attachTool(tool,CFrame.new(0,0,0.2)*CFrame.Angles(math.rad(-90),0,0))
 	tool.Grip=plrtorso.CFrame
 	wait(0.07)
 	tool.Grip=CFrame.new(0,-7,-3)
@@ -15362,11 +15362,6 @@ gui.mouseIn=function(guiObject,range)
 	end
 	return false
 end
-gui.makeResizeable=function(ui)
-	local minSize = ui.AbsoluteSize
-	local maxSize = Vector2.new(minSize.X * 2, minSize.Y * 2) -- Example: maximum size is twice the initial size
-	gui.resizeable(ui, minSize, maxSize)
-end
 gui.resizeable=function(ui,min,max)
 	local rgui=resizeFrame:Clone()
 	rgui.Parent=ui
@@ -15379,7 +15374,7 @@ gui.resizeable=function(ui,min,max)
 	function update(delta)
 		local xy=resizeXY[(mode and mode.Name) or '']
 		if not mode or not xy then return end
-		local delta=(delta * xy[1]) or Vector2.new()
+		local delta=(delta*xy[1]) or Vector2.new()
 		local newSize=Vector2.new(lastSize.X+delta.X,lastSize.Y+delta.Y)
 		newSize=Vector2.new(
 			math.clamp(newSize.X,min.X,max.X),
@@ -15388,9 +15383,9 @@ gui.resizeable=function(ui,min,max)
 		ui.Size=UDim2.new(0,newSize.X,0,newSize.Y)
 		ui.Position=UDim2.new(
 			UIPos.X.Scale,
-			UIPos.X.Offset+(-(newSize.X-lastSize.X) * xy[2]).X,
+			UIPos.X.Offset+(-(newSize.X-lastSize.X)*xy[2]).X,
 			UIPos.Y.Scale,
-			UIPos.Y.Offset+(delta * xy[2]).Y
+			UIPos.Y.Offset+(delta*xy[2]).Y
 		)
 	end
 
@@ -15623,8 +15618,8 @@ gui.searchCommands=function()
 			v.Visible=str=="" or v.Name:find(str)
 			if v.Visible then
 				index=index+1
-				local n=math.sqrt(index) * 125
-				local yPos=(index-1) * 28
+				local n=math.sqrt(index)*125
+				local yPos=(index-1)*28
 				local newPos=UDim2.new(0.5,0,0,yPos)
 				gui.tween(v,"Quint","Out",0.3,{
 					Size=UDim2.new(0.5,n,0,25),
@@ -15675,11 +15670,22 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 -- [[ GUI RESIZE FUNCTION ]] -- 
 
 -- table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
+gui.autoResizeable=function(ui)
+local initialSize = ui.AbsoluteSize
+local minSize = Vector2.new(
+	math.max(100,initialSize.X*0.5),
+	math.max(100,initialSize.Y*0.5)
+)
+local maxSize = Vector2.new(
+	initialSize.X*2,
+	initialSize.Y*2
+)
+
+gui.resizeable(ui,minSize,maxSize)
+end
 if not IsOnMobile then 
-	gui.makeResizeable(chatLogsFrame)
-	gui.makeResizeable(commandsFrame)
-	gui.makeResizeable(UniverseViewerFrame)
-	gui.makeResizeable(UpdLogsFrame)
+	gui.autoResizeable(chatLogsFrame)
+	gui.autoResizeable(commandsFrame)
 end
 
 -- [[ CMDS COMMANDS SEARCH FUNCTION ]] --
