@@ -321,35 +321,35 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args
-	table.remove(args,1)
+    local caller,arguments=args[1],args
+    table.remove(args,1)
 
-	local success,msg=pcall(function()
-		local command=Commands[caller:lower()] or Aliases[caller:lower()]
-		if command then
-			local commandFunction,commandArguments=command[1],{}
-			for i,arg in ipairs(arguments) do
-				table.insert(commandArguments,arg)
-			end
-			commandFunction(unpack(commandArguments))
-		else
-			local closest=didYouMean(caller:lower())
-			if closest then
-				Notify({
-					Description="Command ["..caller.."] doesn't exist\nDid you mean ["..closest.."]?";
-					Title=adminName;
-					Duration=4;
-				})
-			else
-				-- Notify({
-				--     Description="Command ("..caller..") not found";
-				--     Title=adminName;
-				--     Duration=4;
-				-- })
-			end
-		end
-	end)
-	if not success then warn(adminName..": "..msg) end
+    local success,msg=pcall(function()
+        local command=Commands[caller:lower()] or Aliases[caller:lower()]
+        if command then
+            local commandFunction,commandArguments=command[1],{}
+            for i,arg in ipairs(arguments) do
+                table.insert(commandArguments,arg)
+            end
+            commandFunction(unpack(commandArguments))
+        else
+            local closest=didYouMean(caller:lower())
+            if closest then
+                Notify({
+                    Description="Command ["..caller.."] doesn't exist\nDid you mean ["..closest.."]?";
+                    Title=adminName;
+                    Duration=4;
+                })
+            else
+                -- Notify({
+                --     Description="Command ("..caller..") not found";
+                --     Title=adminName;
+                --     Duration=4;
+                -- })
+            end
+        end
+    end)
+    if not success then warn(adminName..": "..msg) end
 end
 
 function randomString()
@@ -1033,32 +1033,38 @@ lib.parseText=function(text,watch,rPlr)
 	else
 		prefix=opt.prefix
 	end
-	local command,rest=text:match("^"..watch.."([^ ]+)")
-	if command then
-		table.insert(parsed,command)
-		local args=rest:match("([^ ]+)")
-		if args then
-			for arg in args:gmatch("[^ ]+") do
+	for arg in text:gmatch("[^"..watch.."]+") do
+		arg=arg:gsub("-","%%-")
+		local pos=text:find(arg)
+		arg=arg:gsub("%%","")
+		if pos then
+			local find=text:sub(pos - prefix:len(),pos - 1)
+			if (find==prefix and watch==prefix) or watch ~= prefix then
 				table.insert(parsed,arg)
 			end
+		else
+			table.insert(parsed,nil)
 		end
 	end
 	return parsed
 end
 
 lib.parseCommand=function(text,rPlr)
-    wrap(function()
-        local commands
-        if rPlr then
-            commands=lib.parseText(text,opt.prefix,rPlr)
-        else
-            commands=lib.parseText(text,opt.prefix)
-        end
-        for _,parsed in pairs(commands) do
-            local args={table.unpack(parsed,1)}
-            cmd.run(args)
-        end
-    end)
+	wrap(function()
+		local commands
+		if rPlr then
+			commands=lib.parseText(text,opt.prefix,rPlr)
+		else
+			commands=lib.parseText(text,opt.prefix)
+		end
+		for _,parsed in pairs(commands) do
+			local args={}
+			for arg in parsed:gmatch("[^ ]+") do
+				table.insert(args,arg)
+			end
+			cmd.run(args)
+		end
+	end)
 end
 
 local connections={}
