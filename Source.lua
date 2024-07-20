@@ -567,7 +567,11 @@ end
 
 function ESP(plr)
 	task.spawn(function()
-		removeESP()
+		for i,v in pairs(COREGUI:GetChildren()) do
+			if v.Name == plr.Name..'_ESP' then
+				v:Destroy()
+			end
+		end
 		wait()
 		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
 			local ESPholder=Instance.new("Folder")
