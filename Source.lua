@@ -12478,7 +12478,7 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 			code = v
 		end
 	end
-	bruh
+	bruh=code
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
