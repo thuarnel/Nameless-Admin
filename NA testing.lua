@@ -160,6 +160,7 @@ local GuiService=game:GetService("GuiService");
 local COREGUI=gethui();
 local CoreGui=gethui();
 local coregui=gethui();
+local Spawn = task.spawn;
 local IsOnMobile=table.find({Enum.Platform.IOS,Enum.Platform.Android},UserInputService:GetPlatform());
 local sethidden=sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player=game:GetService("Players").LocalPlayer;
@@ -188,6 +189,7 @@ local Looptornado=false
 local Loopmute=false
 local Loopglitch=false
 local Watch=false
+local Blank = ''
 local Admin={}
 local adminv2={
 	156256804,
@@ -320,32 +322,37 @@ cmd.add=function(...)
 	commandcount=commandcount + 1
 end
 
-cmd.run=function(args)
-	local caller,arguments=args[1],args; table.remove(args,1);
+cmd.run = function(caller, arguments)
+	Spawn(function()
+		local commandTable = Commands[caller:lower()] or Aliases[caller:lower()]
 
-	local success,msg=pcall(function()
-		local command=Commands[caller:lower()] or Aliases[caller:lower()]
-		if command then
-			command[1](unpack(arguments))
+		if commandTable then
+			local callback = commandTable[1]
+
+			xpcall(function()
+				callback(unpack(arguments))
+			end, function(err)
+				warn(string.format("[COMMAND ERROR] : Error occurred trying to run the command - %s\nERROR: %s", caller, err))
+			end)
 		else
-			local closest=didYouMean(caller:lower())
+			local closest = didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
-					Title=adminName;
-					Duration=4;
-				});
+					Description = string.format("Command [ %s ] doesn't exist\nDid you mean [ %s ]?", caller, closest),
+					Title = adminName,
+					Duration = 4
+				})
 			else
-					--[[Notify({
-						Description="Command ("..caller..") not found";
-						Title=adminName;
-						Duration=4;
-					});]]
+                --[[Notify({
+                    Description = string.format("Command (%s) not found", caller),
+                    Title = adminName,
+                    Duration = 4
+                })]]
 			end
 		end
 	end)
-	if not success then warn(adminName..": "..msg) end
 end
+
 function randomString()
 	local length=math.random(10,20)
 	local array={}
@@ -1017,46 +1024,44 @@ lib.find=function(t,v)	-- mmmmmm
 	return nil
 end
 
-lib.parseText=function(text,watch,rPlr)
-	local parsed={}
-	if not text then return nil end
+lib.parseText = function(text,rPlr)
+    local parsed = {}
+    if not text then return nil end
+
 	local prefix
-	if rPlr then
-		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
-		watch=prefix
+	if rPlr and isRelAdmin(rPlr) then
+		prefix=";"
 	else
 		prefix=opt.prefix
 	end
-	for arg in text:gmatch("[^"..watch.."]+") do
-		arg=arg:gsub("-","%%-")
-		local pos=text:find(arg)
-		arg=arg:gsub("%%","")
-		if pos then
-			local find=text:sub(pos - prefix:len(),pos - 1)
-			if (find==prefix and watch==prefix) or watch ~= prefix then
-				table.insert(parsed,arg)
-			end
-		else
-			table.insert(parsed,nil)
-		end
-	end
-	return parsed
+    local strippedText = text:match("^%s*" .. prefix .. "(.*)")
+    if strippedText then
+        text = strippedText
+    end
+
+    for arg in text:gmatch("%s*([^" .. opt.tupleSeparator .. "]+)%s*") do
+        arg = arg:gsub("%%-", "-"):gsub("%%", "")
+        table.insert(parsed, arg)
+    end
+
+    return parsed
 end
 
-lib.parseCommand=function(text,rPlr)
+lib.parseCommand = function(text, rPlr)
 	wrap(function()
 		local commands
-		if rPlr then
-			commands=lib.parseText(text,opt.prefix,rPlr)
+		if rPlr and isRelAdmin(rPlr) then
+			commands=lib.parseText(text,rPlr)
 		else
-			commands=lib.parseText(text,opt.prefix)
+			commands=lib.parseText(text)
 		end
-		for _,parsed in pairs(commands) do
-			local args={}
+
+		for _, parsed in pairs(commands) do
+			local args = {}
 			for arg in parsed:gmatch("[^ ]+") do
-				table.insert(args,arg)
+				table.insert(args, arg)
 			end
-			cmd.run(args)
+			cmd.run(unpack(args))
 		end
 	end)
 end
