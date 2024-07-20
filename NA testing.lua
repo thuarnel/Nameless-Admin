@@ -1141,27 +1141,31 @@ end
 --[[ COMMANDS ]]--
 
 cmd.add({"url"},{"url <link>","Run the script using url"},function(...)
-	local table={...}
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			loadstring(game:HttpGet(h))()
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			loadstring(game:HttpGet(v))()
+			code = v
 		end
 	end
+	loadstring(game:HttpGet(code))()
 end)
 
 cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the loadstring"},function(...)
-	local table={...}
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			assert(loadstring(h))()
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			assert(loadstring(v))()
+			code = v
 		end
 	end
+	assert(loadstring(code))()
 end)
 
 cmd.add({"executor","exec"},{"executor (exec)","Very simple executor"},function()
@@ -12608,16 +12612,17 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 end)
 
 cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Makes you teleport to a part you want"},function(...)
-	local table={...}
-	local grr=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			grr=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			grr=v
+			code = v
 		end
 	end
+	grr=code
 
 	for _,descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower()==grr:lower() then
@@ -12633,16 +12638,17 @@ cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Mak
 end)
 
 cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partname} (tgotopart,ttopart,ttoprt)","Tweens your character to a part or multiple parts"},function(...)
-	local table={...}
-	local lol=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			lol=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			lol=v
+			code = v
 		end
 	end
+	lol=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==lol:lower() and v:IsA("BasePart") then
@@ -12677,16 +12683,17 @@ cmd.add({"gotopartclass","gpc","gotopartc","gotoprtc"},{"gotopartclass {classnam
 end)
 
 cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Brings the part(s) to you"},function(...)
-	local table={...}
-	local bringmeit=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			bringmeit=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			bringmeit=v
+			code = v
 		end
 	end
+	bringmeit=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==bringmeit:lower() and v:IsA("BasePart") then
@@ -12696,16 +12703,17 @@ cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Bring
 end)
 
 cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the model(s) to you"},function(...)
-	local table={...}
-	local givemethemodel=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			givemethemodel=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			givemethemodel=v
+			code = v
 		end
 	end
+	givemethemodel=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==givemethemodel:lower() and v:IsA("Model") then
@@ -12715,16 +12723,17 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 end)
 
 cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports you to the model"},function(...)
-	local table={...}
-	local i_love_models=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			i_love_models=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			i_love_models=v
+			code = v
 		end
 	end
+	i_love_models=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==i_love_models:lower() and v:IsA("Model") then
@@ -12823,16 +12832,17 @@ end
 
 
 cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes you be able to see any part"},function(...)
-	local table={...}
-	local fix=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			fix=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			fix=v
+			code = v
 		end
 	end
+	fix=code
 	local partEspName=fix:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
