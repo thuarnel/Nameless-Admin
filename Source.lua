@@ -1,4 +1,3 @@
-
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
@@ -234,7 +233,6 @@ local Goofer={
 	"💀💀💀",
 	"X_X",
 	"not bothered to add a message here",
-	""
 }
 
 -- [[ Prediction ]] --
@@ -306,31 +304,40 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args; table.remove(args,1);
+	local caller,arguments=args[1],args
+	table.remove(args,1)
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			command[1](unpack(arguments))
+			local result={ command[1](unpack(arguments)) }
+			return result
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
-					Title=adminName;
-					Duration=4;
-				});
+					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?",
+					Title=adminName,
+					Duration=4,
+				})
 			else
-					--[[Notify({
-						Description="Command ("..caller..") not found";
-						Title=adminName;
-						Duration=4;
-					});]]
+                --[[Notify({
+                    Description="Command ("..caller..") not found",
+                    Title=adminName,
+                    Duration=4,
+                })]]
 			end
 		end
 	end)
-	if not success then warn(adminName..": "..msg) end
+
+	if not success then
+		warn(adminName..": "..msg)
+		return nil,msg
+	end
+
+	return unpack(msg)
 end
+
 function randomString()
 	local length=math.random(10,20)
 	local array={}
@@ -1003,29 +1010,29 @@ lib.find=function(t,v)	-- mmmmmm
 end
 
 lib.parseText=function(text,watch,rPlr)
-	local parsed={}
-	if not text then return nil end
-	local prefix
-	if rPlr then
-		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
-		watch=prefix
-	else
-		prefix=opt.prefix
-	end
-	for arg in text:gmatch("[^"..watch.."]+") do
-		arg=arg:gsub("-","%%-")
-		local pos=text:find(arg)
-		arg=arg:gsub("%%","")
-		if pos then
-			local find=text:sub(pos - prefix:len(),pos - 1)
-			if (find==prefix and watch==prefix) or watch ~= prefix then
-				table.insert(parsed,arg)
-			end
-		else
-			table.insert(parsed,nil)
-		end
-	end
-	return parsed
+    local parsed={}
+    if not text then return nil end
+    local prefix
+    if rPlr then
+        prefix=isRelAdmin(rPlr) and ";" or opt.prefix
+        watch=prefix
+    else
+        prefix=opt.prefix
+    end
+    for arg in text:gmatch("[^"..watch.."]+") do
+        arg=arg:gsub("-","%%-")
+        local pos=text:find(arg)
+        arg=arg:gsub("%%","")
+        if pos then
+            local find=text:sub(pos - prefix:len(),pos - 1)
+            if (find == prefix and watch == prefix) or watch ~= prefix then
+                table.insert(parsed,arg)
+            end
+        else
+            table.insert(parsed,nil)
+        end
+    end
+    return parsed
 end
 
 lib.parseCommand=function(text,rPlr)
@@ -1041,7 +1048,10 @@ lib.parseCommand=function(text,rPlr)
 			for arg in parsed:gmatch("[^ ]+") do
 				table.insert(args,arg)
 			end
-			cmd.run(args)
+			local results={cmd.run(args)}
+			if results[1] ~= nil then
+				print("Command results:",table.concat(results,","))
+			end
 		end
 	end)
 end
@@ -1114,12 +1124,32 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"url"},{"url <link>","Run the script using url"},function(source)
-	loadstring(game:HttpGet(source))()
+cmd.add({"url"},{"url <link>","Run the script using url"},function(...)
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	loadstring(game:HttpGet(code))()
 end)
 
-cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the loadstring"},function(s)
-	assert(loadstring(s))()
+cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the loadstring"},function(...)
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	assert(loadstring(code))()
 end)
 
 cmd.add({"executor","exec"},{"executor (exec)","Very simple executor"},function()
@@ -1171,10 +1201,6 @@ cmd.add({"valk"},{"valk","Only works on dollhouse"},function()
 			firetouchinterest(head,giver,0)
 		end)
 	end)
-end)
-
-cmd.add({"httpget","hl","get"},{"httpget <url> (hl,get)","Run the contents of a given URL"},function(url)
-	loadstring(game:HttpGet(url,true))()
 end)
 
 cmd.add({"resizechat","rc"},{"resizechat (rc)","Makes chat resizable and draggable"},function()
@@ -5274,6 +5300,10 @@ cmd.add({"unesp","unlocate"},{"unesp (unlocate)","Disables esp"},function()
 	removeESP()
 end)
 
+cmd.add({"crash"},{"crash","crashes ur client lol"},function()
+	while true do end
+end)
+
 cmd.add({"creep","ctp","scare"},{"ctp <player> (creep,scare)","Teleports from a player behind them and under the floor to the top"},function(...)
 	Players=game:GetService("Players")
 	HRP=game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored
@@ -8473,7 +8503,7 @@ end)
 
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
 	local A_1=""
-	local table = {...}
+	local table={...}
 	for i,v in pairs(table) do
 		if i ~= 1 then
 			A_1=A_1.." "..tostring(v)
@@ -12397,10 +12427,18 @@ end)
 
 cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any part with a certain name from the workspace"},function(...)
 	local delcount=0
-	args={...}
-	bruh=args[1]
+	local table={...}
+	local bra=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..v
+			bra=h
+		else
+			bra=v
+		end
+	end
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower()==bruh:lower() then
+		if v.Name:lower()==bra:lower() then
 			v:Destroy()
 			delcount=delcount + 1
 		end
@@ -12410,7 +12448,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 
 
 	Notify({
-		Description="Deleted over "..delcount.." part(s) named: "..bruh.."";
+		Description="Deleted over "..delcount.." part(s) named: "..bra.."";
 		Title=adminName;
 		Duration=4;
 	});
@@ -12430,8 +12468,16 @@ function descendantadd(part)
 end
 
 cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremove,autodel)","Removes any part with a certain name from the workspace on loop"},function(...)
-	args={...}
-	bruh=args[1]
+	local table={...}
+	local bruh=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..v
+			bruh=h
+		else
+			bruh=v
+		end
+	end
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
@@ -12550,8 +12596,17 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 end)
 
 cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Makes you teleport to a part you want"},function(...)
-	args={...}
-	grr=args[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	grr=code
 
 	for _,descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower()==grr:lower() then
@@ -12567,8 +12622,17 @@ cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Mak
 end)
 
 cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partname} (tgotopart,ttopart,ttoprt)","Tweens your character to a part or multiple parts"},function(...)
-	arg={...}
-	lol=arg[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	lol=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==lol:lower() and v:IsA("BasePart") then
@@ -12603,8 +12667,17 @@ cmd.add({"gotopartclass","gpc","gotopartc","gotoprtc"},{"gotopartclass {classnam
 end)
 
 cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Brings the part(s) to you"},function(...)
-	lol={...}
-	bringmeit=lol[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	bringmeit=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==bringmeit:lower() and v:IsA("BasePart") then
@@ -12614,8 +12687,17 @@ cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Bring
 end)
 
 cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the model(s) to you"},function(...)
-	idklol={...}
-	givemethemodel=idklol[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	givemethemodel=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==givemethemodel:lower() and v:IsA("Model") then
@@ -12625,8 +12707,17 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 end)
 
 cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports you to the model"},function(...)
-	nooo={...}
-	i_love_models=nooo[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	i_love_models=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==i_love_models:lower() and v:IsA("Model") then
@@ -12725,8 +12816,17 @@ end
 
 
 cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes you be able to see any part"},function(...)
-	arg={...}
-	fix=arg[1]
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
+		else
+			code = v
+		end
+	end
+	fix=code
 	local partEspName=fix:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
@@ -12768,8 +12868,16 @@ cmd.add({"unesppart","unpartesp","unpesp"},{"unesppart (unpartesp,unpesp)","Remo
 end)
 
 cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views a part"},function(...)
-	arg={...}
-	args=arg[1]
+	local table={...}
+	local args=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..v
+			args=h
+		else
+			args=v
+		end
+	end
 
 	for _,v in pairs(game.Workspace:GetDescendants()) do
 		local lwr=v.Name:lower()
