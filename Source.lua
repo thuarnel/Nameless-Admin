@@ -115,11 +115,9 @@ local opt={
 }
 
 -- [[ Update Logs ]] --
-local updLogs={
-	log1="Fixed "..adminName.." not loading for Delta (bcuz of stupid missing functions 💀)"
-}
+local updLogs={}
 
-local updDate="7/19/2024"
+local updDate="7/20/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
