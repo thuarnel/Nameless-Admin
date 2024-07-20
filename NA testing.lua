@@ -321,28 +321,30 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller=args[1]
-	local arguments={table.unpack(args,2)}
+	local caller,arguments=args[1],args; table.remove(args,1);
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			command[1](table.unpack(arguments))
+			command[1](unpack(arguments))
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ " .. caller .. " ] doesn't exist\nDid you mean [ " .. closest .. " ]?",
-					Title=adminName,
-					Duration=4,
-				})
+					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
+					Title=adminName;
+					Duration=4;
+				});
+			else
+					--[[Notify({
+						Description="Command ("..caller..") not found";
+						Title=adminName;
+						Duration=4;
+					});]]
 			end
 		end
 	end)
-
-	if not success then
-		warn(adminName .. ": " .. msg)
-	end
+	if not success then warn(adminName..": "..msg) end
 end
 
 function randomString()
@@ -1020,40 +1022,37 @@ lib.parseText=function(text,watch,rPlr)
 	local parsed={}
 	if not text then return nil end
 	local prefix
-	if rPlr and rPlr:IsA("Player") then
+	if rPlr then
 		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
 		watch=prefix
 	else
 		prefix=opt.prefix
 	end
-
-	local commandPattern="^"..watch.."(%S+)"
-	local command,rest=text:match(commandPattern)
-
+	local command,rest=text:match("^"..watch.."([^ ]+)")
 	if command then
 		table.insert(parsed,command)
-		local args=text:match("^"..watch.."%S+%s*(.*)")
+		local args=rest:match("([^ ]+)")
 		if args then
-			for arg in args:gmatch("%S+") do
+			for arg in args:gmatch("[^ ]+") do
 				table.insert(parsed,arg)
 			end
 		end
 	end
-
 	return parsed
 end
 
 lib.parseCommand=function(text,rPlr)
 	wrap(function()
 		local commands
-		if rPlr and rPlr:IsA("Player") then
+		if rPlr then
 			commands=lib.parseText(text,opt.prefix,rPlr)
 		else
 			commands=lib.parseText(text,opt.prefix)
 		end
-
-		local command=table.remove(commands,1)
-		cmd.run({command,table.unpack(commands)})
+		for _,parsed in pairs(commands) do
+			local args={table.unpack(parsed,1)}
+			cmd.run(args)
+		end
 	end)
 end
 
@@ -4658,10 +4657,6 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 end)
 
-cmd.add({"crash"},{"crash","crashes your client lol"},function()
-	while true do end
-end)
-
 cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explorer"},function()
 	local rng=Random.new()
 
@@ -4754,6 +4749,8 @@ end)
 cmd.add({"unantikill"},{"unantikill","Makes exploiters to be able to kill you"},function()
 	Player.Character.Humanoid:SetStateEnabled("Seated",true)
 	Player.Character.Humanoid.Sit=false
+
+
 
 	wait();
 
@@ -12851,6 +12848,7 @@ cmd.add({"hitbox","hbox"},{"hitbox {amount}","Makes everyones hitbox as much as 
 				getRoot(Plr.Character).BrickColor=BrickColor.new("Really black")
 				getRoot(Plr.Character).Material="Neon"
 				getRoot(Plr.Character).CanCollide=false
+
 			end
 		end)
 	end
@@ -12886,6 +12884,9 @@ cmd.add({"unhitbox","unhbox"},{"unhitbox","Disables hitbox"},function(h)
 end)
 
 cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
+
+
+
 	wait();
 
 	Notify({
@@ -13083,6 +13084,9 @@ cmd.add({"xray","xrayon"},{"xray (xrayon)","Makes you be able to see through wal
 end)
 
 cmd.add({"unxray","xrayoff"},{"unxray (xrayoff)","Makes you not be able to see through walls"},function()
+
+
+
 	wait();
 
 	Notify({
@@ -13096,13 +13100,10 @@ cmd.add({"unxray","xrayoff"},{"unxray (xrayoff)","Makes you not be able to see t
 end)
 
 cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)","Scrapes paste bin posts"},function()
-	wait();
 
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency=0.5
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text="             ⭐ Pastebin Post Scraper ⭐"
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText="Search for a post here..."
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4
+
+
+	wait();
 
 	Notify({
 		Description="Pastebin scraper loaded";
@@ -13110,12 +13111,18 @@ cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)"
 		Duration=5;
 
 	});
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency=0.5
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text="             ⭐ Pastebin Post Scraper ⭐"
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText="Search for a post here..."
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4	
 end)
 
 cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus."},function()
-	wait();
 
-	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
+
+
+	wait();
 
 	Notify({
 		Description="Amog us...";
@@ -13123,6 +13130,7 @@ cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus.
 		Duration=5;
 
 	});
+	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
 end)
 
 cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black hole"},function()
@@ -13194,6 +13202,8 @@ cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black
 			Attachment1.WorldCFrame=Updated
 		end
 	end)
+
+
 
 	wait();
 
@@ -14950,7 +14960,7 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 end)
 
 cmd.add({"errorchat"},{"errorchat","Makes the chat error appear when roblox chat is slow"},function()
-	for i=1,3 do
+	for i=1,3 do 
 		lib.LocalPlayerChat("\0","All")
 	end
 end)
