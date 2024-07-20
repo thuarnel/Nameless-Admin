@@ -17,7 +17,7 @@
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
-	local s,err = pcall(pp)
+	local s,err=pcall(pp)
 	if not s then warn("NA script err: "..err) end
 end
 
@@ -65,7 +65,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
-local NA_storage = Instance.new("Folder") -- just in case something is added before the important naming and parenting
+local NA_storage=Instance.new("Folder") -- just in case something is added before the important naming and parenting
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
@@ -189,7 +189,7 @@ local Loopmute=false
 local Loopglitch=false
 local Watch=false
 local Admin={}
-local adminv2 = {
+local adminv2={
 	156256804,
 	530829101,
 	229501685,
@@ -296,7 +296,7 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-	for _, id in ipairs(adminv2) do
+	for _,id in ipairs(adminv2) do
 		if Player.UserId == id then
 			return true
 		end
@@ -321,13 +321,13 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller = args[1]
-    local arguments = {table.unpack(args, 2)}
+	local caller=args[1]
+	local arguments={table.unpack(args,2)}
 
 	NACaller(function()
-		local command = Commands[caller:lower()] or Aliases[caller:lower()]
+		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			command[1](unpack(arguments))
+			command[1](table.unpack(arguments))
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
@@ -357,8 +357,8 @@ function randomString()
 end
 
 --[[ Fully setup Nameless admin storage ]]
-NA_storage.Name = randomString()
-NA_storage.Parent = iamcore
+NA_storage.Name=randomString()
+NA_storage.Parent=iamcore
 
 --[[ LIBRARY FUNCTIONS ]]--
 local lib={}
@@ -468,7 +468,7 @@ local getPlr=function(Name)
 	elseif Name==nil then
 		return game:GetService("Players").LocalPlayer
 	elseif Name:lower()=="friends" then
-		local friends = {}
+		local friends={}
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr:IsFriendsWith(LocalPlayer.UserId) and plr ~= LocalPlayer then
 				table.insert(friends,plr)
@@ -476,7 +476,7 @@ local getPlr=function(Name)
 		end
 		return friends
 	elseif Name:lower()=="nonfriends" then
-		local noFriends = {}
+		local noFriends={}
 		for _,plr in pairs(Players:GetPlayers()) do
 			if not plr:IsFriendsWith(LocalPlayer.UserId) and plr ~= LocalPlayer then
 				table.insert(noFriends,plr)
@@ -484,8 +484,8 @@ local getPlr=function(Name)
 		end
 		return noFriends
 	elseif Name:lower()=="enemies" then
-		local nonTeam = {}
-		local team = LocalPlayer.Team
+		local nonTeam={}
+		local team=LocalPlayer.Team
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr.Team ~= team then
 				table.insert(nonTeam,plr)
@@ -493,8 +493,8 @@ local getPlr=function(Name)
 		end
 		return nonTeam
 	elseif Name:lower()=="allies" then
-		local teamBuddies = {}
-		local team = LocalPlayer.Team
+		local teamBuddies={}
+		local team=LocalPlayer.Team
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr.Team == team then
 				table.insert(teamBuddies,plr)
@@ -945,29 +945,29 @@ local lp=game:GetService("Players").LocalPlayer
 
 
 -- [[ LIB FUNCTIONS ]] --
-chatmsgshooks = {}
-Playerchats = {}
+chatmsgshooks={}
+Playerchats={}
 
-lib.LocalPlayerChat = function(...)
-	local args = {...} 
+lib.LocalPlayerChat=function(...)
+	local args={...} 
 	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-		local sendto = game:GetService("TextChatService").TextChannels.RBXGeneral
+		local sendto=game:GetService("TextChatService").TextChannels.RBXGeneral
 		if args[2] ~= nil and  args[2] ~= "All"  then
 			if not Playerchats[args[2]] then
 				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
 					if string.find(v.Name,"RBXWhisper:") then
 						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-							sendto = v
-							Playerchats[args[2]] = v
+							sendto=v
+							Playerchats[args[2]]=v
 							break
 						end
 					end
 				end
 			else
-				sendto = Playerchats[args[2]]
+				sendto=Playerchats[args[2]]
 			end
 			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
-				chatmsgshooks[#chatmsgshooks+1] = {args[1],args}
+				chatmsgshooks[#chatmsgshooks+1]={args[1],args}
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
 				end)
@@ -977,9 +977,9 @@ lib.LocalPlayerChat = function(...)
 		sendto:SendAsync(args[1] or "")
 	else
 		if args[2] and args[2] ~= "All" then
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "", "All")
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "","All")
 		else
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "", "All")
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "","All")
 		end
 	end
 end
@@ -990,7 +990,7 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 			task.wait(1)
 			for id,va in pairs(chatmsgshooks) do
 				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-					Playerchats[va[1]] = v
+					Playerchats[va[1]]=v
 					lib.LocalPlayerChat(va[2])
 					break
 				end
@@ -999,7 +999,7 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 	end)
 end
 
-lib.lpchat = lib.LocalPlayerChat
+lib.lpchat=lib.LocalPlayerChat
 
 lib.lock=function(instance,par)
 	locks[instance]=true
@@ -4671,8 +4671,8 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 	local rng=Random.new()
 
 	local charset={}
-	for i=48, 57 do table.insert(charset,string.char(i)) end
-	for i=65, 90 do table.insert(charset,string.char(i)) end
+	for i=48,57 do table.insert(charset,string.char(i)) end
+	for i=65,90 do table.insert(charset,string.char(i)) end
 	for i=97,122 do table.insert(charset,string.char(i)) end
 	function RandomCharacters(length)
 		if length > 0 then
@@ -7515,7 +7515,7 @@ cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio 
 
 					local mt,loudness=sound.PlaybackLoudness/100,sound.PlaybackLoudness
 					local sx,sy,sz,sa=math.sin(x),math.sin(y),math.sin(z),math.sin(a)
-					x,y,z,a=x + 0.22 + mt / 100, y + sx + mt, z + sx/10, a + mt/100 + math.sin(x-n)/100
+					x,y,z,a=x + 0.22 + mt / 100,y + sx + mt,z + sx/10,a + mt/100 + math.sin(x-n)/100
 					editGrip(
 						CFrame.new(
 							Vector3.new(
@@ -15693,7 +15693,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	ImageButton.Name=randomString()
 	ImageButton.Parent=ScreenGui
 	ImageButton.AnchorPoint=Vector2.new(0.5,0)
-	ImageButton.BackgroundColor3=Color3.fromRGB(255, 255, 255)
+	ImageButton.BackgroundColor3=Color3.fromRGB(255,255,255)
 	ImageButton.BorderSizePixel=0
 	ImageButton.Position=UDim2.new(0.48909232,0,-1,0)
 	ImageButton.Size=UDim2.new(0,32,0,33)
