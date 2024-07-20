@@ -131,7 +131,9 @@ local opt={
 }
 
 -- [[ Update Logs ]] --
-local updLogs={}
+local updLogs={
+	log1='Fixed ESP command not working properly'
+}
 
 local updDate="7/20/2024"
 
