@@ -1141,12 +1141,28 @@ end
 
 --[[ COMMANDS ]]--
 
-cmd.add({"url"},{"url <link>","Run the script using url"},function(source)
-	loadstring(game:HttpGet(source))()
+cmd.add({"url"},{"url <link>","Run the script using url"},function(...)
+	local table={...}
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			loadstring(game:HttpGet(h))()
+		else
+			loadstring(game:HttpGet(v))()
+		end
+	end
 end)
 
-cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the loadstring"},function(s)
-	assert(loadstring(s))()
+cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the loadstring"},function(...)
+	local table={...}
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			assert(loadstring(h))()
+		else
+			assert(loadstring(v))()
+		end
+	end
 end)
 
 cmd.add({"executor","exec"},{"executor (exec)","Very simple executor"},function()
@@ -1198,10 +1214,6 @@ cmd.add({"valk"},{"valk","Only works on dollhouse"},function()
 			firetouchinterest(head,giver,0)
 		end)
 	end)
-end)
-
-cmd.add({"httpget","hl","get"},{"httpget <url> (hl,get)","Run the contents of a given URL"},function(url)
-	loadstring(game:HttpGet(url,true))()
 end)
 
 cmd.add({"resizechat","rc"},{"resizechat (rc)","Makes chat resizable and draggable"},function()
@@ -12428,10 +12440,18 @@ end)
 
 cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any part with a certain name from the workspace"},function(...)
 	local delcount=0
-	args={...}
-	bruh=args[1]
+	local table={...}
+	local bra=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			bra=h
+		else
+			bra=v
+		end
+	end
 	for _,v in pairs(workspace:GetDescendants()) do
-		if v.Name:lower()==bruh:lower() then
+		if v.Name:lower()==bra:lower() then
 			v:Destroy()
 			delcount=delcount + 1
 		end
@@ -12441,7 +12461,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 
 
 	Notify({
-		Description="Deleted over "..delcount.." part(s) named: "..bruh.."";
+		Description="Deleted over "..delcount.." part(s) named: "..bra.."";
 		Title=adminName;
 		Duration=4;
 	});
@@ -12461,8 +12481,16 @@ function descendantadd(part)
 end
 
 cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremove,autodel)","Removes any part with a certain name from the workspace on loop"},function(...)
-	args={...}
-	bruh=args[1]
+	local table={...}
+	local bruh=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			bruh=h
+		else
+			bruh=v
+		end
+	end
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
@@ -12581,8 +12609,16 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 end)
 
 cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Makes you teleport to a part you want"},function(...)
-	args={...}
-	grr=args[1]
+	local table={...}
+	local grr=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			grr=h
+		else
+			grr=v
+		end
+	end
 
 	for _,descendant in pairs(game.Workspace:GetDescendants()) do
 		if descendant:IsA("BasePart") and descendant.Name:lower()==grr:lower() then
@@ -12598,8 +12634,16 @@ cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Mak
 end)
 
 cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partname} (tgotopart,ttopart,ttoprt)","Tweens your character to a part or multiple parts"},function(...)
-	arg={...}
-	lol=arg[1]
+	local table={...}
+	local lol=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			lol=h
+		else
+			lol=v
+		end
+	end
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==lol:lower() and v:IsA("BasePart") then
@@ -12634,8 +12678,16 @@ cmd.add({"gotopartclass","gpc","gotopartc","gotoprtc"},{"gotopartclass {classnam
 end)
 
 cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Brings the part(s) to you"},function(...)
-	lol={...}
-	bringmeit=lol[1]
+	local table={...}
+	local bringmeit=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			bringmeit=h
+		else
+			bringmeit=v
+		end
+	end
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==bringmeit:lower() and v:IsA("BasePart") then
@@ -12645,8 +12697,16 @@ cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Bring
 end)
 
 cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the model(s) to you"},function(...)
-	idklol={...}
-	givemethemodel=idklol[1]
+	local table={...}
+	local givemethemodel=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			givemethemodel=h
+		else
+			givemethemodel=v
+		end
+	end
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==givemethemodel:lower() and v:IsA("Model") then
@@ -12656,8 +12716,16 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 end)
 
 cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports you to the model"},function(...)
-	nooo={...}
-	i_love_models=nooo[1]
+	local table={...}
+	local i_love_models=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			i_love_models=h
+		else
+			i_love_models=v
+		end
+	end
 
 	for i,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==i_love_models:lower() and v:IsA("Model") then
@@ -12756,8 +12824,16 @@ end
 
 
 cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes you be able to see any part"},function(...)
-	arg={...}
-	fix=arg[1]
+	local table={...}
+	local fix=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			fix=h
+		else
+			fix=v
+		end
+	end
 	local partEspName=fix:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
@@ -12799,8 +12875,16 @@ cmd.add({"unesppart","unpartesp","unpesp"},{"unesppart (unpartesp,unpesp)","Remo
 end)
 
 cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views a part"},function(...)
-	arg={...}
-	args=arg[1]
+	local table={...}
+	local args=''
+	for i,v in pairs(table) do
+		if i ~= 1 then
+			h=h.." "..tostring(v)
+			args=h
+		else
+			args=v
+		end
+	end
 
 	for _,v in pairs(game.Workspace:GetDescendants()) do
 		local lwr=v.Name:lower()
