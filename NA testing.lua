@@ -332,9 +332,9 @@ cmd.run=function(args)
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command [ " .. caller .. " ] doesn't exist\nDid you mean [ " .. closest .. " ]?";
-					Title=adminName;
-					Duration=4;
+					Description="Command [ " .. caller .. " ] doesn't exist\nDid you mean [ " .. closest .. " ]?",
+					Title=adminName,
+					Duration=4,
 				})
 			end
 		end
@@ -1022,15 +1022,16 @@ lib.parseText=function(text,watch,rPlr)
 	else
 		prefix=opt.prefix
 	end
-
-	local commandPattern="^" .. watch .. "(%S+)"
-	local command,args=text:match(commandPattern)
+	local commandPattern="^" .. watch .. "([^ ]+)"
+	local command,rest=text:match(commandPattern)
 	if command then
 		table.insert(parsed,command)
-		local rest=text:sub(#watch + #command + 2)
 		local argsPattern="%S+"
-		for arg in rest:gmatch(argsPattern) do
-			table.insert(parsed,arg)
+		local args=text:match("^" .. watch .. "%S+%s*(.*)")
+		if args then
+			for arg in args:gmatch(argsPattern) do
+				table.insert(parsed,arg)
+			end
 		end
 	end
 
@@ -1045,14 +1046,11 @@ lib.parseCommand=function(text,rPlr)
 		else
 			commands=lib.parseText(text,opt.prefix)
 		end
-
+		local args={}
 		for _,parsed in pairs(commands) do
-			local args={}
-			for arg in parsed:gmatch("[^ ]+") do
-				table.insert(args,arg)
-			end
-			cmd.run(args)
+			table.insert(args,parsed)
 		end
+		cmd.run(args)
 	end)
 end
 
