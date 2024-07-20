@@ -321,41 +321,31 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args
-	table.remove(args,1)
-	
-	print(args)
+	local caller,arguments=args[1],args; table.remove(args,1);
 
 	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
-			local commandFunction,commandArguments=command[1],{}
-			for i,arg in ipairs(arguments) do
-				table.insert(commandArguments,arg)
-			end
-			print(commandArguments)
-			commandFunction(table.unpack(commandArguments))
-			print(commandArguments)
+			command[1](unpack(arguments))
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
 				Notify({
-					Description="Command ["..caller.."] doesn't exist\nDid you mean ["..closest.."]?";
+					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
 					Title=adminName;
 					Duration=4;
-				})
+				});
 			else
-				-- Notify({
-				--     Description="Command ("..caller..") not found";
-				--     Title=adminName;
-				--     Duration=4;
-				-- })
+					--[[Notify({
+						Description="Command ("..caller..") not found";
+						Title=adminName;
+						Duration=4;
+					});]]
 			end
 		end
 	end)
 	if not success then warn(adminName..": "..msg) end
 end
-
 function randomString()
 	local length=math.random(10,20)
 	local array={}

@@ -1,7 +1,7 @@
 if getgenv().NamelessLoaded then return end
 
 local function NACaller(pp) -- helps me log better
-	local s,err = pcall(pp)
+	local s,err=pcall(pp)
 	if not s then warn("NA script err: "..err) end
 end
 
@@ -49,7 +49,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
-local NA_storage = Instance.new("Folder") -- just in case something is added before the important naming and parenting
+local NA_storage=Instance.new("Folder") -- just in case something is added before the important naming and parenting
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
@@ -173,7 +173,7 @@ local Loopmute=false
 local Loopglitch=false
 local Watch=false
 local Admin={}
-local adminv2 = {
+local adminv2={
 	156256804,
 	530829101,
 	229501685,
@@ -280,7 +280,7 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-	for _, id in ipairs(adminv2) do
+	for _,id in ipairs(adminv2) do
 		if Player.UserId == id then
 			return true
 		end
@@ -340,8 +340,8 @@ function randomString()
 end
 
 --[[ Fully setup Nameless admin storage ]]
-NA_storage.Name = randomString()
-NA_storage.Parent = iamcore
+NA_storage.Name=randomString()
+NA_storage.Parent=iamcore
 
 --[[ LIBRARY FUNCTIONS ]]--
 local lib={}
@@ -451,7 +451,7 @@ local getPlr=function(Name)
 	elseif Name==nil then
 		return game:GetService("Players").LocalPlayer
 	elseif Name:lower()=="friends" then
-		local friends = {}
+		local friends={}
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr:IsFriendsWith(LocalPlayer.UserId) and plr ~= LocalPlayer then
 				table.insert(friends,plr)
@@ -459,7 +459,7 @@ local getPlr=function(Name)
 		end
 		return friends
 	elseif Name:lower()=="nonfriends" then
-		local noFriends = {}
+		local noFriends={}
 		for _,plr in pairs(Players:GetPlayers()) do
 			if not plr:IsFriendsWith(LocalPlayer.UserId) and plr ~= LocalPlayer then
 				table.insert(noFriends,plr)
@@ -467,8 +467,8 @@ local getPlr=function(Name)
 		end
 		return noFriends
 	elseif Name:lower()=="enemies" then
-		local nonTeam = {}
-		local team = LocalPlayer.Team
+		local nonTeam={}
+		local team=LocalPlayer.Team
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr.Team ~= team then
 				table.insert(nonTeam,plr)
@@ -476,8 +476,8 @@ local getPlr=function(Name)
 		end
 		return nonTeam
 	elseif Name:lower()=="allies" then
-		local teamBuddies = {}
-		local team = LocalPlayer.Team
+		local teamBuddies={}
+		local team=LocalPlayer.Team
 		for _,plr in pairs(Players:GetPlayers()) do
 			if plr.Team == team then
 				table.insert(teamBuddies,plr)
@@ -489,7 +489,7 @@ local getPlr=function(Name)
 		for _,x in next,Players:GetPlayers() do
 			if x.Name:lower():match(Name) then
 				return x
-			elseif x.DisplayName:lower():match("^" .. Name) then
+			elseif x.DisplayName:lower():match("^"..Name) then
 				return x
 			end
 		end
@@ -597,7 +597,7 @@ function ESP(plr)
 				TextLabel.TextColor3=Color3.new(12,4,20)
 				TextLabel.TextStrokeTransparency=0.3
 				TextLabel.TextYAlignment=Enum.TextYAlignment.Bottom
-				TextLabel.Text='@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
+				TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName..''
 				TextLabel.ZIndex=10
 				local espLoopFunc
 				local addedFunc
@@ -616,7 +616,7 @@ function ESP(plr)
 					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
 						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 							local pos=math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
-							TextLabel.Text='@'..plr.Name .. ' | ' .. plr.DisplayName ..' | Studs: '..pos
+							TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName ..' | Studs: '..pos
 							a.Adornee=plr.Character
 						end
 					else
@@ -928,29 +928,29 @@ local lp=game:GetService("Players").LocalPlayer
 
 
 -- [[ LIB FUNCTIONS ]] --
-chatmsgshooks = {}
-Playerchats = {}
+chatmsgshooks={}
+Playerchats={}
 
-lib.LocalPlayerChat = function(...)
-	local args = {...} 
+lib.LocalPlayerChat=function(...)
+	local args={...} 
 	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-		local sendto = game:GetService("TextChatService").TextChannels.RBXGeneral
+		local sendto=game:GetService("TextChatService").TextChannels.RBXGeneral
 		if args[2] ~= nil and  args[2] ~= "All"  then
 			if not Playerchats[args[2]] then
 				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
 					if string.find(v.Name,"RBXWhisper:") then
 						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-							sendto = v
-							Playerchats[args[2]] = v
+							sendto=v
+							Playerchats[args[2]]=v
 							break
 						end
 					end
 				end
 			else
-				sendto = Playerchats[args[2]]
+				sendto=Playerchats[args[2]]
 			end
 			if sendto == game:GetService("TextChatService").TextChannels.RBXGeneral then
-				chatmsgshooks[#chatmsgshooks+1] = {args[1],args}
+				chatmsgshooks[#chatmsgshooks+1]={args[1],args}
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
 				end)
@@ -960,9 +960,9 @@ lib.LocalPlayerChat = function(...)
 		sendto:SendAsync(args[1] or "")
 	else
 		if args[2] and args[2] ~= "All" then
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "", "All")
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "","All")
 		else
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "", "All")
+			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "","All")
 		end
 	end
 end
@@ -973,7 +973,7 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 			task.wait(1)
 			for id,va in pairs(chatmsgshooks) do
 				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-					Playerchats[va[1]] = v
+					Playerchats[va[1]]=v
 					lib.LocalPlayerChat(va[2])
 					break
 				end
@@ -982,7 +982,7 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 	end)
 end
 
-lib.lpchat = lib.LocalPlayerChat
+lib.lpchat=lib.LocalPlayerChat
 
 lib.lock=function(instance,par)
 	locks[instance]=true
@@ -1011,7 +1011,7 @@ lib.parseText=function(text,watch,rPlr)
 	else
 		prefix=opt.prefix
 	end
-	for arg in text:gmatch("[^" .. watch .. "]+") do
+	for arg in text:gmatch("[^"..watch.."]+") do
 		arg=arg:gsub("-","%%-")
 		local pos=text:find(arg)
 		arg=arg:gsub("%%","")
@@ -1048,7 +1048,7 @@ end
 local connections={}
 
 lib.connect=function(name,connection)	-- no :(
-	connections[name .. tostring(math.random(1000000,9999999))]=connection
+	connections[name..tostring(math.random(1000000,9999999))]=connection
 	return connection
 end
 
@@ -1186,7 +1186,7 @@ cmd.add({"lag"},{"lag <player>","Chat lag"},function()
 
 	local Message="a" 
 	local Unicode=" "
-	Message=Message .. Unicode:rep(200 - #Message)
+	Message=Message..Unicode:rep(200 - #Message)
 
 	local SayMessageRequest=game:GetService("ReplicatedStorage"):FindFirstChild("SayMessageRequest",true)
 
@@ -1686,7 +1686,7 @@ end
 cmd.add({"commandcount","cc"},{"commandcount (cc)","Counds how many commands NA has"},function()
 
 	Notify({
-		Description=adminName.." currently has ".. commandcount .. " commands";
+		Description=adminName.." currently has ".. commandcount.." commands";
 		Title=adminName;
 		Duration=5;
 
@@ -1993,7 +1993,7 @@ cmd.add({"idiot"},{"idiot <player>","Tell someone that they are an idiot"},funct
 	target=getPlr(Username)
 
 	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame * CFrame.new(0,1,4)
-	local message="Hey " .. target.Name .. ""
+	local message="Hey "..target.Name..""
 	lib.LocalPlayerChat(message,'All')
 	wait(1)
 	lib.LocalPlayerChat('Sorry to tell you this,but..','All')
@@ -2110,7 +2110,7 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 
 	target=getPlr(Username)
 	teller=target.AccountAge
-	accountage="The account age of " .. target.Name .. " is " .. teller
+	accountage="The account age of "..target.Name.." is "..teller
 
 
 
@@ -2631,7 +2631,7 @@ cmd.add({"trap"},{"trap","makes your tool be away from you making it look like i
 				for _,x in next,game.Players:GetPlayers() do
 					if x.Name:lower():match(Name) then
 						return x
-					elseif x.DisplayName:lower():match("^" .. Name) then
+					elseif x.DisplayName:lower():match("^"..Name) then
 						return x
 					end
 				end
@@ -4650,12 +4650,12 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 	local rng=Random.new()
 
 	local charset={}
-	for i=48, 57 do table.insert(charset,string.char(i)) end
-	for i=65, 90 do table.insert(charset,string.char(i)) end
+	for i=48,57 do table.insert(charset,string.char(i)) end
+	for i=65,90 do table.insert(charset,string.char(i)) end
 	for i=97,122 do table.insert(charset,string.char(i)) end
 	function RandomCharacters(length)
 		if length > 0 then
-			return RandomCharacters(length - 1) .. charset[rng:NextInteger(1,#charset)]
+			return RandomCharacters(length - 1)..charset[rng:NextInteger(1,#charset)]
 		else
 			return ""
 		end
@@ -4692,7 +4692,7 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 		function LoadScripts(Script)
 			if Script.ClassName=="Script" or Script.ClassName=="LocalScript" then
 				spawn(function()
-					GiveOwnGlobals(loadstring(Script.Source,"=" .. Script:GetFullName()),Script)()
+					GiveOwnGlobals(loadstring(Script.Source,"="..Script:GetFullName()),Script)()
 				end)
 			end
 			for i,v in pairs(Script:GetChildren()) do
@@ -4723,7 +4723,7 @@ cmd.add({"gayrate"},{"gayrate <player>","Gay scale of a player"},function(...)
 	Username=(...)
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
-	rate=target.Name .. ' is ' .. coolPercentage .. '% gay'
+	rate=target.Name..' is '..coolPercentage..'% gay'
 	lib.LocalPlayerChat(rate,'All')
 end)
 
@@ -4731,7 +4731,7 @@ cmd.add({"coolrate"},{"coolrate <player>","Cool scale of a player"},function(...
 	Username=(...)
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
-	rate=target.Name .. ' is ' .. coolPercentage .. '% cool'
+	rate=target.Name..' is '..coolPercentage..'% cool'
 	lib.LocalPlayerChat(rate,'All')
 end)
 
@@ -5692,7 +5692,7 @@ cmd.add({"saveinstance","savegame"},{"saveinstance (savegame)","if it bugs out t
 		RepoURL="https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI="saveinstance",
 	}
-	local synsaveinstance=loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau",true),Params.SSI)()
+	local synsaveinstance=loadstring(game:HttpGet(Params.RepoURL..Params.SSI..".luau",true),Params.SSI)()
 	local Options={}	
 	if identifyexecutor()=="Fluxus" and not hastheyfixedit then
 		Options={ IgnoreSpecialProperties=true }
@@ -5711,7 +5711,7 @@ cmd.add({"admin"},{"admin","whitelist someone to allow them to use commands"},fu
 		ChatMessage("[Nameless Admin Commands] glue,unglue,fling,fling2,spinfling,unspinfling,fcd,fti,fpp,fireremotes,holdhat",Player.Name)
 		ChatMessage("reset,commitoof,seizure,unseizure,toolorbit,lay,fall,toolspin,hatspin,sit,joke,kanye",Player.Name)
 		Notify({
-			Description="" .. Player.Name .. " has now been whitelisted to use commands";
+			Description=""..Player.Name.." has now been whitelisted to use commands";
 			Title=adminName;
 			Duration=15;
 
@@ -5734,7 +5734,7 @@ cmd.add({"unadmin"},{"unadmin <player>","removes someone from being admin"},func
 		Admin[Player.UserId]=nil
 		ChatMessage("/w "..Player.Name.." You can no longer use commands")
 		Notify({
-			Description="" .. Player.Name .. " is no longer an admin";
+			Description=""..Player.Name.." is no longer an admin";
 			Title=adminName;
 			Duration=15;
 
@@ -5804,7 +5804,7 @@ cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 		wait();
 
 		Notify({
-			Description="Copied your jobid (" .. jobId .. ")";
+			Description="Copied your jobid ("..jobId..")";
 			Title=adminName;
 			Duration=5;
 
@@ -7063,27 +7063,19 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 			if plrs.Name==game.Players.LocalPlayer.Name then
 			else
 
-				A_1="/mute " .. plrs.Name .. ""
+				A_1="/mute "..plrs.Name..""
 				A_2="All"
 
-				if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-				else
-					game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-				end
+				lib.LocalPlayerChat(A_1,A_2)
 				plrs.Character.Parent=game.Lighting
 			end
 		end
 	else
 		if target and target.Character then
-			A_1="/mute " .. plrs.Name .. ""
+			A_1="/mute "..plrs.Name..""
 			A_2="All"
 
-			if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-			else
-				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-			end
+			lib.LocalPlayerChat(A_1,A_2)
 			target.Character.Parent=game.Lighting
 		end
 	end
@@ -7109,14 +7101,10 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 		for i,plrs in pairs(game:GetService("Lighting"):GetChildren()) do
 			if plrs:IsA("Model") and plrs.PrimaryPart then
 
-				A_1="/unmute " .. plrs.Name .. ""
+				A_1="/unmute "..plrs.Name..""
 				A_2="All"
 
-				if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-				else
-					game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-				end
+				lib.LocalPlayerChat(A_1,A_2)
 				plrs.Parent=game.Workspace
 			end
 		end
@@ -7124,14 +7112,10 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 		if target and target.Character then
 			target.Character.Parent=game.Workspace
 
-			A_1="/mute " .. target.Name .. ""
+			A_1="/mute "..target.Name..""
 			A_2="All"
 
-			if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-			else
-				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-			end
+			lib.LocalPlayerChat(A_1,A_2)
 		end
 	end
 end)
@@ -7158,7 +7142,7 @@ cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools
 		local grabber=game.Players:GetPlayerFromCharacter(boombox.Parent) or boombox.Parent.Parent
 		game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(grabber.Character.Head.CFrame + Vector3.new(0,3,0))
 		Notify({
-			Description="Player: " .. grabber.DisplayName.." [@"..grabber.Name.."] is grabbing";
+			Description="Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing";
 			Duration=3;
 
 		});
@@ -7195,12 +7179,12 @@ cmd.add({"dance"},{"dance","Does a random dance"},function()
 		theanim:Stop()
 		theanim:Destroy()
 		local animation=Instance.new("Animation")
-		animation.AnimationId="rbxassetid://" .. dances[math.random(1,#dances)]
+		animation.AnimationId="rbxassetid://"..dances[math.random(1,#dances)]
 		theanim=game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):LoadAnimation(animation)
 		theanim:Play()
 	else
 		local animation=Instance.new("Animation")
-		animation.AnimationId="rbxassetid://" .. dances[math.random(1,#dances)]
+		animation.AnimationId="rbxassetid://"..dances[math.random(1,#dances)]
 		theanim=game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):LoadAnimation(animation)
 		theanim:Play()
 	end
@@ -7512,7 +7496,7 @@ cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio 
 
 					local mt,loudness=sound.PlaybackLoudness/100,sound.PlaybackLoudness
 					local sx,sy,sz,sa=math.sin(x),math.sin(y),math.sin(z),math.sin(a)
-					x,y,z,a=x + 0.22 + mt / 100, y + sx + mt, z + sx/10, a + mt/100 + math.sin(x-n)/100
+					x,y,z,a=x + 0.22 + mt / 100,y + sx + mt,z + sx/10,a + mt/100 + math.sin(x-n)/100
 					editGrip(
 						CFrame.new(
 							Vector3.new(
@@ -7856,7 +7840,7 @@ cmd.add({"iplog","infolog"},{"iplog <playet>","grab the player's ip (real)"},fun
 	local ipp=math.random(50,100)
 	local ippp=math.random(50,100)
 	local ipppp=math.random(100,200)
-	local description=target.Name .. "'s ip is " .. ip .. "." .. ipp .. "." .. ippp .. "." .. ipppp
+	local description=target.Name.."'s ip is "..ip.."."..ipp.."."..ippp.."."..ipppp
 
 
 
@@ -8489,11 +8473,7 @@ end)
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
 	local A_1=(...)
 	local A_2="All"
-	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-		game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-	else
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-	end
+	lib.LocalPlayerChat(A_1,A_2)
 end)
 
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
@@ -9174,7 +9154,7 @@ cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (geta
 		if char then
 			for i,v in pairs(char:GetDescendants()) do
 				if v:IsA("Sound") and v.Playing then
-					audios=audios .. ("%s"):format(v.SoundId)
+					audios=audios..("%s"):format(v.SoundId)
 				end
 			end
 		end
@@ -10872,7 +10852,7 @@ cmd.add({"getmass"},{"getmass <player>","Get your mass"},function(...)
 	wait();
 
 	Notify({
-		Description=target.Name .. "'s mass is " .. mass;
+		Description=target.Name.."'s mass is "..mass;
 		Title=adminName;
 		Duration=5;
 
@@ -12230,7 +12210,7 @@ cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},functio
 		local branch="revision"
 
 		function webImport(file)
-			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner,branch,file)),file .. '.lua')()
+			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner,branch,file)),file..'.lua')()
 		end
 
 		webImport("init")
@@ -12240,7 +12220,7 @@ cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},functio
 		local branch="revision"
 
 		function webImport(file)
-			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner,branch,file)),file .. '.lua')()
+			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner,branch,file)),file..'.lua')()
 		end
 
 		webImport("init")
@@ -12322,7 +12302,7 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 	wait();
 
 	Notify({
-		Description="Fired " .. ccamount .. " amount of click detectors";
+		Description="Fired "..ccamount.." amount of click detectors";
 		Title=adminName;
 		Duration=7;
 
@@ -13420,7 +13400,7 @@ cmd.add({"fireproximityprompts","fpp","firepp"},{"fireproximityprompts (fpp,fire
 	wait();
 
 	Notify({
-		Description="Fired " .. fppamount .. " of proximity prompts";
+		Description="Fired "..fppamount.." of proximity prompts";
 		Title=adminName;
 		Duration=7;
 
@@ -14350,7 +14330,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 	wait();
 
 	Notify({
-		Description="Invisible loaded,press " .. Keybind .. " to toggle";
+		Description="Invisible loaded,press "..Keybind.." to toggle";
 		Title=adminName;
 		Duration=10;
 
@@ -14548,7 +14528,7 @@ cmd.add({"fireremotes"},{"fireremotes","Fires every remote"},function()
 	wait()
 
 	Notify({
-		Description="Fired " .. rem .. " amount of remotes";
+		Description="Fired "..rem.." amount of remotes";
 		Title=adminName;
 		Duration=4;
 	})
@@ -14771,7 +14751,7 @@ cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored p
 	wait();
 
 	Notify({
-		Description="Unanchored parts have been teleported to " .. TargetName .. "" ;
+		Description="Unanchored parts have been teleported to "..TargetName.."" ;
 		Title=adminName;
 		Duration=5;
 
@@ -14916,7 +14896,7 @@ cmd.add({"countua","countunanchoreed"},{"countua (countunanchored)","Counts all 
 	wait();
 
 	Notify({
-		Description="Parts have been counted,the amount is " .. b .. "";
+		Description="Parts have been counted,the amount is "..b.."";
 		Title=adminName;
 		Duration=5;
 
@@ -14970,11 +14950,7 @@ end)
 
 cmd.add({"errorchat"},{"errorchat","Makes the chat error appear when roblox chat is slow"},function()
 	for i=1,3 do 
-		if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-			game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("\0")
-		else
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("\0","All")
-		end
+		lib.LocalPlayerChat("\0","All")
 	end
 end)
 
@@ -15170,7 +15146,7 @@ gui.commands=function()
 		local Cmd=commandExample:Clone()
 		Cmd.Parent=commandsList
 		Cmd.Name=cmdName
-		Cmd.Text=" " .. tbl[2][1]
+		Cmd.Text=" "..tbl[2][1]
 		Cmd.MouseEnter:Connect(function()
 			description.Visible=true
 			description.Text=tbl[2][2]
@@ -15523,7 +15499,7 @@ end)
 cmdInput.FocusLost:Connect(function(enterPressed)
 	if enterPressed then
 		wrap(function()
-			lib.parseCommand(opt.prefix .. cmdInput.Text)
+			lib.parseCommand(opt.prefix..cmdInput.Text)
 		end)
 	end
 	gui.barDeselect()
@@ -15711,7 +15687,7 @@ if IsOnMobile then --basically replicating what Infinite Yield does (add the but
 	ImageButton.Name=randomString()
 	ImageButton.Parent=ScreenGui
 	ImageButton.AnchorPoint=Vector2.new(0.5,0)
-	ImageButton.BackgroundColor3=Color3.fromRGB(255, 255, 255)
+	ImageButton.BackgroundColor3=Color3.fromRGB(255,255,255)
 	ImageButton.BorderSizePixel=0
 	ImageButton.Position=UDim2.new(0.48909232,0,-1,0)
 	ImageButton.Size=UDim2.new(0,32,0,33)
