@@ -249,7 +249,6 @@ local Goofer={
 	"💀💀💀",
 	"X_X",
 	"not bothered to add a message here",
-	""
 }
 
 -- [[ Prediction ]] --
