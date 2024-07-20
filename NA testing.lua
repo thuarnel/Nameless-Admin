@@ -12442,17 +12442,17 @@ cmd.add({"tweengotocampos","tweentocampos","tweentcp"},{"tweengotocampos (tweent
 end)
 
 cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any part with a certain name from the workspace"},function(...)
-	local delcount=0
-	local table={...}
-	local bra=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			bra=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			bra=v
+			code = v
 		end
 	end
+	bra=code
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==bra:lower() then
 			v:Destroy()
@@ -12484,16 +12484,17 @@ function descendantadd(part)
 end
 
 cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremove,autodel)","Removes any part with a certain name from the workspace on loop"},function(...)
-	local table={...}
-	local bruh=''
-	for i,v in pairs(table) do
-		if i ~= 1 then
-			h=h.." "..v
-			bruh=h
+	local args = {...}
+	local code = ""
+
+	for i, v in ipairs(args) do
+		if i > 1 then
+			code = code .. " " .. v
 		else
-			bruh=v
+			code = v
 		end
 	end
+	bruh
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
