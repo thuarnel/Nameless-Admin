@@ -321,10 +321,11 @@ cmd.add=function(...)
 end
 
 cmd.run=function(args)
-	local caller,arguments=args[1],args; table.remove(args,1);
+	local caller = args[1]
+    local arguments = {table.unpack(args, 2)}
 
-	local success,msg=pcall(function()
-		local command=Commands[caller:lower()] or Aliases[caller:lower()]
+	NACaller(function()
+		local command = Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
 			command[1](unpack(arguments))
 		else
@@ -344,8 +345,8 @@ cmd.run=function(args)
 			end
 		end
 	end)
-	if not success then warn(adminName..": "..msg) end
 end
+
 function randomString()
 	local length=math.random(10,20)
 	local array={}
@@ -1021,7 +1022,7 @@ lib.parseText=function(text,watch,rPlr)
 	local parsed={}
 	if not text then return nil end
 	local prefix
-	if rPlr then
+	if rPlr and rPlr:IsA("Player") then
 		prefix=isRelAdmin(rPlr) and ";" or opt.prefix
 		watch=prefix
 	else
@@ -1046,7 +1047,7 @@ end
 lib.parseCommand=function(text,rPlr)
 	wrap(function()
 		local commands
-		if rPlr then
+		if rPlr and rPlr:IsA("Player") then
 			commands=lib.parseText(text,opt.prefix,rPlr)
 		else
 			commands=lib.parseText(text,opt.prefix)
@@ -4662,6 +4663,10 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 end)
 
+cmd.add({"crash"},{"crash","crashes your client lol"},function()
+	while true do end
+end)
+
 cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explorer"},function()
 	local rng=Random.new()
 
@@ -4754,8 +4759,6 @@ end)
 cmd.add({"unantikill"},{"unantikill","Makes exploiters to be able to kill you"},function()
 	Player.Character.Humanoid:SetStateEnabled("Seated",true)
 	Player.Character.Humanoid.Sit=false
-
-
 
 	wait();
 
@@ -7082,11 +7085,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 				A_1="/mute " .. plrs.Name .. ""
 				A_2="All"
 
-				if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-				else
-					game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-				end
+				lib.LocalPlayerChat(A_1,A_2)
 				plrs.Character.Parent=game.Lighting
 			end
 		end
@@ -7095,11 +7094,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 			A_1="/mute " .. plrs.Name .. ""
 			A_2="All"
 
-			if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-			else
-				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-			end
+			lib.LocalPlayerChat(A_1,A_2)
 			target.Character.Parent=game.Lighting
 		end
 	end
@@ -7128,11 +7123,7 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 				A_1="/unmute " .. plrs.Name .. ""
 				A_2="All"
 
-				if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-				else
-					game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-				end
+				lib.LocalPlayerChat(A_1,A_2)
 				plrs.Parent=game.Workspace
 			end
 		end
@@ -7143,11 +7134,7 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 			A_1="/mute " .. target.Name .. ""
 			A_2="All"
 
-			if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-				game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-			else
-				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-			end
+			lib.LocalPlayerChat(A_1,A_2)
 		end
 	end
 end)
@@ -8505,11 +8492,7 @@ end)
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
 	local A_1=(...)
 	local A_2="All"
-	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-		game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-	else
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-	end
+	lib.LocalPlayerChat(A_1,A_2)
 end)
 
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
@@ -12873,7 +12856,6 @@ cmd.add({"hitbox","hbox"},{"hitbox {amount}","Makes everyones hitbox as much as 
 				getRoot(Plr.Character).BrickColor=BrickColor.new("Really black")
 				getRoot(Plr.Character).Material="Neon"
 				getRoot(Plr.Character).CanCollide=false
-
 			end
 		end)
 	end
@@ -12909,9 +12891,6 @@ cmd.add({"unhitbox","unhbox"},{"unhitbox","Disables hitbox"},function(h)
 end)
 
 cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
-
-
-
 	wait();
 
 	Notify({
@@ -13109,9 +13088,6 @@ cmd.add({"xray","xrayon"},{"xray (xrayon)","Makes you be able to see through wal
 end)
 
 cmd.add({"unxray","xrayoff"},{"unxray (xrayoff)","Makes you not be able to see through walls"},function()
-
-
-
 	wait();
 
 	Notify({
@@ -13125,10 +13101,13 @@ cmd.add({"unxray","xrayoff"},{"unxray (xrayoff)","Makes you not be able to see t
 end)
 
 cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)","Scrapes paste bin posts"},function()
-
-
-
 	wait();
+
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency=0.5
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text="             ⭐ Pastebin Post Scraper ⭐"
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText="Search for a post here..."
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4
 
 	Notify({
 		Description="Pastebin scraper loaded";
@@ -13136,18 +13115,12 @@ cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)"
 		Duration=5;
 
 	});
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency=0.5
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text="             ⭐ Pastebin Post Scraper ⭐"
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText="Search for a post here..."
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4	
 end)
 
 cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus."},function()
-
-
-
 	wait();
+
+	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
 
 	Notify({
 		Description="Amog us...";
@@ -13155,7 +13128,6 @@ cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus.
 		Duration=5;
 
 	});
-	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
 end)
 
 cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black hole"},function()
@@ -13227,8 +13199,6 @@ cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black
 			Attachment1.WorldCFrame=Updated
 		end
 	end)
-
-
 
 	wait();
 
@@ -14985,12 +14955,8 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 end)
 
 cmd.add({"errorchat"},{"errorchat","Makes the chat error appear when roblox chat is slow"},function()
-	for i=1,3 do 
-		if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-			game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("\0")
-		else
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("\0","All")
-		end
+	for i=1,3 do
+		lib.LocalPlayerChat("\0","All")
 	end
 end)
 
