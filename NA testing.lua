@@ -1334,13 +1334,12 @@ cmd.add({"saveprefix"},{"saveprefix <prefix>","Saves the prefix to what u want"}
 
 		});
 	else
-		writefile("Nameless-Admin\\Prefix.txt",PrefixChange)
+		writefile("Nameless-Admin/Prefix.txt",PrefixChange)
 		opt.prefix=PrefixChange
 		Notify({
 			Description="Prefix saved to: "..PrefixChange;
 			Title=adminName;
 			Duration=5;
-
 		});
 	end
 end)
