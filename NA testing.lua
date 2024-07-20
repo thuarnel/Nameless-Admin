@@ -324,7 +324,7 @@ cmd.run=function(args)
 	local caller=args[1]
 	local arguments={table.unpack(args,2)}
 
-	NACaller(function()
+	local success,msg=pcall(function()
 		local command=Commands[caller:lower()] or Aliases[caller:lower()]
 		if command then
 			command[1](table.unpack(arguments))
@@ -339,6 +339,10 @@ cmd.run=function(args)
 			end
 		end
 	end)
+
+	if not success then
+		warn(adminName .. ": " .. msg)
+	end
 end
 
 function randomString()
@@ -500,7 +504,7 @@ local getPlr=function(Name)
 		for _,x in next,Players:GetPlayers() do
 			if x.Name:lower():match(Name) then
 				return x
-			elseif x.DisplayName:lower():match("^" .. Name) then
+			elseif x.DisplayName:lower():match("^"..Name) then
 				return x
 			end
 		end
@@ -608,7 +612,7 @@ function ESP(plr)
 				TextLabel.TextColor3=Color3.new(12,4,20)
 				TextLabel.TextStrokeTransparency=0.3
 				TextLabel.TextYAlignment=Enum.TextYAlignment.Bottom
-				TextLabel.Text='@'..plr.Name .. ' | ' .. plr.DisplayName .. ''
+				TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName..''
 				TextLabel.ZIndex=10
 				local espLoopFunc
 				local addedFunc
@@ -627,7 +631,7 @@ function ESP(plr)
 					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
 						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
 							local pos=math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
-							TextLabel.Text='@'..plr.Name .. ' | ' .. plr.DisplayName ..' | Studs: '..pos
+							TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName ..' | Studs: '..pos
 							a.Adornee=plr.Character
 						end
 					else
@@ -1022,14 +1026,15 @@ lib.parseText=function(text,watch,rPlr)
 	else
 		prefix=opt.prefix
 	end
-	local commandPattern="^" .. watch .. "([^ ]+)"
+
+	local commandPattern="^"..watch.."(%S+)"
 	local command,rest=text:match(commandPattern)
+
 	if command then
 		table.insert(parsed,command)
-		local argsPattern="%S+"
-		local args=text:match("^" .. watch .. "%S+%s*(.*)")
+		local args=text:match("^"..watch.."%S+%s*(.*)")
 		if args then
-			for arg in args:gmatch(argsPattern) do
+			for arg in args:gmatch("%S+") do
 				table.insert(parsed,arg)
 			end
 		end
@@ -1046,18 +1051,16 @@ lib.parseCommand=function(text,rPlr)
 		else
 			commands=lib.parseText(text,opt.prefix)
 		end
-		local args={}
-		for _,parsed in pairs(commands) do
-			table.insert(args,parsed)
-		end
-		cmd.run(args)
+
+		local command=table.remove(commands,1)
+		cmd.run({command,table.unpack(commands)})
 	end)
 end
 
 local connections={}
 
 lib.connect=function(name,connection)	-- no :(
-	connections[name .. tostring(math.random(1000000,9999999))]=connection
+	connections[name..tostring(math.random(1000000,9999999))]=connection
 	return connection
 end
 
@@ -1195,7 +1198,7 @@ cmd.add({"lag"},{"lag <player>","Chat lag"},function()
 
 	local Message="a" 
 	local Unicode=" "
-	Message=Message .. Unicode:rep(200 - #Message)
+	Message=Message..Unicode:rep(200 - #Message)
 
 	local SayMessageRequest=game:GetService("ReplicatedStorage"):FindFirstChild("SayMessageRequest",true)
 
@@ -1695,7 +1698,7 @@ end
 cmd.add({"commandcount","cc"},{"commandcount (cc)","Counds how many commands NA has"},function()
 
 	Notify({
-		Description=adminName.." currently has ".. commandcount .. " commands";
+		Description=adminName.." currently has ".. commandcount.." commands";
 		Title=adminName;
 		Duration=5;
 
@@ -2002,7 +2005,7 @@ cmd.add({"idiot"},{"idiot <player>","Tell someone that they are an idiot"},funct
 	target=getPlr(Username)
 
 	getChar().HumanoidRootPart.CFrame=target.Character.Humanoid.RootPart.CFrame * CFrame.new(0,1,4)
-	local message="Hey " .. target.Name .. ""
+	local message="Hey "..target.Name..""
 	lib.LocalPlayerChat(message,'All')
 	wait(1)
 	lib.LocalPlayerChat('Sorry to tell you this,but..','All')
@@ -2119,7 +2122,7 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 
 	target=getPlr(Username)
 	teller=target.AccountAge
-	accountage="The account age of " .. target.Name .. " is " .. teller
+	accountage="The account age of "..target.Name.." is "..teller
 
 
 
@@ -2640,7 +2643,7 @@ cmd.add({"trap"},{"trap","makes your tool be away from you making it look like i
 				for _,x in next,game.Players:GetPlayers() do
 					if x.Name:lower():match(Name) then
 						return x
-					elseif x.DisplayName:lower():match("^" .. Name) then
+					elseif x.DisplayName:lower():match("^"..Name) then
 						return x
 					end
 				end
@@ -4668,7 +4671,7 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 	for i=97,122 do table.insert(charset,string.char(i)) end
 	function RandomCharacters(length)
 		if length > 0 then
-			return RandomCharacters(length - 1) .. charset[rng:NextInteger(1,#charset)]
+			return RandomCharacters(length - 1)..charset[rng:NextInteger(1,#charset)]
 		else
 			return ""
 		end
@@ -4705,7 +4708,7 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 		function LoadScripts(Script)
 			if Script.ClassName=="Script" or Script.ClassName=="LocalScript" then
 				spawn(function()
-					GiveOwnGlobals(loadstring(Script.Source,"=" .. Script:GetFullName()),Script)()
+					GiveOwnGlobals(loadstring(Script.Source,"="..Script:GetFullName()),Script)()
 				end)
 			end
 			for i,v in pairs(Script:GetChildren()) do
@@ -4736,7 +4739,7 @@ cmd.add({"gayrate"},{"gayrate <player>","Gay scale of a player"},function(...)
 	Username=(...)
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
-	rate=target.Name .. ' is ' .. coolPercentage .. '% gay'
+	rate=target.Name..' is '..coolPercentage..'% gay'
 	lib.LocalPlayerChat(rate,'All')
 end)
 
@@ -4744,7 +4747,7 @@ cmd.add({"coolrate"},{"coolrate <player>","Cool scale of a player"},function(...
 	Username=(...)
 	target=getPlr(Username)
 	local coolPercentage=math.random(1,100)
-	rate=target.Name .. ' is ' .. coolPercentage .. '% cool'
+	rate=target.Name..' is '..coolPercentage..'% cool'
 	lib.LocalPlayerChat(rate,'All')
 end)
 
@@ -5703,7 +5706,7 @@ cmd.add({"saveinstance","savegame"},{"saveinstance (savegame)","if it bugs out t
 		RepoURL="https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
 		SSI="saveinstance",
 	}
-	local synsaveinstance=loadstring(game:HttpGet(Params.RepoURL .. Params.SSI .. ".luau",true),Params.SSI)()
+	local synsaveinstance=loadstring(game:HttpGet(Params.RepoURL..Params.SSI..".luau",true),Params.SSI)()
 	local Options={}	
 	if identifyexecutor()=="Fluxus" and not hastheyfixedit then
 		Options={ IgnoreSpecialProperties=true }
@@ -5722,7 +5725,7 @@ cmd.add({"admin"},{"admin","whitelist someone to allow them to use commands"},fu
 		ChatMessage("[Nameless Admin Commands] glue,unglue,fling,fling2,spinfling,unspinfling,fcd,fti,fpp,fireremotes,holdhat",Player.Name)
 		ChatMessage("reset,commitoof,seizure,unseizure,toolorbit,lay,fall,toolspin,hatspin,sit,joke,kanye",Player.Name)
 		Notify({
-			Description="" .. Player.Name .. " has now been whitelisted to use commands";
+			Description=""..Player.Name.." has now been whitelisted to use commands";
 			Title=adminName;
 			Duration=15;
 
@@ -5745,7 +5748,7 @@ cmd.add({"unadmin"},{"unadmin <player>","removes someone from being admin"},func
 		Admin[Player.UserId]=nil
 		ChatMessage("/w "..Player.Name.." You can no longer use commands")
 		Notify({
-			Description="" .. Player.Name .. " is no longer an admin";
+			Description=""..Player.Name.." is no longer an admin";
 			Title=adminName;
 			Duration=15;
 
@@ -5815,7 +5818,7 @@ cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 		wait();
 
 		Notify({
-			Description="Copied your jobid (" .. jobId .. ")";
+			Description="Copied your jobid ("..jobId..")";
 			Title=adminName;
 			Duration=5;
 
@@ -7074,7 +7077,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 			if plrs.Name==game.Players.LocalPlayer.Name then
 			else
 
-				A_1="/mute " .. plrs.Name .. ""
+				A_1="/mute "..plrs.Name..""
 				A_2="All"
 
 				lib.LocalPlayerChat(A_1,A_2)
@@ -7083,7 +7086,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 		end
 	else
 		if target and target.Character then
-			A_1="/mute " .. plrs.Name .. ""
+			A_1="/mute "..plrs.Name..""
 			A_2="All"
 
 			lib.LocalPlayerChat(A_1,A_2)
@@ -7112,7 +7115,7 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 		for i,plrs in pairs(game:GetService("Lighting"):GetChildren()) do
 			if plrs:IsA("Model") and plrs.PrimaryPart then
 
-				A_1="/unmute " .. plrs.Name .. ""
+				A_1="/unmute "..plrs.Name..""
 				A_2="All"
 
 				lib.LocalPlayerChat(A_1,A_2)
@@ -7123,7 +7126,7 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 		if target and target.Character then
 			target.Character.Parent=game.Workspace
 
-			A_1="/mute " .. target.Name .. ""
+			A_1="/mute "..target.Name..""
 			A_2="All"
 
 			lib.LocalPlayerChat(A_1,A_2)
@@ -7153,7 +7156,7 @@ cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools
 		local grabber=game.Players:GetPlayerFromCharacter(boombox.Parent) or boombox.Parent.Parent
 		game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(grabber.Character.Head.CFrame + Vector3.new(0,3,0))
 		Notify({
-			Description="Player: " .. grabber.DisplayName.." [@"..grabber.Name.."] is grabbing";
+			Description="Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing";
 			Duration=3;
 
 		});
@@ -7190,12 +7193,12 @@ cmd.add({"dance"},{"dance","Does a random dance"},function()
 		theanim:Stop()
 		theanim:Destroy()
 		local animation=Instance.new("Animation")
-		animation.AnimationId="rbxassetid://" .. dances[math.random(1,#dances)]
+		animation.AnimationId="rbxassetid://"..dances[math.random(1,#dances)]
 		theanim=game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):LoadAnimation(animation)
 		theanim:Play()
 	else
 		local animation=Instance.new("Animation")
-		animation.AnimationId="rbxassetid://" .. dances[math.random(1,#dances)]
+		animation.AnimationId="rbxassetid://"..dances[math.random(1,#dances)]
 		theanim=game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):LoadAnimation(animation)
 		theanim:Play()
 	end
@@ -7851,7 +7854,7 @@ cmd.add({"iplog","infolog"},{"iplog <playet>","grab the player's ip (real)"},fun
 	local ipp=math.random(50,100)
 	local ippp=math.random(50,100)
 	local ipppp=math.random(100,200)
-	local description=target.Name .. "'s ip is " .. ip .. "." .. ipp .. "." .. ippp .. "." .. ipppp
+	local description=target.Name.."'s ip is "..ip.."."..ipp.."."..ippp.."."..ipppp
 
 
 
@@ -9165,7 +9168,7 @@ cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (geta
 		if char then
 			for i,v in pairs(char:GetDescendants()) do
 				if v:IsA("Sound") and v.Playing then
-					audios=audios .. ("%s"):format(v.SoundId)
+					audios=audios..("%s"):format(v.SoundId)
 				end
 			end
 		end
@@ -10863,7 +10866,7 @@ cmd.add({"getmass"},{"getmass <player>","Get your mass"},function(...)
 	wait();
 
 	Notify({
-		Description=target.Name .. "'s mass is " .. mass;
+		Description=target.Name.."'s mass is "..mass;
 		Title=adminName;
 		Duration=5;
 
@@ -12221,7 +12224,7 @@ cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},functio
 		local branch="revision"
 
 		function webImport(file)
-			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner,branch,file)),file .. '.lua')()
+			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/MC-Hydroxide/%s/%s.lua"):format(owner,branch,file)),file..'.lua')()
 		end
 
 		webImport("init")
@@ -12231,7 +12234,7 @@ cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},functio
 		local branch="revision"
 
 		function webImport(file)
-			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner,branch,file)),file .. '.lua')()
+			return loadstring(game:HttpGetAsync(("https://raw.githubusercontent.com/%s/Hydroxide/%s/%s.lua"):format(owner,branch,file)),file..'.lua')()
 		end
 
 		webImport("init")
@@ -12313,7 +12316,7 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 	wait();
 
 	Notify({
-		Description="Fired " .. ccamount .. " amount of click detectors";
+		Description="Fired "..ccamount.." amount of click detectors";
 		Title=adminName;
 		Duration=7;
 
@@ -13398,7 +13401,7 @@ cmd.add({"fireproximityprompts","fpp","firepp"},{"fireproximityprompts (fpp,fire
 	wait();
 
 	Notify({
-		Description="Fired " .. fppamount .. " of proximity prompts";
+		Description="Fired "..fppamount.." of proximity prompts";
 		Title=adminName;
 		Duration=7;
 
@@ -14328,7 +14331,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 	wait();
 
 	Notify({
-		Description="Invisible loaded,press " .. Keybind .. " to toggle";
+		Description="Invisible loaded,press "..Keybind.." to toggle";
 		Title=adminName;
 		Duration=10;
 
@@ -14526,7 +14529,7 @@ cmd.add({"fireremotes"},{"fireremotes","Fires every remote"},function()
 	wait()
 
 	Notify({
-		Description="Fired " .. rem .. " amount of remotes";
+		Description="Fired "..rem.." amount of remotes";
 		Title=adminName;
 		Duration=4;
 	})
@@ -14749,7 +14752,7 @@ cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored p
 	wait();
 
 	Notify({
-		Description="Unanchored parts have been teleported to " .. TargetName .. "" ;
+		Description="Unanchored parts have been teleported to "..TargetName.."" ;
 		Title=adminName;
 		Duration=5;
 
@@ -14894,7 +14897,7 @@ cmd.add({"countua","countunanchoreed"},{"countua (countunanchored)","Counts all 
 	wait();
 
 	Notify({
-		Description="Parts have been counted,the amount is " .. b .. "";
+		Description="Parts have been counted,the amount is "..b.."";
 		Title=adminName;
 		Duration=5;
 
@@ -15144,7 +15147,7 @@ gui.commands=function()
 		local Cmd=commandExample:Clone()
 		Cmd.Parent=commandsList
 		Cmd.Name=cmdName
-		Cmd.Text=" " .. tbl[2][1]
+		Cmd.Text=" "..tbl[2][1]
 		Cmd.MouseEnter:Connect(function()
 			description.Visible=true
 			description.Text=tbl[2][2]
@@ -15497,7 +15500,7 @@ end)
 cmdInput.FocusLost:Connect(function(enterPressed)
 	if enterPressed then
 		wrap(function()
-			lib.parseCommand(opt.prefix .. cmdInput.Text)
+			lib.parseCommand(opt.prefix..cmdInput.Text)
 		end)
 	end
 	gui.barDeselect()
