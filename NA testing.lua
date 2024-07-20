@@ -5865,8 +5865,10 @@ cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 	end
 end)
 
-cmd.add({"joinjobid","jjobid"},{"joinjobid <jobid> (jjid)","Joins the job id you put in"},function(id)
-	TeleportService:TeleportToPlaceInstance(game.PlaceId,id)
+cmd.add({"joinjobid","joinjid", "jjobid", "jjid"},{"joinjobid <jobid> (joinjid,jjobid,jjid)","Joins the job id you put in"},function(...)
+	zeId={...}
+	id=zeId[1]
+	TeleportService:TeleportToPlaceInstance(PlaceId,id)
 end)
 
 cmd.add({"serverhop","shop"},{"serverhop (shop)","serverhop"},function()
@@ -15880,7 +15882,7 @@ task.spawn(function()
 	NACaller(function() -- better saveinstance support
 		if identifyexecutor()=="Solara" then -- solara broke this bra
 		else
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/testingSum.lua"))();
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 		end
 	end)
 end)
