@@ -136,7 +136,7 @@ local updLogs={
 	log2='Fixed "saveprefix" command not saving your prefix properly';
 }
 
-local updDate="7/20/2024"
+local updDate="7/21/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
