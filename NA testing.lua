@@ -184,16 +184,16 @@ local Loopmute=false
 local Loopglitch=false
 local Watch=false
 local Admin={}
-getgenv().NAadminsLol={
-	156256804,
-	530829101,
-	229501685,
-	3470956640,
-	1456118719,
-	817571515,
-	144324719,
-	1844177730,
-	2624269701
+_G.NAadminsLol={
+	156256804; --v3r
+	530829101; --Viper
+	229501685; --legshot
+	3470956640; --Bart3kk
+	1456118719; --zzz
+	817571515; --Aimlock
+	144324719; --Cosmic
+	1844177730; --glexinator
+	2624269701; --Akim
 }
 
 
@@ -290,7 +290,7 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-	for _,id in ipairs(NAadminsLol) do
+	for _,id in ipairs(_G.NAadminsLol) do
 		if Player.UserId==id and game:GetService("Players").LocalPlayer.UserId~=id then
 			return true
 		end
