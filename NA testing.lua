@@ -1957,9 +1957,7 @@ cmd.add({"title"},{"title <player> (text)","Gives the player a title above their
 			textThingy=tostring(args[i])
 		end
 	end
-	if textThingy and textThingy~="" then
-		gui.titleHead(target,textThingy)
-	end
+	gui.titleHead(target,textThingy)
 end)
 
 cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
