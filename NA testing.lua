@@ -15221,33 +15221,31 @@ elseif COREGUI then
 else
 	warn'no guis?'
 end
-NACaller(function()
-	if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
-	local description=ScreenGui:FindFirstChild("Description");
-	local cmdBar=ScreenGui:FindFirstChild("CmdBar");
-	local centerBar=cmdBar:FindFirstChild("CenterBar");
-	local cmdInput=centerBar:FindFirstChild("Input");
-	local cmdAutofill=cmdBar:FindFirstChild("Autofill");
-	local cmdExample=cmdAutofill:FindFirstChild("Cmd");
-	local leftFill=cmdBar:FindFirstChild("LeftFill");
-	local rightFill=cmdBar:FindFirstChild("RightFill");
-	local chatLogsFrame=ScreenGui:FindFirstChild("ChatLogs");
-	local chatLogs=chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
-	local chatExample=chatLogs:FindFirstChild("TextLabel");
-	local commandsFrame=ScreenGui:FindFirstChild("Commands");
-	local commandsFilter=commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
-	local commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
-	local commandExample=commandsList:FindFirstChild("TextLabel");
-	local UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
-	local UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
-	local UniverseExample=UniverseList:FindFirstChild("TextButton");
-	local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
-	local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
-	local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
-	local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
-	local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
-	local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
-end)
+if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
+local description=ScreenGui:FindFirstChild("Description");
+local cmdBar=ScreenGui:FindFirstChild("CmdBar");
+local centerBar=cmdBar:FindFirstChild("CenterBar");
+local cmdInput=centerBar:FindFirstChild("Input");
+local cmdAutofill=cmdBar:FindFirstChild("Autofill");
+local cmdExample=cmdAutofill:FindFirstChild("Cmd");
+local leftFill=cmdBar:FindFirstChild("LeftFill");
+local rightFill=cmdBar:FindFirstChild("RightFill");
+local chatLogsFrame=ScreenGui:FindFirstChild("ChatLogs");
+local chatLogs=chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
+local chatExample=chatLogs:FindFirstChild("TextLabel");
+local commandsFrame=ScreenGui:FindFirstChild("Commands");
+local commandsFilter=commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
+local commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
+local commandExample=commandsList:FindFirstChild("TextLabel");
+local UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
+local UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
+local UniverseExample=UniverseList:FindFirstChild("TextButton");
+local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
+local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
+local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
+local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
+local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
+local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
 local resizeXY={
 	Top		={Vector2.new(0,-1),	Vector2.new(0,-1),	"rbxassetid://2911850935"},
 	Bottom	={Vector2.new(0,1),	Vector2.new(0,0),	"rbxassetid://2911850935"},
