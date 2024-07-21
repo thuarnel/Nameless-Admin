@@ -1947,17 +1947,20 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 end)
 
 cmd.add({"title"},{"title <player> (text)","Gives the player a title above their head"},function(...)
-	args={...}
-	target=getPlr(args[1])
-	textThingy=""
-	for i,v in ipairs(args) do
-		if i>2 then
-			textThingy=textThingy.." "..tostring(v)
-		else
-			textThingy=tostring(v)
-		end
+	local args={...}
+	local target=getPlr(args[1])
+	local textThingy=""
+
+	for i=2,#args do
+		textThingy=textThingy.." "..tostring(args[i])
 	end
-	gui.titleHead(target,textThingy)
+
+	textThingy=textThingy:sub(2)
+
+	if target then
+		gui.titleHead(target,textThingy)
+	else
+	end
 end)
 
 cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
@@ -15335,19 +15338,18 @@ gui.chatlogs=function()
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
 gui.titleHead=function(player,text)
-	if player then
-		local character=getPlrChar(player)
-		local head=character:FindFirstChild("Head")
-		if character and head then
-			if head:FindFirstChild("NaGoofyTitle") then head:FindFirstChild("NaGoofyTitle"):Destroy() end
-			if not head:FindFirstChild("NaGoofyTitle") then
-				local billboardGui=TitleHead:Clone()
-				local textLabel=txtTitle:Clone()
-				billboardGui.Adornee=head
-				billboardGui.Parent=COREGUI
-				textLabel.Text=text
-				textLabel.Parent=billboardGui
-			end
+	local char=getPlrChar(player)
+	if char then
+		local head=char:FindFirstChild("Head")
+		if head then
+			local exist=head:FindFirstChild("NaGoofyTitle")
+			if exist then exist:Destroy() end
+			local bGui=TitleHead:Clone()
+			local tLabel=txtTitle:Clone()
+			bGui.Adornee=head
+			bGui.Parent=COREGUI
+			tLabel.Text=text
+			tLabel.Parent=bGui
 		end
 	end
 end
