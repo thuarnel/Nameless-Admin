@@ -1946,23 +1946,6 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
-cmd.add({"title"},{"title <player> (text)","Gives the player a title above their head"},function(...)
-	local args={...}
-	local target=getPlr(args[1])
-	local textThingy=""
-
-	for i=2,#args do
-		textThingy=textThingy.." "..tostring(args[i])
-	end
-
-	textThingy=textThingy:sub(2)
-
-	if target then
-		gui.titleHead(target,textThingy)
-	else
-	end
-end)
-
 cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
 	args={...}
 	pId=tonumber(args[1])
@@ -4450,24 +4433,32 @@ cmd.add({"nofog"},{"nofog","Removes all fog from the game"},function()
 		end
 	end
 end)
-
+local ANTIAFK=nil
 cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for being afk for 20 mins"},function()
+	if ANTIAFK then ANTIAFK:Disconnect() ANTIAFK=nil
 
+		ANTIAFK=game.Players.LocalPlayer.Idled:connect(function()
+			game:FindService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			task.wait(1)
+			game:FindService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
 
+		wait();
 
-	wait();
+		Notify({
+			Description="Anti AFK has been enabled";
+			Title=adminName;
+			Duration=5;
 
-	Notify({
-		Description="Anti AFK has been enabled";
-		Title=adminName;
-		Duration=5;
+		});
+	else
+		Notify({
+			Description="Anti AFK is already enabled";
+			Title=adminName;
+			Duration=5;
 
-	});
-	ANTIAFK=game.Players.LocalPlayer.Idled:connect(function()
-		game:FindService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-		task.wait(1)
-		game:FindService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-	end)
+		});
+	end
 end)
 
 
@@ -7436,7 +7427,7 @@ cmd.add({"placeid","pid"},{"placeid (pid)","Copies the PlaceId of the game you'r
 	Notify({
 		Description="Copied the game's PlaceId: "..PlaceId;
 		Title=adminName;
-		Duration=7;
+		Duration=4;
 	});
 end)
 
@@ -7448,7 +7439,19 @@ cmd.add({"gameid","universeid","gid"},{"gameid (universeid,gid)","Copies the Gam
 	Notify({
 		Description="Copied the game's GameId: "..GameId;
 		Title=adminName;
-		Duration=7;
+		Duration=4;
+	});
+end)
+
+cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name to your clipboard"},function()
+	setclipboard(placeName())
+
+	wait();
+
+	Notify({
+		Description="Copied the game's place name: "..GameId;
+		Title=adminName;
+		Duration=4;
 	});
 end)
 
@@ -15218,33 +15221,33 @@ elseif COREGUI then
 else
 	warn'no guis?'
 end
-if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
-local description=ScreenGui:FindFirstChild("Description");
-local cmdBar=ScreenGui:FindFirstChild("CmdBar");
-local centerBar=cmdBar:FindFirstChild("CenterBar");
-local cmdInput=centerBar:FindFirstChild("Input");
-local cmdAutofill=cmdBar:FindFirstChild("Autofill");
-local cmdExample=cmdAutofill:FindFirstChild("Cmd");
-local leftFill=cmdBar:FindFirstChild("LeftFill");
-local rightFill=cmdBar:FindFirstChild("RightFill");
-local chatLogsFrame=ScreenGui:FindFirstChild("ChatLogs");
-local chatLogs=chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
-local chatExample=chatLogs:FindFirstChild("TextLabel");
-local commandsFrame=ScreenGui:FindFirstChild("Commands");
-local commandsFilter=commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
-local commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
-local commandExample=commandsList:FindFirstChild("TextLabel");
-local UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
-local UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
-local UniverseExample=UniverseList:FindFirstChild("TextButton");
-local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
-local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
-local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
-local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
-local TitleHead=ScreenGui:FindFirstChild("NaGoofyTitle")
-local txtTitle=TitleHead:FindFirstChildOfClass("TextLabel")
-local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
-local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
+NACaller(function()
+	if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
+	local description=ScreenGui:FindFirstChild("Description");
+	local cmdBar=ScreenGui:FindFirstChild("CmdBar");
+	local centerBar=cmdBar:FindFirstChild("CenterBar");
+	local cmdInput=centerBar:FindFirstChild("Input");
+	local cmdAutofill=cmdBar:FindFirstChild("Autofill");
+	local cmdExample=cmdAutofill:FindFirstChild("Cmd");
+	local leftFill=cmdBar:FindFirstChild("LeftFill");
+	local rightFill=cmdBar:FindFirstChild("RightFill");
+	local chatLogsFrame=ScreenGui:FindFirstChild("ChatLogs");
+	local chatLogs=chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
+	local chatExample=chatLogs:FindFirstChild("TextLabel");
+	local commandsFrame=ScreenGui:FindFirstChild("Commands");
+	local commandsFilter=commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
+	local commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local commandExample=commandsList:FindFirstChild("TextLabel");
+	local UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
+	local UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local UniverseExample=UniverseList:FindFirstChild("TextButton");
+	local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
+	local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
+	local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
+	local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
+	local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
+	local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
+end)
 local resizeXY={
 	Top		={Vector2.new(0,-1),	Vector2.new(0,-1),	"rbxassetid://2911850935"},
 	Bottom	={Vector2.new(0,1),	Vector2.new(0,0),	"rbxassetid://2911850935"},
@@ -15337,22 +15340,6 @@ gui.chatlogs=function()
 	end
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.titleHead=function(player,text)
-	local char=getPlrChar(player)
-	if char then
-		local head=char:FindFirstChild("Head")
-		if head then
-			local exist=head:FindFirstChild("NaGoofyTitle")
-			if exist then exist:Destroy() end
-			local bGui=TitleHead:Clone()
-			local tLabel=txtTitle:Clone()
-			bGui.Adornee=head
-			bGui.Parent=COREGUI
-			tLabel.Text=text
-			tLabel.Parent=bGui
-		end
-	end
-end
 gui.universeGui=function()
 	if not UniverseViewerFrame.Visible then
 		UniverseViewerFrame.Visible=true
@@ -15364,7 +15351,7 @@ gui.updateLogs=function()
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
 		Notify({
-			Description="no upd logs for now :(";
+			Description="no upd logs for now...";
 			Title=adminName;
 			Duration=5;
 		});
@@ -15793,26 +15780,26 @@ NACaller(function()
 	delay(0.3,function()
 		if identifyexecutor then--idk why i made it as a check
 			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate;
+				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nPlace: "..placeName();
 				Title=rngMsg().." "..hh;
-				Duration=8;
+				Duration=6;
 			});
 		else
 			Notify({
 				Description="Welcome to "..adminName.." V"..curVer;
 				Title=rngMsg().." "..hh;
-				Duration=8;
+				Duration=6;
 			});
 		end
 		Notify({
 			Description=goof();
 			Title="Random Goofy Message";
-			Duration=6;
+			Duration=4;
 		});
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=8;
+			Duration=6;
 		});
 	end)
 
@@ -15830,7 +15817,7 @@ NACaller(function()
 			btn.Name=place.Name
 			btn.Text=place.Name.." ("..place.PlaceId..")"
 			btn.MouseButton1Click:Connect(function()
-				TeleportService:Teleport(place.PlaceId,game:GetService("Players").LocalPlayer)
+				TeleportService:Teleport(place.PlaceId)
 				Notify({
 					Description="Teleporting To Place: "..place.Name;
 					Title=adminName;
