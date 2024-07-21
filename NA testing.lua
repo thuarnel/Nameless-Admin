@@ -14,14 +14,14 @@
                                                                                              
 
 ]]
-if getgenv().NamelessLoaded then return end
+if getgenv().RealNamelessLoaded then return end
 
 local function NACaller(pp)--helps me log better
 	local s,err=pcall(pp)
 	if not s then warn("NA script err: "..err) end
 end
 
-NACaller(function() getgenv().NamelessLoaded=true end)
+NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
 --[[ Version ]]--
@@ -1188,11 +1188,11 @@ cmd.add({"loadstring","ls"},{"loadstring <code> (ls)","Run the code using the lo
 end)
 
 cmd.add({"executor","exec"},{"executor (exec)","Very simple executor"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/executor"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NAexecutor.lua"))()
 end)
 
 cmd.add({"scripthub","hub"},{"scripthub (hub)","Thanks to scriptblox api"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/script%20hub"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/ScriptHubNA.lua"))()
 end)
 
 cmd.add({"stand"},{"stand <player>","Makes a player your stand"},function(...)
@@ -4145,7 +4145,7 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 end)
 
 cmd.add({"antikick","nokick"},{"antikick (nokick)","prevents you from getting kicked by LocalScripts or executed scripts"},function()
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/BetterAntiKick.lua?raw=viper"))()--Better Version
+	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/btrAntiKick.lua?raw=viper"))()--Better Version
 end)
 
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
@@ -5868,12 +5868,13 @@ cmd.add({"removedn","nodn","nodpn"},{"removedn (nodn,nodpn)","Removes all displa
 end)
 
 cmd.add({"partname","partpath","partgrabber"},{"partname (partpath,partgrabber)","gives a ui and allows you click on a part to grab it's path"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/part%20grabber"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/PartGrabber.lua"))()
 end)
 
-cmd.add({"backdoor","backdoorscan"},{"backdoor (backdoorscan)","Scans for any backdoors using FraktureSS"},function()
+-- patched (womp)
+--[[cmd.add({"backdoor","backdoorscan"},{"backdoor (backdoorscan)","Scans for any backdoors using FraktureSS"},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Frakture"))()
-end)
+end)]]
 
 cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 	local jobId='Roblox.GameLauncher.joinGameInstance('..PlaceId..',"'..JobId..'")'
@@ -12273,7 +12274,7 @@ cmd.add({"unspin"},{"unspin","Makes your character unspin"},function()
 end)
 
 cmd.add({"notepad"},{"notepad","notepad for making scripts / etc"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notepade"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NAnotepad.lua"))()
 end)
 
 cmd.add({"rc7"},{"rc7","RC7 Internal UI"},function()
@@ -15081,7 +15082,7 @@ cmd.add({"countua","countunanchoreed"},{"countua (countunanchored)","Counts all 
 end)
 
 cmd.add({"httpspy"},{"httspy","HTTP Spy"},function()
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/HTTP%20spy'))()
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/httpspy.lua'))()
 end)
 
 cmd.add({"keystroke"},{"keystroke","Executes a keystroke ui script"},function()
