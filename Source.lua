@@ -7433,7 +7433,7 @@ cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name
 	wait();
 
 	Notify({
-		Description="Copied the game's place name: "..GameId;
+		Description="Copied the game's place name: "..placeName();
 		Title=adminName;
 		Duration=4;
 	});
