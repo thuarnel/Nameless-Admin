@@ -1925,7 +1925,7 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
-cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (toplace,ttp)","teleports you using PlaceId"},function(...)
+cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","teleports you using PlaceId"},function(...)
 	args={...}
 	pId=tonumber(args[1])
 	game:GetService("TeleportService"):Teleport(pId)
