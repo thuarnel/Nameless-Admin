@@ -1941,6 +1941,12 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
+cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (toplace,ttp)","teleports you using PlaceId"},function(...)
+	args={...}
+	pId=tonumber(args[1])
+	game:GetService("TeleportService"):Teleport(pId)
+end)
+
 --fixed-viper
 cmd.add({"adonisbypass","bypassadonis","badonis","adonisb"},{"adonisbypass (bypassadonis,badonis,adonisb)","bypasses adonis admin detection"},function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/adonisbypass.lua?raw=true"))()

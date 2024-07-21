@@ -285,7 +285,6 @@ local function isRelAdmin(Player)
     end
     return false
 end
-
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
@@ -1924,6 +1923,12 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 		Title=adminName;
 		Duration=5;
 	});
+end)
+
+cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (toplace,ttp)","teleports you using PlaceId"},function(...)
+	args={...}
+	pId=tonumber(args[1])
+	game:GetService("TeleportService"):Teleport(pId)
 end)
 
 --fixed-viper
