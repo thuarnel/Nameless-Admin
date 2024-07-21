@@ -15330,11 +15330,12 @@ gui.chatlogs=function()
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
 gui.titleHead=function(player,text)
-	if player:IsA("Player") then
+	if player then
 		local character=getPlrChar(player)
 		local head=character:FindFirstChild("Head")
 		if character and head then
-			if not head:FindFirstChildOfClass("BillboardGui") then
+			if head:FindFirstChild("NaGoofyTitle") then head:FindFirstChild("NaGoofyTitle"):Destroy() end
+			if not head:FindFirstChild("NaGoofyTitle") then
 				local billboardGui=TitleHead:Clone()
 				local textLabel=txtTitle:Clone()
 				billboardGui.Adornee=head
