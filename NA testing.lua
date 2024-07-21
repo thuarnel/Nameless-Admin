@@ -292,14 +292,15 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-	for _,id in ipairs(_G.NAadminsLol) do
-		if Player.UserId==id and game:GetService("Players").LocalPlayer.UserId~=id then
-			return true
-		end
-	end
-	return false
+    for _, id in ipairs(_G.NAadminsLol) do
+        if id == game.Players.LocalPlayer.UserId then
+            return false
+        elseif Player.UserId == id then
+            return true
+        end
+    end
+    return false
 end
-
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
