@@ -292,14 +292,14 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-    for _, id in ipairs(_G.NAadminsLol) do
-        if id == game.Players.LocalPlayer.UserId then
-            return false
-        elseif Player.UserId == id then
-            return true
-        end
-    end
-    return false
+	for _,id in ipairs(_G.NAadminsLol) do
+		if id==game.Players.LocalPlayer.UserId then
+			return false
+		elseif Player.UserId==id then
+			return true
+		end
+	end
+	return false
 end
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
@@ -410,7 +410,12 @@ function getChar()
 end
 
 function getPlrChar(plr)
-	return game:GetService("Players")[plr].Character
+	local isChar=game:GetService("Players")[plr].Character
+	if isChar then
+		return isChar
+	else
+		return false
+	end
 end
 
 function getBp()
@@ -1941,7 +1946,16 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
-cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","teleports you using PlaceId"},function(...)
+cmd.add({"title"},{"title <text>","Gives you a title above your head"},function(...)
+	args={...}
+	target=getPlr(args[1])
+	textThingy=table.concat(args," ",2)
+	if textThingy and textThingy~="" then
+		gui.titleHead(target,textThingy)
+	end
+end)
+
+cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
 	args={...}
 	pId=tonumber(args[1])
 	game:GetService("TeleportService"):Teleport(pId)
@@ -15219,6 +15233,8 @@ local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
 local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
 local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
 local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
+local TitleHead=ScreenGui:FindFirstChild("NaGoofyTitle")
+local txtTitle=TitleHead:FindFirstChildOfClass("TextLabel")
 local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
 local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
 local resizeXY={
@@ -15312,6 +15328,22 @@ gui.chatlogs=function()
 		chatLogsFrame.Visible=true
 	end
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
+end
+gui.titleHead=function(player,text)
+	if player:IsA("Player") then
+		local character=getPlrChar(player)
+		local head=character:FindFirstChild("Head")
+		if character and head then
+			if not head:FindFirstChildOfClass("BillboardGui") then
+				local billboardGui=TitleHead:Clone()
+				local textLabel=txtTitle:Clone()
+				billboardGui.Adornee=head
+				billboardGui.Parent=COREGUI
+				textLabel.Text=text
+				textLabel.Parent=billboardGui
+			end
+		end
+	end
 end
 gui.universeGui=function()
 	if not UniverseViewerFrame.Visible then
@@ -15667,14 +15699,14 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 
 --table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
 function autoResizeable(ui)
-	local initialSize = ui.AbsoluteSize
-	local minSize = Vector2.new(
-		math.max(100,initialSize.X*.3),
-		math.max(100,initialSize.Y*.3)
+	local initialSize=ui.AbsoluteSize
+	local minSize=Vector2.new(
+		math.max(100,initialSize.X*.5),
+		math.max(100,initialSize.Y*.5)
 	)
-	local maxSize = Vector2.new(
-		initialSize.X*1,
-		initialSize.Y*1
+	local maxSize=Vector2.new(
+		initialSize.X*2,
+		initialSize.Y*2
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
