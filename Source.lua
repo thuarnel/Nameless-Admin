@@ -74,7 +74,7 @@ NACaller(function()
 end)
 
 --Notification library
-local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
+local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))();
 local Notify=Notification.Notify;
 
 wait();--added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
@@ -12543,7 +12543,6 @@ cmd.add({"unautodelete","unautoremove","unautodel"},{"unautodelete {partname} (u
 	if autormv then autormv:Disconnect() autormv=nil end
 	autoRemover={}
 end)
-
 
 local rrrrr,ppppp = pcall(function()
 	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Namelessadmin/"..curVer.."?raw=true"))()
