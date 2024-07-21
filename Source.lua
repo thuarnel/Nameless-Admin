@@ -963,6 +963,9 @@ lib.LocalPlayerChat=function(...)
 				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
 					if string.find(v.Name,"RBXWhisper:") then
 						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+							if v[game.Players.LocalPlayer.Name].CanSend == false then
+								continue
+							end
 							sendto=v
 							Playerchats[args[2]]=v
 							break
@@ -973,7 +976,7 @@ lib.LocalPlayerChat=function(...)
 				sendto=Playerchats[args[2]]
 			end
 			if sendto==game:GetService("TextChatService").TextChannels.RBXGeneral then
-				chatmsgshooks[#chatmsgshooks+1]={args[1],args}
+				chatmsgshooks[args[1]]={args[1],args}
 				task.spawn(function()
 					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w @"..args[2])
 				end)
@@ -996,7 +999,11 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 			task.wait(1)
 			for id,va in pairs(chatmsgshooks) do
 				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
+					if v[game.Players.LocalPlayer.Name].CanSend == false then
+						continue
+					end
 					Playerchats[va[1]]=v
+					chatmsgshooks[id] = nil
 					lib.LocalPlayerChat(va[2])
 					break
 				end
