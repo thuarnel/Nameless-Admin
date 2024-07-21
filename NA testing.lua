@@ -15933,10 +15933,7 @@ end
 
 task.spawn(function()
 	NACaller(function()--better saveinstance support
-		if identifyexecutor()=="Solara" then--solara broke this bra
-		else
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
-		end
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
 end)
 

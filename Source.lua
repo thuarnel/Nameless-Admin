@@ -276,14 +276,14 @@ function didYouMean(arg)
 end
 
 local function isRelAdmin(Player)
-    for _, id in ipairs(_G.NAadminsLol) do
-        if id == game.Players.LocalPlayer.UserId then
-            return false
-        elseif Player.UserId == id then
-            return true
-        end
-    end
-    return false
+	for _,id in ipairs(_G.NAadminsLol) do
+		if id==game.Players.LocalPlayer.UserId then
+			return false
+		elseif Player.UserId==id then
+			return true
+		end
+	end
+	return false
 end
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
@@ -394,7 +394,12 @@ function getChar()
 end
 
 function getPlrChar(plr)
-	return game:GetService("Players")[plr].Character
+	local isChar=game:GetService("Players")[plr].Character
+	if isChar then
+		return isChar
+	else
+		return false
+	end
 end
 
 function getBp()
@@ -1925,7 +1930,7 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
-cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","teleports you using PlaceId"},function(...)
+cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
 	args={...}
 	pId=tonumber(args[1])
 	game:GetService("TeleportService"):Teleport(pId)
@@ -4412,24 +4417,32 @@ cmd.add({"nofog"},{"nofog","Removes all fog from the game"},function()
 		end
 	end
 end)
-
+local ANTIAFK=nil
 cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for being afk for 20 mins"},function()
+	if ANTIAFK then ANTIAFK:Disconnect() ANTIAFK=nil
 
+		ANTIAFK=game.Players.LocalPlayer.Idled:connect(function()
+			game:FindService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			task.wait(1)
+			game:FindService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		end)
 
+		wait();
 
-	wait();
+		Notify({
+			Description="Anti AFK has been enabled";
+			Title=adminName;
+			Duration=5;
 
-	Notify({
-		Description="Anti AFK has been enabled";
-		Title=adminName;
-		Duration=5;
+		});
+	else
+		Notify({
+			Description="Anti AFK is already enabled";
+			Title=adminName;
+			Duration=5;
 
-	});
-	ANTIAFK=game.Players.LocalPlayer.Idled:connect(function()
-		game:FindService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-		task.wait(1)
-		game:FindService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
-	end)
+		});
+	end
 end)
 
 
@@ -7398,7 +7411,7 @@ cmd.add({"placeid","pid"},{"placeid (pid)","Copies the PlaceId of the game you'r
 	Notify({
 		Description="Copied the game's PlaceId: "..PlaceId;
 		Title=adminName;
-		Duration=7;
+		Duration=4;
 	});
 end)
 
@@ -7410,7 +7423,19 @@ cmd.add({"gameid","universeid","gid"},{"gameid (universeid,gid)","Copies the Gam
 	Notify({
 		Description="Copied the game's GameId: "..GameId;
 		Title=adminName;
-		Duration=7;
+		Duration=4;
+	});
+end)
+
+cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name to your clipboard"},function()
+	setclipboard(placeName())
+
+	wait();
+
+	Notify({
+		Description="Copied the game's place name: "..GameId;
+		Title=adminName;
+		Duration=4;
 	});
 end)
 
@@ -15308,7 +15333,7 @@ gui.updateLogs=function()
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
 		Notify({
-			Description="no upd logs for now :(";
+			Description="no upd logs for now...";
 			Title=adminName;
 			Duration=5;
 		});
@@ -15651,14 +15676,14 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 
 --table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
 function autoResizeable(ui)
-	local initialSize = ui.AbsoluteSize
-	local minSize = Vector2.new(
-		math.max(100,initialSize.X*.3),
-		math.max(100,initialSize.Y*.3)
+	local initialSize=ui.AbsoluteSize
+	local minSize=Vector2.new(
+		math.max(100,initialSize.X*.5),
+		math.max(100,initialSize.Y*.5)
 	)
-	local maxSize = Vector2.new(
-		initialSize.X*1,
-		initialSize.Y*1
+	local maxSize=Vector2.new(
+		initialSize.X*2,
+		initialSize.Y*2
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
@@ -15737,26 +15762,26 @@ NACaller(function()
 	delay(0.3,function()
 		if identifyexecutor then--idk why i made it as a check
 			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate;
+				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nPlace: "..placeName();
 				Title=rngMsg().." "..hh;
-				Duration=8;
+				Duration=6;
 			});
 		else
 			Notify({
 				Description="Welcome to "..adminName.." V"..curVer;
 				Title=rngMsg().." "..hh;
-				Duration=8;
+				Duration=6;
 			});
 		end
 		Notify({
 			Description=goof();
 			Title="Random Goofy Message";
-			Duration=6;
+			Duration=4;
 		});
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=8;
+			Duration=6;
 		});
 	end)
 
@@ -15774,7 +15799,7 @@ NACaller(function()
 			btn.Name=place.Name
 			btn.Text=place.Name.." ("..place.PlaceId..")"
 			btn.MouseButton1Click:Connect(function()
-				TeleportService:Teleport(place.PlaceId,game:GetService("Players").LocalPlayer)
+				TeleportService:Teleport(place.PlaceId)
 				Notify({
 					Description="Teleporting To Place: "..place.Name;
 					Title=adminName;
@@ -15892,10 +15917,7 @@ end
 
 task.spawn(function()
 	NACaller(function()--better saveinstance support
-		if identifyexecutor()=="Solara" then--solara broke this bra
-		else
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
-		end
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
 end)
 
