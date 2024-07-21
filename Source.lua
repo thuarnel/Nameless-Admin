@@ -975,7 +975,7 @@ lib.LocalPlayerChat=function(...)
 			if sendto==game:GetService("TextChatService").TextChannels.RBXGeneral then
 				chatmsgshooks[#chatmsgshooks+1]={args[1],args}
 				task.spawn(function()
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w "..args[2])
+					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w @"..args[2])
 				end)
 				return "Hooking"
 			end
