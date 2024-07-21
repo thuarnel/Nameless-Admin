@@ -1950,11 +1950,11 @@ cmd.add({"title"},{"title <player> (text)","Gives the player a title above their
 	args={...}
 	target=getPlr(args[1])
 	textThingy=""
-	for i=2,#args do
-		if i > 2 then
-			textThingy=textThingy.." "..tostring(args[i])
+	for i,v in ipairs(args) do
+		if i>2 then
+			textThingy=textThingy.." "..tostring(v)
 		else
-			textThingy=tostring(args[i])
+			textThingy=tostring(v)
 		end
 	end
 	gui.titleHead(target,textThingy)
