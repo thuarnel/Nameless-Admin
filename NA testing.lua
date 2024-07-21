@@ -1946,10 +1946,17 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	});
 end)
 
-cmd.add({"title"},{"title <text>","Gives you a title above your head"},function(...)
+cmd.add({"title"},{"title <player> (text)","Gives the player a title above their head"},function(...)
 	args={...}
 	target=getPlr(args[1])
-	textThingy=table.concat(args," ",2)
+	textThingy=""
+	for i=2,#args do
+		if i > 2 then
+			textThingy=textThingy.." "..tostring(args[i])
+		else
+			textThingy=tostring(args[i])
+		end
+	end
 	if textThingy and textThingy~="" then
 		gui.titleHead(target,textThingy)
 	end
