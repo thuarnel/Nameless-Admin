@@ -12560,12 +12560,7 @@ cmd.add({"unautodelete","unautoremove","unautodel"},{"unautodelete {partname} (u
 	autoRemover={}
 end)
 
-local rrrrr,ppppp = pcall(function()
-	loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Namelessadmin/"..curVer.."?raw=true"))()
-end)
-if rrrrr then
-print("something went wrong ;)")
-end
+
 
 cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclass,dc)","Removes any part with a certain classname from the workspace"},function(...)
 	local delclass=0
