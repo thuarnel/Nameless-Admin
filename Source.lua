@@ -4426,8 +4426,7 @@ cmd.add({"nofog"},{"nofog","Removes all fog from the game"},function()
 end)
 local ANTIAFK=nil
 cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for being afk for 20 mins"},function()
-	if ANTIAFK then ANTIAFK:Disconnect() ANTIAFK=nil
-
+	if not ANTIAFK then
 		ANTIAFK=game.Players.LocalPlayer.Idled:connect(function()
 			game:FindService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 			task.wait(1)
@@ -4440,14 +4439,12 @@ cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for bein
 			Description="Anti AFK has been enabled";
 			Title=adminName;
 			Duration=5;
-
 		});
 	else
 		Notify({
 			Description="Anti AFK is already enabled";
 			Title=adminName;
 			Duration=5;
-
 		});
 	end
 end)
@@ -4624,6 +4621,7 @@ end)
 cmd.add({"unantiafk","unnoafk"},{"unantiafk (unnoafk)","Makes you able to be kicked for being afk for 20 mins"},function()
 	if ANTIAFK then
 		ANTIAFK:Disconnect()
+		ANTIAFK=nil
 		wait();
 
 		Notify({
