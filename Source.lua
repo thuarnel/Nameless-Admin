@@ -5,6 +5,10 @@ local function NACaller(pp)--helps me log better
 	if not s then warn("NA script err: "..err) end
 end
 
+
+
+local NAbegin=tick()
+
 NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=false end)
 
@@ -115,12 +119,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Fixed ESP command not working properly';
-	log2='Fixed "saveprefix" command not saving your prefix properly';
-}
+local updLogs={}
 
-local updDate="7/21/2024"
+local updDate="7/24/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -275,7 +276,7 @@ function didYouMean(arg)
 	return closer
 end
 
-local function isRelAdmin(Player)
+function isRelAdmin(Player)
 	for _,id in ipairs(_G.NAadminsLol) do
 		if id==game.Players.LocalPlayer.UserId then
 			return false
@@ -285,6 +286,25 @@ local function isRelAdmin(Player)
 	end
 	return false
 end
+
+function loadedResults(res)
+    if res==nil then res=0 end
+    local sec=tonumber(res)
+    local hr = math.floor(sec / 3600)
+    local min = math.floor((sec % 3600) / 60)
+    local remain = sec % 60
+    local format = ''
+    if hr > 0 then
+        format = string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds", hr, min, remain)
+    elseif min > 0 then
+        format = string.format("%d:%05.2f | Minutes,Seconds", min, remain)
+    else
+        format = string.format("%.2f | Seconds", remain)
+    end
+    return format
+end
+
+
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
@@ -4628,7 +4648,6 @@ cmd.add({"unantiafk","unnoafk"},{"unantiafk (unnoafk)","Makes you able to be kic
 			Description="Anti AFK disabled";
 			Title=adminName;
 			Duration=5;
-
 		});
 	else 
 		wait();
@@ -4637,7 +4656,6 @@ cmd.add({"unantiafk","unnoafk"},{"unantiafk (unnoafk)","Makes you able to be kic
 			Description="Anti AFK already disabled";
 			Title=adminName;
 			Duration=5;
-
 		});
 	end
 end)
@@ -12543,6 +12561,7 @@ cmd.add({"unautodelete","unautoremove","unautodel"},{"unautodelete {partname} (u
 end)
 
 
+
 cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclass,dc)","Removes any part with a certain classname from the workspace"},function(...)
 	local delclass=0
 	local grr={...}
@@ -15755,46 +15774,6 @@ RunService.Stepped:Connect(function()
 	UpdLogsList.CanvasSize=UDim2.new(0,0,0,UpdLogsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 end)
 
-
-NACaller(function()
-	local display=Player.DisplayName
-	local name=Player.Name
-	local hh=nil
-	if display:lower()==name:lower() then
-		hh="@"..name..""
-	else
-		hh=display.." (@"..name..")"
-	end
-
-	delay(0.3,function()
-		if identifyexecutor then--idk why i made it as a check
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nPlace: "..placeName();
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
-		else
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer;
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
-		end
-		Notify({
-			Description=goof();
-			Title="Random Goofy Message";
-			Duration=4;
-		});
-		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
-			Title="Info";
-			Duration=6;
-		});
-	end)
-
-	cmdInput.PlaceholderText=adminName.." V"..curVer
-end)
-
 NACaller(function()
 	local page=AssetService:GetGamePlacesAsync()
 	while true do
@@ -15926,6 +15905,46 @@ task.spawn(function()
 	NACaller(function()--better saveinstance support
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
+end)
+
+NACaller(function()
+	local display=Player.DisplayName
+	local name=Player.Name
+	local hh=nil
+	local NAresult=tick()-NAbegin
+	if display:lower()==name:lower() then
+		hh="@"..name..""
+	else
+		hh=display.." (@"..name..")"
+	end
+
+	delay(0.3,function()
+		if identifyexecutor then--idk why i made it as a check
+			Notify({
+				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
+				Title=rngMsg().." "..hh;
+				Duration=6;
+			});
+		else
+			Notify({
+				Description="Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
+				Title=rngMsg().." "..hh;
+				Duration=6;
+			});
+		end
+		Notify({
+			Description=goof();
+			Title="Random Goofy Message";
+			Duration=4;
+		});
+		Notify({
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
+			Title="Info";
+			Duration=6;
+		});
+	end)
+
+	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
 
 print([[
