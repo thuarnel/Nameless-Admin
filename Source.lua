@@ -1412,6 +1412,18 @@ cmd.add({"updatelog","updlog","updates"},{"updatelog (updlog,updates)","show the
 	gui.updateLogs()
 end)
 
+cmd.add({"discord"},{"discord","Copy an invite link to the official Nameless Admin V2 discord server"},function()
+	if setclipboard then 
+		setclipboard('https://discord.gg/zS7TpV3p64')
+	else
+		Notify({
+			Description='Your exploit does not support setclipboard\nRetype the invite link yourself (https://discord.gg/zS7TpV3p64)';
+			Title=adminName;
+			Duration=10;
+		});
+	end
+end)
+
 cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player by clicking them"},function()
 	local Players=game:GetService("Players")
 	local Mouse=game:GetService("Players").LocalPlayer:GetMouse()
@@ -15938,9 +15950,9 @@ NACaller(function()
 			Duration=4;
 		});
 		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')\nDiscord Server | https://discord.gg/zS7TpV3p64\nor use the command (discord)';
 			Title="Info";
-			Duration=6;
+			Duration=8;
 		});
 	end)
 
