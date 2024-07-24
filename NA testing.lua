@@ -311,11 +311,11 @@ function loadedResults(res)
     local remain = sec % 60
     local format = ''
     if hr > 0 then
-        format = string.format("%d:%02d:%05.2f", hr, min, remain)
+        format = string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds", hr, min, remain)
     elseif min > 0 then
-        format = string.format("%d:%05.2f", min, remain)
+        format = string.format("%d:%05.2f | Minutes,Seconds", min, remain)
     else
-        format = string.format("%.2f", remain)
+        format = string.format("%.2f | Seconds", remain)
     end
     return format
 end
