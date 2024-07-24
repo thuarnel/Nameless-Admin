@@ -135,12 +135,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Fixed ESP command not working properly';
-	log2='Fixed "saveprefix" command not saving your prefix properly';
-}
+local updLogs={}
 
-local updDate="7/21/2024"
+local updDate="7/24/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -306,7 +303,8 @@ function isRelAdmin(Player)
 	return false
 end
 
-function loadedResults(sec)
+function loadedResults(res)
+    local sec=tonumber(res)
     local hr = math.floor(sec / 3600)
     local min = math.floor((sec % 3600) / 60)
     local remain = sec % 60
@@ -15923,11 +15921,10 @@ task.spawn(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
 end)
-
+local NAend=tick()
 NACaller(function()
 	local display=Player.DisplayName
 	local name=Player.Name
-        local NAend=tick()
         local NAresult=NAend-NAbegin
 	local hh=nil
 	if display:lower()==name:lower() then
