@@ -1,4 +1,5 @@
-### continuation of Nameless Admin (officially) | https://cdn.discordapp.com/attachments/947138390728527922/1265717904389968043/image.png?ex=66a28728&is=66a135a8&hm=237e363964142cc4809a2135742ec02547b391d6a83b745dc74c419dcdfafa6b&
+### continuation of Nameless Admin (officially)
+<img src="na_Proof.png" width="450" alt="Proof" />
 
 ## Current Devs (AKA: new owners):
 ```lua
