@@ -135,7 +135,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1='Discord server or something lol'
+}
 
 local updDate="7/24/2024"
 
