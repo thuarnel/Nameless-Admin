@@ -312,11 +312,11 @@ function loadedResults(res)
     local format = ''
     if hr > 0 then
         format = string.format("%d:%02d:%05.2f", hr, min, remain)
-    elseif minutes > 0 then
+    elseif min > 0 then
         format = string.format("%d:%05.2f", min, remain)
     else
         format = string.format("%.2f", remain)
-	end
+    end
     return format
 end
 
@@ -15922,12 +15922,12 @@ task.spawn(function()
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
 end)
-local NAend=tick()
-local NAresult=NAend-NAbegin
+
 NACaller(function()
 	local display=Player.DisplayName
 	local name=Player.Name
 	local hh=nil
+	local NAresult=tick()-NAbegin
 	if display:lower()==name:lower() then
 		hh="@"..name..""
 	else
