@@ -1,11 +1,23 @@
 ### Continuation of Nameless Admin (officially)
-<img src="na_Proof.png" width="450" alt="Proof" />
+<img src="Github_Images/na_Proof.png" width="450" alt="Proof That we are the new owners" />
 
 ## Current Devs (AKA: new owners):
-```lua
-@ltseverydayyou (maxype) | https://github.com/ltseverydayyou
-@MuhXd (Viper) | https://github.com/MuhXd
-```
+- Maxype 
+- Viper
+
+
+## Our Socials:
+<div align="left">
+<a href="https://github.com/ltseverydayyou">
+      <img src="https://img.shields.io/badge/Maxype%20(@ltseverydayyou)-black?logo=github" alt="Viper's Github">
+  </a>
+<a href="https://github.com/MuhXd">
+      <img src="https://img.shields.io/badge/Viper%20(@MuhXd)-black?logo=github" alt="Viper's Github">
+  </a>
+  <a href="https://discord.gg/zS7TpV3p64">
+      <img src="https://img.shields.io/badge/Nameless_Admin_Discord-black?logo=discord" alt="Join Our Discord">
+  </a>
+</div>
 
 
 ## INFO
