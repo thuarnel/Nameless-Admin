@@ -1415,6 +1415,11 @@ end)
 cmd.add({"discord"},{"discord","Copy an invite link to the official Nameless Admin V2 discord server"},function()
 	if setclipboard then 
 		setclipboard('https://discord.gg/zS7TpV3p64')
+		Notify({
+			Description='Copied the discord invite link!';
+			Title=adminName;
+			Duration=4;
+		});
 	else
 		Notify({
 			Description='Your exploit does not support setclipboard\nRetype the invite link yourself (https://discord.gg/zS7TpV3p64)';
@@ -15950,7 +15955,7 @@ NACaller(function()
 			Duration=4;
 		});
 		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')\nDiscord Server | https://discord.gg/zS7TpV3p64\nor use the command (discord)';
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')\n\nDiscord Server | https://discord.gg/zS7TpV3p64\nor use the command (discord)';
 			Title="Info";
 			Duration=8;
 		});
