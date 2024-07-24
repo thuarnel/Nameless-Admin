@@ -290,20 +290,20 @@ function isRelAdmin(Player)
 end
 
 function loadedResults(res)
-    if res==nil then res=0 end
-    local sec=tonumber(res)
-    local hr = math.floor(sec / 3600)
-    local min = math.floor((sec % 3600) / 60)
-    local remain = sec % 60
-    local format = ''
-    if hr > 0 then
-        format = string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds", hr, min, remain)
-    elseif min > 0 then
-        format = string.format("%d:%05.2f | Minutes,Seconds", min, remain)
-    else
-        format = string.format("%.2f | Seconds", remain)
-    end
-    return format
+	if res==nil then res=0 end
+	local sec=tonumber(res)
+	local hr = math.floor(sec / 3600)
+	local min = math.floor((sec % 3600) / 60)
+	local remain = sec % 60
+	local format = ''
+	if hr > 0 then
+		format = string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds", hr, min, remain)
+	elseif min > 0 then
+		format = string.format("%d:%05.2f | Minutes,Seconds", min, remain)
+	else
+		format = string.format("%.2f | Seconds", remain)
+	end
+	return format
 end
 
 
@@ -15957,7 +15957,7 @@ NACaller(function()
 			Duration=4;
 		});
 		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')\n\nDiscord Server | https://discord.gg/zS7TpV3p64\nor use the command (discord)';
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')\n\nDiscord Server | https://discord.gg/zS7TpV3p64';
 			Title="Info";
 			Duration=8;
 		});
