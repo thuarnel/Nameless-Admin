@@ -21,6 +21,13 @@ new cmds soon (if we're not lazy :P)
 ```
 
 
+<div align="left">
+  <a href="https://discord.gg/zS7TpV3p64">
+    <img src="https://img.shields.io/badge/Nameless_Admin_V2_Discord-969ef2?logo=discord&logoColor=5865F2&labelColor=969ef2" alt="Join Our Discord">
+  </a>&#8203;
+<img src="https://via.placeholder.com/1x1/000000/000000" width="10" height="1" alt="" />
+</div>
+
 ## Original Owner: 
 ```lua
 https://github.com/FilteringEnabled | https://github.com/lxte
@@ -30,10 +37,3 @@ https://github.com/FilteringEnabled | https://github.com/lxte
 ```lua
 loadstring(game:HttpGet("https://github.com/FilteringEnabled/NamelessAdmin/blob/main/Source?raw=true"))()
 ```
-
-<div align="left">
-  <a href="https://discord.gg/zS7TpV3p64">
-    <img src="https://img.shields.io/badge/Nameless_Admin_V2_Discord-969ef2?logo=discord&logoColor=5865F2&labelColor=969ef2" alt="Join Our Discord">
-  </a>&#8203;
-<img src="https://via.placeholder.com/1x1/000000/000000" width="10" height="1" alt="" />
-</div>
