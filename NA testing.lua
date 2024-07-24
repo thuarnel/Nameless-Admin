@@ -304,6 +304,7 @@ function isRelAdmin(Player)
 end
 
 function loadedResults(res)
+    if res==nil then res=0 end
     local sec=tonumber(res)
     local hr = math.floor(sec / 3600)
     local min = math.floor((sec % 3600) / 60)
@@ -15922,10 +15923,10 @@ task.spawn(function()
 	end)
 end)
 local NAend=tick()
+local NAresult=NAend-NAbegin
 NACaller(function()
 	local display=Player.DisplayName
 	local name=Player.Name
-        local NAresult=NAend-NAbegin
 	local hh=nil
 	if display:lower()==name:lower() then
 		hh="@"..name..""
