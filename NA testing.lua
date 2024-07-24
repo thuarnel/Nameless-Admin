@@ -21,6 +21,10 @@ local function NACaller(pp)--helps me log better
 	if not s then warn("NA script err: "..err) end
 end
 
+
+
+local NAbegin = tick()
+
 NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
@@ -291,7 +295,7 @@ function didYouMean(arg)
 	return closer
 end
 
-local function isRelAdmin(Player)
+function isRelAdmin(Player)
 	for _,id in ipairs(_G.NAadminsLol) do
 		if id==game.Players.LocalPlayer.UserId then
 			return false
@@ -301,6 +305,16 @@ local function isRelAdmin(Player)
 	end
 	return false
 end
+
+function loadedResults(seconds)
+    local hours = math.floor(seconds / 3600)
+    seconds = seconds % 3600
+    local minutes = math.floor(seconds / 60)
+    seconds = seconds % 60
+    return string.format("%02d:%02d:%05.2f", hours, minutes, seconds)
+end
+
+
 --[[ COMMAND FUNCTIONS ]]--
 local commandcount=0
 cmd={}
@@ -15770,46 +15784,6 @@ RunService.Stepped:Connect(function()
 	UpdLogsList.CanvasSize=UDim2.new(0,0,0,UpdLogsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
 end)
 
-
-NACaller(function()
-	local display=Player.DisplayName
-	local name=Player.Name
-	local hh=nil
-	if display:lower()==name:lower() then
-		hh="@"..name..""
-	else
-		hh=display.." (@"..name..")"
-	end
-
-	delay(0.3,function()
-		if identifyexecutor then--idk why i made it as a check
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nPlace: "..placeName();
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
-		else
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer;
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
-		end
-		Notify({
-			Description=goof();
-			Title="Random Goofy Message";
-			Duration=4;
-		});
-		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
-			Title="Info";
-			Duration=6;
-		});
-	end)
-
-	cmdInput.PlaceholderText=adminName.." V"..curVer
-end)
-
 NACaller(function()
 	local page=AssetService:GetGamePlacesAsync()
 	while true do
@@ -15941,6 +15915,47 @@ task.spawn(function()
 	NACaller(function()--better saveinstance support
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
 	end)
+end)
+
+NACaller(function()
+	local display=Player.DisplayName
+	local name=Player.Name
+        local NAend=tick()
+        local NAresult=NAbegin-NAend
+	local hh=nil
+	if display:lower()==name:lower() then
+		hh="@"..name..""
+	else
+		hh=display.." (@"..name..")"
+	end
+
+	delay(0.3,function()
+		if identifyexecutor then--idk why i made it as a check
+			Notify({
+				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
+				Title=rngMsg().." "..hh;
+				Duration=6;
+			});
+		else
+			Notify({
+				Description="Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
+				Title=rngMsg().." "..hh;
+				Duration=6;
+			});
+		end
+		Notify({
+			Description=goof();
+			Title="Random Goofy Message";
+			Duration=4;
+		});
+		Notify({
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
+			Title="Info";
+			Duration=6;
+		});
+	end)
+
+	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
 
 print([[
