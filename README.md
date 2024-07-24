@@ -1,4 +1,4 @@
-### continuation of Nameless Admin (officially)
+### Continuation of Nameless Admin (officially)
 <img src="na_Proof.png" width="450" alt="Proof" />
 
 ## Current Devs (AKA: new owners):
