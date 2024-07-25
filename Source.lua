@@ -119,9 +119,7 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Discord server or something lol'
-}
+local updLogs={}
 
 local updDate="7/24/2024"
 
@@ -15957,9 +15955,9 @@ NACaller(function()
 			Duration=4;
 		});
 		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')\n\nDiscord Server | https://discord.gg/zS7TpV3p64';
+			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=8;
+			Duration=6;
 		});
 	end)
 
