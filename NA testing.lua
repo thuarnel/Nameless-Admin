@@ -9269,10 +9269,9 @@ cmd.add({"watch","view","specate"},{"view <player>","Watch the given player"},fu
 end)
 
 cmd.add({"unwatch","unview","unspectate"},{"unview","Stop watching a player"},function()
-	local character=game.Players.LocalPlayer.Character
 	view=false
 	wait();
-	game.Workspace.CurrentCamera.CameraSubject=(getHum() or character)
+	game.Workspace.CurrentCamera.CameraSubject=getHum()
 end)
 
 cmd.add({"pp","penis"},{"penis (pp)","benis :flushed:"},function()
@@ -12998,7 +12997,7 @@ end)
 
 cmd.add({"unviewpart","unviewp"},{"unviewpart (unviewp)","Unviews the part"},function()
 	local cam=workspace.CurrentCamera
-	cam.CameraSubject=(getHum() or character)
+	cam.CameraSubject=getHum()
 end)
 
 cmd.add({"console"},{"console","Opens developer console"},function()
