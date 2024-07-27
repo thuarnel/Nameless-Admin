@@ -8648,7 +8648,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 		end
 	end
 
-	function doSound(id,vol)
+	local function doSound(id,vol)
 		if not id then id=0 end
 		if not vol then vol=1 end
 		local sfx=Instance.new("Sound")
@@ -8657,15 +8657,6 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 		sfx.SoundId="rbxassetid://"..id
 		sfx.Volume=vol
 		sfx.Ended:Connect(function() sfx:Destroy() end)
-	end
-
-	function randomString()
-		local length=math.random(10,20)
-		local array={}
-		for i=1,length do
-			array[i]=string.char(math.random(32,126))
-		end
-		return table.concat(array)
 	end
 
 	ScreenGui.Name=randomString()
@@ -8693,21 +8684,16 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	imgLabel.Size = UDim2.new(0, 100, 0, 100)
 	imgLabel.Image = "rbxassetid://8747893766"
 
-	function draggablev2(floght)
-		floght.Active=true
-		floght.Draggable=true
-	end
-
-	function count()
+	local function count()
 		local script=Instance.new('LocalScript',ttLabel)
-		num=180
+		local num=180
 		while task.wait(1) do
 			if not _G.SawFinish then
 				if num>0 then
 					num=num-1
 					doSound(138081500,1)
 					txt=script.Parent
-					txt.Text=challenge.."\n\n"..num
+					txt.Text="Challenge: "..challenge.."\nTime: "..num
 				else
 					game.Players.LocalPlayer:Kick("You Failed The Challenge")
 				end
@@ -8721,17 +8707,17 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 		end
 	end
 
-	function poop()
+	local function poop()
 		local script=Instance.new('LocalScript',ttLabel)
 		local txtlabel=script.Parent
 		doSound(469373418,5)
 		if con then con:Disconnect() con=nil end
-		con=game:GetService("RunService").Heartbeat:Connect(function()
+		con=RunService.Heartbeat:Connect(function()
 			local textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
 			local newSize=UDim2.new(0,textWidth+69,0,50)
 			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		end)
-		draggablev2(txtlabel)
+		gui.draggablev2(txtlabel)
 		task.wait(3.5)
 		txtlabel.Text="I Wana Play a Game"
 		task.wait(1.5)
