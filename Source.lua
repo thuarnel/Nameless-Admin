@@ -8683,7 +8683,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 				end
 			else
 				txt.Text="You've Passed The Test"
-				doSound(9125915751,1)
+				doSound(9125915751,5)
 				task.wait(2)
 				if con then con:Disconnect() con=nil end
 				ScreenGui:Destroy()
