@@ -8616,18 +8616,12 @@ cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre m
 end)
 
 cmd.add({"whisper","pm"},{"whisper <player,text> (pm)","Private message a user"},function(...)
-	local hhh={...}
-	local A_1=""
-	local target=getPlr(hhh[1])
-	for i,v in pairs(hhh) do
-		if i~=1 and i~=2 then
-			A_1=A_1.." "..tostring(v)
-		else
-			A_1=tostring(v)
-		end
-	end
-	local A_2=target.Name
-	lib.LocalPlayerChat(A_1,A_2)
+    local args={...}
+    local target=args[1]
+    local message=table.concat(args," ",2)
+
+    local user=getPlr(target)
+    lib.LocalPlayerChat(message,user.Name)
 end)
 
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
