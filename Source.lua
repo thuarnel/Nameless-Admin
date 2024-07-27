@@ -15843,12 +15843,12 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 function autoResizeable(ui)
 	local initialSize=ui.AbsoluteSize
 	local minSize=Vector2.new(
-		math.max(100,initialSize.X*.2),
-		math.max(100,initialSize.Y*.2)
+		math.max(100,initialSize.X*1),
+		math.max(100,initialSize.Y*1)
 	)
 	local maxSize=Vector2.new(
-		initialSize.X*0.5,
-		initialSize.Y*0.5
+		initialSize.X*5,
+		initialSize.Y*5
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
