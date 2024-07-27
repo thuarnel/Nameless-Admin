@@ -136,9 +136,9 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Improved dragging';
+	log1='Changed dragging';
 	log2='Small bug fixes';
-	log3="Improved a few command's functionality"
+	log3="Improved a few command's functionality";
 }
 
 local updDate="7/28/2024"
@@ -4192,7 +4192,7 @@ end)
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
 	local allow,Old=nil,nil
 	getgenv().acftp=true
-	
+
 	wait();
 
 	Notify({
@@ -8613,15 +8613,6 @@ cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre m
 	end
 	local A_2="All"
 	lib.LocalPlayerChat(A_1,A_2)
-end)
-
-cmd.add({"whisper","pm"},{"whisper <player,text> (pm)","Private message a user"},function(...)
-    local args={...}
-    local target=args[1]
-    local message=table.concat(args," ",2)
-
-    local user=getPlr(target)
-    lib.LocalPlayerChat(message,user.Name)
 end)
 
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
@@ -14756,7 +14747,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 end)
 
 cmd.add({"unchatspy"},{"unchat","Unspies on chat,enables chat,spies whispers etc."},function()
-	
+
 	wait();
 
 	Notify({
