@@ -15599,13 +15599,12 @@ gui.resizeable=function(ui,min,max)
 		end)
 	end
 end
-gui.draggable=function(menu,dragui)
-	if not dragui then dragui=menu end
+gui.draggable=function(menu,_)
 
 	local UserInputService=game:GetService("UserInputService")
 	local RunService=game:GetService("RunService")
 
-	local thingyMabob=dragui
+	local thingyMabob=menu
 
 	local dragging
 	local dragInput
@@ -15872,12 +15871,12 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 function autoResizeable(ui)
 	local initialSize=ui.AbsoluteSize
 	local minSize=Vector2.new(
-		math.max(100,initialSize.X*.5),
-		math.max(100,initialSize.Y*.5)
+		math.max(100,initialSize.X*.2),
+		math.max(100,initialSize.Y*.2)
 	)
 	local maxSize=Vector2.new(
-		initialSize.X*2,
-		initialSize.Y*2
+		initialSize.X*0.5,
+		initialSize.Y*0.5
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
