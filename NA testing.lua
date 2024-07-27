@@ -135,9 +135,13 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1='Improved dragging';
+	log2='Small bug fixes';
+	log3="Improved a few command's functionality"
+}
 
-local updDate="7/24/2024"
+local updDate="7/28/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -223,30 +227,30 @@ local bringc={}
 
 --[[ Welcome Messages ]]--
 local msg={
-	"Hey",
-	"Hello",
-	"Hi",
-	"Hi There",
-	"Hola",
+	"Hey";
+	"Hello";
+	"Hi";
+	"Hi There";
+	"Hola";
 }
 
 --[[ Goofy Text ]]--
 local Goofer={
-	"Egg",
-	"i am a goofy goober",
-	"mmmm lasagna",
-	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-	"i am wondering if i even have a life",
-	"[REDACTED]",
-	"hey guys welcome to another video",
-	"⚠️⚠️⚠️",
-	":-(",
-	"(╯°□°)╯︵ ┻━┻",
-	"freaky",
-	"unreal",
-	"💀💀💀",
-	"X_X",
-	"not bothered to add a message here",
+	"Egg";
+	"i am a goofy goober";
+	"mmmm lasagna";
+	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	"i am wondering if i even have a life";
+	"[REDACTED]";
+	"hey guys welcome to another video";
+	"⚠️⚠️⚠️";
+	":-(";
+	"(╯°□°)╯︵ ┻━┻";
+	"freaky";
+	"unreal";
+	"💀💀💀";
+	"X_X";
+	"not bothered to add a message here";
 }
 
 --[[ Prediction ]]--
@@ -15805,25 +15809,27 @@ end
 
 --[[ AUTOFILL SEARCHER ]]--
 gui.searchCommands=function()
-	local str=(cmdInput.Text:gsub(";","")):lower()
+	local searchTerm=cmdInput.Text:gsub(";",""):lower()
 	local index=0
-	local lastFrame
-	for _,v in ipairs(cmdAutofill:GetChildren()) do
-		if v:IsA("Frame") and index<5 then
-			local cmd=Commands[v.Name]
-			local name=cmd and cmd[2][1] or ""
-			v.Input.Text=str~="" and v.Name:find(str)==1 and v.Name or name
-			v.Visible=str=="" or v.Name:find(str)
-			if v.Visible then
+	local lastFramePos
+	for _,frame in ipairs(cmdAutofill:GetChildren()) do
+		if frame:IsA("Frame") and index < 5 then
+			local cmdName=frame.Name
+			local command=Commands[cmdName]
+			local displayName=command and command[2][1] or ""
+			local isMatching=searchTerm=="" or cmdName:find(searchTerm,1,true)~=nil
+			frame.Input.Text=searchTerm~="" and (cmdName:find(searchTerm,1,true)==1 and cmdName or displayName) or displayName
+			frame.Visible=isMatching
+			if isMatching then
 				index=index+1
-				local n=math.sqrt(index)*125
-				local yPos=(index-1)*28
-				local newPos=UDim2.new(0.5,0,0,yPos)
-				gui.tween(v,"Quint","Out",0.3,{
-					Size=UDim2.new(0.5,n,0,25),
-					Position=lastFrame and newPos or UDim2.new(0.5,0,0,yPos),
+				local newSize=UDim2.new(0.5,math.sqrt(index)*125,0,25)
+				local newYPos=(index - 1)*28
+				local newPosition=UDim2.new(0.5,0,0,newYPos)
+				gui.tween(frame,"Quint","Out",0.3,{
+					Size=newSize,
+					Position=lastFramePos and newPosition or UDim2.new(0.5,0,0,newYPos),
 				})
-				lastFrame=v
+				lastFramePos=newPosition
 			end
 		end
 	end
@@ -15837,7 +15843,7 @@ mouse.KeyDown:Connect(function(k)
 		gui.barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
-		wait(0.00005)
+		wait();
 		cmdInput.Text=''
 	end
 end)
@@ -15852,8 +15858,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 	gui.barDeselect()
 end)
 
-cmdInput.Changed:Connect(function(p)
-	if p~="Text" then return end
+cmdInput:GetPropertyChangedSignal("Text"):Connect(function()
 	gui.searchCommands()
 end)
 
@@ -16104,10 +16109,11 @@ NACaller(function()
 			Title="Random Goofy Message";
 			Duration=4;
 		});
+		task.wait(4)
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=6;
+			Duration=3;
 		});
 	end)
 
