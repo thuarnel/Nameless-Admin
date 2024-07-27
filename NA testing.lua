@@ -8699,6 +8699,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 				end
 			else
 				txt.Text="You've Passed The Test"
+				doSound(9125915751,1)
 				task.wait(2)
 				if con then con:Disconnect() con=nil end
 				ScreenGui:Destroy()
@@ -8714,7 +8715,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 		if con then con:Disconnect() con=nil end
 		con=RunService.Heartbeat:Connect(function()
 			local textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
-			local newSize=UDim2.new(0,textWidth+69,0,50)
+			local newSize=UDim2.new(0,textWidth+25,0,50)
 			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		end)
 		gui.draggablev2(txtlabel)

@@ -8609,6 +8609,112 @@ cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
 	speaker.Character.Head.Anchored=false
 end)
 
+cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
+	local challenge=""
+	local table={...}
+	for i,v in pairs(table) do
+		if i~=1 then
+			challenge=challenge.." "..tostring(v)
+		else
+			challenge=tostring(v)
+		end
+	end
+	_G.SawFinish=false
+	local ScreenGui=Instance.new("ScreenGui")
+	local ttLabel=Instance.new("TextLabel")
+	local imgLabel = Instance.new("ImageLabel")
+	local con=nil
+
+	if not gethui then
+		getgenv().gethui=function()
+			local h=(game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") or game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+			return h
+		end
+	end
+
+	local function doSound(id,vol)
+		if not id then id=0 end
+		if not vol then vol=1 end
+		local sfx=Instance.new("Sound")
+		sfx.Parent=game.Players.LocalPlayer.PlayerGui
+		sfx:Play()
+		sfx.SoundId="rbxassetid://"..id
+		sfx.Volume=vol
+		sfx.Ended:Connect(function() sfx:Destroy() end)
+	end
+
+	ScreenGui.Name=randomString()
+	ScreenGui.Parent=gethui()
+	ttLabel.Name=randomString()
+	ttLabel.Parent=ScreenGui
+	ttLabel.BackgroundColor3=Color3.fromRGB(4,4,4)
+	ttLabel.BackgroundTransparency=0.14
+	ttLabel.AnchorPoint=Vector2.new(0.5,0.5)
+	ttLabel.Position=UDim2.new(0.5,0,0.5,0)
+	ttLabel.Size=UDim2.new(0,32,0,50)
+	ttLabel.Font=Enum.Font.SourceSansBold
+	ttLabel.Text="Greetings And Welcome"
+	ttLabel.TextColor3=Color3.fromRGB(255, 0, 0)
+	ttLabel.TextSize=20.000
+	ttLabel.TextWrapped=true
+	ttLabel.ZIndex=9999
+
+	imgLabel.Parent = ttLabel
+	imgLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+	imgLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	imgLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+	imgLabel.BorderSizePixel = 0
+	imgLabel.Position = UDim2.new(0.5, 0, -1, 0)
+	imgLabel.Size = UDim2.new(0, 100, 0, 100)
+	imgLabel.Image = "rbxassetid://8747893766"
+
+	local function count()
+		local script=Instance.new('LocalScript',ttLabel)
+		local num=180
+		while task.wait(1) do
+			if not _G.SawFinish then
+				if num>0 then
+					num=num-1
+					doSound(138081500,1)
+					txt=script.Parent
+					txt.Text="Challenge: "..challenge.."\nTime: "..num
+				else
+					game.Players.LocalPlayer:Kick("You Failed The Challenge")
+				end
+			else
+				txt.Text="You've Passed The Test"
+				doSound(9125915751,1)
+				task.wait(2)
+				if con then con:Disconnect() con=nil end
+				ScreenGui:Destroy()
+				break
+			end
+		end
+	end
+
+	local function poop()
+		local script=Instance.new('LocalScript',ttLabel)
+		local txtlabel=script.Parent
+		doSound(469373418,5)
+		if con then con:Disconnect() con=nil end
+		con=RunService.Heartbeat:Connect(function()
+			local textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
+			local newSize=UDim2.new(0,textWidth+25,0,50)
+			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
+		end)
+		gui.draggablev2(txtlabel)
+		task.wait(3.5)
+		txtlabel.Text="I Wana Play a Game"
+		task.wait(1.5)
+		coroutine.wrap(count)()
+	end
+	coroutine.wrap(poop)()
+end)
+
+cmd.add({"jend"},{"jend","nil"},function()
+	_G.SawFinish=true
+end)
+
 cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 	Target=(...)
 	flinghh=1000
