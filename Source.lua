@@ -1672,7 +1672,7 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	local UIAspectRatioConstraint=Instance.new("UIAspectRatioConstraint")
 
 	Ping.Name="Ping"
-	Ping.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	Ping.Parent=gethui()
 	Ping.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 	Ping.ResetOnSpawn=false
 
@@ -1710,7 +1710,7 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	local UIAspectRatioConstraint=Instance.new("UIAspectRatioConstraint")
 
 	Fps.Name="Fps"
-	Fps.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	Fps.Parent=gethui()
 	Fps.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 	Fps.ResetOnSpawn=false
 
@@ -3204,7 +3204,7 @@ cmd.add({"flash"},{"flash <player>","Flashes the targets screen"},function(...)
 	local TPlayer=getPlr(Target)
 	TRootPart=getRoot(TPlayer.Character)
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -3471,7 +3471,7 @@ cmd.add({"banish","punish","jail"},{"punish <player> (banish,jail)","Banishes th
 	local TPlayer=getPlr(Target)
 	TRootPart=getRoot(TPlayer.Character)
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -3552,7 +3552,7 @@ cmd.add({"infvoid"},{"infvoid <player>","Makes a players avatar glitch"},functio
 	local TPlayer=getPlr(Target)
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -3605,7 +3605,7 @@ cmd.add({"attach"},{"attach <player>","Attach the given player(s)"},function(...
 	local TPlayer=getPlr(Target)
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -5450,7 +5450,7 @@ cmd.add({"rocket"},{"rocket <player>","rockets a player"},function(...)
 	local TPlayer=getPlr(Target)
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -5531,7 +5531,7 @@ cmd.add({"kidnap"},{"kidnap <player>","Kidnaps a player"},function(...)
 	local TPlayer=Target
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -5610,7 +5610,7 @@ cmd.add({"quicksand"},{"quicksand <player>","Quicksands a player"},function(...)
 	local TPlayer=getPlr(Target)
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -5721,7 +5721,7 @@ cmd.add({"control"},{"control <player>","Control a player"},function(...)
 		local TPlayer=getPlr(Target)
 		TRootPart=TPlayer.Character.HumanoidRootPart
 		local Character=Player.Character
-		local PlayerGui=Player:WaitForChild("PlayerGui")
+		local PlayerGui=gethui()
 		local Backpack=Player:WaitForChild("Backpack")
 		local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 		local RootPart=Character and Humanoid and Humanoid.RootPart or false
@@ -8131,7 +8131,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 
 	--Properties:
 
-	ScreenGui.Parent=game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	ScreenGui.Parent=gethui()
 	ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 
 	Frame.Parent=ScreenGui
@@ -11110,7 +11110,7 @@ cmd.add({"dvoid","dvoid"},{"dvoid <player> (dvoid)","Delay void"},function(...)
 	local TPlayer=getPlr(Target)
 	TRootPart=TPlayer.Character.HumanoidRootPart
 	local Character=Player.Character
-	local PlayerGui=Player:WaitForChild("PlayerGui")
+	local PlayerGui=gethui()
 	local Backpack=Player:WaitForChild("Backpack")
 	local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 	local RootPart=Character and Humanoid and Humanoid.RootPart or false
