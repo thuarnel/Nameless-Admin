@@ -15835,8 +15835,6 @@ gui.searchCommands=function()
 	end
 end
 
---[[ GUI FUNCTIONALITY ]]--
-
 --[[ OPEN THE COMMAND BAR ]]--
 mouse.KeyDown:Connect(function(k)
 	if k:lower()==opt.prefix then

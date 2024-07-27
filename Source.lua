@@ -32,7 +32,7 @@ if not gethui then
 	end
 end
 
-if identifyexecutor() == "Solara" or not fireproximityprompt then -- proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
+if identifyexecutor()=="Solara" or not fireproximityprompt then -- proximity prompt fix | Credits: Benomat (https://scriptblox.com/u/benomat)
 	getgenv().fireproximityprompt=function(pp)
 		local oldenabled=pp.Enabled
 		local oldhold=pp.HoldDuration
@@ -119,9 +119,13 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1='Improved dragging';
+	log2='Small bug fixes';
+	log3="Improved a few command's functionality"
+}
 
-local updDate="7/24/2024"
+local updDate="7/28/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -207,30 +211,30 @@ local bringc={}
 
 --[[ Welcome Messages ]]--
 local msg={
-	"Hey",
-	"Hello",
-	"Hi",
-	"Hi There",
-	"Hola",
+	"Hey";
+	"Hello";
+	"Hi";
+	"Hi There";
+	"Hola";
 }
 
 --[[ Goofy Text ]]--
 local Goofer={
-	"Egg",
-	"i am a goofy goober",
-	"mmmm lasagna",
-	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-	"i am wondering if i even have a life",
-	"[REDACTED]",
-	"hey guys welcome to another video",
-	"⚠️⚠️⚠️",
-	":-(",
-	"(╯°□°)╯︵ ┻━┻",
-	"freaky",
-	"unreal",
-	"💀💀💀",
-	"X_X",
-	"not bothered to add a message here",
+	"Egg";
+	"i am a goofy goober";
+	"mmmm lasagna";
+	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+	"i am wondering if i even have a life";
+	"[REDACTED]";
+	"hey guys welcome to another video";
+	"⚠️⚠️⚠️";
+	":-(";
+	"(╯°□°)╯︵ ┻━┻";
+	"freaky";
+	"unreal";
+	"💀💀💀";
+	"X_X";
+	"not bothered to add a message here";
 }
 
 --[[ Prediction ]]--
@@ -290,16 +294,16 @@ end
 function loadedResults(res)
 	if res==nil then res=0 end
 	local sec=tonumber(res)
-	local hr = math.floor(sec / 3600)
-	local min = math.floor((sec % 3600) / 60)
-	local remain = sec % 60
-	local format = ''
+	local hr=math.floor(sec / 3600)
+	local min=math.floor((sec % 3600) / 60)
+	local remain=sec % 60
+	local format=''
 	if hr > 0 then
-		format = string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds", hr, min, remain)
+		format=string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds",hr,min,remain)
 	elseif min > 0 then
-		format = string.format("%d:%05.2f | Minutes,Seconds", min, remain)
+		format=string.format("%d:%05.2f | Minutes,Seconds",min,remain)
 	else
-		format = string.format("%.2f | Seconds", remain)
+		format=string.format("%.2f | Seconds",remain)
 	end
 	return format
 end
@@ -983,7 +987,7 @@ lib.LocalPlayerChat=function(...)
 				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
 					if string.find(v.Name,"RBXWhisper:") then
 						if v:FindFirstChild(args[2]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-							if v[game.Players.LocalPlayer.Name].CanSend == false then
+							if v[game.Players.LocalPlayer.Name].CanSend==false then
 								continue
 							end
 							sendto=v
@@ -1019,11 +1023,11 @@ if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
 			task.wait(1)
 			for id,va in pairs(chatmsgshooks) do
 				if v:FindFirstChild(va[1]) and v:FindFirstChild(game.Players.LocalPlayer.Name) then
-					if v[game.Players.LocalPlayer.Name].CanSend == false then
+					if v[game.Players.LocalPlayer.Name].CanSend==false then
 						continue
 					end
 					Playerchats[va[1]]=v
-					chatmsgshooks[id] = nil
+					chatmsgshooks[id]=nil
 					lib.LocalPlayerChat(va[2])
 					break
 				end
@@ -1696,7 +1700,7 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	RunService.RenderStepped:Connect(function(ping) 
 		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
 	end)
-	gui.draggablev2(Pingtext)
+	gui.draggable(Pingtext)
 end)
 
 cmd.add({"fps"},{"fps","Shows your fps"},function()
@@ -1734,7 +1738,7 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	RunService.RenderStepped:Connect(function(frame) 
 		script.Parent.Text=("FPS: "..math.round(1/frame)) 
 	end)
-	gui.draggablev2(Fpstext)
+	gui.draggable(Fpstext)
 end)
 
 cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function()
@@ -4166,12 +4170,13 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 end)
 
 cmd.add({"antikick","nokick"},{"antikick (nokick)","prevents you from getting kicked by LocalScripts or executed scripts"},function()
-	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/btrAntiKick.lua?raw=viper"))()--Better Version
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
 end)
 
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
-	local allow,Old=nil,nil 
+	local allow,Old=nil,nil
 	getgenv().acftp=true
+	
 	wait();
 
 	Notify({
@@ -6547,7 +6552,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
-		gui.draggablev2(TextButton)
+		gui.draggable(TextButton)
 	else
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
@@ -8594,6 +8599,21 @@ cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre m
 	lib.LocalPlayerChat(A_1,A_2)
 end)
 
+cmd.add({"whisper","pm"},{"whisper <player,text> (pm)","Private message a user"},function(...)
+	local hhh={...}
+	local A_1=""
+	local target=getPlr(hhh[1])
+	for i,v in pairs(hhh) do
+		if i~=1 and i~=2 then
+			A_1=A_1.." "..tostring(v)
+		else
+			A_1=tostring(v)
+		end
+	end
+	local A_2=target.Name
+	lib.LocalPlayerChat(A_1,A_2)
+end)
+
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
 	local workspace=game.Workspace
 	Players=game:GetService("Players")
@@ -8622,7 +8642,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	_G.SawFinish=false
 	local ScreenGui=Instance.new("ScreenGui")
 	local ttLabel=Instance.new("TextLabel")
-	local imgLabel = Instance.new("ImageLabel")
+	local imgLabel=Instance.new("ImageLabel")
 	local con=nil
 
 	if not gethui then
@@ -8654,19 +8674,19 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	ttLabel.Size=UDim2.new(0,32,0,50)
 	ttLabel.Font=Enum.Font.SourceSansBold
 	ttLabel.Text="Greetings And Welcome"
-	ttLabel.TextColor3=Color3.fromRGB(255, 0, 0)
+	ttLabel.TextColor3=Color3.fromRGB(255,0,0)
 	ttLabel.TextSize=20.000
 	ttLabel.TextWrapped=true
 	ttLabel.ZIndex=9999
 
-	imgLabel.Parent = ttLabel
-	imgLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-	imgLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	imgLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-	imgLabel.BorderSizePixel = 0
-	imgLabel.Position = UDim2.new(0.5, 0, -1, 0)
-	imgLabel.Size = UDim2.new(0, 100, 0, 100)
-	imgLabel.Image = "rbxassetid://8747893766"
+	imgLabel.Parent=ttLabel
+	imgLabel.AnchorPoint=Vector2.new(0.5,0.5)
+	imgLabel.BackgroundColor3=Color3.fromRGB(255,255,255)
+	imgLabel.BorderColor3=Color3.fromRGB(0,0,0)
+	imgLabel.BorderSizePixel=0
+	imgLabel.Position=UDim2.new(0.5,0,-1,0)
+	imgLabel.Size=UDim2.new(0,100,0,100)
+	imgLabel.Image="rbxassetid://8747893766"
 
 	local function count()
 		local script=Instance.new('LocalScript',ttLabel)
@@ -8702,7 +8722,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 			local newSize=UDim2.new(0,textWidth+25,0,50)
 			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		end)
-		gui.draggablev2(txtlabel)
+		gui.draggable(txtlabel)
 		task.wait(3.5)
 		txtlabel.Text="I Wana Play a Game"
 		task.wait(1.5)
@@ -14481,6 +14501,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 	)
 end)
 
+local invisBtnlol=nil
 
 cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare people or something"},function()
 	Keybind="E"
@@ -14639,8 +14660,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		Duration=10;
 
 	});
-
-	if table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) then 
+	if IsOnMobile then 
 		wait();
 
 		Notify({
@@ -14649,19 +14669,18 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 			Duration=7;
 		});
 
-
-		local ScreenGui=Instance.new("ScreenGui")
+		if invisBtnlol then invisBtnlol:Destroy() invisBtnlol=nil end
+		invisBtnlol=Instance.new("ScreenGui")
 		local TextButton=Instance.new("TextButton")
 		local UICorner=Instance.new("UICorner")
 		local UIAspectRatioConstraint=Instance.new("UIAspectRatioConstraint")
 
 		--Properties:
+		invisBtnlol.Parent=COREGUI
+		invisBtnlol.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
+		invisBtnlol.ResetOnSpawn=false
 
-		ScreenGui.Parent=COREGUI
-		ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
-		ScreenGui.ResetOnSpawn=false
-
-		TextButton.Parent=ScreenGui
+		TextButton.Parent=invisBtnlol
 		TextButton.BackgroundColor3=Color3.fromRGB(12,4,20)
 		TextButton.BackgroundTransparency=0.140
 		TextButton.Position=UDim2.new(0.933,0,0.621,0)
@@ -14673,7 +14692,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		TextButton.TextWrapped=true
 		TextButton.Active=true
 		TextButton.Draggable=true
-		TextScaled=true
+		TextButton.TextScaled=true
 
 		UICorner.Parent=TextButton
 
@@ -14727,9 +14746,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 end)
 
 cmd.add({"unchatspy"},{"unchat","Unspies on chat,enables chat,spies whispers etc."},function()
-
-
-
+	
 	wait();
 
 	Notify({
@@ -14797,7 +14814,6 @@ cmd.add({"unchatspy"},{"unchat","Unspies on chat,enables chat,spies whispers etc
 	Players.PlayerAdded:Connect(function(p)
 		p.Chatted:Connect(function(msg) onChatted(p,msg) end)
 	end)
-	print("XD")
 	StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
 	local chatFrame=player.PlayerGui.Chat.Frame
 	chatFrame.ChatChannelParentFrame.Visible=true
@@ -15571,25 +15587,46 @@ gui.resizeable=function(ui,min,max)
 		end)
 	end
 end
-gui.draggable=function(ui,dragui)
-	if not dragui then dragui=ui end
+gui.draggable=function(menu,_)
+
 	local UserInputService=game:GetService("UserInputService")
+	local RunService=game:GetService("RunService")
+
+	local thingyMabob=menu
 
 	local dragging
 	local dragInput
 	local dragStart
 	local startPos
 
-	function update(input)
-		local delta=input.Position-dragStart
-		ui.Position=UDim2.new(startPos.X.Scale,startPos.X.Offset+delta.X,startPos.Y.Scale,startPos.Y.Offset+delta.Y)
+	local function Lerp(a,b,m)
+		return a+(b-a)*m
 	end
 
-	dragui.InputBegan:Connect(function(input)
+	local lastMousePos
+	local lastGoalPos
+	local DRAG_SPEED=8
+
+	local function Update(dt)
+		if not startPos then return end
+		if not dragging and lastGoalPos then
+			thingyMabob.Position=UDim2.new(startPos.X.Scale,Lerp(thingyMabob.Position.X.Offset,lastGoalPos.X.Offset,dt*DRAG_SPEED),startPos.Y.Scale,Lerp(thingyMabob.Position.Y.Offset,lastGoalPos.Y.Offset,dt*DRAG_SPEED))
+			return
+		end
+
+		local delta=lastMousePos-UserInputService:GetMouseLocation()
+		local xGoal=startPos.X.Offset-delta.X
+		local yGoal=startPos.Y.Offset-delta.Y
+		lastGoalPos=UDim2.new(startPos.X.Scale,xGoal,startPos.Y.Scale,yGoal)
+		thingyMabob.Position=UDim2.new(startPos.X.Scale,Lerp(thingyMabob.Position.X.Offset,xGoal,dt*DRAG_SPEED),startPos.Y.Scale,Lerp(thingyMabob.Position.Y.Offset,yGoal,dt*DRAG_SPEED))
+	end
+
+	thingyMabob.InputBegan:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
 			dragging=true
 			dragStart=input.Position
-			startPos=ui.Position
+			startPos=thingyMabob.Position
+			lastMousePos=UserInputService:GetMouseLocation()
 
 			input.Changed:Connect(function()
 				if input.UserInputState==Enum.UserInputState.End then
@@ -15599,17 +15636,13 @@ gui.draggable=function(ui,dragui)
 		end
 	end)
 
-	dragui.InputChanged:Connect(function(input)
+	thingyMabob.InputChanged:Connect(function(input)
 		if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
 			dragInput=input
 		end
 	end)
 
-	UserInputService.InputChanged:Connect(function(input)
-		if input==dragInput and dragging then
-			update(input)
-		end
-	end)
+	RunService.Heartbeat:Connect(Update)
 end
 gui.draggablev2=function(floght)
 	floght.Active=true
@@ -15633,7 +15666,7 @@ gui.menuify=function(menu)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible=false
 	end)
-	gui.draggablev2(menu,menu.Topbar)
+	gui.draggable(menu,menu.Topbar)
 	menu.Visible=false
 end
 gui.menuifyv2=function(menu)
@@ -15665,7 +15698,7 @@ gui.menuifyv2=function(menu)
 			end
 		end)
 	end
-	gui.draggablev2(menu,menu.Topbar)
+	gui.draggable(menu,menu.Topbar)
 	menu.Visible=false
 end
 
@@ -15706,7 +15739,7 @@ gui.shiftlock=function(sLock,lockImg)
 			EndForceShiftLock()
 		end
 	end)
-	gui.draggablev2(sLock)
+	gui.draggable(sLock)
 end
 
 
@@ -15760,31 +15793,31 @@ end
 
 --[[ AUTOFILL SEARCHER ]]--
 gui.searchCommands=function()
-	local str=(cmdInput.Text:gsub(";","")):lower()
+	local searchTerm=cmdInput.Text:gsub(";",""):lower()
 	local index=0
-	local lastFrame
-	for _,v in ipairs(cmdAutofill:GetChildren()) do
-		if v:IsA("Frame") and index<5 then
-			local cmd=Commands[v.Name]
-			local name=cmd and cmd[2][1] or ""
-			v.Input.Text=str~="" and v.Name:find(str)==1 and v.Name or name
-			v.Visible=str=="" or v.Name:find(str)
-			if v.Visible then
+	local lastFramePos
+	for _,frame in ipairs(cmdAutofill:GetChildren()) do
+		if frame:IsA("Frame") and index < 5 then
+			local cmdName=frame.Name
+			local command=Commands[cmdName]
+			local displayName=command and command[2][1] or ""
+			local isMatching=searchTerm=="" or cmdName:find(searchTerm,1,true)~=nil
+			frame.Input.Text=searchTerm~="" and (cmdName:find(searchTerm,1,true)==1 and cmdName or displayName) or displayName
+			frame.Visible=isMatching
+			if isMatching then
 				index=index+1
-				local n=math.sqrt(index)*125
-				local yPos=(index-1)*28
-				local newPos=UDim2.new(0.5,0,0,yPos)
-				gui.tween(v,"Quint","Out",0.3,{
-					Size=UDim2.new(0.5,n,0,25),
-					Position=lastFrame and newPos or UDim2.new(0.5,0,0,yPos),
+				local newSize=UDim2.new(0.5,math.sqrt(index)*125,0,25)
+				local newYPos=(index - 1)*28
+				local newPosition=UDim2.new(0.5,0,0,newYPos)
+				gui.tween(frame,"Quint","Out",0.3,{
+					Size=newSize,
+					Position=lastFramePos and newPosition or UDim2.new(0.5,0,0,newYPos),
 				})
-				lastFrame=v
+				lastFramePos=newPosition
 			end
 		end
 	end
 end
-
---[[ GUI FUNCTIONALITY ]]--
 
 --[[ OPEN THE COMMAND BAR ]]--
 mouse.KeyDown:Connect(function(k)
@@ -15792,7 +15825,7 @@ mouse.KeyDown:Connect(function(k)
 		gui.barSelect()
 		cmdInput.Text=''
 		cmdInput:CaptureFocus()
-		wait(0.00005)
+		wait();
 		cmdInput.Text=''
 	end
 end)
@@ -15807,8 +15840,7 @@ cmdInput.FocusLost:Connect(function(enterPressed)
 	gui.barDeselect()
 end)
 
-cmdInput.Changed:Connect(function(p)
-	if p~="Text" then return end
+cmdInput:GetPropertyChangedSignal("Text"):Connect(function()
 	gui.searchCommands()
 end)
 
@@ -15826,12 +15858,12 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 function autoResizeable(ui)
 	local initialSize=ui.AbsoluteSize
 	local minSize=Vector2.new(
-		math.max(100,initialSize.X*.5),
-		math.max(100,initialSize.Y*.5)
+		math.max(100,initialSize.X*.2),
+		math.max(100,initialSize.Y*.2)
 	)
 	local maxSize=Vector2.new(
-		initialSize.X*2,
-		initialSize.Y*2
+		initialSize.X*0.5,
+		initialSize.Y*0.5
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
@@ -15983,7 +16015,7 @@ function Swoosh()
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
-	gui.draggablev2(imagebutton)
+	gui.draggable(imagebutton)
 end
 function mainNameless()
 	local script=Instance.new('LocalScript',TextLabelLabel)
@@ -16059,10 +16091,11 @@ NACaller(function()
 			Title="Random Goofy Message";
 			Duration=4;
 		});
+		task.wait(4)
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
-			Duration=6;
+			Duration=3;
 		});
 	end)
 
