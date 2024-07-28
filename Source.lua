@@ -120,9 +120,8 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Changed dragging';
-	log2='Small bug fixes';
-	log3="Improved a few command's functionality";
+	log1='Small bug fixes';
+	log2="Improved a few command's functionality";
 }
 
 local updDate="7/28/2024"
@@ -1700,7 +1699,7 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	RunService.RenderStepped:Connect(function(ping) 
 		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
 	end)
-	gui.draggable(Pingtext)
+	gui.draggablev2(Pingtext)
 end)
 
 cmd.add({"fps"},{"fps","Shows your fps"},function()
@@ -1738,7 +1737,7 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	RunService.RenderStepped:Connect(function(frame) 
 		script.Parent.Text=("FPS: "..math.round(1/frame)) 
 	end)
-	gui.draggable(Fpstext)
+	gui.draggablev2(Fpstext)
 end)
 
 cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function()
@@ -6552,7 +6551,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
-		gui.draggable(TextButton)
+		gui.draggablev2(TextButton)
 	else
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
@@ -8707,7 +8706,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 			local newSize=UDim2.new(0,textWidth+25,0,50)
 			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		end)
-		gui.draggable(txtlabel)
+		gui.draggablev2(txtlabel)
 		task.wait(3.5)
 		txtlabel.Text="I Wana Play a Game"
 		task.wait(1.5)
@@ -15651,7 +15650,7 @@ gui.menuify=function(menu)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible=false
 	end)
-	gui.draggable(menu,menu.Topbar)
+	gui.draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
 gui.menuifyv2=function(menu)
@@ -15683,7 +15682,7 @@ gui.menuifyv2=function(menu)
 			end
 		end)
 	end
-	gui.draggable(menu,menu.Topbar)
+	gui.draggablev2(menu,menu.Topbar)
 	menu.Visible=false
 end
 
@@ -15724,7 +15723,7 @@ gui.shiftlock=function(sLock,lockImg)
 			EndForceShiftLock()
 		end
 	end)
-	gui.draggable(sLock)
+	gui.draggablev2(sLock)
 end
 
 
@@ -16000,7 +15999,7 @@ function Swoosh()
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
-	gui.draggable(imagebutton)
+	gui.draggablev2(imagebutton)
 end
 function mainNameless()
 	local script=Instance.new('LocalScript',TextLabelLabel)
