@@ -12635,7 +12635,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 
 	wait();
 
-	if delcount>0 then
+	if tonumber(delcount)>0 then
 		Notify({
 			Description="Deleted over "..delcount.." "..bra.."(s)";
 			Title=adminName;
@@ -12718,7 +12718,7 @@ cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclas
 
 	wait();
 
-	if delclass>0 then
+	if tonumber(delclass)>0 then
 		Notify({
 			Description="Deleted over "..delclass.." "..JJ.."(s)";
 			Title=adminName;
@@ -12792,7 +12792,7 @@ cmd.add({"chardelete","charremove","chardel","cdelete","cremove","cdel"},{"chard
 
 	wait();
 
-	if chardelprt>0 then
+	if tonumber(chardelprt)>0 then
 		Notify({
 			Description="Deleted over "..chardelprt.." "..hh.."(s) inside the character";
 			Title=adminName;
@@ -12820,7 +12820,7 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 
 	wait();
 
-	if charclass>0 then
+	if tonumber(charclass)>0 then
 		Notify({
 			Description="Deleted over "..charclass.." "..poopy.."(s) inside the character";
 			Title=adminName;
