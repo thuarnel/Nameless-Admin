@@ -119,12 +119,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Small bug fixes';
-	log2="Improved a few command's functionality";
-}
+local updLogs={}
 
-local updDate="7/28/2024"
+local updDate="7/30/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -198,13 +195,6 @@ local camera=workspace.CurrentCamera
 local camtype=camera.CameraType
 local Commands,Aliases={},{}
 local player,plr,lp=game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer
-
-NACaller(function()
-	Players.LocalPlayer.CharacterAdded:Connect(function(c)
-		character=c
-		Character=c
-	end)
-end)
 
 local bringc={}
 
@@ -382,21 +372,23 @@ local wait=function(int)
 end
 
 function r15(plr)
-	plr=plr or game:GetService("Players").LocalPlayer
+	plr=(plr or game:GetService("Players").LocalPlayer)
 	if plr then
 		if plr.Character:FindFirstChildOfClass('Humanoid').RigType==Enum.HumanoidRigType.R15 then
 			return true
 		end
 	end
+	return false
 end
 
 function r6(Player)
-	Player=Player or game:GetService("Players").LocalPlayer
+	Player=(Player or game:GetService("Players").LocalPlayer)
 	if Player then
 		if Player.Character.Humanoid.RigType==Enum.HumanoidRigType.R6 then
 			return true
 		end
 	end
+	return false
 end
 
 function rngMsg()
@@ -474,7 +466,7 @@ local getPlr=function(Name)
 		return Players:GetPlayers()[math.random(#Players:GetPlayers())]
 	elseif Name:lower()=="me" then
 		return game:GetService("Players").LocalPlayer
-	elseif Name==nil then
+	elseif not Name then
 		return game:GetService("Players").LocalPlayer
 	elseif Name:lower()=="friends" then
 		local friends={}
@@ -529,6 +521,14 @@ local char=plr.Character
 local JSONEncode,JSONDecode=HttpService.JSONEncode,HttpService.JSONDecode
 local con=game.Loaded.Connect
 local LoadTime=tick();
+
+NACaller(function()
+	Players.LocalPlayer.CharacterAdded:Connect(function(c)
+		character=c
+		Character=c
+		char=c
+	end)
+end)
 
 RunService.Stepped:connect(function()
 	if anniblockspam then
@@ -2167,7 +2167,7 @@ cmd.add({"bringto"},{"bringto (playertobring) [playertobringto]","Brings a playe
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -2184,7 +2184,7 @@ cmd.add({"bringto"},{"bringto (playertobring) [playertobringto]","Brings a playe
 	tween:Play()
 
 	tool.AncestryChanged:Wait() 
-	if plr.Character.Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(plr) then
 		--plr.Character["Right Arm"]:Destroy()
 		game.Players.LocalPlayer.Character["Right Arm"].RightGrip:Destroy()--r6
 	elseif plr.Character.Humanoid.RigType==Enum.HumanoidRigType.R15 then
@@ -2201,10 +2201,6 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 	target=getPlr(Username)
 	teller=target.AccountAge
 	accountage="The account age of "..target.Name.." is "..teller
-
-
-
-
 
 	wait();
 
@@ -3325,7 +3321,7 @@ cmd.add({"void"},{"void <player>","Kill the given players without FE god"},funct
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -3730,7 +3726,7 @@ cmd.add({"bring"},{"bring <player>","Bring the given player(s)"},function(...)
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -3823,7 +3819,7 @@ cmd.add({"skydive","sky"},{"skydive <player> (sky)","Skydives the player"},funct
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -9713,7 +9709,7 @@ cmd.add({"headbring","hbring"},{"headbring <player> (headbring)","Need an rthro 
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -11057,7 +11053,7 @@ cmd.add({"looplbring","looplegbring"},{"looplbring <player> (looplegbring)","Leg
 			end
 			wait(.3)
 			Player.Character:SetPrimaryPartCFrame(CF)
-			if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+			if r6(LocalPlayer) then
 				Character["Right Arm"].RightGrip:Destroy()
 			else
 				Character["RightHand"].RightGrip:Destroy()
@@ -11236,7 +11232,7 @@ cmd.add({"dbring","delaybring"},{"delaybring <player> (dbring)","Delay bring"},f
 	end
 	wait(.3)
 	Player.Character:SetPrimaryPartCFrame(CF)
-	if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+	if r6(LocalPlayer) then
 		Character["Right Arm"].RightGrip:Destroy()
 	else
 		Character["RightHand"].RightGrip:Destroy()
@@ -11793,7 +11789,7 @@ cmd.add({"loopbring"},{"loopbring <player>","Loopbrings a player"},function(...)
 			end
 			wait(.3)
 			Player.Character:SetPrimaryPartCFrame(CF)
-			if Humanoid.RigType==Enum.HumanoidRigType.R6 then
+			if r6(LocalPlayer) then
 				Character["Right Arm"].RightGrip:Destroy()
 			else
 				Character["RightHand"].RightGrip:Destroy()
@@ -12110,7 +12106,7 @@ cmd.add({"unloopkill"},{"unloopkill","Stops loop killing a player"},function()
 end)
 
 cmd.add({"inspect"},{"examine","Stops loop killing a player"},function(args)
-	for _,v in ipairs(getPlayer(args[1],speaker)) do
+	for _,v in ipairs(getPlayer((args[1] or speaker))) do
 		GuiService:CloseInspectMenu()
 		GuiService:InspectPlayerFromUserId(Players[v].UserId)
 	end
@@ -12138,10 +12134,9 @@ cmd.add({"unnetlag"},{"unnetlag","Stops netlegging"},function()
 end)
 
 cmd.add({"noprompt","nopurchaseprompts","noprompts"},{"noprompt (nopurchaseprompts,noprompts)","remove the stupid purchase prompt"},function()
-
-
-
 	wait();
+
+	COREGUI.PurchasePrompt.Enabled=false
 
 	Notify({
 		Description="Purchase prompts have been disabled";
@@ -12149,14 +12144,12 @@ cmd.add({"noprompt","nopurchaseprompts","noprompts"},{"noprompt (nopurchasepromp
 		Duration=5;
 
 	});
-	COREGUI.PurchasePrompt.Enabled=false
 end)
 
 cmd.add({"prompt","purchaseprompts","showprompts","showpurchaseprompts"},{"prompt (purchaseprompts,showprompts,showpurchaseprompts)","allows the stupid purchase prompt"},function()
-
-
-
 	wait();
+
+	COREGUI.PurchasePrompt.Enabled=true
 
 	Notify({
 		Description="Purchase prompts have been enabled";
@@ -12164,7 +12157,6 @@ cmd.add({"prompt","purchaseprompts","showprompts","showpurchaseprompts"},{"promp
 		Duration=5;
 
 	});
-	COREGUI.PurchasePrompt.Enabled=true
 end)
 
 cmd.add({"nameless"},{"nameless","Makes your hats visible but not your name or your body"},function()
@@ -12173,7 +12165,7 @@ end)
 
 
 cmd.add({"wallwalk"},{"wallwalk","Makes you walk on walls"},function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/s4FjP97j"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/WallWalk.lua"))() -- backup cause i don't trust pastebin
 end)
 
 cmd.add({"size"},{"size","Makes you big"},function()
@@ -12231,9 +12223,6 @@ cmd.add({"size"},{"size","Makes you big"},function()
 end)
 
 cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any unanchored part press ctrl+click"},function()
-
-
-
 	wait();
 
 	Notify({
@@ -12309,7 +12298,6 @@ cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any u
 					end)
 				end
 			end
-
 			for _,v in pairs(PlayerCharacter:GetDescendants()) do
 				if v:IsA("BasePart") then
 					if v.Name=="HumanoidRootPart" or v.Name=="UpperTorso" or v.Name=="Head" then
@@ -12335,7 +12323,6 @@ end)
 
 local hiddenGUIS={}
 cmd.add({"hideguis"},{"hideguis","Hides guis"},function()
-
 	for i,v in pairs(game.Players.LocalPlayer:FindFirstChildWhichIsA("PlayerGui"):GetDescendants()) do
 		if (v:IsA("Frame") or v:IsA("ImageLabel") or v:IsA("ScrollingFrame")) and v.Visible then
 			v.Visible=false
@@ -12353,49 +12340,46 @@ cmd.add({"showguis"},{"showguis","Show guis that were hidden using hideguis"},fu
 	hiddenGUIS={}
 end)
 
+local spinThingy=nil
+
 cmd.add({"spin"},{"spin {amount}","Makes your character spin as fast as you want"},function(...)
-
-
-
 	wait();
+
+	local spinSpeed=(...)
+	if not spinSpeed then spinSpeed=20 end
+	if spinThingy then spinThingy:Destroy() spinThingy=nil end
+	spinThingy=Instance.new("BodyAngularVelocity")
+	spinThingy.Name="NamelessSpinner"
+	spinThingy.Parent=getRoot(LocalPlayer.Character)
+	spinThingy.MaxTorque=Vector3.new(0,math.huge,0)
+	spinThingy.AngularVelocity=Vector3.new(0,spinSpeed,0)
 
 	Notify({
 		Description="Spinning...";
 		Title=adminName;
-		Duration=5;
-
+		Duration=3;
 	});
-
-	local spinSpeed=(...)
-	for i,v in pairs(getRoot(game.Players.LocalPlayer.Character):GetChildren()) do
-		if v.Name=="Spinning" then
-			v:Destroy()
-		end
-	end
-	local Spin=Instance.new("BodyAngularVelocity")
-	Spin.Name="Spinning"
-	Spin.Parent=getRoot(game.Players.LocalPlayer.Character)
-	Spin.MaxTorque=Vector3.new(0,math.huge,0)
-	Spin.AngularVelocity=Vector3.new(0,spinSpeed,0)
 end)
 
 cmd.add({"unspin"},{"unspin","Makes your character unspin"},function()
-
-
-
 	wait();
 
-	Notify({
-		Description="Spin disabled";
-		Title=adminName;
-		Duration=5;
+	if spinThingy then 
+		spinThingy:Destroy() 
+		spinThingy=nil
+		Notify({
+			Description="Spin Disabled";
+			Title=adminName;
+			Duration=3;
 
-	});
+		});
+	else
+		Notify({
+			Description="You are not even spinning brother";
+			Title=adminName;
+			Duration=3;
 
-	for i,v in pairs(getRoot(game.Players.LocalPlayer.Character):GetChildren()) do
-		if v.Name=="Spinning" then
-			v:Destroy()
-		end
+		});
 	end
 end)
 
@@ -12426,7 +12410,7 @@ cmd.add({"hidename","hname"},{"hidename","Hides your name only works on billboar
 	Notify({
 		Description="Name has been hidden,this only works on billboard guis / custom name fonts";
 		Title=adminName;
-		Duration=5;
+		Duration=3;
 
 	});
 end)
@@ -12531,8 +12515,7 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 	Notify({
 		Description="Fired "..ccamount.." amount of click detectors";
 		Title=adminName;
-		Duration=7;
-
+		Duration=3;
 	});
 end)
 
@@ -12614,6 +12597,7 @@ cmd.add({"tweengotocampos","tweentocampos","tweentcp"},{"tweengotocampos (tweent
 end)
 
 cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any part with a certain name from the workspace"},function(...)
+	local delcount=0
 	local args={...}
 	local code=""
 
@@ -12625,6 +12609,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 		end
 	end
 	bra=code
+
 	for _,v in pairs(workspace:GetDescendants()) do
 		if v.Name:lower()==bra:lower() then
 			v:Destroy()
@@ -12634,12 +12619,19 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 
 	wait();
 
-
-	Notify({
-		Description="Deleted over "..delcount.." part(s) named: "..bra.."";
-		Title=adminName;
-		Duration=4;
-	});
+	if delcount>0 then
+		Notify({
+			Description="Deleted over "..delcount.." "..bra.."(s)";
+			Title=adminName;
+			Duration=2.5;
+		});
+	else
+		Notify({
+			Description="Deleting absolutely NOTHING";
+			Title=adminName;
+			Duration=2.5;
+		});
+	end
 end)
 
 local autoRemover={}
@@ -12679,6 +12671,15 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 	if autormv==nil then
 		autormv=workspace.DescendantAdded:Connect(descendantadd)
 	end
+
+	wait();
+
+
+	Notify({
+		Description="Auto deleting Instances with name: "..bra;
+		Title=adminName;
+		Duration=2.5;
+	});
 end)
 
 cmd.add({"unautodelete","unautoremove","unautodel"},{"unautodelete {partname} (unautoremove,unautodel)","disables autodelete"},function()
@@ -12701,12 +12702,19 @@ cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclas
 
 	wait();
 
-
-	Notify({
-		Description="Deleted over "..delclass.." "..JJ.."(s)";
-		Title=adminName;
-		Duration=4;
-	});
+	if delclass>0 then
+		Notify({
+			Description="Deleted over "..delclass.." "..JJ.."(s)";
+			Title=adminName;
+			Duration=2.5;
+		});
+	else
+		Notify({
+			Description="Deleted absolutely NOTHING";
+			Title=adminName;
+			Duration=2.5;
+		});
+	end
 end)
 
 local autoclassic={}
@@ -12739,6 +12747,15 @@ cmd.add({"autodeleteclass","autoremoveclass","autodc"},{"autodeleteclass {ClassN
 	if autoclass==nil then
 		autoclass=workspace.DescendantAdded:Connect(idkClass)
 	end
+
+	wait();
+
+
+	Notify({
+		Description="Auto deleting Instances with ClassName: "..classicauto;
+		Title=adminName;
+		Duration=2.5;
+	});
 end)
 
 cmd.add({"unautodeleteclass","unautoremoveclass","unautodc"},{"unautodeleteclass {ClassName} (unautoremoveclass,unautodc)","disabled autodeleteclass"},function(...)
@@ -12759,11 +12776,19 @@ cmd.add({"chardelete","charremove","chardel","cdelete","cremove","cdel"},{"chard
 
 	wait();
 
-	Notify({
-		Description="Deleted over "..chardelprt.." part(s) inside the character with name: "..hh.."";
-		Title=adminName;
-		Duration=4;
-	});
+	if chardelprt>0 then
+		Notify({
+			Description="Deleted over "..chardelprt.." "..hh.."(s) inside the character";
+			Title=adminName;
+			Duration=2.5;
+		});
+	else
+		Notify({
+			Description="Deleted absolutely NOTHING";
+			Title=adminName;
+			Duration=2.5;
+		});
+	end
 end)
 
 cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"chardeleteclass {ClassName} (charremoveclass,chardeleteclassname,cds)","Removes any part with a certain classname from your character"},function(...)
@@ -12779,11 +12804,19 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 
 	wait();
 
-	Notify({
-		Description="Deleted over "..charclass.." "..poopy.."(s) inside the character";
-		Title=adminName;
-		Duration=4;
-	});
+	if charclass>0 then
+		Notify({
+			Description="Deleted over "..charclass.." "..poopy.."(s) inside the character";
+			Title=adminName;
+			Duration=2.5;
+		});
+	else
+		Notify({
+			Description="Deleted absolutely NOTHING";
+			Title=adminName;
+			Duration=2.5;
+		});
+	end
 end)
 
 cmd.add({"gotopart","topart","toprt"},{"gotopart {partname} (topart,toprt)","Makes you teleport to a part you want"},function(...)
@@ -12823,6 +12856,7 @@ cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partna
 			code=v
 		end
 	end
+	
 	lol=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -12888,6 +12922,7 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 			code=v
 		end
 	end
+	
 	givemethemodel=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -12908,6 +12943,7 @@ cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports yo
 			code=v
 		end
 	end
+	
 	i_love_models=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -13017,8 +13053,8 @@ cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes
 			code=v
 		end
 	end
-	fix=code
-	local partEspName=fix:lower()
+	
+	local partEspName=code:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
 		for i,v in pairs(workspace:GetDescendants()) do
@@ -13098,7 +13134,8 @@ cmd.add({"console"},{"console","Opens developer console"},function()
 	game.StarterGui:SetCore("DevConsoleVisible",true)
 end)
 
-loophitbox=false
+local loophitbox=false
+
 cmd.add({"hitbox","hbox"},{"hitbox {amount}","Makes everyones hitbox as much as you want"},function(h,d)
 
 	if loophitbox==true then
@@ -16075,7 +16112,7 @@ NACaller(function()
 			Title="Random Goofy Message";
 			Duration=4;
 		});
-		task.wait(4)
+		task.wait(5)
 		Notify({
 			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
 			Title="Info";
