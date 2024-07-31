@@ -80,16 +80,18 @@ end)
 --Notification library
 local Notification=nil
 
-local s,r=pcall(function()
-	return loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))();
-end)
-if s then
-	Notification=r
-else
-	return warn("couldn't load notification module")
-end
+repeat 
+	local s,r=pcall(function()
+		return loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))()
+	end);
 
-repeat wait() until Notification~=nil --waits for the module to load (cause loadstring takes ages)
+	if s then
+		Notification=r;
+	else
+		warn("Couldn't load notification module, retrying...");
+		task.wait();
+	end
+until Notification~=nil --waits for the module to load (cause loadstring takes ages)
 
 local Notify=Notification.Notify;
 
