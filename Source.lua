@@ -78,7 +78,19 @@ NACaller(function()
 end)
 
 --Notification library
-local Notification=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))();
+local Notification=nil
+
+local s,r=pcall(function()
+	return loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))();
+end)
+if s then
+	Notification=r
+else
+	return warn("couldn't load notification module")
+end
+
+repeat wait() until Notification~=nil --waits for the module to load (cause loadstring takes ages)
+
 local Notify=Notification.Notify;
 
 wait();--added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
@@ -12856,7 +12868,7 @@ cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partna
 			code=v
 		end
 	end
-	
+
 	lol=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -12922,7 +12934,7 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 			code=v
 		end
 	end
-	
+
 	givemethemodel=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -12943,7 +12955,7 @@ cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports yo
 			code=v
 		end
 	end
-	
+
 	i_love_models=code
 
 	for i,v in pairs(workspace:GetDescendants()) do
@@ -13053,7 +13065,7 @@ cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes
 			code=v
 		end
 	end
-	
+
 	local partEspName=code:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
