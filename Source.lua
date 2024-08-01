@@ -10761,7 +10761,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		if airwalk.Vars.increase then
 			airwalk.Vars.offset = 3.5
 		end
-		if (airwalk.Vars.decrease and airwalk.Vars.offset == 3) then airwalk.Vars.offset = 4 end -- no change
+		if (airwalk.Vars.decrease and airwalk.Vars.offset == 3.5) then airwalk.Vars.offset = 4 end -- no change
 
 		if airwalk.Vars.offset == 4 then
 			local smalldis = (getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y - airwalk.Y) 
