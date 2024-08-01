@@ -10611,9 +10611,9 @@ local airwalk =  {
 			["Descrease"] = Enum.KeyCode.Q;
 		};
 		decrease = false;
-		increase = true;
-		offset = 0
-	}
+		increase = false;
+		offset = 0;
+	};
 	c = nil;
 	b = nil;
 	rahh = nil;
@@ -10657,11 +10657,11 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 
 	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
 	if awPart then awPart:Destroy() awPart=nil end
-	local offset = 0.1
+	local offset = -0.2
 	if IsOnMobile then 
 		if airwalk.rahh then airwalk.rahh:Destroy() rahh=nil end
 		airwalk.rahh=Instance.new("ScreenGui")
-		local TextButton=Instance.new("TextButton")
+		local TextButton2=Instance.new("TextButton")
 		local UICorner=Instance.new("UICorner")
 		local UIAspectRatioConstraint=Instance.new("UIAspectRatioConstraint")
 
@@ -10669,32 +10669,32 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		airwalk.rahh.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 		airwalk.rahh.ResetOnSpawn=false
 
-		TextButton.Parent=airwalk.rahh
-		TextButton.BackgroundColor3=Color3.fromRGB(12,4,20)
-		TextButton.BackgroundTransparency=0.140
-		TextButton.Position=UDim2.new(0.933,0,0.621+offset,0)
-		offset+= 0.2
-		TextButton.Size=UDim2.new(0.043,0,0.083,0)
-		TextButton.Font=Enum.Font.SourceSansBold
-		TextButton.Text="DOWN"
-		TextButton.TextColor3=Color3.fromRGB(255,255,255)
-		TextButton.TextSize=15.000
-		TextButton.TextWrapped=true
-		TextButton.Active=true
-		TextButton.Draggable=true
-		TextButton.TextScaled=true
+		TextButton2.Parent=airwalk.rahh
+		TextButton2.BackgroundColor3=Color3.fromRGB(12,4,20)
+		TextButton2.BackgroundTransparency=0.140
+		TextButton2.Position=UDim2.new(0.933,0,0.621+offset,0)
+		offset-= 0.2
+		TextButton2.Size=UDim2.new(0.043,0,0.083,0)
+		TextButton2.Font=Enum.Font.SourceSansBold
+		TextButton2.Text="DOWN"
+		TextButton2.TextColor3=Color3.fromRGB(255,255,255)
+		TextButton2.TextSize=15.000
+		TextButton2.TextWrapped=true
+		TextButton2.Active=true
+		TextButton2.Draggable=true
+		TextButton2.TextScaled=true
 
-		UICorner.Parent=TextButton
+		UICorner.Parent=TextButton2
 
-		UIAspectRatioConstraint.Parent=TextButton
+		UIAspectRatioConstraint.Parent=TextButton2
 		UIAspectRatioConstraint.AspectRatio=1.060
-		TextButton.MouseButton1Down:connect(function()
+		TextButton2.MouseButton1Down:connect(function()
 			airwalk.Vars.decrease = true;
 		end)
-		TextButton.MouseButton1Up:Connect(function()
+		TextButton2.MouseButton1Up:Connect(function()
 			airwalk.Vars.decrease = false;
 		end)
-		gui.draggablev2(TextButton)
+		gui.draggablev2(TextButton2)
 
 		if airwalk.rahh2 then airwalk.rahh2:Destroy() rahh=nil end
 		airwalk.rahh2=Instance.new("ScreenGui")
@@ -10710,7 +10710,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		TextButton.BackgroundColor3=Color3.fromRGB(12,4,20)
 		TextButton.BackgroundTransparency=0.140
 		TextButton.Position=UDim2.new(0.933,0,0.621+offset,0)
-		offset+= 0.2
+		offset-= 0.2
 		TextButton.Size=UDim2.new(0.043,0,0.083,0)
 		TextButton.Font=Enum.Font.SourceSansBold
 		TextButton.Text="UP"
@@ -10726,14 +10726,14 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		UIAspectRatioConstraint.Parent=TextButton
 		UIAspectRatioConstraint.AspectRatio=1.060
 		TextButton.MouseButton1Down:connect(function()
-			airwalk.Vars.Increase = true;
+			airwalk.Vars.increase = true;
 		end)
 		TextButton.MouseButton1Up:Connect(function()
-			airwalk.Vars.Increase = false;
+			airwalk.Vars.increase = false;
 		end)
 		gui.draggablev2(TextButton)
 	else
-		
+
 	if airwalk.c then airwalk.c:Disconnect() airwalk.c=nil end
 	if airwalk.b then airwalk.b:Disconnect() airwalk.b=nil end
 
@@ -10762,19 +10762,29 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 	awPart.CFrame=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame-Vector3.new(0,4,0)
 	awPart.Transparency=1
 	awPart.Anchored=true
-
+	airwalk.Y = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
 	Airwalker=RunService.RenderStepped:connect(function()
 		if (not awPart) then
 			Airwalker:disconnect()
 			return;
 		end
 		airwalk.Vars.offset = 4
+		
 		if airwalk.Vars.decrease then
-			airwalk.Vars.offset -= 2
+			airwalk.Vars.offset = 5
 		end
 		if airwalk.Vars.increase then
-			airwalk.Vars.offset += 1
+			airwalk.Vars.offset = 3.5
 		end
+		if (airwalk.Vars.decrease and airwalk.Vars.offset == 3) then airwalk.Vars.offset = 4 end -- no change
+
+		if airwalk.Vars.offset == 4 then
+			local smalldis = (getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y - airwalk.Y) 
+			if smalldis < 0.01 then
+				getRoot(game:GetService("Players").LocalPlayer.Character).CFrame = CFrame.new(getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.X,airwalk.Y,getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Z) * getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Rotation
+			end
+		end
+		airwalk.Y = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
 		awPart.CFrame=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame-Vector3.new(0,airwalk.Vars.offset,0)
 	end)
 end)
@@ -15499,10 +15509,22 @@ for i,v in pairs(Players:GetPlayers()) do
 	end
 end
 
+function Getmodel(id)
+	local ob23e232323 = nil
+	s,r = pcall(function()
+		ob23e232323 = game:GetObjects(id)[1]
+	end)
+	if s and ob23e232323 then
+		return ob23e232323
+	end
+	task.wait(1)
+	warn("retrying")
+	return Getmodel(id) 
+end
 
 --[[ GUI VARIABLES ]]--
 local ScreenGui=nil
-local uiModel=game:GetObjects("rbxassetid://17101871669")[1]
+local uiModel=Getmodel("rbxassetid://17101871669")
 local rPlayer=Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection={}
 if not RunService:IsStudio() then
