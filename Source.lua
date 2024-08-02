@@ -4700,7 +4700,6 @@ cmd.add({"toolgui"},{"toolgui","cool tool ui aka replication ui made by 0866"},f
 		Description="For a better experience,use R6 if you want tools do ;dupetools 5";
 		Title=adminName;
 		Duration=5;
-
 	});
 end)
 
@@ -4751,6 +4750,33 @@ end)
 cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 end)
+		
+cmd.add({"getusernamefromid","guid","uid"},{"getusernamefromid (guid, uid)","Copy a user's UserId by Username"},function(thingy)
+useridd=tostring(game.Players:GetUserIdFromNameAsync(thingy))
+if not setclipboard then return print'no setclipboard support' end
+setclipboard(tostring(useridd))
+				
+Notify({
+		Description="Copied "..tostring(thingy).."'s UserId: "..useridd;
+		Title=adminName;
+		Duration=5;
+	});
+
+end)
+		
+cmd.add({"getidfromuser","gidu"},{"getidfromuser (gidu)","Copy a user's Username by ID"},function(thingy)
+usernaem=tostring(game.Players:GetUserIdFromNameAsync(thingy))
+if not setclipboard then return print'no setclipboard support' end
+setclipboard(tostring(usernaem))
+				
+Notify({
+		Description="Copied "..usernaem.."'s Username with id of: "..tostring(thingy);
+		Title=adminName;
+		Duration=5;
+	});
+
+end)
+
 
 cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explorer"},function()
 	local rng=Random.new()
