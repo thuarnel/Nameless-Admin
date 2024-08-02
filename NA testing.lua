@@ -4765,31 +4765,40 @@ end)
 cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 end)
-		
-cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"},function(thingy)
-idd=game.Players:GetUserIdFromNameAsync(tostring(thingy))
-if not setclipboard then return print'no setclipboard support' end
-setclipboard(tostring(idd))
-				
-Notify({
-		Description="Copied "..tostring(thingy).."'s UserId: "..idd;
+
+cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"}, function(thingy)
+	local s,idd=pcall(function()
+		return game.Players:GetUserIdFromNameAsync(tostring(thingy))
+	end)
+
+	if not s then return warn("err: "..tostring(idd)) end
+
+	if not setclipboard then return print("no setclipboard") end
+	setclipboard(tostring(idd))
+
+	Notify({
+		Description="Copied "..tostring(thingy).."'s UserId: "..tostring(idd);
 		Title=adminName;
 		Duration=5;
-	});
-end)
-		
-cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username by ID"},function(thingy)
-usernaem=game.Players:GetUserIdFromNameAsync(tonumber(thingy))
-if not setclipboard then return print'no setclipboard support' end
-setclipboard(tostring(usernaem))
-				
-Notify({
-		Description="Copied "..usernaem.."'s Username with ID of: "..tonumber(thingy);
-		Title=adminName;
-		Duration=5;
-	});
+	})
 end)
 
+cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username by ID"}, function(thingy)
+	local s,naem=pcall(function()
+		return game.Players:GetNameFromUserIdAsync(thingy)
+	end)
+
+	if not s then return warn("err: "..tostring(naem)) end
+
+	if not setclipboard then return print("no setclipboard") end
+	setclipboard(tostring(naem))
+
+	Notify({
+		Description="Copied User with ID of "..tostring(thingy)..": "..tostring(naem);
+		Title=adminName;
+		Duration=5;
+	})
+end)
 
 cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explorer"},function()
 	local rng=Random.new()
@@ -10628,20 +10637,20 @@ end)
 Airwalker=nil
 awPart=nil
 -- make it so all the vars are easiler gettable in this table
-local airwalk =  {
-	["Vars"] = {
-		keybinds = {
-			["Increase"] = Enum.KeyCode.E;
-			["Descrease"] = Enum.KeyCode.Q;
+local airwalk={
+	["Vars"]={
+		keybinds={
+			["Increase"]=Enum.KeyCode.E;
+			["Descrease"]=Enum.KeyCode.Q;
 		};
-		decrease = false;
-		increase = false;
-		offset = 0;
+		decrease=false;
+		increase=false;
+		offset=0;
 	};
-	c = nil;
-	b = nil;
-	rahh = nil;
-	rahh2 = nil
+	c=nil;
+	b=nil;
+	rahh=nil;
+	rahh2=nil
 }
 
 cmd.add({"unairwalk","unfloat","unaw"},{"unairwalk (unfloat,unaw)","Stops the airwalk command"},function()
@@ -10650,7 +10659,7 @@ cmd.add({"unairwalk","unfloat","unaw"},{"unairwalk (unfloat,unaw)","Stops the ai
 	if airwalk.c then airwalk.c:Disconnect() airwalk.c=nil end
 	if airwalk.b then airwalk.b:Disconnect() airwalk.b=nil end
 	if airwalk.rahh then airwalk.rahh:Destroy() airwalk.rahh=nil end
-	if airwalk.rahh2 then airwalk.rahh2:Destroy() airwalk.rahh2 = nil end
+	if airwalk.rahh2 then airwalk.rahh2:Destroy() airwalk.rahh2=nil end
 
 	wait();
 
@@ -10659,12 +10668,12 @@ cmd.add({"unairwalk","unfloat","unaw"},{"unairwalk (unfloat,unaw)","Stops the ai
 		Title=adminName;
 		Duration=5;
 	});
-	
+
 end)
 
 cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,unairwalk to stop"},function()
 	wait();
-	
+
 	if IsOnMobile then 
 		Notify({
 			Description="Airwalk: On";
@@ -10681,7 +10690,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 
 	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
 	if awPart then awPart:Destroy() awPart=nil end
-	local offset = -0.2
+	local offset=-0.2
 	if IsOnMobile then 
 		if airwalk.rahh then airwalk.rahh:Destroy() rahh=nil end
 		airwalk.rahh=Instance.new("ScreenGui")
@@ -10697,7 +10706,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		TextButton2.BackgroundColor3=Color3.fromRGB(12,4,20)
 		TextButton2.BackgroundTransparency=0.140
 		TextButton2.Position=UDim2.new(0.933,0,0.621+offset,0)
-		offset-= 0.2
+		offset-=0.2
 		TextButton2.Size=UDim2.new(0.043,0,0.083,0)
 		TextButton2.Font=Enum.Font.SourceSansBold
 		TextButton2.Text="DOWN"
@@ -10713,10 +10722,10 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		UIAspectRatioConstraint.Parent=TextButton2
 		UIAspectRatioConstraint.AspectRatio=1.060
 		TextButton2.MouseButton1Down:connect(function()
-			airwalk.Vars.decrease = true;
+			airwalk.Vars.decrease=true;
 		end)
 		TextButton2.MouseButton1Up:Connect(function()
-			airwalk.Vars.decrease = false;
+			airwalk.Vars.decrease=false;
 		end)
 		gui.draggablev2(TextButton2)
 
@@ -10734,7 +10743,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		TextButton.BackgroundColor3=Color3.fromRGB(12,4,20)
 		TextButton.BackgroundTransparency=0.140
 		TextButton.Position=UDim2.new(0.933,0,0.621+offset,0)
-		offset-= 0.2
+		offset-=0.2
 		TextButton.Size=UDim2.new(0.043,0,0.083,0)
 		TextButton.Font=Enum.Font.SourceSansBold
 		TextButton.Text="UP"
@@ -10750,32 +10759,32 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		UIAspectRatioConstraint.Parent=TextButton
 		UIAspectRatioConstraint.AspectRatio=1.060
 		TextButton.MouseButton1Down:connect(function()
-			airwalk.Vars.increase = true;
+			airwalk.Vars.increase=true;
 		end)
 		TextButton.MouseButton1Up:Connect(function()
-			airwalk.Vars.increase = false;
+			airwalk.Vars.increase=false;
 		end)
 		gui.draggablev2(TextButton)
 	else
 
-	if airwalk.c then airwalk.c:Disconnect() airwalk.c=nil end
-	if airwalk.b then airwalk.b:Disconnect() airwalk.b=nil end
+		if airwalk.c then airwalk.c:Disconnect() airwalk.c=nil end
+		if airwalk.b then airwalk.b:Disconnect() airwalk.b=nil end
 
-	airwalk.c = uis.InputBegan:Connect(function(Input)
+		airwalk.c=uis.InputBegan:Connect(function(Input)
 			if Input.KeyCode==airwalk.Vars.keybinds.Increase then
-				airwalk.Vars.increase = true;
+				airwalk.Vars.increase=true;
 			end
 			if Input.KeyCode==airwalk.Vars.keybinds.Descrease then
-				airwalk.Vars.decrease = true;
+				airwalk.Vars.decrease=true;
 			end
 		end)
-	
-		airwalk.b = uis.InputEnded:Connect(function(Input)
+
+		airwalk.b=uis.InputEnded:Connect(function(Input)
 			if Input.KeyCode==airwalk.Vars.keybinds.Increase then
-				airwalk.Vars.increase = false;
+				airwalk.Vars.increase=false;
 			end
 			if Input.KeyCode==airwalk.Vars.keybinds.Descrease then
-				airwalk.Vars.decrease = false;
+				airwalk.Vars.decrease=false;
 			end
 		end)
 
@@ -10786,29 +10795,29 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 	awPart.CFrame=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame-Vector3.new(0,4,0)
 	awPart.Transparency=1
 	awPart.Anchored=true
-	airwalk.Y = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
+	airwalk.Y=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
 	Airwalker=RunService.RenderStepped:connect(function()
 		if (not awPart) then
 			Airwalker:disconnect()
 			return;
 		end
-		airwalk.Vars.offset = 4
-		
+		airwalk.Vars.offset=4
+
 		if airwalk.Vars.decrease then
-			airwalk.Vars.offset = 5
+			airwalk.Vars.offset=5
 		end
 		if airwalk.Vars.increase then
-			airwalk.Vars.offset = 3.5
+			airwalk.Vars.offset=3.5
 		end
-		if (airwalk.Vars.decrease and airwalk.Vars.offset == 3.5) then airwalk.Vars.offset = 4 end -- no change
+		if (airwalk.Vars.decrease and airwalk.Vars.offset==3.5) then airwalk.Vars.offset=4 end -- no change
 
-		if airwalk.Vars.offset == 4 then
-			local smalldis = (getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y - airwalk.Y) 
+		if airwalk.Vars.offset==4 then
+			local smalldis=(getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y - airwalk.Y) 
 			if smalldis < 0.01 then
-				getRoot(game:GetService("Players").LocalPlayer.Character).CFrame = CFrame.new(getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.X,airwalk.Y,getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Z) * getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Rotation
+				getRoot(game:GetService("Players").LocalPlayer.Character).CFrame=CFrame.new(getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.X,airwalk.Y,getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Z) * getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.Rotation
 			end
 		end
-		airwalk.Y = getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
+		airwalk.Y=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame.y
 		awPart.CFrame=getRoot(game:GetService("Players").LocalPlayer.Character).CFrame-Vector3.new(0,airwalk.Vars.offset,0)
 	end)
 end)
@@ -15534,9 +15543,9 @@ for i,v in pairs(Players:GetPlayers()) do
 end
 
 function Getmodel(id)
-	local ob23e232323 = nil
-	s,r = pcall(function()
-		ob23e232323 = game:GetObjects(id)[1]
+	local ob23e232323=nil
+	s,r=pcall(function()
+		ob23e232323=game:GetObjects(id)[1]
 	end)
 	if s and ob23e232323 then
 		return ob23e232323
