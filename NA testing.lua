@@ -15523,8 +15523,8 @@ function Getmodel(id)
 end
 
 --[[ GUI VARIABLES ]]--
-local ScreenGui=nil
-local uiModel=Getmodel("rbxassetid://17101871669")
+local ScreenGui=Getmodel("rbxassetid://17101871669")
+--local uiModel=Getmodel("rbxassetid://17101871669")
 local rPlayer=Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection={}
 if not RunService:IsStudio() then
@@ -15536,16 +15536,14 @@ end
 
 if (get_hidden_gui or gethui) then
 	local hiddenUI=(get_hidden_gui or gethui)
-	local Main=uiModel
+	local Main=ScreenGui
 	Main.Name=randomString()
 	Main.Parent=hiddenUI()
-	ScreenGui=Main
 elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
-	local Main=uiModel
+	local Main=ScreenGui
 	Main.Name=randomString()
 	syn.protect_gui(Main)
 	Main.Parent=game:GetService("CoreGui")
-	ScreenGui=Main
 elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 	pcall(function()
 		for i,v in pairs(ScreenGui:GetDescendants()) do
@@ -15577,10 +15575,9 @@ elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 		ScreenGui=newGui
 	end
 elseif COREGUI then
-	local Main=uiModel
+	local Main=ScreenGui
 	Main.Name=randomString()
 	Main.Parent=COREGUI
-	ScreenGui=Main
 else
 	warn'no guis?'
 end
