@@ -4794,7 +4794,7 @@ cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username
 	setclipboard(tostring(naem))
 
 	Notify({
-		Description="Copied User with ID of "..tostring(thingy)..": "..tostring(naem);
+		Description="Copied "..tostring(naem).."'s Username with ID of "..tostring(thingy);
 		Title=adminName;
 		Duration=5;
 	})
