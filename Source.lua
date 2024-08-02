@@ -1,4 +1,3 @@
-
 if getgenv().RealNamelessLoaded then return end
 
 local function NACaller(pp)--helps me log better
@@ -4751,30 +4750,28 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 end)
 		
-cmd.add({"getusernamefromid","guid","uid"},{"getusernamefromid (guid, uid)","Copy a user's UserId by Username"},function(thingy)
-useridd=tostring(game.Players:GetUserIdFromNameAsync(thingy))
+cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"},function(thingy)
+idd=game.Players:GetUserIdFromNameAsync(tostring(thingy))
 if not setclipboard then return print'no setclipboard support' end
-setclipboard(tostring(useridd))
+setclipboard(tostring(idd))
 				
 Notify({
-		Description="Copied "..tostring(thingy).."'s UserId: "..useridd;
+		Description="Copied "..tostring(thingy).."'s UserId: "..idd;
 		Title=adminName;
 		Duration=5;
 	});
-
 end)
 		
-cmd.add({"getidfromuser","gidu"},{"getidfromuser (gidu)","Copy a user's Username by ID"},function(thingy)
-usernaem=tostring(game.Players:GetUserIdFromNameAsync(thingy))
+cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username by ID"},function(thingy)
+usernaem=game.Players:GetUserIdFromNameAsync(tonumber(thingy))
 if not setclipboard then return print'no setclipboard support' end
 setclipboard(tostring(usernaem))
 				
 Notify({
-		Description="Copied "..usernaem.."'s Username with id of: "..tostring(thingy);
+		Description="Copied "..usernaem.."'s Username with ID of: "..tonumber(thingy);
 		Title=adminName;
 		Duration=5;
 	});
-
 end)
 
 
