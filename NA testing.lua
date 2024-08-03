@@ -111,6 +111,17 @@ until Notification~=nil --waits for the module to load (cause loadstring takes a
 
 local Notify=Notification.Notify;
 
+local function DoNotif(txt,dur,naem)
+	if not txt then txt='' end
+	if not dur then dur=5 end
+	if not naem then naem=adminName end
+	Notify({
+		Description=txt;
+		Title=naem;
+		Duration=dur;
+	});
+end
+
 wait();--added wait due to the Http being a bit delayed on returning (should fix the issue where Nameless Admin wouldn't load sometimes)
 
 --Custom file functions checker checker
@@ -134,11 +145,7 @@ if FileSupport then
 	prefixCheck=readfile("Nameless-Admin/Prefix.txt",';')
 else
 	prefixCheck=";"
-	Notify({
-		Description="Your exploit does not support read/write file";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Your exploit does not support read/write file",5)
 end
 --[[ PREFIX AND OTHER STUFF. ]]--
 local opt={
@@ -151,7 +158,7 @@ local opt={
 --[[ Update Logs ]]--
 local updLogs={}
 
-local updDate="7/30/2024"
+local updDate="8/03/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -354,17 +361,8 @@ cmd.run=function(args)
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
-				Notify({
-					Description="Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?";
-					Title=adminName;
-					Duration=4;
-				});
+				DoNotif("Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?",4)
 			else
-					--[[Notify({
-						Description="Command ("..caller..") not found";
-						Title=adminName;
-						Duration=4;
-					});]]
 			end
 		end
 	end)
@@ -1345,27 +1343,12 @@ cmd.add({"prefix"},{"prefix <prefix>","Changes the admin prefix"},function(...)
 	local PrefixChange=(...)
 
 	if PrefixChange==nil then
-		Notify({
-			Description="Please enter a valid prefix";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Please enter a valid prefix",5)
 	elseif PrefixChange=="p" or PrefixChange=="[" or PrefixChange=="P" then
-		Notify({
-			Description="idk why but this prefix breaks changing the prefix so pick smthing else alr?";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?",5)
 	else
 		opt.prefix=PrefixChange
-		Notify({
-			Description="Prefix set to: "..PrefixChange;
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Prefix set to: "..PrefixChange,5)
 	end
 end)
 
@@ -1375,26 +1358,13 @@ cmd.add({"saveprefix"},{"saveprefix <prefix>","Saves the prefix to what u want"}
 	local PrefixChange=(...)
 
 	if PrefixChange==nil then
-		Notify({
-			Description="Please enter a valid prefix";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Please enter a valid prefix",5)
 	elseif PrefixChange=="p" or PrefixChange=="[" or PrefixChange=="P" then
-		Notify({
-			Description="idk why but this prefix breaks changing the prefix so pick smthing else alr?";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?",5)
 	else
 		writefile("Nameless-Admin/Prefix.txt",PrefixChange)
 		opt.prefix=PrefixChange
-		Notify({
-			Description="Prefix saved to: "..PrefixChange;
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Prefix saved to: "..PrefixChange,5)
 	end
 end)
 
@@ -1427,10 +1397,6 @@ cmd.add({"kanye"},{"kanye","Random kanye quote"},function()
 	lib.LocalPlayerChat(final3.."-Kanye West",'All')
 end)
 
-cmd.add({"godmode","god"},{"godmode (god)","Makes you unable to be killed"},function()
-	loadstring(game:HttpGet(('https://pastebin.com/raw/bbyuynM1'),true))()
-end)
-
 cmd.add({"teleportgui","tpui","universeviewer","uviewer"},{"teleportgui (tpui,universeviewer,uviewer)","Gives an UI that grabs all places and teleports you by clicking a simple button"},function()
 	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Game%20Universe%20Viewer"))()
 	gui.universeGui()
@@ -1448,17 +1414,9 @@ end)
 cmd.add({"discord"},{"discord","Copy an invite link to the official Nameless Admin V2 discord server"},function()
 	if setclipboard then 
 		setclipboard('https://discord.gg/zS7TpV3p64')
-		Notify({
-			Description='Copied the discord invite link!';
-			Title=adminName;
-			Duration=4;
-		});
+		DoNotif('Copied the discord invite link!',4)
 	else
-		Notify({
-			Description='Your exploit does not support setclipboard\nRetype the invite link yourself (https://discord.gg/zS7TpV3p64)';
-			Title=adminName;
-			Duration=10;
-		});
+		DoNotif('Your exploit does not support setclipboard\nRetype the invite link yourself (https://discord.gg/zS7TpV3p64)',10)
 	end
 end)
 
@@ -1798,23 +1756,12 @@ if IsOnMobile then
 
 end
 cmd.add({"commandcount","cc"},{"commandcount (cc)","Counds how many commands NA has"},function()
-
-	Notify({
-		Description=adminName.." currently has ".. commandcount.." commands";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif(adminName.." currently has ".. commandcount.." commands",5)
 end)
 
 local hiddenfling=false
 cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the best fling lol"},function()
-	Notify({
-		Description="Walkfling enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Walkfling enabled",5)
 	if NA_storage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 		hiddenfling=true
 	else
@@ -1855,12 +1802,7 @@ cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the
 end)
 
 cmd.add({"unwalkfling","unwfling"},{"unwalkfling (unwfling)","stop the walkfling command"},function()
-	Notify({
-		Description="Walkfling disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Walkfling disabled",5)
 	hiddenfling=false
 end)
 
@@ -2000,11 +1942,7 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 
 	wait();
 
-	Notify({
-		Description="Rejoining...";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Rejoining...",5)
 end)
 
 cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
@@ -2234,12 +2172,7 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 
 	wait();
 
-	Notify({
-		Description=accountage;
-		Title=adminName;
-		Duration=7;
-
-	});
+	DoNotif(accountage)
 end)
 
 cmd.add({"notoolscripts","nts"},{"notoolscripts (nts)","Destroy all scripts in backpack"},function()
@@ -2696,24 +2629,23 @@ cmd.add({"punch"},{"punch","punch tool that flings"},function()
 end)
 
 cmd.add({"vfly","vehiclefly"},{"vehiclefly (vfly)","be able to fly vehicles"},function(...)
-	FLYING=false
-	cmdlp.Character.Humanoid.PlatformStand=false
-	wait()
+	if IsOnMobile then
+		DoNotif("command not supported for mobile :(")
+	else
+		FLYING=false
+		cmdlp.Character.Humanoid.PlatformStand=false
+		wait()
 
 
 
-	wait();
+		wait();
 
-	Notify({
-		Description="Vehicle fly enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
-	sFLY(true)
-	speedofthevfly=(...)
-	if (...)==nil then
-		speedofthevfly=2
+		DoNotif("Vehicle fly enabled")
+		sFLY(true)
+		speedofthevfly=(...)
+		if (...)==nil then
+			speedofthevfly=2
+		end
 	end
 end)
 
@@ -2723,12 +2655,7 @@ cmd.add({"unvfly","unvehiclefly"},{"unvehiclefly (unvfly)","disable vehicle fly"
 
 	wait();
 
-	Notify({
-		Description="Vehicle fly disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Vehicle fly disabled")
 	FLYING=false
 	cmdlp.Character.Humanoid.PlatformStand=false
 end)
@@ -3068,12 +2995,7 @@ cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches y
 	--its literally just leg resize with swim
 	wait();
 
-	Notify({
-		Description="Break layered clothing executed,if you havent already equip shirt,jacket,pants and shoes (Layered Clothing ones)";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Break layered clothing executed,if you havent already equip shirt,jacket,pants and shoes (Layered Clothing ones)")
 	local swimming=false
 	local RunService=game:GetService("RunService")
 	oldgrav=workspace.Gravity
@@ -3559,12 +3481,7 @@ cmd.add({"sync"},{"sync","Syncs all in-game audios"},function()
 			end
 		until massplay==false
 	else
-		Notify({
-			Description="Sorry,wont replicate for this game,try another game.";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Sorry,wont replicate for this game,try another game.")
 	end
 end)
 
@@ -3876,12 +3793,7 @@ cmd.add({"localtime","yourtime"},{"localtime (yourtime)","Shows your current tim
 	end
 	local clock=hour..":"..min..":"..sec
 
-	Notify({
-		Description="Your Local Time Is: "..clock.."";
-		Title=adminName;
-		Duration=5;				 
-	});
-
+	DoNotif("Your Local Time Is: "..clock)
 end)
 
 cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just sit in the car"},function(...)
@@ -4171,11 +4083,7 @@ cmd.add({"antisit"},{"antisit","Antisit"},function()
 
 	wait();
 
-	Notify({
-		Description="Anti sit enabled";
-		Title=adminName;
-		Duration=5;				 
-	});
+	DoNotif("Anti sit enabled")
 end)
 
 cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
@@ -4186,12 +4094,7 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 
 	wait();
 
-	Notify({
-		Description="Anti sit disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Anti sit disabled")
 end)
 
 cmd.add({"antikick","nokick"},{"antikick (nokick)","prevents you from getting kicked by LocalScripts or executed scripts"},function()
@@ -4204,11 +4107,7 @@ cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframe
 
 	wait();
 
-	Notify({
-		Description="nothing should be able to teleport you now";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("nothing should be able to teleport you now")
 
 	root=getRoot(plr.Character)
 
@@ -4229,11 +4128,7 @@ cmd.add({"unanticframeteleport","unacframetp","unacftp"},{"unanticframeteleport 
 
 	wait();
 
-	Notify({
-		Description="Anti CFrame Teleport disabled";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("Anti CFrame Teleport disabled")
 end)
 
 cmd.add({"lay"},{"lay","zzzzzzzz"},function()
@@ -4254,21 +4149,9 @@ end)
 
 cmd.add({"checkrfe"},{"checkrfe","Checks if the game has respect filtering enabled off"},function()
 	if game:GetService("SoundService").RespectFilteringEnabled==true then
-
-		Notify({
-			Description="Respect Filtering Enabled is on";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Respect Filtering Enabled is on")
 	else
-
-		Notify({
-			Description="Respect Filtering Enabled is off";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Respect Filtering Enabled is off")
 	end
 end)
 
@@ -4344,13 +4227,7 @@ cmd.add({"dupetools"},{"dupetools [amount]","Probably the fastest tool duping me
 end)
 
 cmd.add({"harked","comet"},{"harked (comet)","Executes Comet which is like harked"},function()
-	Notify({
-		Description="Join the discord to see supported games! Use the discord command to get the invite";
-		Title=adminName;
-		Duration=7;
-
-	});
-
+	DoNotif("Join the discord to see supported games! Use the discord command to get the invite",7)
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/comet"))();
 end)
 
@@ -4473,12 +4350,7 @@ cmd.add({"triggerbot","tbot"},{"triggerbot (tbot)","Executes a script that autom
 
 	wait();
 
-	Notify({
-		Description="Keybind: Q";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Keybind: Q")
 end)
 
 
@@ -4502,17 +4374,9 @@ cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for bein
 
 		wait();
 
-		Notify({
-			Description="Anti AFK has been enabled";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Anti AFK has been enabled")
 	else
-		Notify({
-			Description="Anti AFK is already enabled";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Anti AFK is already enabled")
 	end
 end)
 
@@ -4540,12 +4404,7 @@ cmd.add({"antiattach","noattach"},{"antiattach (noattach)","Makes you not be abl
 
 	wait();
 
-	Notify({
-		Description="Anti attach enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Anti attach enabled")
 end)
 
 cmd.add({"unantiattach","unnoattach"},{"unantiattach (unnoattach)","Makes you to be able for others to attach you"},function()
@@ -4556,24 +4415,14 @@ cmd.add({"unantiattach","unnoattach"},{"unantiattach (unnoattach)","Makes you to
 
 		wait();
 
-		Notify({
-			Description="Anti attach disabled";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Anti attach disabled")
 	else
 
 
 
 		wait();
 
-		Notify({
-			Description="Anti attach already disabled";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Anti attach already disabled")
 	end
 end)
 
@@ -4583,12 +4432,7 @@ cmd.add({"setspawn","spawnpoint","ss"},{"setspawn (spawnpoint,ss)","Makes your s
 
 	wait();
 
-	Notify({
-		Description="Spawn has been set";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Spawn has been set")
 	local stationaryrespawn=true
 	local needsrespawning=false
 	local haspos=false
@@ -4691,19 +4535,11 @@ cmd.add({"unantiafk","unnoafk"},{"unantiafk (unnoafk)","Makes you able to be kic
 		ANTIAFK=nil
 		wait();
 
-		Notify({
-			Description="Anti AFK disabled";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Anti AFK disabled")
 	else 
 		wait();
 
-		Notify({
-			Description="Anti AFK already disabled";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Anti AFK already disabled")
 	end
 end)
 
@@ -4711,11 +4547,7 @@ cmd.add({"toolgui"},{"toolgui","cool tool ui aka replication ui made by 0866"},f
 	loadstring(game:HttpGet("https://pastebin.com/raw/vr2YVyF6"))();
 	wait();
 
-	Notify({
-		Description="For a better experience,use R6 if you want tools do ;dupetools 5";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("For a better experience,use R6 if you want tools do ;dupetools 5")
 end)
 
 cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"},function()
@@ -4776,11 +4608,7 @@ cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's 
 	if not setclipboard then return print("no setclipboard") end
 	setclipboard(tostring(idd))
 
-	Notify({
-		Description="Copied "..tostring(thingy).."'s UserId: "..tostring(idd);
-		Title=adminName;
-		Duration=5;
-	})
+	DoNotif("Copied "..tostring(thingy).."'s UserId: "..tostring(idd))
 end)
 
 cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username by ID"}, function(thingy)
@@ -4793,11 +4621,7 @@ cmd.add({"getuserfromid","guid"},{"getuserfromid (guid)","Copy a user's Username
 	if not setclipboard then return print("no setclipboard") end
 	setclipboard(tostring(naem))
 
-	Notify({
-		Description="Copied "..tostring(naem).."'s Username with ID of "..tostring(thingy);
-		Title=adminName;
-		Duration=5;
-	})
+	DoNotif("Copied "..tostring(naem).."'s Username with ID of "..tostring(thingy))
 end)
 
 cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explorer"},function()
@@ -4860,19 +4684,6 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 	Load(Dex)
 end)
 
-	--[[cmd.add({"antikill"},{"antikill","Makes exploiters not be able to kill you"},function()
-		Player.Character.Humanoid:SetStateEnabled("Seated",false)
-		Player.Character.Humanoid.Sit=true
-		wait();
-	
-		Notify({
-			Description="Anti kill enabled";
-			Title=adminName;
-			Duration=5;
-	
-		});
-	end)]]
-
 cmd.add({"gayrate"},{"gayrate <player>","Gay scale of a player"},function(...)
 	Username=(...)
 	target=getPlr(Username)
@@ -4897,12 +4708,7 @@ cmd.add({"unantikill"},{"unantikill","Makes exploiters to be able to kill you"},
 
 	wait();
 
-	Notify({
-		Description="Anti kill disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Anti kill disabled")
 end)
 
 local AntiFling=false
@@ -4934,24 +4740,14 @@ cmd.add({"antifling"},{"antifling","makes it so you cant collide with others"},f
 	end)
 
 	wait();
-	Notify({
-		Description="Anti fling enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Anti fling enabled")
 end)
 
 cmd.add({"unantifling"},{"unantifling","removes antifling"},function()
 	AntiFling=true
 
 	wait();
-	Notify({
-		Description="Anti fling disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Anti fling disabled")
 
 	for _,v in pairs(game.Players:GetPlayers()) do
 		if v~=game.Players then
@@ -4967,12 +4763,7 @@ end)
 
 cmd.add({"gravitygun"},{"gravitygun","Probably the best gravity gun script thats fe"},function()
 	wait();
-	Notify({
-		Description="Wait a few seconds for it to load";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Wait a few seconds for it to load")
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/gravity%20gun"))()
 end)
 
@@ -5160,12 +4951,7 @@ cmd.add({"controlnpcs","cnpcs"},{"controlnpcs (cnpcs)","Keybind: CTRL+LEFTCLICK"
 
 	wait();
 
-	Notify({
-		Description="ControlNPCs executed,CTRL+Click on an NPC";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("ControlNPCs executed,CTRL+Click on an NPC")
 	---made by joshclark756#7155
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
@@ -5218,12 +5004,7 @@ cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
 
 	wait();
 
-	Notify({
-		Description="AttachPart executed,CTRL+Click on a part";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("AttachPart executed,CTRL+Click on a part")
 	--made by joshclark756#7155
 	--Variables
 	local mouse=game.Players.LocalPlayer:GetMouse()
@@ -5476,12 +5257,7 @@ cmd.add({"netless","net"},{"netless (net)","Executes netless which makes scripts
 
 	wait();
 
-	Notify({
-		Description="Netless has been activated,re-run this script if you die";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Netless has been activated,re-run this script if you die")
 end)
 
 cmd.add({"rocket"},{"rocket <player>","rockets a player"},function(...)
@@ -5490,12 +5266,7 @@ cmd.add({"rocket"},{"rocket <player>","rockets a player"},function(...)
 
 	wait();
 
-	Notify({
-		Description="Get ready to launch...";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Get ready to launch...")
 	wait(0.2)
 	local OldPos=getRoot().CFrame
 	tweenService,tweenInfo=game:GetService("TweenService"),TweenInfo.new(70,Enum.EasingStyle.Linear)
@@ -5649,12 +5420,7 @@ end)
 cmd.add({"quicksand"},{"quicksand <player>","Quicksands a player"},function(...)
 	wait();
 
-	Notify({
-		Description="Kidnapping... next time take a van,or not";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Kidnapping... next time take a van,or not")
 	local OldPos=getRoot().CFrame
 	wait()
 	tweenService,tweenInfo=game:GetService("TweenService"),TweenInfo.new(160,Enum.EasingStyle.Linear)
@@ -5868,19 +5634,9 @@ cmd.add({"admin"},{"admin","whitelist someone to allow them to use commands"},fu
 		wait(0.2)
 		ChatMessage("[Nameless Admin Commands] glue,unglue,fling,fling2,spinfling,unspinfling,fcd,fti,fpp,fireremotes,holdhat",Player.Name)
 		ChatMessage("reset,commitoof,seizure,unseizure,toolorbit,lay,fall,toolspin,hatspin,sit,joke,kanye",Player.Name)
-		Notify({
-			Description=""..Player.Name.." has now been whitelisted to use commands";
-			Title=adminName;
-			Duration=15;
-
-		});
+		DoNotif(Player.Name.." has now been whitelisted to use commands",15)
 	else
-		Notify({
-			Description="No player found";
-			Title=adminName;
-			Duration=15;
-
-		});
+		DoNotif("No player found",15)
 	end
 end)
 
@@ -5891,19 +5647,9 @@ cmd.add({"unadmin"},{"unadmin <player>","removes someone from being admin"},func
 	if Player~=nil and Admin[Player.UserId] then
 		Admin[Player.UserId]=nil
 		ChatMessage("/w "..Player.Name.." You can no longer use commands")
-		Notify({
-			Description=""..Player.Name.." is no longer an admin";
-			Title=adminName;
-			Duration=15;
-
-		});
+		DoNotif(Player.Name.." is no longer an admin",15)
 	else
-		Notify({
-			Description="Player not found";
-			Title=adminName;
-			Duration=15;
-
-		});
+		DoNotif("Player not found",15)
 	end
 end)
 
@@ -5917,12 +5663,7 @@ cmd.add({"removedn","nodn","nodpn"},{"removedn (nodn,nodpn)","Removes all displa
 	--[[ IM NOT SURE WHO MADE THIS ]]--
 
 	wait();
-	Notify({
-		Description="Display names successfully removed";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Display names successfully removed")
 
 	local Players=game:FindService("Players")
 	require(game:GetService("Chat"):WaitForChild("ClientChatModules").ChatSettings).PlayerDisplayNamesEnabled=false
@@ -5962,19 +5703,9 @@ cmd.add({"jobid"},{"jobid","Copies your job id"},function()
 		setclipboard(tostring(jobId))
 		wait();
 
-		Notify({
-			Description="Copied your jobid ("..jobId..")";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Copied your jobid ("..jobId..")")
 	else
-		Notify({
-			Description="Your executor does not support setclipboard";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Your executor does not support setclipboard")
 	end
 end)
 
@@ -5987,12 +5718,7 @@ end)
 cmd.add({"serverhop","shop"},{"serverhop (shop)","serverhop"},function()
 	wait();
 
-	Notify({
-		Description="Searching";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Searching")
 	local Number=0
 	local SomeSRVS={}
 	local found=0
@@ -6006,12 +5732,7 @@ cmd.add({"serverhop","shop"},{"serverhop (shop)","serverhop"},function()
 		end
 	end
 	if #SomeSRVS>0 then
-		Notify({
-			Description="serverhopping | Player Count: "..found.."";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("serverhopping | Player Count: "..found)
 		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceId,SomeSRVS[1])
 	end
 end)
@@ -6019,12 +5740,7 @@ end)
 cmd.add({"smallserverhop","sshop"},{"smallserverhop (sshop)","serverhop to a small server"},function()
 	wait();
 
-	Notify({
-		Description="Searching";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Searching")
 
 	local Number=math.huge
 	local SomeSRVS={}
@@ -6041,11 +5757,7 @@ cmd.add({"smallserverhop","sshop"},{"smallserverhop (sshop)","serverhop to a sma
 	end
 
 	if #SomeSRVS>0 then
-		Notify({
-			Description="serverhopping | Player Count: "..found.."";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("serverhopping | Player Count: "..found)
 		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceId,SomeSRVS[1])
 	end
 end)
@@ -6053,12 +5765,7 @@ end)
 cmd.add({"pingserverhop","pshop"},{"pingserverhop (pshop)","serverhop to a server with the best ping"},function()
 	wait();
 
-	Notify({
-		Description="Searching";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Searching")
 
 	local Servers=JSONDecode(HttpService,game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
 	local Ping=math.huge
@@ -6075,11 +5782,7 @@ cmd.add({"pingserverhop","pshop"},{"pingserverhop (pshop)","serverhop to a serve
 	end
 
 	if Jobid then
-		Notify({
-			Description=string.format("Serverhopping,ping: %s",tostring(Ping));
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif(string.format("Serverhopping,ping: %s",tostring(Ping)))
 		TeleportService:TeleportToPlaceInstance(PlaceId,Jobid)
 	end
 end)
@@ -6115,12 +5818,7 @@ cmd.add({"autorejoin","autorj"},{"autorejoin","Rejoins the server if you get kic
 		end
 	end)
 
-	Notify({
-		Description="Auto Rejoin is now on!";
-		Title=adminName;
-		Duration=5;
-
-	}); 
+	DoNotif("Auto Rejoin is now on!")
 end)
 
 cmd.add({"unautorejoin","unautorj"},{"unautorejoin (unautorj)","disables auto rejoin command"},function()
@@ -6129,19 +5827,9 @@ cmd.add({"unautorejoin","unautorj"},{"unautorejoin (unautorj)","disables auto re
 		autorjthingy:Disconnect()
 		autorjthingy=nil 
 
-		Notify({
-			Description="Auto Rejoin is now disabled!";
-			Title=adminName;
-			Duration=5;
-
-		}); 
+		DoNotif("Auto Rejoin is now disabled!")
 	else
-		Notify({
-			Description="Auto Rejoin is already disabled";
-			Title=adminName;
-			Duration=5;
-
-		}); 
+		DoNotif("Auto Rejoin is already disabled")
 	end
 end)
 
@@ -6559,11 +6247,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 	end
 	if IsOnMobile then 
 		wait();
-		Notify({
-			Description=adminName.." has detected you using mobile you now have a mfly button click it to enable / disable mobile flying (For easier use)";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif(adminName.." has detected you using mobile you now have a mfly button click it to enable / disable mobile flying (For easier use)")
 
 		if rahh then rahh:Destroy() rahh=nil end
 
@@ -6616,12 +6300,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 		cmdlp.Character.Humanoid.PlatformStand=false
 		wait();
 
-		Notify({
-			Description="Fly enabled";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Fly enabled")
 		sFLY(true)
 		speedofthevfly=(...)
 		if (...)==nil then
@@ -6634,18 +6313,9 @@ cmd.add({"unfly"},{"unfly","Disable flight"},function()
 
 	wait();
 	if IsOnMobile then
-		Notify({
-			Description="Mobile Fly Disabled";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Mobile Fly Disabled")
 	else
-		Notify({
-			Description="Not flying anymore";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Not flying anymore")
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
 	end
@@ -6655,19 +6325,11 @@ cmd.add({"unfly"},{"unfly","Disable flight"},function()
 end)
 
 cmd.add({"mobilefly","mfly"},{"mobilefly [speed] (mfly)","nil"},function()
-	Notify({
-		Description="moved into the (fly) command";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("moved into the (fly) command")
 end)
 
 cmd.add({"unmobilefly","unmfly"},{"unmobilefly (unmfly)","nil"},function()
-	Notify({
-		Description="moved into the (unfly) command";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("moved into the (unfly) command")
 end)
 
 cmd.add({"noclip","nclip","nc"},{"noclip","Disable your player's collision"},function()
@@ -6698,64 +6360,34 @@ cmd.add({"freezewalk"},{"freezewalk","Freezes your character on the server but l
 		Character.LowerTorso.Anchored=true
 		Character.LowerTorso.Root:Destroy()
 	end
-	Notify({
-		Description="freezewalk is activated,reset to stop it";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("freezewalk is activated,reset to stop it")
 end)
 
 cmd.add({"r15"},{"r15","Prompts a message asking to make you R15"},function()
 	local avs=game:GetService("AvatarEditorService")
 	avs:PromptSaveAvatar(game.Players.LocalPlayer.Character.Humanoid.HumanoidDescription,Enum.HumanoidRigType.R15)
-	Notify({
-		Description="Press allow";
-		Duration=3;
-
-	});
+	DoNotif("Press allow",3)
 	local result=avs.PromptSaveAvatarCompleted:Wait()
 	if result==Enum.AvatarPromptResult.Success
 	then
-		Notify({
-			Description="You are now R15";
-			Title=adminName;
-			Duration=3;
-		});
+		DoNotif("You are now R15",3)
 		respawn()
 	else
-		Notify({
-			Description="An error has occured";
-			Title=adminName;
-			Duration=3;
-		});
+		DoNotif("An error has occured",3)
 	end
 end)
 
 cmd.add({"r6"},{"r6","Prompts a message asking to make you R6"},function()
 	local avs=game:GetService("AvatarEditorService")
 	avs:PromptSaveAvatar(game.Players.LocalPlayer.Character.Humanoid.HumanoidDescription,Enum.HumanoidRigType.R6)
-	Notify({
-		Description="Press allow";
-		Duration=3;
-
-	});
+	DoNotif("Press allow",3)
 	local result=avs.PromptSaveAvatarCompleted:Wait()
 	if result==Enum.AvatarPromptResult.Success
 	then
-		Notify({
-			Description="You are now R6";
-			Title=adminName;
-			Duration=3;
-
-		});
+		DoNotif("You are now R6",3)
 		respawn()
 	else
-		Notify({
-			Description="An error has occured";
-			Title=adminName;
-			Duration=3;
-
-		});
+		DoNotif("An error has occured",3)
 	end
 end)
 
@@ -7209,12 +6841,7 @@ end)
 cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player to lighting"},function(...)
 	wait();
 
-	Notify({
-		Description="Hid the player";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Hid the player")
 
 	local Username=(...)
 	local target=getPlr(Username)
@@ -7248,12 +6875,7 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 
 	wait();
 
-	Notify({
-		Description="Unhid the player";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Unhid the player")
 
 	local Username=(...)
 	local target=getPlr(Username)
@@ -7302,11 +6924,7 @@ cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools
 		wait(.2)
 		local grabber=game.Players:GetPlayerFromCharacter(boombox.Parent) or boombox.Parent.Parent
 		game.Players.LocalPlayer.Character:SetPrimaryPartCFrame(grabber.Character.Head.CFrame+Vector3.new(0,3,0))
-		Notify({
-			Description="Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing";
-			Duration=3;
-
-		});
+		DoNotif("Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing")
 	end
 end)
 
@@ -7512,11 +7130,7 @@ cmd.add({"placeid","pid"},{"placeid (pid)","Copies the PlaceId of the game you'r
 
 	wait();
 
-	Notify({
-		Description="Copied the game's PlaceId: "..PlaceId;
-		Title=adminName;
-		Duration=4;
-	});
+	DoNotif("Copied the game's PlaceId: "..PlaceId)
 end)
 
 cmd.add({"gameid","universeid","gid"},{"gameid (universeid,gid)","Copies the GameId/Universe Id of the game you're in"},function()
@@ -7524,11 +7138,7 @@ cmd.add({"gameid","universeid","gid"},{"gameid (universeid,gid)","Copies the Gam
 
 	wait();
 
-	Notify({
-		Description="Copied the game's GameId: "..GameId;
-		Title=adminName;
-		Duration=4;
-	});
+	DoNotif("Copied the game's GameId: "..GameId)
 end)
 
 cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name to your clipboard"},function()
@@ -7536,11 +7146,7 @@ cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name
 
 	wait();
 
-	Notify({
-		Description="Copied the game's place name: "..placeName();
-		Title=adminName;
-		Duration=4;
-	});
+	DoNotif("Copied the game's place name: "..placeName())
 end)
 
 cmd.add({"lowhold"},{"lowhold","Boombox low hold"},function()
@@ -7569,11 +7175,7 @@ cmd.add({"copyname","cname"},{"copyname <player> (cname)","Copies the username o
 
 	wait();
 
-	Notify({
-		Description="Copied the username of "..target.DisplayName;
-		Title=adminName;
-		Duration=7;
-	});
+	DoNotif("Copied the username of "..target.DisplayName)
 end)
 
 cmd.add({"copydisplay","cdisplay"},{"copydisplay <player> (cdisplay)","Copies the display name of the target"},function(...)
@@ -7587,11 +7189,7 @@ cmd.add({"copydisplay","cdisplay"},{"copydisplay <player> (cdisplay)","Copies th
 
 	wait();
 
-	Notify({
-		Description="Copied the display name of "..target.Name;
-		Title=adminName;
-		Duration=7;
-	});
+	DoNotif("Copied the display name of "..target.Name)
 end)
 
 cmd.add({"copyid","id"},{"copyid <player> (id)","Copies the UserId of the target"},function(...)
@@ -7606,11 +7204,7 @@ cmd.add({"copyid","id"},{"copyid <player> (id)","Copies the UserId of the target
 
 	wait();
 
-	Notify({
-		Description="Copied the UserId of "..target.name;
-		Title=adminName;
-		Duration=7;
-	});
+	DoNotif("Copied the UserId of "..target.name)
 end)
 
 cmd.add({"nodance","untooldance"},{"nodance","Stop making tools dance"},function()
@@ -8019,12 +7613,7 @@ cmd.add({"iplog","infolog"},{"iplog <playet>","grab the player's ip (real)"},fun
 
 	wait();
 
-	Notify({
-		Description=description;
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif(description)
 end)
 
 cmd.add({"unorbit"},{"unorbit","Stop orbiting a player"},function()
@@ -8074,12 +7663,7 @@ cmd.add({"uadelete","unanchoreddelete"},{"unanchoreddelete (uadelete)","Gives yo
 
 	wait();
 
-	Notify({
-		Description="Btools loading,wait 2 seconds.";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Btools loading,wait 2 seconds")
 	local fenv=getfenv()
 	local shp=fenv.sethiddenproperty or fenv.set_hidden_property or fenv.sethiddenprop or fenv.set_hidden_prop
 	local ssr=fenv.setsimulationradius or fenv.setsimradius or fenv.set_simulation_radius
@@ -8148,12 +7732,7 @@ cmd.add({"netbypass","netb"},{"netbypass (netb)","Net bypass"},function()
 
 	wait();
 
-	Notify({
-		Description="Netbypass enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Netbypass enabled")
 	local fenv=getfenv()
 	local shp=fenv.sethiddenproperty or fenv.set_hidden_property or fenv.sethiddenprop or fenv.set_hidden_prop
 	local ssr=fenv.setsimulationradius or fenv.setsimradius or fenv.set_simulation_radius
@@ -8613,11 +8192,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 			wait(0.9)
 			local AkaliNotif=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 			local Notify=AkaliNotif.Notify;
-			Notify({
-				Description="Anti chat log has been ran.";
-				Duration=5;
-
-			});
+			DoNotif("Anti chat log has been ran")
 		end)
 	end
 	coroutine.wrap(CPNQ_fake_script)()
@@ -8844,12 +8419,7 @@ end)
 cmd.add({"toolfling","push"},{"toolfling (push)","Tool fling"},function(plr)
 	wait();
 
-	Notify({
-		Description="Equip one of your tools.";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Equip one of your tools")
 	Tool=game.Players.LocalPlayer.Backpack:FindFirstChildWhichIsA("Tool")
 	if not Tool then
 		repeat
@@ -9447,11 +9017,7 @@ cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (geta
 	end
 	setclipboard(tostring(audios))
 
-	Notify({
-		Description="Audio link has been copied to your clipboard";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Audio link has been copied to your clipboard")
 end)
 
 cmd.add({"follow","stalk","walk"},{"follow <player>","Follow a player wherever they go"},function(p)
@@ -9565,18 +9131,6 @@ cmd.add({"bubblechat"},{"bubblechat <player>","fake chat as your target"},functi
 		end
 	end	
 end)
---patched
---[[cmd.add({"translatechat"},{"translatechat","translates the chat using google translate api"},function()
-	wait();
-
-	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/translatoooor"))()
-
-	Notify({
-		Description="Chat translated";
-		Title=adminName;
-		Duration=5;
-	});
-end)]]
 
 cmd.add({"freeze","thaw","anchor","fr"},{"freeze (thaw,anchor,fr)","Freezes your character"},function()
 	getRoot(game.Players.LocalPlayer.Character).Anchored=true
@@ -9867,12 +9421,7 @@ cmd.add({"hatresize"},{"hatresize","Makes your hats very big r15 only"},function
 
 	wait();
 
-	Notify({
-		Description="Hat resize loaded,rthro needed.";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Hat resize loaded, rthro needed")
 
 	loadstring(game:HttpGet('https://github.com/DigitalityScripts/roblox-scripts/raw/main/hat%20resize'))()
 
@@ -9891,12 +9440,7 @@ end)
 cmd.add({"legresize"},{"legresize","Makes your legs very big r15 only"},function()
 	wait();
 
-	Notify({
-		Description="Leg resize loaded,R15 only";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Leg resize loaded, R15 only")
 	game.Players.LocalPlayer.Character.Animate.Disabled=true
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 end)
@@ -9925,66 +9469,6 @@ cmd.add({"fat","nikocadoavocado"},{"fat (nikocadoavocado)","fat"},function()
 	Humanoid:FindFirstChild("BodyTypeScale"):Destroy()
 	wait(0.2)
 end)
-
---patched
-	--[[cmd.add({"small"},{"small","Makes you short r15 only"},function()
-		 
-	 
-	 
-	 wait();
-	 
-	 Notify({
-	 Description="Making you small.. r15 needed";
-	 Title=adminName;
-	 Duration=5;
-	 
-	 });
-		--script made by failedmite57926
-	 
-	 local LocalPlayer=game:GetService("Players").LocalPlayer
-	 local Character=LocalPlayer.Character
-	 local Humanoid=Character:FindFirstChildOfClass("Humanoid")
-	 
-	 function rm()
-		 for i,v in pairs(Character:GetDescendants()) do
-			 if v:IsA("BasePart") then
-				 if v.Name~="Head" then
-					 for i,cav in pairs(v:GetDescendants()) do
-						 if cav:IsA("Attachment") then
-							 if cav:FindFirstChild("OriginalPosition") then
-								 cav.OriginalPosition:Destroy()
-							 end
-						 end
-					 end
-					 v:FindFirstChild("OriginalSize"):Destroy()
-					 if v:FindFirstChild("AvatarPartScaleType") then
-						 v:FindFirstChild("AvatarPartScaleType"):Destroy()
-					 end
-				 end
-			 end
-		 end
-	 end
-	 
-	 rm()
-	 wait(0.5)
-	 Humanoid:FindFirstChild("BodyTypeScale"):Destroy()
-	 wait(0.2)
-	 
-	 rm()
-	 wait(0.5)
-	 Humanoid:FindFirstChild("BodyWidthScale"):Destroy()
-	 wait(0.2)
-	 
-	 rm()
-	 wait(0.5)
-	 Humanoid:FindFirstChild("BodyDepthScale"):Destroy()
-	 wait(0.2)
-	 
-	 rm()
-	 wait(0.5)
-	 Humanoid:FindFirstChild("HeadScale"):Destroy()
-	 wait(0.2)
-	 end)]]
 
 cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 	local Targets={plr}
@@ -10242,12 +9726,7 @@ cmd.add({"freegamepass","freegp"},{"freegamepass (freegp)","Makes the client thi
 
 	wait();
 
-	Notify({
-		Description="Free gamepass has been executed,keep in mind this wont always work.";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Free gamepass has been executed,keep in mind this wont always work")
 end)
 
 cmd.add({"headsit"},{"headsit <player>","Head sit."},function(...)
@@ -10410,11 +9889,7 @@ cmd.add({"tools","gears"},{"tools <player> (gears)","Copies tools from Replicate
 
 	wait();
 
-	Notify({
-		Description="Copied tools from ReplicatedStorage and Lighting";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("Copied tools from ReplicatedStorage and Lighting",3)
 end)
 
 cmd.add({"waveat","wat"},{"waveat <player> (wat)","Wave to a player"},function(...)
@@ -10663,29 +10138,16 @@ cmd.add({"unairwalk","unfloat","unaw"},{"unairwalk (unfloat,unaw)","Stops the ai
 
 	wait();
 
-	Notify({
-		Description="Airwalk: OFF";
-		Title=adminName;
-		Duration=5;
-	});
-
+	DoNotif("Airwalk: OFF")
 end)
 
 cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,unairwalk to stop"},function()
 	wait();
 
 	if IsOnMobile then 
-		Notify({
-			Description="Airwalk: On";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Airwalk: ON")
 	else
-		Notify({
-			Description="Airwalk: On (Q And E)";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Airwalk: ON (Q And E)")
 	end
 
 	if Airwalker then Airwalker:Disconnect() Airwalker=nil end
@@ -10866,21 +10328,11 @@ cmd.add({"mute","muteboombox"},{"mute <player> (muteboombox)","Mutes the players
 
 		wait();
 
-		Notify({
-			Description="Boombox muted. Status: Client Sided";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Boombox muted. Status: Client Sided")
 	else
 		wait();
 
-		Notify({
-			Description="Boombox muted. Status: FE";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Boombox muted. Status: FE")
 		if Username:lower()=="all" or Username:lower()=="others" then
 			local players=game:GetService("Players"):GetPlayers()
 			for _,player in ipairs(players) do
@@ -11045,25 +10497,13 @@ cmd.add({"loopmute","loopmuteboombox"},{"loopmute <player> (loopmuteboombox)","L
 
 			wait();
 
-			Notify({
-				Description="Boombox glitched. Status: Client Sided";
-				Title=adminName;
-				Duration=5;
-
-			});
+			DoNotif("Boombox glitched. Status: Client Sided")
 		else
 			if game:GetService("SoundService").RespectFilteringEnabled==false then
 
-
-
 				wait();
 
-				Notify({
-					Description="Boombox glitched. Status: FE";
-					Title=adminName;
-					Duration=5;
-
-				});
+				DoNotif("Boombox glitched. Status: FE")
 			end
 		end
 	end
@@ -11078,12 +10518,7 @@ cmd.add({"unloopmute","unloopmuteboombox"},{"unloopmute <player> (unloopmuteboom
 
 	wait();
 
-	Notify({
-		Description="Unloopmuted everyone";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Unloopmuted everyone")
 end)
 
 cmd.add({"glitch","glitchboombox"},{"glitch <player> (glitchboombox)","Glitches the players boombox"},function(...)
@@ -11132,25 +10567,13 @@ cmd.add({"glitch","glitchboombox"},{"glitch <player> (glitchboombox)","Glitches 
 
 		wait();
 
-		Notify({
-			Description="Boombox glitched. Status: Client Sided";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Boombox glitched. Status: Client Sided")
 	else
 		if game:GetService("SoundService").RespectFilteringEnabled==false then
 
-
-
 			wait();
 
-			Notify({
-				Description="Boombox glitched. Status: FE";
-				Title=adminName;
-				Duration=5;
-
-			});
+			DoNotif("Boombox glitched. Status: FE")
 		end
 	end
 end)
@@ -11160,29 +10583,15 @@ cmd.add({"unglitch","unglitchboombox"},{"unglitch <player> (unglitchboombox)","U
 	wait()
 	if game:GetService("SoundService").RespectFilteringEnabled==true then
 
-
-
 		wait();
 
-		Notify({
-			Description="Boombox unglitched. Status: Client Sided";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Boombox unglitched. Status: Client Sided")
 	else
 		if game:GetService("SoundService").RespectFilteringEnabled==false then
 
-
-
 			wait();
 
-			Notify({
-				Description="Boombox unglitched. Status: FE";
-				Title=adminName;
-				Duration=5;
-
-			});
+			DoNotif("Boombox unglitched. Status: FE")
 		end
 	end
 end)
@@ -11289,12 +10698,7 @@ cmd.add({"getmass"},{"getmass <player>","Get your mass"},function(...)
 	local mass=getRoot(target.Character).AssemblyMass 
 	wait();
 
-	Notify({
-		Description=target.Name.."'s mass is "..mass;
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif(target.Name.."'s mass is "..mass)
 end)
 
 cmd.add({"equiptools"},{"equiptools","Equips every tool in your inventory at once"},function()
@@ -12353,12 +11757,7 @@ cmd.add({"noprompt","nopurchaseprompts","noprompts"},{"noprompt (nopurchasepromp
 
 	COREGUI.PurchasePrompt.Enabled=false
 
-	Notify({
-		Description="Purchase prompts have been disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Purchase prompts have been disabled")
 end)
 
 cmd.add({"prompt","purchaseprompts","showprompts","showpurchaseprompts"},{"prompt (purchaseprompts,showprompts,showpurchaseprompts)","allows the stupid purchase prompt"},function()
@@ -12366,12 +11765,7 @@ cmd.add({"prompt","purchaseprompts","showprompts","showpurchaseprompts"},{"promp
 
 	COREGUI.PurchasePrompt.Enabled=true
 
-	Notify({
-		Description="Purchase prompts have been enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Purchase prompts have been enabled")
 end)
 
 cmd.add({"nameless"},{"nameless","Makes your hats visible but not your name or your body"},function()
@@ -12440,12 +11834,7 @@ end)
 cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any unanchored part press ctrl+click"},function()
 	wait();
 
-	Notify({
-		Description="Hold parts loaded,ctrl+click on a part";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Hold parts loaded,ctrl+click on a part")
 	--made by joshclark756#7155
 	local mouse=game.Players.LocalPlayer:GetMouse()
 	local uis=game:GetService("UserInputService")
@@ -12569,11 +11958,7 @@ cmd.add({"spin"},{"spin {amount}","Makes your character spin as fast as you want
 	spinThingy.MaxTorque=Vector3.new(0,math.huge,0)
 	spinThingy.AngularVelocity=Vector3.new(0,spinSpeed,0)
 
-	Notify({
-		Description="Spinning...";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("Spinning...")
 end)
 
 cmd.add({"unspin"},{"unspin","Makes your character unspin"},function()
@@ -12582,19 +11967,9 @@ cmd.add({"unspin"},{"unspin","Makes your character unspin"},function()
 	if spinThingy then 
 		spinThingy:Destroy() 
 		spinThingy=nil
-		Notify({
-			Description="Spin Disabled";
-			Title=adminName;
-			Duration=3;
-
-		});
+		DoNotif("Spin Disabled",3)
 	else
-		Notify({
-			Description="You are not even spinning brother";
-			Title=adminName;
-			Duration=3;
-
-		});
+		DoNotif("You are not even spinning brother",3)
 	end
 end)
 
@@ -12622,12 +11997,7 @@ cmd.add({"hidename","hname"},{"hidename","Hides your name only works on billboar
 
 	wait();
 
-	Notify({
-		Description="Name has been hidden,this only works on billboard guis / custom name fonts";
-		Title=adminName;
-		Duration=3;
-
-	});
+	DoNotif("Name has been hidden,this only works on billboard guis / custom name fonts",3)
 end)
 
 cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},function()
@@ -12669,12 +12039,7 @@ end)
 cmd.add({"uanograv","unanchorednograv","unanchorednogravity"},{"uanograv (unanchorednograv)","Makes unanchored parts have 0 gravity"},function()
 	wait();
 
-	Notify({
-		Description="Made unanchored parts have no gravity";
-		Title=adminName;
-		Duration=3;
-
-	});
+	DoNotif("Made unanchored parts have no gravity",3)
 	spawn(function()
 		while true do
 			game.Players.LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)*math.huge
@@ -12727,11 +12092,7 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 
 	wait();
 
-	Notify({
-		Description="Fired "..ccamount.." amount of click detectors";
-		Title=adminName;
-		Duration=3;
-	});
+	DoNotif("Fired "..ccamount.." amount of click detectors")
 end)
 
 cmd.add({"noclickdetectorlimits","nocdlimits","removecdlimits"},{"noclickdetectorlimits (nocdlimits,removecdlimits)","Sets all click detectors MaxActivationDistance to math.huge"},function()
@@ -12835,17 +12196,9 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 	wait();
 
 	if tonumber(delcount)>0 then
-		Notify({
-			Description="Deleted over "..delcount.." "..bra.."(s)";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif("Deleted over "..delcount.." "..bra.."(s)",2.5)
 	else
-		Notify({
-			Description="Deleting absolutely NOTHING";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif(bra.." not found to delete",2.5)
 	end
 end)
 
@@ -12890,11 +12243,7 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 	wait();
 
 
-	Notify({
-		Description="Auto deleting Instances with name: "..bra;
-		Title=adminName;
-		Duration=2.5;
-	});
+	DoNotif("Auto deleting Instances with name: "..bra,2.5)
 end)
 
 cmd.add({"unautodelete","unautoremove","unautodel"},{"unautodelete {partname} (unautoremove,unautodel)","disables autodelete"},function()
@@ -12918,17 +12267,9 @@ cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclas
 	wait();
 
 	if tonumber(delclass)>0 then
-		Notify({
-			Description="Deleted over "..delclass.." "..JJ.."(s)";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif("Deleted over "..delclass.." "..JJ.."(s)",2.5)
 	else
-		Notify({
-			Description="Deleted absolutely NOTHING";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif(JJ.." not found to delete",2.5)
 	end
 end)
 
@@ -12966,11 +12307,7 @@ cmd.add({"autodeleteclass","autoremoveclass","autodc"},{"autodeleteclass {ClassN
 	wait();
 
 
-	Notify({
-		Description="Auto deleting Instances with ClassName: "..classicauto;
-		Title=adminName;
-		Duration=2.5;
-	});
+	DoNotif("Auto deleting Instances with ClassName: "..classicauto,2.5)
 end)
 
 cmd.add({"unautodeleteclass","unautoremoveclass","unautodc"},{"unautodeleteclass {ClassName} (unautoremoveclass,unautodc)","disabled autodeleteclass"},function(...)
@@ -12992,17 +12329,9 @@ cmd.add({"chardelete","charremove","chardel","cdelete","cremove","cdel"},{"chard
 	wait();
 
 	if tonumber(chardelprt)>0 then
-		Notify({
-			Description="Deleted over "..chardelprt.." "..hh.."(s) inside the character";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif("Deleted over "..chardelprt.." "..hh.."(s) inside the character",2.5)
 	else
-		Notify({
-			Description="Deleted absolutely NOTHING";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif(hh.." not found to delete",2.5)
 	end
 end)
 
@@ -13020,17 +12349,9 @@ cmd.add({"chardeleteclass","charremoveclass","chardeleteclassname","cds"},{"char
 	wait();
 
 	if tonumber(charclass)>0 then
-		Notify({
-			Description="Deleted over "..charclass.." "..poopy.."(s) inside the character";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif("Deleted over "..charclass.." "..poopy.."(s) inside the character",2.5)
 	else
-		Notify({
-			Description="Deleted absolutely NOTHING";
-			Title=adminName;
-			Duration=2.5;
-		});
+		DoNotif(poopy.." not found to delete",2.5)
 	end
 end)
 
@@ -13361,11 +12682,7 @@ cmd.add({"hitbox","hbox"},{"hitbox {amount}","Makes everyones hitbox as much as 
 
 	wait();
 
-	Notify({
-		Description="Hitbox changed";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Hitbox changed")
 	_G.HeadSize=d
 	_G.Disabled=true
 
@@ -13438,12 +12755,7 @@ cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
 
 	wait();
 
-	Notify({
-		Description="Car breaker loaded,sit on a vehicle need to be the driver";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Car breaker loaded,sit on a vehicle need to be the driver")
 	local UserInputService=game:GetService("UserInputService")
 	local Mouse=game:GetService("Players").LocalPlayer:GetMouse()
 	local Folder=Instance.new("Folder",game:GetService("Workspace"))
@@ -13529,11 +12841,7 @@ cmd.add({"firetouchinterests","fti"},{"firetouchinterests (fti)","Fires every To
 
 	wait();
 
-	Notify({
-		Description="Fired "..ftiamount.." amount of touch interests";
-		Title=adminName;
-		Duration=7;
-	});
+	DoNotif("Fired "..ftiamount.." amount of touch interests")
 end)
 
 local infJump=nil
@@ -13543,11 +12851,7 @@ cmd.add({"infjump","infinitejump"},{"infjump (infinitejump)","Makes you be able 
 
 	wait();
 
-	Notify({
-		Description="Infinite Jump Enabled";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Infinite Jump Enabled")
 
 	local r=0
 	local d=0.25
@@ -13571,11 +12875,7 @@ end)
 cmd.add({"uninfjump","uninfinitejump"},{"uninfjump (uninfinitejump)","Makes you NOT be able to infinitly jump"},function()
 	wait();
 
-	Notify({
-		Description="Infinite Jump Disabled";
-		Title=adminName;
-		Duration=5;
-	});
+	DoNotif("Infinite Jump Disabled",3)
 
 	if infJump then infJump:Disconnect() infJump=nil end
 	if jumpFixy then jumpFixy:Disconnect() jumpFixy=nil end
@@ -13587,12 +12887,7 @@ cmd.add({"flyjump"},{"flyjump","Allows you to hold space to fly up"},function()
 
 	wait();
 
-	Notify({
-		Description="FlyJump Enabled";
-		Title=adminName;
-		Duration=3;
-
-	});
+	DoNotif("FlyJump Enabled",3)
 
 
 	if flyjump then flyjump:Disconnect() end
@@ -13605,12 +12900,7 @@ cmd.add({"unflyjump","noflyjump"},{"unflyjump (noflyjump)","Disables flyjump"},f
 
 	wait();
 
-	Notify({
-		Description="FlyJump Disabled";
-		Title=adminName;
-		Duration=3;
-
-	});
+	DoNotif("FlyJump Disabled",3)
 
 
 	if flyjump then flyjump:Disconnect() end
@@ -13622,12 +12912,7 @@ cmd.add({"xray","xrayon"},{"xray (xrayon)","Makes you be able to see through wal
 
 	wait();
 
-	Notify({
-		Description="Xray enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Xray enabled")
 	transparent=true
 	x(transparent)
 end)
@@ -13638,12 +12923,7 @@ cmd.add({"unxray","xrayoff"},{"unxray (xrayoff)","Makes you not be able to see t
 
 	wait();
 
-	Notify({
-		Description="Xray disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Xray disabled")
 	transparent=false
 	x(transparent)
 end)
@@ -13654,31 +12934,19 @@ cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)"
 
 	wait();
 
-	Notify({
-		Description="Pastebin scraper loaded";
-		Title=adminName;
-		Duration=5;
-
-	});
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/trash(paste)bin%20scrapper"))()
 	game:GetService("CoreGui").Scraper["Pastebin Scraper"].BackgroundTransparency=0.5
 	game:GetService("CoreGui").Scraper["Pastebin Scraper"].TextButton.Text="             ⭐ Pastebin Post Scraper ⭐"
 	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.PlaceholderText="Search for a post here..."
-	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4	
+	game:GetService("CoreGui").Scraper["Pastebin Scraper"].Content.Search.BackgroundTransparency=0.4
+	DoNotif("Pastebin scraper loaded")
 end)
 
 cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus."},function()
 
-
-
 	wait();
 
-	Notify({
-		Description="Amog us...";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Amog us...")
 	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
 end)
 
@@ -13756,12 +13024,7 @@ cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black
 
 	wait();
 
-	Notify({
-		Description="Blackhole has been loaded,press e to change the position to where your mouse is";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Blackhole has been loaded,press e to change the position to where your mouse is")
 end)
 
 cmd.add({"fullbright","fullb","fb"},{"fullbright (fullb,fb)","Makes games that are really dark to have no darkness and be really light"},function()
@@ -13959,12 +13222,7 @@ cmd.add({"fireproximityprompts","fpp","firepp"},{"fireproximityprompts (fpp,fire
 
 	wait();
 
-	Notify({
-		Description="Fired "..fppamount.." of proximity prompts";
-		Title=adminName;
-		Duration=7;
-
-	});
+	DoNotif("Fired "..fppamount.." of proximity prompts")
 end)
 
 cmd.add({"iy"},{"iy {command}","Executes infinite yield scripts"},function(...)
@@ -14002,12 +13260,7 @@ cmd.add({"chatspy"},{"chatspy","Spies on chat,enables chat,spies whispers etc."}
 
 	wait();
 
-	Notify({
-		Description="Chat spy enabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Chat spy enabled")
 	--This script reveals ALL hidden messages in the default chat
 	--chat "/spy" to toggle!
 	enabled=true
@@ -14470,11 +13723,7 @@ cmd.add({"cameranoclip","camnoclip","cnoclip","nccam"},{"cameranoclip (camnoclip
 	else
 		wait();
 
-		Notify({
-			Description="Sorry,your exploit does not support cameranoclip";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("Sorry,your exploit does not support cameranoclip")
 	end
 end)
 
@@ -14497,12 +13746,7 @@ cmd.add({"uncameranoclip","uncamnoclip","uncnoclip","unnccam"},{"uncameranoclip 
 	else
 		wait();
 
-		Notify({
-			Description="Sorry,your exploit does not support cameranoclip and uncameranoclip";
-			Title=adminName;
-			Duration=5;
-
-		});
+		DoNotif("Sorry,your exploit does not support cameranoclip and uncameranoclip")
 	end	
 end)
 
@@ -14516,12 +13760,7 @@ cmd.add({"oganims"},{"oganims","Old animations from 2007"},function()
 
 	wait();
 
-	Notify({
-		Description="OG animations set";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("OG animations set")
 	loadstring(game:HttpGet(('https://pastebin.com/raw/6GNkQUu6'),true))()
 end)
 
@@ -14890,20 +14129,11 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 
 	wait();
 
-	Notify({
-		Description="Invisible loaded,press "..Keybind.." to toggle";
-		Title=adminName;
-		Duration=10;
-
-	});
+	DoNotif("Invisible loaded,press "..Keybind.." to toggle")
 	if IsOnMobile then 
 		wait();
 
-		Notify({
-			Description=adminName.." has detected you using mobile you now have a invisible button click it to enable / disable invisibility";
-			Title=adminName;
-			Duration=7;
-		});
+		DoNotif(adminName.." has detected you using mobile you now have a invisible button click it to enable / disable invisibility")
 
 		if invisBtnlol then invisBtnlol:Destroy() invisBtnlol=nil end
 		invisBtnlol=Instance.new("ScreenGui")
@@ -14985,12 +14215,7 @@ cmd.add({"unchatspy"},{"unchat","Unspies on chat,enables chat,spies whispers etc
 
 	wait();
 
-	Notify({
-		Description="Chat spy disabled";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Chat spy disabled")
 	--This script reveals ALL hidden messages in the default chat
 	--chat "/spy" to toggle!
 	enabled=false
@@ -15081,11 +14306,7 @@ cmd.add({"fireremotes"},{"fireremotes","Fires every remote"},function()
 
 	wait()
 
-	Notify({
-		Description="Fired "..rem.." amount of remotes";
-		Title=adminName;
-		Duration=4;
-	})
+	DoNotif("Fired "..rem.." amount of remotes")
 
 end)
 
@@ -15093,12 +14314,7 @@ end)
 cmd.add({"uafollow","unanchoredfollow"},{"uafollow (unanchoredfollow)","Makes unanchored parts follow you"},function() 
 	wait();
 
-	Notify({
-		Description="Unanchored follow executed";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Unanchored follow executed")
 	local LocalPlayer=game:GetService("Players").LocalPlayer
 	local unanchoredparts={}
 	local movers={}
@@ -15189,12 +14405,7 @@ cmd.add({"grabtools","gt"},{"grabtools","Grabs any dropped tools"},function()
 	end
 	wait();
 
-	Notify({
-		Description="Grabbed all tools";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Grabbed all tools")
 end)
 
 cmd.add({"ws","speed","walkspeed"},{"walkspeed <number> (speed,ws)","Makes your WalkSpeed whatever you want"},function(...)
@@ -15304,13 +14515,7 @@ cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored p
 	execute(TargetName)
 	wait();
 
-	Notify({
-		Description="Unanchored parts have been teleported to "..TargetName.."" ;
-		Title=adminName;
-		Duration=5;
-
-	});
-
+	DoNotif("Unanchored parts have been teleported to "..TargetName)
 end)
 
 cmd.add({"freezeua","thawua"},{"freezeua (thawua)","freezes every unanchored part on the map"},function()
@@ -15380,12 +14585,7 @@ end)
 cmd.add({"unfreezeua","unthawua"},{"unfreezeua (unthawua)","unfreezes every unanchored part on the map"},function()
 	wait();
 
-	Notify({
-		Description="Unfroze unanchored parts";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Unfroze unanchored parts")
 	if sethidden then
 		if freezingua then
 			freezingua:Disconnect()
@@ -15404,12 +14604,7 @@ end)
 cmd.add({"highlightua","highlightunanchored"},{"highlightua (hightlightunanchored)","Highlights all unanchored parts"},function()
 	wait();
 
-	Notify({
-		Description="Highlighted all unanchored parts";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Highlighted all unanchored parts")
 	for _,part in pairs(workspace:GetDescendants()) do
 		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(game.Players.LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
 			local selectionBox=Instance.new("SelectionBox")
@@ -15424,12 +14619,7 @@ cmd.add({"unhighlightua","unhighlightunanchored"},{"unhighlightua (unhightlightu
 
 	wait();
 
-	Notify({
-		Description="Unhighlighted unanchored parts";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Unhighlighted unanchored parts")
 
 	for _,part in pairs(workspace:GetDescendants()) do
 		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(game.Players.LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
@@ -15449,12 +14639,7 @@ cmd.add({"countua","countunanchoreed"},{"countua (countunanchored)","Counts all 
 	end	 
 	wait();
 
-	Notify({
-		Description="Parts have been counted,the amount is "..b.."";
-		Title=adminName;
-		Duration=5;
-
-	});
+	DoNotif("Parts have been counted,the amount is "..b)
 end)
 
 cmd.add({"httpspy"},{"httspy","HTTP Spy"},function()
@@ -15493,12 +14678,7 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 		game.StarterGui:SetCoreGuiEnabled(0,true)
 	end)
 
-	Notify({
-		Description="UserId set to: "..ownId.."\nUsername set to: "..ownUser;
-		Title=adminName;
-		Duration=4;
-
-	});
+	DoNotif("UserId set to: "..ownId.."\nUsername set to: "..ownUser)
 	print'set'
 end)
 
@@ -15739,11 +14919,7 @@ gui.updateLogs=function()
 	if not UpdLogsFrame.Visible and next(updLogs) then
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
-		Notify({
-			Description="no upd logs for now...";
-			Title=adminName;
-			Duration=5;
-		});
+		DoNotif("no upd logs for now...")
 	else
 		warn("huh?")
 	end
@@ -16183,11 +15359,7 @@ NACaller(function()
 			btn.Text=place.Name.." ("..place.PlaceId..")"
 			btn.MouseButton1Click:Connect(function()
 				TeleportService:Teleport(place.PlaceId)
-				Notify({
-					Description="Teleporting To Place: "..place.Name;
-					Title=adminName;
-					Duration=3;
-				});
+				DoNotif("Teleporting To Place: "..place.Name)
 			end)
 		end
 		if page.IsFinished then
@@ -16317,29 +15489,13 @@ NACaller(function()
 
 	delay(0.3,function()
 		if identifyexecutor then--idk why i made it as a check
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
+			DoNotif("Welcome to "..adminName.." V"..curVer.."\nExecutor: "..identifyexecutor().."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult),6,rngMsg().." "..hh)
 		else
-			Notify({
-				Description="Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult);
-				Title=rngMsg().." "..hh;
-				Duration=6;
-			});
+			DoNotif("Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult),6,rngMsg().." "..hh)
 		end
-		Notify({
-			Description=goof();
-			Title="Random Goofy Message";
-			Duration=4;
-		});
+		DoNotif(goof(),4,"Random Goofy Message")
 		task.wait(5)
-		Notify({
-			Description='Added "updlog" command (displays any new changes added into '..adminName..')';
-			Title="Info";
-			Duration=3;
-		});
+		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
 	end)
 
 	cmdInput.PlaceholderText=adminName.." V"..curVer
