@@ -211,29 +211,29 @@ ScrollingFrame.ScrollBarThickness = 0
 -- Scripts:
 
 local function THTBRH_fake_script() -- Open.LocalScript 
-	Open.Parent.MouseButton1Click:Connect(function()
-		Open.Parent.Parent.Main.Visible = true
+	Open.MouseButton1Click:Connect(function()
+		Open.Parent.Main.Visible = true
 		wait()
-		Open.Parent.Visible = false
+		Open.Visible = false
 	end)
 end
 coroutine.wrap(THTBRH_fake_script)()
 local function HTAP_fake_script() -- Open_2.LocalScript 
-	Open_2.Parent.MouseButton1Click:Connect(function()
-	Open_2.Parent.Parent.Parent.ScriptHub.Visible = true
+	Open_2.MouseButton1Click:Connect(function()
+	Open_2.Parent.Parent.ScriptHub.Visible = true
 	end)
 end
 coroutine.wrap(HTAP_fake_script)()
 local function GUBCKAL_fake_script() -- Exit.LocalScript 
-	Exit.Parent.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent.Main.Visible = false
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Main.Visible = false
 		wait()
-		Exit.Parent.Parent.Parent.Open.Visible = true
+		Exit.Parent.Parent.Open.Visible = true
 	end)
 end
 coroutine.wrap(GUBCKAL_fake_script)()
 local function PLHW_fake_script() -- Main.LocalScript 
-	Main.Parent.Draggable = true
+	Main.Draggable = true
 end
 coroutine.wrap(PLHW_fake_script)()
 

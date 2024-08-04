@@ -196,12 +196,12 @@ local function minimizetoggl()
 end
 coroutine.wrap(minimizetoggl)()
 local function uifuncs()
-	Main.Parent.Active = true
-	Main.Parent.Parent.ResetOnSpawn = false
-	Main.Parent.Draggable = true
+	Main.Active = true
+	Main.Parent.ResetOnSpawn = false
+	Main.Draggable = true
 end
 coroutine.wrap(uifuncs)()
 local function iappear()
-	Main.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+	Main:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(iappear)()

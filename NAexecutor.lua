@@ -190,41 +190,36 @@ ImageLabel_2.ImageTransparency = 0.500
 
 -- Scripts:
 
-local function TJUXECO_fake_script() -- Executor.LocalScript 
-	Executor.Parent.Active = true
-	Executor.Parent.Draggable = true
-	Executor.Parent.Parent.ResetOnSpawn = false
+local function TJUXECO_fake_script()
+	Executor.Active = true
+	Executor.Draggable = true
+	exec.ResetOnSpawn = false
 end
 coroutine.wrap(TJUXECO_fake_script)()
-local function CZXUM_fake_script() -- Executor.LocalScript 
-	Executor.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+local function CZXUM_fake_script()
+	Executor:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(CZXUM_fake_script)()
-local function INJLLH_fake_script() -- Clear.LocalScript 
-	Clear = script.Parent
+local function INJLLH_fake_script()
 	Clear.MouseButton1Click:Connect(function()
-		script.Parent.Parent.EditorScroller.Editor.Text = ""
+		Clear.Parent.EditorScroller.Editor.Text = ""
 	end)
 end
 coroutine.wrap(INJLLH_fake_script)()
 local function IQOSZN_fake_script() -- Copy.LocalScript 
-	Copy = script.Parent
 	Copy.MouseButton1Click:Connect(function()
-		setclipboard(script.Parent.Parent.EditorScroller.Editor.Text)
+		setclipboard(Editor.Text)
 	end)
 end
 coroutine.wrap(IQOSZN_fake_script)()
 local function MVBS_fake_script() -- Execute.LocalScript 
-	local execute = Execute.Parent
-	Editor = Execute.Parent.Parent.EditorScroller.Editor
-	
-	execute.MouseButton1Click:Connect(function()
+	Execute.MouseButton1Click:Connect(function()
 		assert(loadstring(Editor.Text))()
 	end)
 end
 coroutine.wrap(MVBS_fake_script)()
 local function VLSJXUV_fake_script() -- Exit.LocalScript 
-	local editor = Exit.Parent.Parent.Parent.EditorScroller.Editor
+	local editor =Editor
 	
 	local con1, con2 = nil, nil
 	
@@ -259,13 +254,13 @@ end
 coroutine.wrap(VLSJXUV_fake_script)()
 local function PWJRPAS_fake_script() -- Minimize.LocalScript 
 	p = false
-	Minimize.Parent.MouseButton1Click:Connect(function()
+	Minimize.MouseButton1Click:Connect(function()
 		if not p then
 			p = not p
-			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 35), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 35), "Out", "Quint", 1, true)
 		else
 			p = not p
-			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 287), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 287), "Out", "Quint", 1, true)
 		end
 	end)
 end

@@ -202,7 +202,7 @@ end
 text = text .. ")"
 end
 Label.Text = text 
-Label.Parent = MainContainer.Parent
+Label.Parent = MainContainer
 Label.MouseButton1Click:Connect(function()
 setclipboard(text)
 end)

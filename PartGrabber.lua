@@ -214,7 +214,7 @@ end
 
 local function prt()
     if mouse.Target then
-        Found.Parent.Text = getFullPath(mouse.Target)
+        Found.Text = getFullPath(mouse.Target)
     else
         warn("Error while getting path")
     end
@@ -224,9 +224,8 @@ idk=mouse.Button1Down:Connect(prt)
 end
 coroutine.wrap(BLBPRD_fake_script)()
 local function UUVHNZD_fake_script()
-
-	Found.Parent.Parent.grab.MouseButton1Click:Connect(function()
-		setclipboard(Found.Parent.Text)
+	grab.MouseButton1Click:Connect(function()
+		setclipboard(Found.Text)
 	end)
 end
 coroutine.wrap(UUVHNZD_fake_script)()
@@ -240,25 +239,25 @@ end
 coroutine.wrap(AUPMILR_fake_script)()
 local function XOURFQ_fake_script()
 	p = false
-			Minimize.Parent.MouseButton1Click:Connect(function()
+			Minimize.MouseButton1Click:Connect(function()
 				if not p then
 					p = not p
-					Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+					Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
 				else
 					p = not p
-					Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
+					Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
 				end
 			end)
 			
 end
 coroutine.wrap(XOURFQ_fake_script)()
 local function PLFU_fake_script()
-	Main.Parent.Active = true
-	Main.Parent.Parent.ResetOnSpawn = false
-	Main.Parent.Draggable = true
+	Main.Active = true
+	Main.Parent.ResetOnSpawn = false
+	Main.Draggable = true
 end
 coroutine.wrap(PLFU_fake_script)()
 local function BSHNZC_fake_script()
-	Main.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+	Main:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(BSHNZC_fake_script)()

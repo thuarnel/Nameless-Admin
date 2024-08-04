@@ -236,8 +236,8 @@ UICorner_5.Parent = SilentC
 -- Scripts:
 
 local function RNBIV_fake_script() -- Exit.LocalScript 
-	Exit.Parent.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent.Parent:Destroy()
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent:Destroy()
 	end)
 end
 
