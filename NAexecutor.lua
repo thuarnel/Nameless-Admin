@@ -223,10 +223,10 @@ local function VLSJXUV_fake_script() -- Exit.LocalScript
 	
 	local con1, con2 = nil, nil
 	
-	Exit.Parent.MouseButton1Click:Connect(function()
+	Exit.MouseButton1Click:Connect(function()
 		if con1 then con1:Disconnect() con1 = nil end
 		if con2 then con2:Disconnect() con2 = nil end
-		Exit.Parent.Parent.Parent.Parent:Destroy()
+		Exit.Parent.Parent.Parent:Destroy()
 	end)
 	
 	local function updTxtScale()
