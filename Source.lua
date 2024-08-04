@@ -1668,10 +1668,9 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	UIAspectRatioConstraint.Parent=Pingtext
 	UIAspectRatioConstraint.AspectRatio=5.743
 
-	local script=Instance.new('LocalScript',Pingtext)
 	local RunService=game:GetService("RunService")
 	RunService.RenderStepped:Connect(function(ping) 
-		script.Parent.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
+		Pingtext.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
 	end)
 	gui.draggablev2(Pingtext)
 end)
@@ -1706,10 +1705,9 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	UIAspectRatioConstraint.Parent=Fpstext
 	UIAspectRatioConstraint.AspectRatio=5.743
 
-	local script=Instance.new('LocalScript',Fpstext)
 	local RunService=game:GetService("RunService")
 	RunService.RenderStepped:Connect(function(frame) 
-		script.Parent.Text=("FPS: "..math.round(1/frame)) 
+		Fpstext.Text=("FPS: "..math.round(1/frame)) 
 	end)
 	gui.draggablev2(Fpstext)
 end)
@@ -6007,10 +6005,8 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	--Scripts:
 
 	function AKIHDI_fake_script()
-		local script=Instance.new('LocalScript',Main)
-
 		_G.functionspy={
-			instance=script.Parent.Parent;
+			instance=Main.Parent;
 			logging=true;
 			connections={};
 		}
@@ -6021,7 +6017,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 			end
 			_G.functionspy.connections={}
 			_G.functionspy=nil
-			script.Parent.Parent:Destroy()
+			Main.Parent:Destroy()
 		end
 
 		local connections={}
@@ -6029,33 +6025,33 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 		local currentInfo=nil
 
 		function log(name,text)
-			local btn=script.Parent.LeftPanel.example:Clone()
-			btn.Parent=script.Parent.LeftPanel
+			local btn=Main.LeftPanel.example:Clone()
+			btn.Parent=Main.LeftPanel
 			btn.Name=name
 			btn.name.Text=name
 			btn.Visible=true
 			table.insert(connections,btn.MouseButton1Click:Connect(function()
-				script.Parent.RightPanel.output.Text=text
+				Main.RightPanel.output.Text=text
 				currentInfo=text
 			end))
 		end
 
-		script.Parent.RightPanel.copy.MouseButton1Click:Connect(function()
+		Main.RightPanel.copy.MouseButton1Click:Connect(function()
 			if currentInfo~=nil then
 				setclipboard(tostring(currentInfo))
 			end
 		end)
 
-		script.Parent.RightPanel.clear.MouseButton1Click:Connect(function()
+		Main.RightPanel.clear.MouseButton1Click:Connect(function()
 			for i,v in pairs(connections) do
 				v:Disconnect()
 			end
-			for i,v in pairs(script.Parent.LeftPanel:GetDescendants()) do
+			for i,v in pairs(Main.LeftPanel:GetDescendants()) do
 				if v:IsA("TextButton") and v.Visible==true then
 					v:Destroy()
 				end
 			end
-			script.Parent.RightPanel.output.Text=""
+			Main.RightPanel.output.Text=""
 			currentInfo=nil
 		end)
 
@@ -6139,10 +6135,8 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	end
 	coroutine.wrap(AKIHDI_fake_script)()
 	function KVVJTK_fake_script()
-		local script=Instance.new('LocalScript',FakeTitle)
-
 		local UIS=game:GetService('UserInputService')
-		local frame=script.Parent.Parent
+		local frame=FakeTitle.Parent
 		local dragToggle=nil
 		local dragSpeed=0.25
 		local dragStart=nil
@@ -6181,40 +6175,38 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	function BIPVKVC_fake_script()
 		local script=Instance.new('LocalScript',FakeTitle)
 
-		table.insert(_G.functionspy.connections,script.Parent.MouseEnter:Connect(function()
+		table.insert(_G.functionspy.connections,FakeTitle.MouseEnter:Connect(function()
 			if _G.functionspy.logging==true then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
 			elseif _G.functionspy.logging==false then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
 			end
 		end))
 
-		table.insert(_G.functionspy.connections,script.Parent.MouseMoved:Connect(function()
+		table.insert(_G.functionspy.connections,FakeTitle.MouseMoved:Connect(function()
 			if _G.functionspy.logging==true then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
 			elseif _G.functionspy.logging==false then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
 			end
 		end))
 
-		table.insert(_G.functionspy.connections,script.Parent.MouseButton1Click:Connect(function()
+		table.insert(_G.functionspy.connections,FakeTitle.MouseButton1Click:Connect(function()
 			_G.functionspy.logging=not _G.functionspy.logging
 			if _G.functionspy.logging==true then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(0,1,0)}):Play()
 			elseif _G.functionspy.logging==false then
-				game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
+				game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,0,0)}):Play()
 			end
 		end))
 
-		table.insert(_G.functionspy.connections,script.Parent.MouseLeave:Connect(function()
-			game:GetService("TweenService"):Create(script.Parent.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,1,1)}):Play()
+		table.insert(_G.functionspy.connections,FakeTitle.MouseLeave:Connect(function()
+			game:GetService("TweenService"):Create(FakeTitle.Parent.Title,TweenInfo.new(0.3),{TextColor3=Color3.new(1,1,1)}):Play()
 		end))
 	end
 	coroutine.wrap(BIPVKVC_fake_script)()
 	function PRML_fake_script()
-		local script=Instance.new('LocalScript',clear)
-
-		script.Parent.MouseButton1Click:Connect(function()
+		clear.MouseButton1Click:Connect(function()
 			_G.functionspy.shutdown()
 		end)
 	end
@@ -6266,15 +6258,14 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 		UIAspectRatioConstraint.AspectRatio=1.060
 
 		function FEPVI_fake_script()
-			local script=Instance.new('LocalScript',TextButton)
-			script.Parent.MouseButton1Click:Connect(function()
+			TextButton.MouseButton1Click:Connect(function()
 				if on==false then
 					on=true
-					script.Parent.Text="Unfly"
+					TextButton.Text="Unfly"
 					mobilefly(speed)
 				elseif on==true then
 					on=false
-					script.Parent.Text="Fly"
+					TextButton.Text="Fly"
 					unmobilefly()
 				end
 			end)
@@ -7823,9 +7814,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 	UICorner_5.Parent=TextButton_2
 
 	function CPNQ_fake_script()
-		local script=Instance.new('LocalScript',TextButton)
-
-		script.Parent.MouseButton1Click:Connect(function()
+		TextButton.MouseButton1Click:Connect(function()
 
 		--[[
 			 Change-logs:
@@ -8174,7 +8163,7 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 			Notify("🔹Anthony's ACL🔹","Anti Chat and Screenshot Logger Loaded!",15)
 			print(string.format("Anti Chat-Logger has loaded in %s seconds.",tostring(tick()-ACL_LoadTime):sub(1,4)))
 			wait(0.3)
-			script.Parent.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
+			TextButton.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
 			wait(0.9)
 			local AkaliNotif=loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 			local Notify=AkaliNotif.Notify;
@@ -8183,21 +8172,17 @@ cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},fun
 	end
 	coroutine.wrap(CPNQ_fake_script)()
 	function OZEERJ_fake_script()
-		local script=Instance.new('LocalScript',TextButton_2)
-
-		script.Parent.MouseButton1Click:Connect(function()
-			script.Parent.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
+		TextButton_2.MouseButton1Click:Connect(function()
+			TextButton_2.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
 			wait(0.9)
-			script.Parent.Parent.Parent:Destroy()
+			TextButton_2.Parent.Parent:Destroy()
 		end)
 	end
 	coroutine.wrap(OZEERJ_fake_script)()
 	function ELJBIKO_fake_script()
-		local script=Instance.new('LocalScript',Frame)
+		Frame.Position=UDim2.new(0.355,0,-1.291,0)
 
-		script.Parent.Position=UDim2.new(0.355,0,-1.291,0)
-
-		script.Parent:TweenPosition(UDim2.new(0.354,0,0.316,0),"Out","Quint",1,true)
+		Frame:TweenPosition(UDim2.new(0.354,0,0.316,0),"Out","Quint",1,true)
 
 
 	end
@@ -8293,14 +8278,13 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	imgLabel.Image="rbxassetid://8747893766"
 
 	local function count()
-		local script=Instance.new('LocalScript',ttLabel)
 		local num=180
 		while task.wait(1) do
 			if not _G.SawFinish then
 				if num>0 then
 					num=num-1
 					doSound(138081500,1)
-					txt=script.Parent
+					txt=ttLabel
 					txt.Text="Challenge: "..challenge.."\nTime: "..num
 				else
 					game.Players.LocalPlayer:Kick("You Failed The Challenge")
@@ -8317,8 +8301,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	end
 
 	local function poop()
-		local script=Instance.new('LocalScript',ttLabel)
-		local txtlabel=script.Parent
+		local txtlabel=ttLabel
 		doSound(469373418,5)
 		if con then con:Disconnect() con=nil end
 		con=RunService.Heartbeat:Connect(function()
@@ -14154,10 +14137,8 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		--Scripts:
 
 		function FEPVI_fake_script()
-			local script=Instance.new('LocalScript',TextButton)
-
 			IsInvis=false
-			script.Parent.MouseButton1Click:Connect(function()
+			TextButton.MouseButton1Click:Connect(function()
 				if IsInvis==false then
 					IsInvis=true
 					CF=game.Workspace.CurrentCamera.CFrame
@@ -14184,11 +14165,11 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 					game.Players.LocalPlayer.Character.Head.Anchored=false
 					game.Players.LocalPlayer.Character.Animate.Disabled=true
 					game.Players.LocalPlayer.Character.Animate.Disabled=false
-					script.Parent.Text="Visible"
+					TextButton.Text="Visible"
 				elseif IsInvis==true then
 					TurnVisible()
 					IsInvis=false
-					script.Parent.Text="Invisible"
+					TextButton.Text="Invisible"
 				end
 			end)
 		end

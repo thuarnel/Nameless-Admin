@@ -176,20 +176,16 @@ uilist.SortOrder = Enum.SortOrder.LayoutOrder
 uilist.Padding = UDim.new(0, 3)
 
 local function clicky()
-	local script = Instance.new('LocalScript', Exit)
-
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent:Destroy()
 	end)
 end
 coroutine.wrap(clicky)()
 local function itouch()
-	local script = Instance.new('LocalScript', Frame)
-
 	local UserInputService = game:GetService("UserInputService")
 	local runService = (game:GetService("RunService"));
 	
-	local gui = script.Parent
+	local gui = Frame
 	
 	local dragging
 	local dragInput

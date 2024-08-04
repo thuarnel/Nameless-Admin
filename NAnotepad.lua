@@ -177,8 +177,8 @@ UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fr
 UIGradient_2.Parent = Main
 
 local function exitbtn()
-	Exit.Parent.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent.Parent:Destroy()
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent:Destroy()
 	end)
 end
 coroutine.wrap(exitbtn)()
