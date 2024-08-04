@@ -191,24 +191,16 @@ ImageLabel_2.ImageTransparency = 0.500
 -- Scripts:
 
 local function TJUXECO_fake_script() -- Executor.LocalScript 
-	local script = Instance.new('LocalScript', Executor)
-
-	script.Parent.Active = true
-	script.Parent.Draggable = true
-	script.Parent.Parent.ResetOnSpawn = false
+	Executor.Parent.Active = true
+	Executor.Parent.Draggable = true
+	Executor.Parent.Parent.ResetOnSpawn = false
 end
 coroutine.wrap(TJUXECO_fake_script)()
 local function CZXUM_fake_script() -- Executor.LocalScript 
-	local script = Instance.new('LocalScript', Executor)
-
-	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
-	
-	
+	Executor.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(CZXUM_fake_script)()
 local function INJLLH_fake_script() -- Clear.LocalScript 
-	local script = Instance.new('LocalScript', Clear)
-
 	Clear = script.Parent
 	Clear.MouseButton1Click:Connect(function()
 		script.Parent.Parent.EditorScroller.Editor.Text = ""
@@ -216,8 +208,6 @@ local function INJLLH_fake_script() -- Clear.LocalScript
 end
 coroutine.wrap(INJLLH_fake_script)()
 local function IQOSZN_fake_script() -- Copy.LocalScript 
-	local script = Instance.new('LocalScript', Copy)
-
 	Copy = script.Parent
 	Copy.MouseButton1Click:Connect(function()
 		setclipboard(script.Parent.Parent.EditorScroller.Editor.Text)
@@ -225,10 +215,8 @@ local function IQOSZN_fake_script() -- Copy.LocalScript
 end
 coroutine.wrap(IQOSZN_fake_script)()
 local function MVBS_fake_script() -- Execute.LocalScript 
-	local script = Instance.new('LocalScript', Execute)
-
-	local execute = script.Parent
-	Editor = script.Parent.Parent.EditorScroller.Editor
+	local execute = Execute.Parent
+	Editor = Execute.Parent.Parent.EditorScroller.Editor
 	
 	execute.MouseButton1Click:Connect(function()
 		assert(loadstring(Editor.Text))()
@@ -236,16 +224,14 @@ local function MVBS_fake_script() -- Execute.LocalScript
 end
 coroutine.wrap(MVBS_fake_script)()
 local function VLSJXUV_fake_script() -- Exit.LocalScript 
-	local script = Instance.new('LocalScript', Exit)
-
-	local editor = script.Parent.Parent.Parent.EditorScroller.Editor
+	local editor = Exit.Parent.Parent.Parent.EditorScroller.Editor
 	
 	local con1, con2 = nil, nil
 	
-	script.Parent.MouseButton1Click:Connect(function()
+	Exit.Parent.MouseButton1Click:Connect(function()
 		if con1 then con1:Disconnect() con1 = nil end
 		if con2 then con2:Disconnect() con2 = nil end
-		script.Parent.Parent.Parent.Parent:Destroy()
+		Exit.Parent.Parent.Parent.Parent:Destroy()
 	end)
 	
 	local function updTxtScale()
@@ -272,16 +258,14 @@ local function VLSJXUV_fake_script() -- Exit.LocalScript
 end
 coroutine.wrap(VLSJXUV_fake_script)()
 local function PWJRPAS_fake_script() -- Minimize.LocalScript 
-	local script = Instance.new('LocalScript', Minimize)
-
 	p = false
-	script.Parent.MouseButton1Click:Connect(function()
+	Minimize.Parent.MouseButton1Click:Connect(function()
 		if not p then
 			p = not p
-			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 35), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 35), "Out", "Quint", 1, true)
 		else
 			p = not p
-			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 287), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 481, 0, 287), "Out", "Quint", 1, true)
 		end
 	end)
 end

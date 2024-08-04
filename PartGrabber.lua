@@ -188,7 +188,6 @@ local idk=nil
 
 
 local function BLBPRD_fake_script()
-local script = Instance.new('LocalScript', Found)
 
 local players = game:GetService("Players")
 local player = players.LocalPlayer
@@ -215,7 +214,7 @@ end
 
 local function prt()
     if mouse.Target then
-        script.Parent.Text = getFullPath(mouse.Target)
+        Found.Parent.Text = getFullPath(mouse.Target)
     else
         warn("Error while getting path")
     end
@@ -224,51 +223,42 @@ if idk then idk:Disconnect() idk=nil end
 idk=mouse.Button1Down:Connect(prt)
 end
 coroutine.wrap(BLBPRD_fake_script)()
-local function UUVHNZD_fake_script() -- Found.LocalScript 
-	local script = Instance.new('LocalScript', Found)
+local function UUVHNZD_fake_script()
 
-	script.Parent.Parent.grab.MouseButton1Click:Connect(function()
-		setclipboard(script.Parent.Text)
+	Found.Parent.Parent.grab.MouseButton1Click:Connect(function()
+		setclipboard(Found.Parent.Text)
 	end)
 end
 coroutine.wrap(UUVHNZD_fake_script)()
-local function AUPMILR_fake_script() -- Exit.LocalScript 
-	local script = Instance.new('LocalScript', Exit)
-
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
+local function AUPMILR_fake_script()
+	Exit.Parent.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent.Parent:Destroy()
 if idk then idk:Disconnect() idk=nil end
 getgenv().prtGrabLoaded=false
 	end)
 end
 coroutine.wrap(AUPMILR_fake_script)()
-local function XOURFQ_fake_script() -- Minimize.LocalScript 
-	local script = Instance.new('LocalScript', Minimize)
-
-			p = false
-			script.Parent.MouseButton1Click:Connect(function()
+local function XOURFQ_fake_script()
+	p = false
+			Minimize.Parent.MouseButton1Click:Connect(function()
 				if not p then
 					p = not p
-					script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+					Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
 				else
 					p = not p
-					script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
+					Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
 				end
 			end)
 			
 end
 coroutine.wrap(XOURFQ_fake_script)()
-local function PLFU_fake_script() -- Main.LocalScript 
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent.Active = true
-	script.Parent.Parent.ResetOnSpawn = false
-	script.Parent.Draggable = true
+local function PLFU_fake_script()
+	Main.Parent.Active = true
+	Main.Parent.Parent.ResetOnSpawn = false
+	Main.Parent.Draggable = true
 end
 coroutine.wrap(PLFU_fake_script)()
-local function BSHNZC_fake_script() -- Main.LocalScript 
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+local function BSHNZC_fake_script()
+	Main.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(BSHNZC_fake_script)()

@@ -177,41 +177,31 @@ UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fr
 UIGradient_2.Parent = Main
 
 local function exitbtn()
-	local script = Instance.new('LocalScript', Exit)
-
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
+	Exit.Parent.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent.Parent:Destroy()
 	end)
-	
 end
 coroutine.wrap(exitbtn)()
 local function minimizetoggl()
-	local script = Instance.new('LocalScript', Minimize)
-
 	p = false
-	script.Parent.MouseButton1Click:Connect(function()
+	Minimize.Parent.MouseButton1Click:Connect(function()
 		if not p then
 			p = not p
-			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
 		else
 			p = not p
-			script.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 235), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 235), "Out", "Quint", 1, true)
 		end
 	end)
 end
 coroutine.wrap(minimizetoggl)()
 local function uifuncs()
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent.Active = true
-	script.Parent.Parent.ResetOnSpawn = false
-	script.Parent.Draggable = true
-	
+	Main.Parent.Active = true
+	Main.Parent.Parent.ResetOnSpawn = false
+	Main.Parent.Draggable = true
 end
 coroutine.wrap(uifuncs)()
 local function iappear()
-	local script = Instance.new('LocalScript', Main)
-
-	script.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+	Main.Parent:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(iappear)()

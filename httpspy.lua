@@ -163,11 +163,8 @@ UIListLayout.Padding = UDim.new(0, 3)
 
 UICorner_2.Parent = MainContainer
 
-
-local script = Instance.new('LocalScript', MainContainer)
-
 TemplateText.Name = "TemplateText"
-TemplateText.Parent = HttpSpy.Background.MainContainer.LocalScript
+TemplateText.Parent = HttpSpy.Background.MainContainer
 TemplateText.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 TemplateText.BackgroundTransparency = 0.7
 TemplateText.BorderSizePixel = 0
@@ -182,7 +179,7 @@ TemplateText.TextWrapped = true
 TemplateText.TextXAlignment = Enum.TextXAlignment.Center
 TemplateText.TextYAlignment = Enum.TextYAlignment.Center
 
-local Template = script.TemplateText
+local Template = MainContainer.TemplateText
 
 local function registerDynamicScrollingFrame(frame)
 local layout = frame:FindFirstChildWhichIsA("UIListLayout")
@@ -205,7 +202,7 @@ end
 text = text .. ")"
 end
 Label.Text = text 
-Label.Parent = script.Parent
+Label.Parent = MainContainer.Parent
 Label.MouseButton1Click:Connect(function()
 setclipboard(text)
 end)

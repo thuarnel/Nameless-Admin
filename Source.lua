@@ -140,9 +140,11 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1="Fixed Wave's stupid LocalScript capability error"
+}
 
-local updDate="8/03/2024"
+local updDate="8/04/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -15409,16 +15411,14 @@ UICorner2.CornerRadius=UDim.new(1,0)
 UICorner2.Parent=TextLabelLabel
 
 function Swoosh()
-	local script=Instance.new('LocalScript',ImageButton)
-	local imagebutton=script.Parent
+	local imagebutton=ImageButton
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
 	gui.draggablev2(imagebutton)
 end
 function mainNameless()
-	local script=Instance.new('LocalScript',TextLabelLabel)
-	local txtlabel=script.Parent
+	local txtlabel=TextLabelLabel
 	txtlabel.Size=UDim2.new(0,2,0,33)
 	txtlabel.BackgroundTransparency=0.14
 

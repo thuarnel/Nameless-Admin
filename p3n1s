@@ -592,44 +592,34 @@ UIGradient_2.Parent = Commands
 -- Scripts:
 
 local function BLUEWBX_fake_script() -- TextButton.LocalScript 
-	local script = Instance.new('LocalScript', TextButton)
-
-	script.Parent.MouseButton1Click:Connect(function()
+	TextButton.Parent.MouseButton1Click:Connect(function()
 		startMain()
 	end)
 end
 coroutine.wrap(BLUEWBX_fake_script)()
 local function USSK_fake_script() -- TextBox.LocalScript 
-	local script = Instance.new('LocalScript', TextBox)
-
-	script.Parent.FocusLost:Connect(function()--when the user stops inputting text
-		local text = script.Parent.Text
+	TextBox.Parent.FocusLost:Connect(function()--when the user stops inputting text
+		local text = TextBox.Parent.Text
 		_G.settings.player = getTargetPlayer(text).Name
 		print("event was fired ")
 	end) 
 end
 coroutine.wrap(USSK_fake_script)()
 local function AJZO_fake_script() -- TextBox_2.LocalScript 
-	local script = Instance.new('LocalScript', TextBox_2)
-
-	script.Parent.FocusLost:Connect(function()--when the user stops inputting text
-		local text = script.Parent.Text
+	TextBox_2.Parent.FocusLost:Connect(function()--when the user stops inputting text
+		local text = TextBox_2.Parent.Text
 		_G.settings.speed = text / 10
 	end) 
 end
 coroutine.wrap(AJZO_fake_script)()
 local function IKUF_fake_script() -- Exit.LocalScript 
-	local script = Instance.new('LocalScript', Exit)
-
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
+	Exit.Parent.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
 coroutine.wrap(IKUF_fake_script)()
 local function DUZE_fake_script() -- Commands.LocalScript 
-	local script = Instance.new('LocalScript', Commands)
-
-	script.Parent.Active = true
-	script.Parent.Parent.ResetOnSpawn = false
+	Commands.Parent.Active = true
+	Commands.Parent.Parent.ResetOnSpawn = false
 end
 coroutine.wrap(DUZE_fake_script)()

@@ -812,53 +812,43 @@ NoScriptsFound.TextSize = 20.000
 -- Scripts:
 
 local function ODBXNA_fake_script() -- Executor.LocalScript 
-	local script = Instance.new('LocalScript', Executor)
-
 	opened = false
 
-	script.Parent.MouseButton1Click:Connect(function()
+	Executor.Parent.MouseButton1Click:Connect(function()
 		if opened == false then
-			script.Parent.Parent.Parent.ButtonUIs.Executor.Visible = true
-			script.Parent.Parent.Parent.ButtonUIs.Executor:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+			Executor.Parent.Parent.Parent.ButtonUIs.Executor.Visible = true
+			Executor.Parent.Parent.Parent.ButtonUIs.Executor:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 			opened = true
 		else
-			script.Parent.Parent.Parent.ButtonUIs.Executor:TweenPosition(UDim2.new(0.308, 0,1.262, 0), "Out", "Quint",1,true)
+			Executor.Parent.Parent.Parent.ButtonUIs.Executor:TweenPosition(UDim2.new(0.308, 0,1.262, 0), "Out", "Quint",1,true)
 			wait(0.4)
-			script.Parent.Parent.Parent.ButtonUIs.Executor.Visible = false
+			Executor.Parent.Parent.Parent.ButtonUIs.Executor.Visible = false
 			opened = false
 		end
 	end)
 end
 coroutine.wrap(ODBXNA_fake_script)()
 local function ZEEKHZC_fake_script() -- Execute.LocalScript 
-	local script = Instance.new('LocalScript', Execute)
-
-	local execute = script.Parent
-	Editor = script.Parent.Parent.EditorScroller.Editor
+	local execute = Execute.Parent
+	Editor = Execute.Parent.Parent.EditorScroller.Editor
 
 	execute.MouseButton1Click:Connect(
 		function()
 			assert(loadstring(Editor.Text))()
-		end
-	)
-
+		end)
 end
 coroutine.wrap(ZEEKHZC_fake_script)()
 local function EHTST_fake_script() -- Clear.LocalScript 
-	local script = Instance.new('LocalScript', Clear)
-
-	Clear = script.Parent
+	Clear = Clear.Parent
 	Clear.MouseButton1Click:Connect(function()
-		script.Parent.Parent.EditorScroller.Editor.Text = ""
+		Clear.Parent.Parent.EditorScroller.Editor.Text = ""
 	end)
 end
 coroutine.wrap(EHTST_fake_script)()
 local function VMPJDEN_fake_script() -- Executor_2.LocalScript 
-	local script = Instance.new('LocalScript', Executor_2)
-
-	script.Parent.Active = true
-	script.Parent.Draggable = true
-	script.Parent.Parent.Parent.ResetOnSpawn = false
+	Executor_2.Parent.Active = true
+	Executor_2.Parent.Draggable = true
+	Executor_2.Parent.Parent.Parent.ResetOnSpawn = false
 end
 coroutine.wrap(VMPJDEN_fake_script)()
 

@@ -236,10 +236,8 @@ UICorner_5.Parent = SilentC
 -- Scripts:
 
 local function RNBIV_fake_script() -- Exit.LocalScript 
-	local script = Instance.new('LocalScript', Exit)
-
-	script.Parent.MouseButton1Click:Connect(function()
-		script.Parent.Parent.Parent.Parent:Destroy()
+	Exit.Parent.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent.Parent:Destroy()
 	end)
 end
 
