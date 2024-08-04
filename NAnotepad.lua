@@ -184,13 +184,13 @@ end
 coroutine.wrap(exitbtn)()
 local function minimizetoggl()
 	p = false
-	Minimize.Parent.MouseButton1Click:Connect(function()
+	Minimize.MouseButton1Click:Connect(function()
 		if not p then
 			p = not p
-			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
 		else
 			p = not p
-			Minimize.Parent.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 235), "Out", "Quint", 1, true)
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 235), "Out", "Quint", 1, true)
 		end
 	end)
 end
