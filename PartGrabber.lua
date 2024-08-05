@@ -230,8 +230,8 @@ local function UUVHNZD_fake_script()
 end
 coroutine.wrap(UUVHNZD_fake_script)()
 local function AUPMILR_fake_script()
-	Exit.Parent.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent.Parent:Destroy()
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent:Destroy()
 if idk then idk:Disconnect() idk=nil end
 getgenv().prtGrabLoaded=false
 	end)
