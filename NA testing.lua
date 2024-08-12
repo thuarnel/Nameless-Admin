@@ -156,11 +156,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1="Fixed Wave's stupid LocalScript capability error"
-}
+local updLogs={}
 
-local updDate="8/04/2024"
+local updDate="8/12/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -3943,8 +3941,12 @@ cmd.add({"unspam","unlag","unchatspam","unanimlag","unremotespam"},{"unspam","St
 	lib.disconnect("spam")
 end)
 
-cmd.add({"UNCTest","UNC"},{"UNCTest (UNC)","i forgor 💀"},function()
+cmd.add({"UNCTest","UNC"},{"UNCTest (UNC)","Test how many functions your executor supports"},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/UNC%20test"))()
+end)
+
+cmd.add({"vulnerabilitytest","vulntest"},{"vulnerabilitytest (vulntest)","Test if your executor is Vulnerable"},function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/VulnTest.lua"))()
 end)
 
 cmd.add({"respawn","re"},{"respawn","Respawn your character"},function()
