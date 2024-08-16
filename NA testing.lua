@@ -156,9 +156,11 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1='fixed '..adminName..' not loading'
+}
 
-local updDate="8/12/2024"
+local updDate="8/16/2024"
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
