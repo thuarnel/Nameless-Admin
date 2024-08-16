@@ -14705,7 +14705,7 @@ function Getmodel(id)
 end
 
 --[[ GUI VARIABLES ]]--
-local ScreenGui=Getmodel("rbxassetid://17101871669")
+local ScreenGui=Getmodel("rbxassetid://18969527942")
 local rPlayer=Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection={}
 if not RunService:IsStudio() then
@@ -14779,11 +14779,11 @@ local commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("Lis
 local commandExample=commandsList:FindFirstChild("TextLabel");
 local UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
 local UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
-local UniverseExample=UniverseList:FindFirstChild("TextButton");
+local UniverseExample=UniverseList:FindFirstChildOfClass("TextButton");
 local UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
 local UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
 local UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
-local UpdLogsLabel=UpdLogsList:FindFirstChild("Log");
+local UpdLogsLabel=UpdLogsList:FindFirstChildOfClass("TextLabel");
 local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
 local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
 local resizeXY={
@@ -15246,12 +15246,12 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 function autoResizeable(ui)
 	local initialSize=ui.AbsoluteSize
 	local minSize=Vector2.new(
-		math.max(100,initialSize.X*1),
-		math.max(100,initialSize.Y*1)
+		math.max(100,initialSize.X*0.5),
+		math.max(100,initialSize.Y*0.5)
 	)
 	local maxSize=Vector2.new(
-		initialSize.X*5,
-		initialSize.Y*5
+		initialSize.X*3,
+		initialSize.Y*3
 	)
 
 	gui.resizeable(ui,minSize,maxSize)
