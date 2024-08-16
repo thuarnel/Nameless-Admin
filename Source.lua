@@ -364,6 +364,18 @@ function randomString()
 	return table.concat(array)
 end
 
+function NAProtection(inst,var)
+    if inst then
+        if var then
+            inst[var]="\0"
+            inst.Archivable=false
+        else
+            inst.Name="\0"
+            inst.Archivable=false
+        end
+    end
+end
+
 --[[ Fully setup Nameless admin storage ]]
 NA_storage.Name=randomString()
 NA_storage.Parent=iamcore
@@ -14719,11 +14731,13 @@ repeat wait() until ScreenGui~=nil -- if it loads late then I'll just add this h
 if (get_hidden_gui or gethui) then
 	local hiddenUI=(get_hidden_gui or gethui)
 	local Main=ScreenGui
-	Main.Name=randomString()
+	--Main.Name=randomString()
+	NAProtection(Main)
 	Main.Parent=hiddenUI()
 elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
 	local Main=ScreenGui
-	Main.Name=randomString()
+	--Main.Name=randomString()
+	NAProtection(Main)
 	syn.protect_gui(Main)
 	Main.Parent=game:GetService("CoreGui")
 elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
@@ -14758,7 +14772,8 @@ elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
 	end
 elseif COREGUI then
 	local Main=ScreenGui
-	Main.Name=randomString()
+	--Main.Name=randomString()
+	NAProtection(Main)
 	Main.Parent=COREGUI
 else
 	warn'no guis?'
@@ -15363,7 +15378,8 @@ local UICorner=Instance.new("UICorner")
 local ImageButton=Instance.new("ImageButton")
 local UICorner2=Instance.new("UICorner")
 
-TextLabelLabel.Name=randomString()
+--TextLabelLabel.Name=randomString()
+NAProtection(TextLabelLabel)
 TextLabelLabel.Parent=ScreenGui
 TextLabelLabel.BackgroundColor3=Color3.fromRGB(4,4,4)
 TextLabelLabel.BackgroundTransparency=1.000
@@ -15377,7 +15393,8 @@ TextLabelLabel.TextSize=20.000
 TextLabelLabel.TextWrapped=true
 TextLabelLabel.ZIndex=9999
 
-ImageButton.Name=randomString()
+--ImageButton.Name=randomString()
+NAProtection(ImageButton)
 ImageButton.Parent=ScreenGui
 ImageButton.AnchorPoint=Vector2.new(0.5,0)
 ImageButton.BackgroundColor3=Color3.fromRGB(255,255,255)
