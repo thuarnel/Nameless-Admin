@@ -14735,7 +14735,7 @@ function Getmodel(id)
 end
 
 --[[ GUI VARIABLES ]]--
-local ScreenGui=Getmodel("rbxassetid://18969527942")
+local ScreenGui=Getmodel("rbxassetid://140418556029404")
 local rPlayer=Players:FindFirstChildWhichIsA("Player")
 local coreGuiProtection={}
 if not RunService:IsStudio() then
