@@ -15112,7 +15112,7 @@ gui.shiftlock=function(sLock,lockImg)
 	local g=nil
 	local GameSettings=UserSettings():GetService("UserGameSettings")
 	local J=nil
-
+        lockImg.Active=false
 	function ForceShiftLock()
 		local i,k=pcall(function()
 			return GameSettings.RotationType
