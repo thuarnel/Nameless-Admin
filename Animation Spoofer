@@ -19,7 +19,7 @@ local scroll = Instance.new("ScrollingFrame")
 local uilist = Instance.new("UIListLayout")
 
 screenxD.Name = "eternalness7"
-screenxD.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+screenxD.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 screenxD.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = screenxD
@@ -182,8 +182,8 @@ local function clicky()
 end
 coroutine.wrap(clicky)()
 local function itouch()
-	local UserInputService = game:GetService("UserInputService")
-	local runService = (game:GetService("RunService"));
+	local UserInputService = game:FindService("UserInputService")
+	local runService = (game:FindService("RunService"));
 	
 	local gui = Frame
 	
@@ -238,7 +238,7 @@ local function itouch()
 end
 coroutine.wrap(itouch)()
 
-local UIS = game:GetService("UserInputService")
+local UIS = game:FindService("UserInputService")
 local function dragify(Frame,boool)
 	local frametomove = Frame
 	local dragToggle,dragInput,dragStart,startPos
@@ -292,7 +292,7 @@ local function createbutton(id)
 	id.AnchorPoint = Vector2.new(0,1)
 	id.Position = UDim2.new(0,0,1,0)
 	id.Text = str
-	name.Text = game:GetService("MarketplaceService"):GetProductInfo(tonumber(str)).Name
+	name.Text = game:FindService("MarketplaceService"):GetProductInfo(tonumber(str)).Name
 	button.Activated:Connect(function()
 		setclipboard(str)
 	end)
@@ -301,7 +301,7 @@ end
 local animationtabl = {}
 
 while true do
-	local localPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+	local localPlayer = game:FindService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
 	if localPlayer then
 		local a = localPlayer:GetPlayingAnimationTracks()
 		for i, track in pairs(a) do

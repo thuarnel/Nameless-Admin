@@ -24,7 +24,7 @@ local TemplateText = Instance.new("TextButton")
 --Properties:
 
 HttpSpy.Name = "HttpSpy"
-HttpSpy.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+HttpSpy.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 HttpSpy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 HttpSpy.ResetOnSpawn = false
 

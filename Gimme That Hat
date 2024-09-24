@@ -6,19 +6,19 @@ for i, v in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 	end
 end
 wait()
-local plr = game:GetService"Players".LocalPlayer
+local plr = game:FindService"Players".LocalPlayer
 
 function mOut(txt, type)
 	if type == 1 then
 		spawn(function()
-			local m = Instance.new("Message", (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
+			local m = Instance.new("Message", (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
 			m.Text = txt
 			task.wait(3)
 			m:Destroy()
 		end)
 	elseif type == 2 then
 		spawn(function()
-			local h = Instance.new("Hint", (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
+			local h = Instance.new("Hint", (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui")))
 			h.Text = txt
 			task.wait(3)
 			h:Destroy()
@@ -291,7 +291,7 @@ SilentC.MouseButton1Click:Connect(function()
 
 		argplr = game.Players[arg.Name].Character
 
-		local rs = game:GetService("RunService")
+		local rs = game:FindService("RunService")
 		local fc
 		local dc
 		local dic

@@ -68,7 +68,7 @@ local UICorner_29 = Instance.new("UICorner")
 --Properties:
 
 CometGUI.Name = "CometGUI"
-CometGUI.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+CometGUI.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 CometGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Comet.Name = "Comet"
@@ -492,7 +492,7 @@ UICorner_28.Parent = Target
 UICorner_29.Parent = Comet
 
 -- [[ CODE ]]
-Players = game:GetService("Players")
+Players = game:FindService("Players")
 
 SupportedGame = false -- Check to see if comet supports the current game you're in
 -- messy code
@@ -500,12 +500,12 @@ function Destroy(part)
 	spawn(function()
 
 
-		if game:GetService("ReplicatedStorage"):FindFirstChild("DeleteCar") then
+		if game:FindService("ReplicatedStorage"):FindFirstChild("DeleteCar") then
 			SupportedGame = true
-			game:GetService("ReplicatedStorage").DeleteCar:FireServer(part)
+			game:FindService("ReplicatedStorage").DeleteCar:FireServer(part)
 
 
-		elseif game:GetService("Players").LocalPlayer.Character:FindFirstChild("HandlessSegway") then
+		elseif game:FindService("Players").LocalPlayer.Character:FindFirstChild("HandlessSegway") then
 			SupportedGame = true
 			for i,slaves in pairs(game:GetDescendants()) do
 				if slaves.Name == "DestroySegway" then
@@ -514,12 +514,12 @@ function Destroy(part)
 			end
 
 
-		elseif game:GetService("ReplicatedStorage"):FindFirstChild("GuiHandler") then
+		elseif game:FindService("ReplicatedStorage"):FindFirstChild("GuiHandler") then
 			SupportedGame = true
-			game:GetService("ReplicatedStorage").GuiHandler:FireServer(false, part)
+			game:FindService("ReplicatedStorage").GuiHandler:FireServer(false, part)
 
 
-		elseif game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Building Tools") then
+		elseif game:FindService("Players").LocalPlayer.Backpack:FindFirstChild("Building Tools") then
 			SupportedGame = true
 			local args = {
 				[1] = "Remove",
@@ -527,7 +527,7 @@ function Destroy(part)
 					[1] = part
 				}
 			}
-			game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Building Tools").SyncAPI.ServerEndpoint:InvokeServer(unpack(args))
+			game:FindService("Players").LocalPlayer.Backpack:FindFirstChild("Building Tools").SyncAPI.ServerEndpoint:InvokeServer(unpack(args))
 
 
 		end
@@ -1058,7 +1058,7 @@ Btools.MouseButton1Click:Connect(function()
 		explosion.Position = mouse.Target.Position
 		Destroy(mouse.Target)
 	end)
-	game:GetService("StarterGui"):SetCoreGuiEnabled('Backpack', true)
+	game:FindService("StarterGui"):SetCoreGuiEnabled('Backpack', true)
 	Players.LocalPlayer.CharacterAdded:connect(function()
 		local destroytool = Instance.new("Tool", Players.LocalPlayer:FindFirstChildOfClass("Backpack"))
 		destroytool.RequiresHandle = false
@@ -1089,7 +1089,7 @@ Btools.MouseButton1Click:Connect(function()
 			explosion.Position = mouse.Target.Position
 			Destroy(mouse.Target)
 		end)
-		game:GetService("StarterGui"):SetCoreGuiEnabled('Backpack', true)
+		game:FindService("StarterGui"):SetCoreGuiEnabled('Backpack', true)
 	end)
 end)
 
@@ -1129,7 +1129,7 @@ Kick.MouseButton1Click:Connect(function()
 end)
 
 Clearmap.MouseButton1Click:Connect(function()
-	for i,v in pairs(game:GetService("Workspace"):GetChildren()) do
+	for i,v in pairs(game:FindService("Workspace"):GetChildren()) do
 		Destroy(v)
 	end
 end)
@@ -1171,7 +1171,7 @@ CometGUI.ResetOnSpawn = false
 Comet.Active = true
 Comet.Draggable = true
 Scroller.CanvasPosition = Vector2.new(0, 0)
-CometGUI.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+CometGUI.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 
 local Notification = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
 local Notify = Notification.Notify;

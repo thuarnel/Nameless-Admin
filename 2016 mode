@@ -20,14 +20,14 @@ end
 wait(0.1)
 
 --// variables/modules
-local CoreGui = game:GetService("CoreGui")
+local CoreGui = game:FindService("CoreGui")
 local RobloxGui = CoreGui:FindFirstChild("RobloxGui")
-local UserInputService = game:GetService("UserInputService")
+local UserInputService = game:FindService("UserInputService")
 
-local TopBar = game:GetService("CoreGui"):WaitForChild("TopBarApp"):WaitForChild("TopBarFrame")
+local TopBar = game:FindService("CoreGui"):WaitForChild("TopBarApp"):WaitForChild("TopBarFrame")
 local ChatIcon = TopBar:WaitForChild("LeftFrame"):WaitForChild("ChatIcon"):WaitForChild("Background"):WaitForChild("Icon")
 
-local UIS = game:GetService("UserInputService")
+local UIS = game:FindService("UserInputService")
 
 local function devprint(text)
     if config.dev then
@@ -83,7 +83,7 @@ TopBar.LeftFrame.MenuIcon.Background.Icon.Image = "rbxasset://textures/ui/Menu/H
 if config.old_graphics == true then
     --// epic 2016 remastered--// instances
     local cc = Instance.new("ColorCorrectionEffect")
-    local lighting = game:GetService("Lighting")
+    local lighting = game:FindService("Lighting")
 
     --// hd killer
     local ihateu = {"DepthOfFieldEffect", "SunRaysEffect", "BloomEffect", "BlurEffect", "ColorCorrectionEffect", "Atmosphere"}
@@ -139,7 +139,7 @@ if mods.fps_counter then
     local Tiempo = tick()
 
     spawn(function()
-        while game:GetService("RunService").RenderStepped:wait() do
+        while game:FindService("RunService").RenderStepped:wait() do
             local Transcurrido = math.abs(Tiempo-tick())
             Tiempo = tick()
             FPS = math.floor(1/Transcurrido)
@@ -196,7 +196,7 @@ HealthFill.BorderSizePixel = 0
 HealthFill.Size = UDim2.new(1, 0, 1, 0)
 HealthFill.Active = false
 
-Username.Text = game:GetService("Players").LocalPlayer.Name
+Username.Text = game:FindService("Players").LocalPlayer.Name
 
 spawn(function()
     game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health,false)
@@ -224,7 +224,7 @@ end)
 --// chat scripts
 if not mods.c00l_mode then
     spawn(function()
-        game:GetService("RunService").Heartbeat:Connect(function()
+        game:FindService("RunService").Heartbeat:Connect(function()
             if game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar:IsFocused() then
                 game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.BackgroundTransparency = 0.1
             else
@@ -251,13 +251,13 @@ end
 changechatico()
 
 spawn(function()
-    game:GetService("Players").PlayerChatted:Connect(function(PlayerChatType, sender, message, recipient)
+    game:FindService("Players").PlayerChatted:Connect(function(PlayerChatType, sender, message, recipient)
         changechatico()
     end)
 end)
 
 spawn(function()
-    game:GetService("RunService").Heartbeat:Connect(function()
+    game:FindService("RunService").Heartbeat:Connect(function()
         changechatico()
     end)
 end)
@@ -359,14 +359,14 @@ local AnalyticsCategory_Game = "Game"
 local AnalyticsAction_InitialOpenTab = "DeveloperConsole_InitialOpenTab"
 local AnalyticsAction_ClickToOpenOpenTab = "DeveloperConsole_ClickToOpenOpenTab"
 
-local CoreGui = game:GetService("CoreGui")
+local CoreGui = game:FindService("CoreGui")
 local RobloxGui = CoreGui:FindFirstChild("RobloxGui")
 local Modules = RobloxGui:FindFirstChild("Modules")
 
-local ContextActionService = game:GetService("ContextActionService")
-local TextService = game:GetService("TextService")
-local GuiService = game:GetService("GuiService")
-local VRService = game:GetService("VRService")
+local ContextActionService = game:FindService("ContextActionService")
+local TextService = game:FindService("TextService")
+local GuiService = game:FindService("GuiService")
+local VRService = game:FindService("VRService")
 local isTenFootInterface = GuiService:IsTenFootInterface()
 
 local ClientMemoryAnalyzerClass = CoreGui:WaitForChild("RobloxGui"):WaitForChild("Modules"):WaitForChild("Stats"):WaitForChild("ClientMemoryAnalyzer")
@@ -380,7 +380,7 @@ local Style; do
 	local optionsFrameColor = Color3.new(1, 1, 1)
 	
 	pcall(function() -- Fun window colors for cool people
-		local Players = game:GetService("Players")
+		local Players = game:FindService("Players")
 		if not Players or not Players.LocalPlayer then
 			return
 		end
@@ -649,8 +649,8 @@ local CreateDisconnectSignal; do
 end
 
 -- Services
-local UserInputService = game:GetService('UserInputService')
-local RunService = game:GetService('RunService')
+local UserInputService = game:FindService('UserInputService')
+local RunService = game:FindService('RunService')
 local TouchEnabled = UserInputService.TouchEnabled
 
 local DeveloperConsole = {}
@@ -1309,7 +1309,7 @@ do -- This doesn't support multiple windows very well
 		
 		local enabled = false
 		
-		local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+		local mouse = game:FindService("Players").LocalPlayer:GetMouse()
 		
 		local function Refresh()
 			local enabledNew = devConsole.Visible and not UserInputService.MouseIconEnabled
@@ -2245,7 +2245,7 @@ function Methods.ConnectButtonDragging(devConsole, button, dragCallback, mouseIn
 		[Enum.UserInputType.Touch] = true; -- I'm not sure if touch actually works here
 	}
 	
-	local mouse = game:GetService("Players").LocalPlayer:GetMouse()
+	local mouse = game:FindService("Players").LocalPlayer:GetMouse()
 
 	local function startDragging(startP)
 		if dragging then
@@ -2341,15 +2341,15 @@ do
 		permissions.IsCreator = false
 
 		local success, result = pcall(function()
-			local url = string.format("/users/%d/canmanage/%d", game:GetService("Players").LocalPlayer.UserId, game.PlaceId)
-			return game:GetService('HttpRbxApiService'):GetAsync(url, Enum.ThrottlingPriority.Default, Enum.HttpRequestType.Default, true)
+			local url = string.format("/users/%d/canmanage/%d", game:FindService("Players").LocalPlayer.UserId, game.PlaceId)
+			return game:FindService('HttpRbxApiService'):GetAsync(url, Enum.ThrottlingPriority.Default, Enum.HttpRequestType.Default, true)
 		end)
 		if success and type(result) == "string" then
 			-- API returns: {"Success":BOOLEAN,"CanManage":BOOLEAN}
 			-- Convert from JSON to a table
 			-- pcall in case of invalid JSON
 			success, result = pcall(function()
-				return game:GetService('HttpService'):JSONDecode(result)
+				return game:FindService('HttpService'):JSONDecode(result)
 			end)
 			if success and result.CanManage == true then
 				permissions.IsCreator = result.CanManage
@@ -2474,7 +2474,7 @@ do
 			outputMessageSyncLocal = NewOutputMessageSync(function(this)
 				local messages = {}
 				
-				local LogService = game:GetService("LogService")
+				local LogService = game:FindService("LogService")
 				do -- This do block keeps history from sticking around in memory
 					local history = LogService:GetLogHistory()
 					for i = 1, #history do
@@ -2511,7 +2511,7 @@ do
 			outputMessageSyncServer = NewOutputMessageSync(function(this)
 				local messages = {}
 				
-				local LogService = game:GetService("LogService")
+				local LogService = game:FindService("LogService")
 				
 				LogService.ServerMessageOut:connect(function(text, messageType, timestamp)
 					local message = {
@@ -2660,7 +2660,7 @@ local function SetCoreConsoleCreation()
 	end)
 end
 
-local StarterGui = game:GetService("StarterGui")
+local StarterGui = game:FindService("StarterGui")
 local function GetDeveloperConsoleVisible()
 	if (not myDeveloperConsole) then
 		SetCoreConsoleCreation()
@@ -2684,8 +2684,8 @@ local function DeveloperConsoleVisible(visible)
 end
 
 -- BetterConsole.lua by Josh#0903
-local InputService  = game:GetService'UserInputService'
-local StarterGui    = game:GetService'StarterGui'
+local InputService  = game:FindService'UserInputService'
+local StarterGui    = game:FindService'StarterGui'
 
 InputService.InputBegan:connect(function(a)
    if a.UserInputType == Enum.UserInputType.Keyboard and a.KeyCode == Enum.KeyCode.F9 then
@@ -2870,7 +2870,7 @@ if config.old_plist then
     end
 
     --// this will only run once, this is the activator cause yeah
-    for i, v in	 pairs(game:GetService("Players"):GetPlayers()) do
+    for i, v in	 pairs(game:FindService("Players"):GetPlayers()) do
         local function isbc_func()
             if v.MembershipType == Enum.MembershipType.Premium then
                 return true
@@ -2892,7 +2892,7 @@ if config.old_plist then
         addplr(v.Name, isbc_func(), isfriend_func(), isdev_func())
     end
 
-    game:GetService("Players").PlayerAdded:Connect(function(player)
+    game:FindService("Players").PlayerAdded:Connect(function(player)
         local function isbc_func()
             if player.MembershipType == Enum.MembershipType.Premium then
                 return true
@@ -2914,7 +2914,7 @@ if config.old_plist then
         addplr(player.Name, isbc_func(), isfriend_func(), isdev_func())
     end)
 
-    game:GetService("Players").PlayerRemoving:Connect(function(player)
+    game:FindService("Players").PlayerRemoving:Connect(function(player)
         removeplrfromlist(player.Name)
     end)
 
@@ -2961,9 +2961,9 @@ if mods.built_in_silentre then
 
     SilentIcon_Background.MouseButton1Click:Connect(function()
         if game.PlaceId == 5100950559 or game.PlaceId == 6048573718 or game.PlaceId == 6446409152 then
-            game:GetService("Players"):Chat("-re")
+            game:FindService("Players"):Chat("-re")
         else
-            local plr = game:GetService("Players").LocalPlayer
+            local plr = game:FindService("Players").LocalPlayer
             local char = plr.Character
 
             local Human = plr.Character and plr.Character:FindFirstChildOfClass("Humanoid", true)
@@ -3043,7 +3043,7 @@ if mods.built_in_silentre then
     ChatIcon.Visible = true
 
     spawn(function()
-        game:GetService("RunService").Heartbeat:Connect(function()
+        game:FindService("RunService").Heartbeat:Connect(function()
             c00l_chat_func()
         end)
     end)
@@ -3065,7 +3065,7 @@ if mods.built_in_silentre then
     end)
 
     spawn(function()
-        game:GetService("RunService").Heartbeat:Connect(function()
+        game:FindService("RunService").Heartbeat:Connect(function()
             if game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.Frame.ChatBar:IsFocused() then
                 game.Players.LocalPlayer.PlayerGui.Chat.Frame.ChatBarParentFrame.Frame.BoxFrame.BackgroundTransparency = 0.1
             else

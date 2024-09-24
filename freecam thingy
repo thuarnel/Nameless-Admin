@@ -307,14 +307,14 @@ local function VVCQ_fake_script()
 	local thetoggle=Instance.new("BindableEvent", script.Parent)
 	thetoggle.Name="Toggle"
 	
-	local ContextActionService = game:GetService("ContextActionService")
-	local Players = game:GetService("Players")
-	local RunService = game:GetService("RunService")
-	local StarterGui = game:GetService("StarterGui")
-	local UserInputService = game:GetService("UserInputService")
-	local UIS = game:GetService("UserInputService")
-	local GuiService = game:GetService("GuiService")
-	local Workspace = game:GetService("Workspace")
+	local ContextActionService = game:FindService("ContextActionService")
+	local Players = game:FindService("Players")
+	local RunService = game:FindService("RunService")
+	local StarterGui = game:FindService("StarterGui")
+	local UserInputService = game:FindService("UserInputService")
+	local UIS = game:FindService("UserInputService")
+	local GuiService = game:FindService("GuiService")
+	local Workspace = game:FindService("Workspace")
 	
 	local LocalPlayer = Players.LocalPlayer
 	if not LocalPlayer then
