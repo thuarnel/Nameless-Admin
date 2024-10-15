@@ -4611,7 +4611,11 @@ cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"}
 end)
 
 cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
+	if IsOnMobile then
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/DexByMoonMobile"))()
+	else
+	    loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
+	end
 end)
 
 cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"}, function(thingy)
