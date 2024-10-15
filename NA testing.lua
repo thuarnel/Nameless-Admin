@@ -157,7 +157,7 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Added mobile supported dex (use dex command)'
+	log1='Added mobile supported dex (use dex command)',
 	log2='Added "Decompiler" command (allows you to decompile LocalScript/ModuleScript)'
 }
 
