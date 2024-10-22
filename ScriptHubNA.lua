@@ -126,7 +126,7 @@ local NoScriptsFound = Instance.new("TextLabel")
 
 --Properties:
 
-ScreenGui.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+ScreenGui.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 MainUI.Name = "MainUI"
@@ -887,9 +887,9 @@ ScreenGui.MainFrame.InfoBox.Visible = false
 
 local getfakeasset = getcustomasset or getsynasset
 
-local HttpService = game:FindService("HttpService")
-local TweenService = game:FindService("TweenService")
-local TextService = game:FindService("TextService")
+local HttpService = game:GetService("HttpService")
+local TweenService = game:GetService("TweenService")
+local TextService = game:GetService("TextService")
 
 local cache = HttpService:JSONDecode(readfile("ScriptBlox/Searcher/Cache.json"))
 
@@ -1170,7 +1170,7 @@ end)
 setHoverTransition(nil, Color3.new(0.254902, 0.317647, 0.576471), ScreenGui.MainFrame.TopBarFrame.ClearCacheButton)
 
 -- Dragging
-local UserInputService = game:FindService("UserInputService")
+local UserInputService = game:GetService("UserInputService")
 local gui = ScreenGui.MainFrame
 
 local dragging

@@ -1,4 +1,4 @@
-Players = game:FindService("Players")
+Players = game:GetService("Players")
 Player = game.Players.LocalPlayer
 LocalPlayer = Player
 

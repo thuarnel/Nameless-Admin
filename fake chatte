@@ -51,7 +51,7 @@ local UIGradient = Instance.new("UIGradient")
 --Properties:
 
 ChatGUI.Name = "ChatGUI"
-ChatGUI.Parent = (game:FindService("CoreGui") or game:FindService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+ChatGUI.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 ChatGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ChatGUI.ResetOnSpawn = false
 
@@ -420,10 +420,10 @@ Roblox.MouseButton1Click:Connect(function()
                             ChatButton.MouseButton1Click:Connect(function()
     local A_1 = NameBox.Text.."                                                                                                                             "..""..PlayerBox.Text..": ".. MessageBox.Text
                                 local A_2 = "All"
-								if game:FindService("TextChatService"):FindFirstChild("TextChannels") then
-									game:FindService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
+								if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
+									game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
 									else
-							  game:FindService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
+							  game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
 								 end
                             end)
                             
