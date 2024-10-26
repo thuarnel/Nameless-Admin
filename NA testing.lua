@@ -15065,62 +15065,45 @@ gui.resizeable=function(ui,min,max)
 		end)
 	end
 end
-gui.draggable=function(menu,_)
-
-	local UserInputService=game:GetService("UserInputService")
-	local RunService=game:GetService("RunService")
-
-	local thingyMabob=menu
-
+gui.draggable=function(ui, dragui)
+	if not dragui then dragui = ui end
+	local UserInputService = game:GetService("UserInputService")
+	
 	local dragging
 	local dragInput
 	local dragStart
 	local startPos
-
-	local function Lerp(a,b,m)
-		return a+(b-a)*m
+	
+	local function update(input)
+		local delta = input.Position - dragStart
+		ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 	end
-
-	local lastMousePos
-	local lastGoalPos
-	local DRAG_SPEED=8
-
-	local function Update(dt)
-		if not startPos then return end
-		if not dragging and lastGoalPos then
-			thingyMabob.Position=UDim2.new(startPos.X.Scale,Lerp(thingyMabob.Position.X.Offset,lastGoalPos.X.Offset,dt*DRAG_SPEED),startPos.Y.Scale,Lerp(thingyMabob.Position.Y.Offset,lastGoalPos.Y.Offset,dt*DRAG_SPEED))
-			return
-		end
-
-		local delta=lastMousePos-UserInputService:GetMouseLocation()
-		local xGoal=startPos.X.Offset-delta.X
-		local yGoal=startPos.Y.Offset-delta.Y
-		lastGoalPos=UDim2.new(startPos.X.Scale,xGoal,startPos.Y.Scale,yGoal)
-		thingyMabob.Position=UDim2.new(startPos.X.Scale,Lerp(thingyMabob.Position.X.Offset,xGoal,dt*DRAG_SPEED),startPos.Y.Scale,Lerp(thingyMabob.Position.Y.Offset,yGoal,dt*DRAG_SPEED))
-	end
-
-	thingyMabob.InputBegan:Connect(function(input)
-		if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-			dragging=true
-			dragStart=input.Position
-			startPos=thingyMabob.Position
-			lastMousePos=UserInputService:GetMouseLocation()
-
+	
+	dragui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = ui.Position
+			
 			input.Changed:Connect(function()
-				if input.UserInputState==Enum.UserInputState.End then
-					dragging=false
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
 				end
 			end)
 		end
 	end)
-
-	thingyMabob.InputChanged:Connect(function(input)
-		if input.UserInputType==Enum.UserInputType.MouseMovement or input.UserInputType==Enum.UserInputType.Touch then
-			dragInput=input
+	
+	dragui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
 		end
 	end)
-
-	RunService.Heartbeat:Connect(Update)
+	
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
 end
 gui.draggablev2=function(floght)
 	floght.Active=true
