@@ -29,7 +29,7 @@ NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
 --[[ Version ]]--
-local curVer=2.19
+local curVer=2.2
 
 --[[ Brand ]]--
 local mainName='Nameless Admin'
@@ -384,15 +384,15 @@ function randomString()
 end
 
 function NAProtection(inst,var)
-    if inst then
-        if var then
-            inst[var]="\0"
-            inst.Archivable=false
-        else
-            inst.Name="\0"
-            inst.Archivable=false
-        end
-    end
+	if inst then
+		if var then
+			inst[var]="\0"
+			inst.Archivable=false
+		else
+			inst.Name="\0"
+			inst.Archivable=false
+		end
+	end
 end
 
 --[[ Fully setup Nameless admin storage ]]
@@ -1703,7 +1703,7 @@ cmd.add({"ping"},{"ping","Shows your ping"},function()
 	RunService.RenderStepped:Connect(function(ping) 
 		Pingtext.Text=("Ping: " ..game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString(math.round(2/ping)))--your ping
 	end)
-	gui.draggablev2(Pingtext)
+	gui.draggable(Pingtext)
 end)
 
 cmd.add({"fps"},{"fps","Shows your fps"},function()
@@ -1740,7 +1740,7 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 	RunService.RenderStepped:Connect(function(frame) 
 		Fpstext.Text=("FPS: "..math.round(1/frame)) 
 	end)
-	gui.draggablev2(Fpstext)
+	gui.draggable(Fpstext)
 end)
 
 cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function()
@@ -4617,7 +4617,7 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 	if IsOnMobile then
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/DexByMoonMobile"))()
 	else
-	    loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dex%20by%20moon"))()
 	end
 end)
 
@@ -4626,15 +4626,15 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 		assert(getscriptbytecode, "Exploit not supported.")
 
 		local API: string = "http://api.plusgiant5.com/"
-		
+
 		local last_call = 0
 		local function call(konstantType: string, scriptPath: Script | ModuleScript | LocalScript): string
 			local success: boolean, bytecode: string = pcall(getscriptbytecode, scriptPath)
-		
+
 			if (not success) then
 				return -- Failed to get script bytecode, error:\n\n--[[\n{bytecode}\n--]]
 			end
-		
+
 			local time_elapsed = os.clock() - last_call
 			if time_elapsed <= .5 then
 				task.wait(.5 - time_elapsed)
@@ -4648,25 +4648,25 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 				},
 			})
 			last_call = os.clock()
-		
+
 			if (httpResult.StatusCode ~= 200) then
 				return -- Error occured while requesting the API, error:\n\n--[[\n{httpResult.Body}\n--]]
 			else
 				return httpResult.Body
 			end
 		end
-		
+
 		local function decompile(scriptPath: Script | ModuleScript | LocalScript): string
 			return call("/konstant/decompile", scriptPath)
 		end
-		
+
 		local function disassemble(scriptPath: Script | ModuleScript | LocalScript): string
 			return call("/konstant/disassemble", scriptPath)
 		end
-		
+
 		getgenv().decompile = decompile
 		getgenv().disassemble = disassemble
-		
+
 		-- by lovrewe
 	end)
 end)
@@ -6360,7 +6360,7 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			end)
 		end
 		coroutine.wrap(FEPVI_fake_script)()
-		gui.draggablev2(TextButton)
+		gui.draggable(TextButton)
 	else
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
@@ -8398,7 +8398,7 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 			local newSize=UDim2.new(0,textWidth+25,0,50)
 			txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 		end)
-		gui.draggablev2(txtlabel)
+		gui.draggable(txtlabel)
 		task.wait(3.5)
 		txtlabel.Text="I Wana Play a Game"
 		task.wait(1.5)
@@ -10247,7 +10247,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		TextButton2.MouseButton1Up:Connect(function()
 			airwalk.Vars.decrease=false;
 		end)
-		gui.draggablev2(TextButton2)
+		gui.draggable(TextButton2)
 
 		if airwalk.rahh2 then airwalk.rahh2:Destroy() rahh=nil end
 		airwalk.rahh2=Instance.new("ScreenGui")
@@ -10284,7 +10284,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 		TextButton.MouseButton1Up:Connect(function()
 			airwalk.Vars.increase=false;
 		end)
-		gui.draggablev2(TextButton)
+		gui.draggable(TextButton)
 	else
 
 		if airwalk.c then airwalk.c:Disconnect() airwalk.c=nil end
@@ -14015,20 +14015,20 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				end
 				gripChanged=
 					heldTool:GetPropertyChangedSignal("Grip"):Connect(
-				function()
-					wait()
-					if not invisible then
-						gripChanged:Disconnect()
-					end
-					if heldTool.Grip~=lastGrip then
-						lastGrip=
-							heldTool.Grip*(CFrame.new(0,offset-1.5,1.5)*CFrame.Angles(math.rad(-90),0,0))
-						heldTool.Grip=lastGrip
-						heldTool.Parent=game:GetService("Players").LocalPlayer.Backpack
-						heldTool.Parent=game:GetService("Players").LocalPlayer.Character
-					end
-				end
-				)
+						function()
+							wait()
+							if not invisible then
+								gripChanged:Disconnect()
+							end
+							if heldTool.Grip~=lastGrip then
+								lastGrip=
+								heldTool.Grip*(CFrame.new(0,offset-1.5,1.5)*CFrame.Angles(math.rad(-90),0,0))
+								heldTool.Grip=lastGrip
+								heldTool.Parent=game:GetService("Players").LocalPlayer.Backpack
+								heldTool.Parent=game:GetService("Players").LocalPlayer.Character
+							end
+						end
+					)
 			end
 		end
 	)
@@ -15144,7 +15144,7 @@ gui.menuify=function(menu)
 	exit.MouseButton1Click:Connect(function()
 		menu.Visible=false
 	end)
-	gui.draggablev2(menu,menu.Topbar)
+	gui.draggable(menu,menu.Topbar)
 	menu.Visible=false
 end
 gui.menuifyv2=function(menu)
@@ -15176,7 +15176,7 @@ gui.menuifyv2=function(menu)
 			end
 		end)
 	end
-	gui.draggablev2(menu,menu.Topbar)
+	gui.draggable(menu,menu.Topbar)
 	menu.Visible=false
 end
 
@@ -15185,7 +15185,7 @@ gui.shiftlock=function(sLock,lockImg)
 	local g=nil
 	local GameSettings=UserSettings():GetService("UserGameSettings")
 	local J=nil
-        lockImg.Active=false
+	lockImg.Active=false
 
 	function ForceShiftLock()
 		local i,k=pcall(function()
@@ -15218,7 +15218,7 @@ gui.shiftlock=function(sLock,lockImg)
 			EndForceShiftLock()
 		end
 	end)
-	gui.draggablev2(sLock)
+	gui.draggable(sLock)
 end
 
 
@@ -15491,7 +15491,7 @@ function Swoosh()
 	imagebutton.Size=UDim2.new(0,32,0,33)
 	imagebutton.BackgroundTransparency=0
 	imagebutton:TweenPosition(UDim2.new(0.5,0,0,0),"Out","Quint",1,true)
-	gui.draggablev2(imagebutton)
+	gui.draggable(imagebutton)
 end
 function mainNameless()
 	local txtlabel=TextLabelLabel
@@ -15502,16 +15502,21 @@ function mainNameless()
 	local newSize=UDim2.new(0,textWidth+69,0,33)
 
 	txtlabel:TweenSize(newSize,"Out","Quint",1,true)
+	if IsOnMobile then
+		Swoosh()
+	else
+		ImageButton:Destroy()
+	end
 	wait(2)
 	game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
 	local h=game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{TextTransparency=1})
 	h:Play()
 	h.Completed:Connect(function()
-		if IsOnMobile then
+		--[[if IsOnMobile then
 			Swoosh()
 		else
 			ImageButton:Destroy()
-		end
+		end]]
 		txtlabel:Destroy()
 	end)
 end
