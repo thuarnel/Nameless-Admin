@@ -1249,7 +1249,7 @@ ChatHUDFunc = function()
     local Local = ChatHUD.Local
     local Camera = workspace.CurrentCamera
     Template.Parent = nil
-    ChatHUD.Parent = game:GetService("CoreGui")
+    ChatHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
     --[[
  Code
  --]]
@@ -1339,7 +1339,7 @@ ChatHUDFunc = function()
     local ChatPart = ChatHUD.Part
     ChatHUD.Adornee = ChatPart
     if VRReady then
-        ChatHUD.Parent = game:GetService("CoreGui")
+        ChatHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
         ChatHUD.Enabled = true
         ChatHUD.AlwaysOnTop = true
         local OnInput =
@@ -1391,7 +1391,7 @@ ViewHUDFunc = function()
     local Viewport = ViewHUD.Viewport
     local Viewcam = Instance.new("Camera")
     local ViewPart = ViewHUD.Part
-    ViewHUD.Parent = game:GetService("CoreGui")
+    ViewHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
     Viewcam.Parent = Viewport
     Viewcam.CameraType = Enum.CameraType.Scriptable
     Viewport.CurrentCamera = Viewcam

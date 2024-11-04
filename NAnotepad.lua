@@ -19,7 +19,7 @@ local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 
 Notepad.Name = "Notepad"
-Notepad.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+Notepad.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 Notepad.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Main.Name = "Main"

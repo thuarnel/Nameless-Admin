@@ -36,7 +36,7 @@ local UICorner_13 = Instance.new("UICorner")
 --Properties:
 
 PluginGUI.Name = "PluginGUI"
-PluginGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+PluginGUI.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 PluginGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 PluginGUI.ResetOnSpawn = false
 

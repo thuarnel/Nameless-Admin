@@ -68,7 +68,7 @@ local UICorner_29 = Instance.new("UICorner")
 --Properties:
 
 CometGUI.Name = "CometGUI"
-CometGUI.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+CometGUI.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 CometGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Comet.Name = "Comet"
