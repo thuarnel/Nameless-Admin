@@ -22,7 +22,7 @@ local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 
 prtGrab.Name = "prtGrab"
-prtGrab.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+prtGrab.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 prtGrab.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Main.Name = "Main"
@@ -189,75 +189,86 @@ local idk=nil
 
 local function BLBPRD_fake_script()
 
-local players = game:GetService("Players")
-local player = players.LocalPlayer
-local mouse = player:GetMouse()
+    local players = game:GetService("Players")
+    local player = players.LocalPlayer
+    local mouse = player:GetMouse()
 
-local function getFullPath(object)
-    local path = {}
-    while object.Parent and object.Parent ~= game do
-        local name = object.Name
-        if name:match("^%d") or name:match("%s") or name:match("[^%w_]") then
-            name = '["' .. name .. '"]'
+    local function GetInstancePath(obj)
+        local path = {}
+
+        function b(obj)
+            return obj.Parent == game and obj ~= game
         end
-        table.insert(path, 1, name)
-        object = object.Parent
-    end
-    local name = object.Name
-    if name:match("^%d") or name:match("%s") or name:match("[^%w_]") then
-        name = '["' .. name .. '"]'
-    end
-    table.insert(path, 1, name)
 
-    return table.concat(path, "."):gsub("%.%[", "[")
-end
+        if b(obj) then
+            table.insert(path, string.format('game:GetService("%s")',obj.ClassName))
+        else
+            while obj and obj.Parent do
+                local name = obj.Name
+                if name:match("^[%a_][%w_]*$") then
+                    table.insert(path, 1, "."..name)
+                else
+                    table.insert(path, 1, '["'..name:gsub('"', '\\"')..'"]')
+                end
 
-local function prt()
-    if mouse.Target then
-        Found.Text = getFullPath(mouse.Target)
-    else
-        warn("Error while getting path")
+                if b(obj.Parent) then
+                    table.insert(path, 1, string.format('game:GetService("%s")', obj.Parent.ClassName))
+                    break
+                end
+
+                obj = obj.Parent
+            end
+        end
+
+        return table.concat(path):gsub("^%.", "")
     end
-end
-if idk then idk:Disconnect() idk=nil end
-idk=mouse.Button1Down:Connect(prt)
+
+    local function prt()
+        if mouse.Target then
+            Found.Text = GetInstancePath(mouse.Target)
+        else
+            warn("Error while getting path")
+        end
+    end
+    if idk then idk:Disconnect() idk=nil end
+    idk=mouse.Button1Down:Connect(prt)
 end
 coroutine.wrap(BLBPRD_fake_script)()
 local function UUVHNZD_fake_script()
-	grab.MouseButton1Click:Connect(function()
-		setclipboard(Found.Text)
-	end)
+    grab.MouseButton1Click:Connect(function()
+        setclipboard(Found.Text)
+    end)
 end
 coroutine.wrap(UUVHNZD_fake_script)()
 local function AUPMILR_fake_script()
-	Exit.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent:Destroy()
-if idk then idk:Disconnect() idk=nil end
-getgenv().prtGrabLoaded=false
-	end)
+    Exit.MouseButton1Click:Connect(function()
+        Exit.Parent.Parent.Parent:Destroy()
+        if idk then idk:Disconnect() idk=nil end
+        getgenv().prtGrabLoaded=false
+    end)
 end
 coroutine.wrap(AUPMILR_fake_script)()
 local function XOURFQ_fake_script()
-	p = false
-			Minimize.MouseButton1Click:Connect(function()
-				if not p then
-					p = not p
-					Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
-				else
-					p = not p
-					Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
-				end
-			end)
-			
+    p = false
+    Minimize.MouseButton1Click:Connect(function()
+        if not p then
+            p = not p
+            Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+        else
+            p = not p
+            Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
+        end
+    end)
+
 end
 coroutine.wrap(XOURFQ_fake_script)()
 local function PLFU_fake_script()
-	Main.Active = true
-	Main.Parent.ResetOnSpawn = false
-	Main.Draggable = true
+    Main.Active = true
+    Main.Parent.ResetOnSpawn = false
+    Main.Draggable = true
 end
 coroutine.wrap(PLFU_fake_script)()
 local function BSHNZC_fake_script()
-	Main:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+    Main:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(BSHNZC_fake_script)()
