@@ -15502,12 +15502,6 @@ end
 
 --original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
 
-task.spawn(function()
-	NACaller(function()--better saveinstance support
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
-	end)
-end)
-
 NACaller(function()
 	local display=Player.DisplayName
 	local name=Player.Name
@@ -15525,7 +15519,8 @@ NACaller(function()
 		else
 			DoNotif("Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult),6,rngMsg().." "..hh)
 		end
-		DoNotif(goof(),4,"Random Goofy Message")
+		--DoNotif(goof(),4,"Random Goofy Message")
+		DoNotif("Your Keybind Prefix: "..opt.prefix,10,adminName.." Keybind Prefix")
 		task.wait(5)
 		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
 	end)
@@ -15541,3 +15536,9 @@ print([[
 	┃┃ ┃┃┃╭╮┃┃┃┃┃━┫╰┫┃━╋━━┣━━┃┃╭━╮┃╰╯┃┃┃┃┃┃┃┃
 	╰╯ ╰━┻╯╰┻┻┻┻━━┻━┻━━┻━━┻━━╯╰╯ ╰┻━━┻┻┻┻┻╯╰╯
 	]])
+
+task.spawn(function()
+	NACaller(function()--better saveinstance support
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/SaveInstance.lua"))();
+	end)
+end)
