@@ -217,7 +217,7 @@ local localPlayer=Player
 local LocalPlayer=Player
 local character=Player.Character
 local mouse=localPlayer:GetMouse()
-local camera=workspace.CurrentCamera
+local camera=game:GetService("Workspace").CurrentCamera
 local camtype=camera.CameraType
 local Commands,Aliases={},{}
 local player,plr,lp=game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer
@@ -575,7 +575,7 @@ RunService.Stepped:connect(function()
 
 		for i,v in pairs(game:GetService("Players").LocalPlayer.Character:GetChildren()) do
 			if (v:IsA("Tool")) then
-				v.Parent=workspace
+				v.Parent=game:GetService("Workspace")
 			end
 		end
 
@@ -810,13 +810,13 @@ end
 
 function x(v)
 	if v then
-		for _,i in pairs(workspace:GetDescendants()) do
+		for _,i in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
 				i.LocalTransparencyModifier=0.5
 			end
 		end
 	else
-		for _,i in pairs(workspace:GetDescendants()) do
+		for _,i in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
 				i.LocalTransparencyModifier=0
 			end
@@ -861,14 +861,14 @@ function sFLY(vfly)
 					SPEED=0
 				end
 				if (CONTROL.L+CONTROL.R)~=0 or (CONTROL.F+CONTROL.B)~=0 or (CONTROL.Q+CONTROL.E)~=0 then
-					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector*(CONTROL.F+CONTROL.B))+((workspace.CurrentCamera.CoordinateFrame*CFrame.new(CONTROL.L+CONTROL.R,(CONTROL.F+CONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p))*SPEED
+					BV.velocity=((game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector*(CONTROL.F+CONTROL.B))+((game:GetService("Workspace").CurrentCamera.CoordinateFrame*CFrame.new(CONTROL.L+CONTROL.R,(CONTROL.F+CONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-game:GetService("Workspace").CurrentCamera.CoordinateFrame.p))*SPEED
 					lCONTROL={F=CONTROL.F,B=CONTROL.B,L=CONTROL.L,R=CONTROL.R}
 				elseif (CONTROL.L+CONTROL.R)==0 and (CONTROL.F+CONTROL.B)==0 and (CONTROL.Q+CONTROL.E)==0 and SPEED~=0 then
-					BV.velocity=((workspace.CurrentCamera.CoordinateFrame.lookVector*(lCONTROL.F+lCONTROL.B))+((workspace.CurrentCamera.CoordinateFrame*CFrame.new(lCONTROL.L+lCONTROL.R,(lCONTROL.F+lCONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-workspace.CurrentCamera.CoordinateFrame.p))*SPEED
+					BV.velocity=((game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector*(lCONTROL.F+lCONTROL.B))+((game:GetService("Workspace").CurrentCamera.CoordinateFrame*CFrame.new(lCONTROL.L+lCONTROL.R,(lCONTROL.F+lCONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-game:GetService("Workspace").CurrentCamera.CoordinateFrame.p))*SPEED
 				else
 					BV.velocity=Vector3.new(0,0,0)
 				end
-				BG.cframe=workspace.CurrentCamera.CoordinateFrame
+				BG.cframe=game:GetService("Workspace").CurrentCamera.CoordinateFrame
 				wait()
 			end
 			CONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
@@ -1262,7 +1262,7 @@ cmd.add({"valk"},{"valk","Only works on dollhouse"},function()
 
 	pcall(function()
 		local plr=game:GetService("Players").LocalPlayer
-		local giver=workspace:WaitForChild("Valkyrie Helm giver")
+		local giver=game:GetService("Workspace"):WaitForChild("Valkyrie Helm giver")
 
 		local head=plr.Character:WaitForChild("Head")
 		firetouchinterest(head,giver,0)
@@ -1502,11 +1502,11 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 					if THumanoid and THumanoid.Sit and not AllBool then
 					end
 					if THead then
-						workspace.CurrentCamera.CameraSubject=THead
+						game:GetService("Workspace").CurrentCamera.CameraSubject=THead
 					elseif not THead and Handle then
-						workspace.CurrentCamera.CameraSubject=Handle
+						game:GetService("Workspace").CurrentCamera.CameraSubject=Handle
 					elseif THumanoid and TRootPart then
-						workspace.CurrentCamera.CameraSubject=THumanoid
+						game:GetService("Workspace").CurrentCamera.CameraSubject=THumanoid
 					end
 					if not TCharacter:FindFirstChildWhichIsA("BasePart") then
 						return
@@ -1583,7 +1583,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 						until BasePart.Velocity.Magnitude>500 or BasePart.Parent~=TargetPlayer.Character or TargetPlayer.Parent~=Players or not TargetPlayer.Character==TCharacter or THumanoid.Sit or Humanoid.Health <=0 or tick()>Time+TimeToWait
 					end
 
-					workspace.FallenPartsDestroyHeight=0/0
+					game:GetService("Workspace").FallenPartsDestroyHeight=0/0
 
 					local BV=Instance.new("BodyVelocity")
 					BV.Name="EpixVel"
@@ -1610,7 +1610,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 
 					BV:Destroy()
 					Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-					workspace.CurrentCamera.CameraSubject=Humanoid
+					game:GetService("Workspace").CurrentCamera.CameraSubject=Humanoid
 
 					repeat
 						RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
@@ -1623,7 +1623,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 						end)
 						task.wait()
 					until (RootPart.Position-getgenv().OldPos.p).Magnitude<25
-					workspace.FallenPartsDestroyHeight=getgenv().FPDH
+					game:GetService("Workspace").FallenPartsDestroyHeight=getgenv().FPDH
 				else
 				end
 			end
@@ -1750,7 +1750,7 @@ if IsOnMobile then
 	end)
 
 	cmd.add({"DefaultRotaionScreen","DefaultScreen","Defscreen"},{"DefaultRotaionScreen (DefaultScreen or Defscreen)","Changes ScreenOrientation to Portrait"},function()
-		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=game.StarterGui.ScreenOrientation 
+		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=game:GetService("StarterGui").ScreenOrientation 
 	end)
 
 end
@@ -2275,7 +2275,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 			if Network["PartOwnership"]["Enabled"]==false then
 				Network["PartOwnership"]["Enabled"]=true--do cool network stuff before doing more cool network stuff
 				Network["PartOwnership"]["PreMethodSettings"].ReplicationFocus=LocalPlayer.ReplicationFocus
-				LocalPlayer.ReplicationFocus=workspace
+				LocalPlayer.ReplicationFocus=game:GetService("Workspace")
 				Network["PartOwnership"]["PreMethodSettings"].SimulationRadius=gethiddenproperty(LocalPlayer,"SimulationRadius")
 				Network["PartOwnership"]["Connection"]=Network["SuperStepper"].Event:Connect(function()--super fast asynchronous loop
 					sethiddenproperty(LocalPlayer,"SimulationRadius",1/0)
@@ -2509,7 +2509,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 
 
 
-	camera=workspace.CurrentCamera
+	camera=game:GetService("Workspace").CurrentCamera
 	input=game:GetService("UserInputService")
 
 	Camera_Part=Instance.new("Part",workspace)
@@ -2586,7 +2586,7 @@ cmd.add({"blockspam"},{"blockspam [amount]","Spawn blocks by the given amount"},
 					if v:FindFirstChildWhichIsA("DataModelMesh",true) then
 						v:FindFirstChildWhichIsA("DataModelMesh",true):Destroy()
 					end
-					v.Parent=workspace
+					v.Parent=game:GetService("Workspace")
 					table.insert(grabbed,v)
 				end
 			end
@@ -2608,7 +2608,7 @@ cmd.add({"blockspam"},{"blockspam [amount]","Spawn blocks by the given amount"},
 
 		for _,item in pairs(grabbed) do
 			if item:IsA("Accoutrement") and item:FindFirstChild("Handle") then
-				item.Parent=workspace
+				item.Parent=game:GetService("Workspace")
 				wait()
 			end
 		end
@@ -2710,7 +2710,7 @@ cmd.add({"trap"},{"trap","makes your tool be away from you making it look like i
 		NewHumanoid.Parent=Character
 		NewHumanoid:UnequipTools()
 		NewHumanoid:EquipTool(Tool)
-		Tool.Parent=workspace
+		Tool.Parent=game:GetService("Workspace")
 
 		local Timer=os.time()
 
@@ -2829,7 +2829,7 @@ cmd.add({"kill"},{"kill <player>","after a while i have added a working kill scr
 			NewHumanoid.Parent=Character
 			NewHumanoid:UnequipTools()
 			NewHumanoid:EquipTool(Tool)
-			Tool.Parent=workspace
+			Tool.Parent=game:GetService("Workspace")
 
 			local Timer=os.time()
 
@@ -2881,7 +2881,7 @@ cmd.add({"toolblockspam"},{"toolblockspam [amount]","Spawn blocks by the given a
 				end
 			end
 			wait(0.1)
-			tool.Parent=workspace
+			tool.Parent=game:GetService("Workspace")
 			wait(0.1)
 			local cf,p=CFrame.new(),character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
 			if p then
@@ -2972,7 +2972,7 @@ cmd.add({"droptools"},{"dropalltools","Drop all of your tools"},function()
 	wait()
 	for _,tool in pairs(character:GetChildren()) do
 		if tool:IsA("Tool") then
-			tool.Parent=workspace
+			tool.Parent=game:GetService("Workspace")
 		end
 	end
 end)
@@ -2997,11 +2997,11 @@ cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches y
 	DoNotif("Break layered clothing executed,if you havent already equip shirt,jacket,pants and shoes (Layered Clothing ones)")
 	local swimming=false
 	local RunService=game:GetService("RunService")
-	oldgrav=workspace.Gravity
-	workspace.Gravity=0
+	oldgrav=game:GetService("Workspace").Gravity
+	game:GetService("Workspace").Gravity=0
 	local char=game:GetService("Players").LocalPlayer.Character
 	local swimDied=function()
-		workspace.Gravity=oldgrav
+		game:GetService("Workspace").Gravity=oldgrav
 		swimming=false
 	end
 	local Humanoid=char:FindFirstChildWhichIsA("Humanoid")
@@ -3037,7 +3037,7 @@ end)
 cmd.add({"fpsbooster","lowgraphics","boostfps","lowg"},{"fpsbooster (lowgraphics,boostfps,lowg)","Low graphics mode if the game is laggy"},function()
 	local decalsyeeted=true
 	local g=game
-	local w=g.Workspace
+	local w=g:GetService("Workspace")
 	local l=g.Lighting
 	local t=w.Terrain
 	sethiddenproperty(l,"Technology",2)
@@ -3302,7 +3302,7 @@ cmd.add({"unannoy"},{"unannoy","Stops the annoy command"},function()
 end)
 
 cmd.add({"deleteinvisparts","deleteinvisibleparts","dip"},{"deleteinvisparts (deleteinvisibleparts,dip)","Deletes invisible parts"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("BasePart") and v.Transparency==1 and v.CanCollide then
 			v:Destroy()
 		end
@@ -3312,7 +3312,7 @@ end)
 local shownParts={}
 
 cmd.add({"invisibleparts","invisparts"},{"invisibleparts (invisparts)","Shows invisible parts"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("BasePart") and v.Transparency==1 then
 			if not table.find(shownParts,v) then
 				table.insert(shownParts,v)
@@ -3596,7 +3596,7 @@ cmd.add({"attach"},{"attach <player>","Attach the given player(s)"},function(...
 end)
 
 cmd.add({"enableinventory","enableinv"},{"enableinv (enableinventory)","Lets you see what you have in your inventory since some games hide it"},function(...)
-	game.StarterGui:SetCoreGuiEnabled(2,true)
+	game:GetService("StarterGui"):SetCoreGuiEnabled(2,true)
 end)
 
 cmd.add({"copytools","ctools"},{"copytools <player> (ctools)","Copies the tools the given player has"},function(...)
@@ -3801,12 +3801,12 @@ cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just 
 	repeat game:GetService('RunService').RenderStepped:Wait() until Player.Character;
 	local Character=Player.Character;
 	SPart.Anchored,SPart.CanCollide=true,true;
-	SPart.Parent=workspace;
+	SPart.Parent=game:GetService("Workspace");
 	SPart.Size=Vector3.new(1,100,1)
 	SPart.Transparency=0.4
 	RunService.Stepped:Connect(function()
 		local Ray=Ray.new(Character.PrimaryPart.Position+Character.PrimaryPart.CFrame.LookVector*6,Vector3.new(0,-1,0)*4);
-		local FPOR=workspace:FindPartOnRayWithIgnoreList(Ray,{Character});
+		local FPOR=game:GetService("Workspace"):FindPartOnRayWithIgnoreList(Ray,{Character});
 		if (FPOR) then
 			SPart.CFrame=Character.PrimaryPart.CFrame+Character.PrimaryPart.CFrame.LookVector*6;
 		end
@@ -3856,8 +3856,8 @@ cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just 
 					wait()
 					if IsFlying then
 
-						flyg.CFrame=workspace.CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad((f+0)*50*Speed/maxspeed),0,0) 
-						flyv.Velocity=workspace.CurrentCamera.CoordinateFrame.LookVector*Speed
+						flyg.CFrame=game:GetService("Workspace").CurrentCamera.CoordinateFrame*CFrame.Angles(-math.rad((f+0)*50*Speed/maxspeed),0,0) 
+						flyv.Velocity=game:GetService("Workspace").CurrentCamera.CoordinateFrame.LookVector*Speed
 						wait(0.1)
 
 						if Speed<0 then
@@ -4183,7 +4183,7 @@ cmd.add({"spin"},{"spin","Spin yourself at the speed you want"},function(d)
 end)
 
 cmd.add({"oldroblox"},{"oldroblox","Old skybox and studs"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("BasePart") then
 			local dec=Instance.new("Texture",v)
 			dec.Texture="rbxassetid://48715260"
@@ -4201,15 +4201,15 @@ cmd.add({"oldroblox"},{"oldroblox","Old skybox and studs"},function()
 			v.Material="Plastic"
 		end
 	end
-	game.Lighting.ClockTime=12
-	game.Lighting.GlobalShadows=false
-	game.Lighting.Outlines=false
-	for i,v in pairs(game.Lighting:GetDescendants()) do
+	game:GetService("Lighting").ClockTime=12
+	game:GetService("Lighting").GlobalShadows=false
+	game:GetService("Lighting").Outlines=false
+	for i,v in pairs(game:GetService("Lighting"):GetDescendants()) do
 		if v:IsA("Sky") then
 			v:Destroy()
 		end
 	end
-	local sky=Instance.new("Sky",game.Lighting)
+	local sky=Instance.new("Sky",game:GetService("Lighting"))
 	sky.SkyboxBk="rbxassetid://161781263"
 	sky.SkyboxDn="rbxassetid://161781258"
 	sky.SkyboxFt="rbxassetid://161781261"
@@ -4305,7 +4305,7 @@ cmd.add({"triggerbot","tbot"},{"triggerbot (tbot)","Executes a script that autom
 	function CastRay(Mode)
 		local RaySPTR=Camera:ScreenPointToRay(Mouse.X,Mouse.Y)--Hence the var name,the magnitude of this is 1.
 		local NewRay=Ray.new(RaySPTR.Origin,RaySPTR.Direction*9999)
-		local Target,Position=workspace:FindPartOnRayWithIgnoreList(NewRay,{Char,workspace.CurrentCamera})
+		local Target,Position=game:GetService("Workspace"):FindPartOnRayWithIgnoreList(NewRay,{Char,game:GetService("Workspace").CurrentCamera})
 		if Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent) and Target.Parent.Humanoid.Health>0 or Target and Position and game:GetService("Players"):GetPlayerFromCharacter(Target.Parent.Parent) and Target.Parent.Parent.Humanoid.Health>0 then
 			local TPlayer=game:GetService("Players"):GetPlayerFromCharacter(Target.Parent) or game:GetService("Players"):GetPlayerFromCharacter(Target.Parent.Parent)
 			if TPlayer.Team~=PlayerTeam and Mode~="FFA" and TPlayer~=Player then
@@ -4358,7 +4358,7 @@ end)
 
 
 cmd.add({"nofog"},{"nofog","Removes all fog from the game"},function()
-	local Lighting=game.Lighting
+	local Lighting=game:GetService("Lighting")
 	Lighting.FogEnd=100000
 	for i,v in pairs(Lighting:GetDescendants()) do
 		if v:IsA("Atmosphere") then
@@ -4370,9 +4370,9 @@ local ANTIAFK=nil
 cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for being afk for 20 mins"},function()
 	if not ANTIAFK then
 		ANTIAFK=game:GetService("Players").LocalPlayer.Idled:connect(function()
-			game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			game:GetService("VirtualUser"):Button2Down(Vector2.new(0,0),game:GetService("Workspace").CurrentCamera.CFrame)
 			task.wait(1)
-			game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+			game:GetService("VirtualUser"):Button2Up(Vector2.new(0,0),game:GetService("Workspace").CurrentCamera.CFrame)
 		end)
 
 		wait();
@@ -4469,7 +4469,7 @@ cmd.add({"hamster"},{"hamster <number>","Hamster ball"},function(...)
 	--[[ skidded ]]--
 	local UserInputService=game:GetService("UserInputService")
 	local RunService=game:GetService("RunService")
-	local Camera=workspace.CurrentCamera
+	local Camera=game:GetService("Workspace").CurrentCamera
 
 	local SPEED_MULTIPLIER=(...)
 	local JUMP_POWER=60
@@ -4514,7 +4514,7 @@ cmd.add({"hamster"},{"hamster <number>","Hamster ball"},function(...)
 	end)
 
 	UserInputService.JumpRequest:Connect(function()
-		local result=workspace:Raycast(
+		local result=game:GetService("Workspace"):Raycast(
 			ball.Position,
 			Vector3.new(
 				0,
@@ -4833,7 +4833,7 @@ cmd.add({"flingnpcs"},{"flingnpcs","Flings NPCs"},function()
 			hum.HipHeight=1024
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4848,7 +4848,7 @@ cmd.add({"voidnpcs"},{"voidnpcs","Voids NPCs"},function()
 			hum.HipHeight=-1024
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4864,7 +4864,7 @@ cmd.add({"npcfollow"},{"npcfollow","Makes NPCS follow you"},function()
 			hum:MoveTo(targetPos)
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4884,7 +4884,7 @@ cmd.add({"loopnpcfollow"},{"loopnpcfollow","Makes NPCS follow you in a loop"},fu
 				hum:MoveTo(targetPos)
 			end
 		end
-		for _,hum in pairs(workspace:GetDescendants()) do
+		for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 			disappear(hum)
 		end
 	until npcfollowloop==false
@@ -4895,7 +4895,7 @@ cmd.add({"unloopnpcfollow"},{"unloopnpcfollow","Makes NPCS not follow you in a l
 end)
 
 cmd.add({"lockws","lockworkspace"},{"lockws (lockworkspace)","Locks the whole workspace"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Locked==true or v.Locked==false then
 			v.Locked=true
 		end
@@ -4903,7 +4903,7 @@ cmd.add({"lockws","lockworkspace"},{"lockws (lockworkspace)","Locks the whole wo
 end)
 
 cmd.add({"unlockws","unlockworkspace"},{"unlockws (unlockworkspace)","Unlocks the whole workspace"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Locked==true or v.Locked==false then
 			v.Locked=false
 		end
@@ -4922,7 +4922,7 @@ cmd.add({"sitnpcs"},{"sitnpcs","Makes NPCS sit"},function()
 			end      
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4939,7 +4939,7 @@ cmd.add({"unsitnpcs"},{"unsitnpcs","Makes NPCS unsit"},function()
 			end      
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4955,7 +4955,7 @@ cmd.add({"vehiclespeed","vspeed"},{"vehiclespeed <amount> (vspeed)","Change the 
 	local intens=(...)
 
 	vehicleloopspeed=game:GetService("RunService").Stepped:Connect(function()
-		local Humanoid=workspace.CurrentCamera.CameraSubject;
+		local Humanoid=game:GetService("Workspace").CurrentCamera.CameraSubject;
 		if Humanoid:IsA("Humanoid") then
 			Humanoid.SeatPart:ApplyImpulse(Humanoid.SeatPart.CFrame.LookVector*Vector3.new(intens,intens,intens))
 		elseif Humanoid:IsA("BasePart") then
@@ -4980,7 +4980,7 @@ cmd.add({"killnpcs"},{"killnpcs","Kills NPCs"},function()
 			end      
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -4997,7 +4997,7 @@ cmd.add({"bringnpcs"},{"bringnpcs","Brings NPCs"},function()
 			end      
 		end
 	end
-	for _,hum in pairs(workspace:GetDescendants()) do
+	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
 		disappear(hum)
 	end
 end)
@@ -5175,7 +5175,7 @@ local MobileCameraFramework={}
 local players=game:GetService("Players")
 local runservice=game:GetService("RunService")
 local CAS=game:GetService("ContextActionService")
-local camera=workspace.CurrentCamera
+local camera=game:GetService("Workspace").CurrentCamera
 
 local uis=game:GetService("UserInputService")
 local ismobile=uis.TouchEnabled
@@ -6528,7 +6528,7 @@ end)
 cmd.add({"drophats"},{"drophats","Drop all of your hats"},function()
 	for _,hat in pairs(character:GetChildren()) do
 		if hat:IsA("Accoutrement") then
-			hat.Parent=workspace
+			hat.Parent=game:GetService("Workspace")
 		end
 	end
 end)
@@ -6905,7 +6905,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 				A_2="All"
 
 				lib.LocalPlayerChat(A_1,A_2)
-				plrs.Character.Parent=game.Lighting
+				plrs.Character.Parent=game:GetService("Lighting")
 			end
 		end
 	else
@@ -6914,7 +6914,7 @@ cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player 
 			A_2="All"
 
 			lib.LocalPlayerChat(A_1,A_2)
-			target.Character.Parent=game.Lighting
+			target.Character.Parent=game:GetService("Lighting")
 		end
 	end
 end)
@@ -6963,10 +6963,10 @@ cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools
 	game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(LocalPlayer.Character.HumanoidRootPart.CFrame+Vector3.new(1000))
 	boombox.Parent=game:GetService("Players").LocalPlayer.Character
 	wait(.3)
-	boombox.Parent=workspace
+	boombox.Parent=game:GetService("Workspace")
 	game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(oldpos)
 	wait(.5)
-	if boombox.Parent==workspace then
+	if boombox.Parent==game:GetService("Workspace") then
 		game:GetService("Players").LocalPlayer.Character.Humanoid:EquipTool(boombox)
 		wait(.3)
 		game:GetService("Players").LocalPlayer.Character.Humanoid:UnequipTools()
@@ -7680,7 +7680,7 @@ cmd.add({"antikillbrick","antikb"},{"antikillbrick (antikb)","Makes it so kill b
 		myzaza=not myzaza
 	end)
 
-	local parts=workspace:GetPartBoundsInRadius(player.Character:WaitForChild("HumanoidRootPart").Position,10)
+	local parts=game:GetService("Workspace"):GetPartBoundsInRadius(player.Character:WaitForChild("HumanoidRootPart").Position,10)
 	for _,part in ipairs(parts) do
 		part.CanTouch=myzaza
 	end
@@ -7696,7 +7696,7 @@ cmd.add({"unantikillbrick","unantikb"},{"unantikillbrick (unantikb)","Makes it s
 		myzaza=not myzaza
 	end)
 
-	local parts=workspace:GetPartBoundsInRadius(player.Character:WaitForChild("HumanoidRootPart").Position,10)
+	local parts=game:GetService("Workspace"):GetPartBoundsInRadius(player.Character:WaitForChild("HumanoidRootPart").Position,10)
 	for _,part in ipairs(parts) do
 		part.CanTouch=myzaza
 	end
@@ -8280,11 +8280,11 @@ cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
 	local workspace=game:GetService("Workspace")
 	Players=game:GetService("Players")
 	local speaker=Players.LocalPlayer
-	workspace.CurrentCamera:Remove()
+	game:GetService("Workspace").CurrentCamera:Remove()
 	wait(.1)
 	repeat wait() until speaker.Character~=nil
-	workspace.CurrentCamera.CameraSubject=speaker.Character:FindFirstChildWhichIsA('Humanoid')
-	workspace.CurrentCamera.CameraType="Custom"
+	game:GetService("Workspace").CurrentCamera.CameraSubject=speaker.Character:FindFirstChildWhichIsA('Humanoid')
+	game:GetService("Workspace").CurrentCamera.CameraType="Custom"
 	speaker.CameraMinZoomDistance=0.5
 	speaker.CameraMaxZoomDistance=400
 	speaker.CameraMode="Classic"
@@ -8578,11 +8578,11 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 			if THumanoid and THumanoid.Sit and not AllBool then
 			end
 			if THead then
-				workspace.CurrentCamera.CameraSubject=THead
+				game:GetService("Workspace").CurrentCamera.CameraSubject=THead
 			elseif not THead and Handle then
-				workspace.CurrentCamera.CameraSubject=Handle
+				game:GetService("Workspace").CurrentCamera.CameraSubject=Handle
 			elseif THumanoid and TRootPart then
-				workspace.CurrentCamera.CameraSubject=THumanoid
+				game:GetService("Workspace").CurrentCamera.CameraSubject=THumanoid
 			end
 			if not TCharacter:FindFirstChildWhichIsA("BasePart") then
 				return
@@ -8659,7 +8659,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 				until BasePart.Velocity.Magnitude>500 or BasePart.Parent~=TargetPlayer.Character or TargetPlayer.Parent~=Players or not TargetPlayer.Character==TCharacter or THumanoid.Sit or Humanoid.Health <=0 or tick()>Time+TimeToWait
 			end
 
-			workspace.FallenPartsDestroyHeight=0/0
+			game:GetService("Workspace").FallenPartsDestroyHeight=0/0
 
 			local BV=Instance.new("BodyVelocity")
 			BV.Name="EpixVel"
@@ -8686,7 +8686,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 
 			BV:Destroy()
 			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-			workspace.CurrentCamera.CameraSubject=Humanoid
+			game:GetService("Workspace").CurrentCamera.CameraSubject=Humanoid
 
 			repeat
 				RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
@@ -8699,7 +8699,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 				end)
 				task.wait()
 			until (RootPart.Position-getgenv().OldPos.p).Magnitude<25
-			workspace.FallenPartsDestroyHeight=getgenv().FPDH
+			game:GetService("Workspace").FallenPartsDestroyHeight=getgenv().FPDH
 		else
 		end
 	end
@@ -8803,11 +8803,11 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 			if THumanoid and THumanoid.Sit and not AllBool then
 			end
 			if THead then
-				workspace.CurrentCamera.CameraSubject=THead
+				game:GetService("Workspace").CurrentCamera.CameraSubject=THead
 			elseif not THead and Handle then
-				workspace.CurrentCamera.CameraSubject=Handle
+				game:GetService("Workspace").CurrentCamera.CameraSubject=Handle
 			elseif THumanoid and TRootPart then
-				workspace.CurrentCamera.CameraSubject=THumanoid
+				game:GetService("Workspace").CurrentCamera.CameraSubject=THumanoid
 			end
 			if not TCharacter:FindFirstChildWhichIsA("BasePart") then
 				return
@@ -8884,7 +8884,7 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 				until BasePart.Velocity.Magnitude>500 or BasePart.Parent~=TargetPlayer.Character or TargetPlayer.Parent~=Players or not TargetPlayer.Character==TCharacter or THumanoid.Sit or Humanoid.Health <=0 or tick()>Time+TimeToWait
 			end
 
-			workspace.FallenPartsDestroyHeight=0/0
+			game:GetService("Workspace").FallenPartsDestroyHeight=0/0
 
 			local BV=Instance.new("BodyVelocity")
 			BV.Name="EpixVel"
@@ -8911,7 +8911,7 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 
 			BV:Destroy()
 			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-			workspace.CurrentCamera.CameraSubject=Humanoid
+			game:GetService("Workspace").CurrentCamera.CameraSubject=Humanoid
 
 			repeat
 				RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
@@ -8924,7 +8924,7 @@ cmd.add({"fling"},{"fling <player>","Fling the given player"},function(plr)
 				end)
 				task.wait()
 			until (RootPart.Position-getgenv().OldPos.p).Magnitude<25
-			workspace.FallenPartsDestroyHeight=getgenv().FPDH
+			game:GetService("Workspace").FallenPartsDestroyHeight=getgenv().FPDH
 		else
 		end
 	end
@@ -9029,7 +9029,7 @@ cmd.add({"watch","view","specate"},{"view <player>","Watch the given player"},fu
 
 	local target=getPlr(Username)
 	repeat wait()
-		workspace.CurrentCamera.CameraSubject=target.Character.Humanoid
+		game:GetService("Workspace").CurrentCamera.CameraSubject=target.Character.Humanoid
 	until view==false
 end)
 
@@ -9267,7 +9267,7 @@ cmd.add({"headkill","hkill"},{"headkill <player> (hkill)","Need an rthro head"},
 			NewHumanoid.Parent=Character
 			NewHumanoid:UnequipTools()
 			NewHumanoid:EquipTool(Tool)
-			Tool.Parent=workspace
+			Tool.Parent=game:GetService("Workspace")
 
 			local Timer=os.time()
 
@@ -9589,11 +9589,11 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 					return Message("Error Occurred","Targeting is sitting",5)--u can remove dis part if u want lol
 				end
 				if THead then
-					workspace.CurrentCamera.CameraSubject=THead
+					game:GetService("Workspace").CurrentCamera.CameraSubject=THead
 				elseif not THead and Handle then
-					workspace.CurrentCamera.CameraSubject=Handle
+					game:GetService("Workspace").CurrentCamera.CameraSubject=Handle
 				elseif THumanoid and TRootPart then
-					workspace.CurrentCamera.CameraSubject=THumanoid
+					game:GetService("Workspace").CurrentCamera.CameraSubject=THumanoid
 				end
 				if not TCharacter:FindFirstChildWhichIsA("BasePart") then
 					return
@@ -9670,7 +9670,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 					until BasePart.Velocity.Magnitude>500 or BasePart.Parent~=TargetPlayer.Character or TargetPlayer.Parent~=Players or not TargetPlayer.Character==TCharacter or THumanoid.Sit or Humanoid.Health <=0 or tick()>Time+TimeToWait
 				end
 
-				workspace.FallenPartsDestroyHeight=0/0
+				game:GetService("Workspace").FallenPartsDestroyHeight=0/0
 
 				local BV=Instance.new("BodyVelocity")
 				BV.Name="EpixVel"
@@ -9698,7 +9698,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 
 				BV:Destroy()
 				Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
-				workspace.CurrentCamera.CameraSubject=Humanoid
+				game:GetService("Workspace").CurrentCamera.CameraSubject=Humanoid
 
 				repeat
 					RootPart.CFrame=getgenv().OldPos*CFrame.new(0,.5,0)
@@ -9711,7 +9711,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 					end)
 					task.wait()
 				until (RootPart.Position-getgenv().OldPos.p).Magnitude<25
-				workspace.FallenPartsDestroyHeight=getgenv().FPDH
+				game:GetService("Workspace").FallenPartsDestroyHeight=getgenv().FPDH
 			else
 				return Message("Error Occurred","Random error",5)
 			end
@@ -10974,7 +10974,7 @@ cmd.add({"looplkill","looplegkill"},{"looplkill <player> (looplegkill)","Leg res
 				NewHumanoid.Parent=Character
 				NewHumanoid:UnequipTools()
 				NewHumanoid:EquipTool(Tool)
-				Tool.Parent=workspace
+				Tool.Parent=game:GetService("Workspace")
 
 				local Timer=os.time()
 
@@ -11280,7 +11280,7 @@ cmd.add({"lkill","legkill"},{"lkill <player> (legkill)","Leg resize kill"},funct
 			NewHumanoid.Parent=Character
 			NewHumanoid:UnequipTools()
 			NewHumanoid:EquipTool(Tool)
-			Tool.Parent=workspace
+			Tool.Parent=game:GetService("Workspace")
 
 			local Timer=os.time()
 
@@ -11731,7 +11731,7 @@ cmd.add({"loopkill"},{"loopkill <player>","Loop kills a player"},function(...)
 				NewHumanoid.Parent=Character
 				NewHumanoid:UnequipTools()
 				NewHumanoid:EquipTool(Tool)
-				Tool.Parent=workspace
+				Tool.Parent=game:GetService("Workspace")
 
 				local Timer=os.time()
 
@@ -12067,11 +12067,11 @@ cmd.add({"hydroxide","hydro"},{"hydroxide (hydro)","executes hydroxide"},functio
 end)
 
 cmd.add({"remotespy","simplespy","rspy"},{"remotespy (simplespy,rspy)","executes simplespy that supports both pc and mobile"},function()
-	if identifyexecutor()=="Solara" then
-		loadstring(game:HttpGet("https://github.com/ltseverydayyou/uuuuuuu/blob/main/SolSpy?raw=lol"))()
-	else
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
-	end
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/simplee%20spyyy%20mobilee"))()
+end)
+
+cmd.add({"turtlespy","tspy"},{"turtlespy (tspy)","executes Turtle Spy that supports both pc and mobile"},function()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/Turtle%20Spy.lua"))()
 end)
 
 cmd.add({"gravity","grav"},{"gravity <amount> (grav)","sets game gravity to whatever u want"},function(...)
@@ -12092,11 +12092,11 @@ cmd.add({"uanograv","unanchorednograv","unanchorednogravity"},{"uanograv (unanch
 	function zeroGrav(part)
 		if part:FindFirstChild("BodyForce") then return end
 		local temp=Instance.new("BodyForce")
-		temp.Force=part:GetMass()*Vector3.new(0,workspace.Gravity,0)
+		temp.Force=part:GetMass()*Vector3.new(0,game:GetService("Workspace").Gravity,0)
 		temp.Parent=part
 	end
 
-	for i,v in ipairs(workspace:GetDescendants()) do
+	for i,v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("Part") and v.Anchored==false then
 			if not (v:IsDescendantOf(game:GetService("Players").LocalPlayer.Character)) then
 				zeroGrav(v)
@@ -12104,7 +12104,7 @@ cmd.add({"uanograv","unanchorednograv","unanchorednogravity"},{"uanograv (unanch
 		end
 	end
 
-	workspace.DescendantAdded:Connect(function(part)
+	game:GetService("Workspace").DescendantAdded:Connect(function(part)
 		if part:IsA("Part") and part.Anchored==false then
 			if not (part:IsDescendantOf(game:GetService("Players").LocalPlayer.Character)) then
 				zeroGrav(part)
@@ -12117,14 +12117,14 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 	local ccamount=0
 	local pro=(...)
 	if pro then
-		for _,j in pairs(workspace:GetDescendants()) do
+		for _,j in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if j:IsA("ClickDetector") and j.Name:lower()==pro:lower() or j:IsA("ClickDetector") and j.Parent.Name:lower()==pro:lower() then
 				ccamount=ccamount+1
 				fireclickdetector(j)
 			end
 		end
 	else
-		for _,v in pairs(workspace:GetDescendants()) do
+		for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if v:IsA("ClickDetector") then
 				ccamount=ccamount+1
 				fireclickdetector(v)
@@ -12138,7 +12138,7 @@ cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)"
 end)
 
 cmd.add({"noclickdetectorlimits","nocdlimits","removecdlimits"},{"noclickdetectorlimits (nocdlimits,removecdlimits)","Sets all click detectors MaxActivationDistance to math.huge"},function()
-	for i,v in ipairs(workspace:GetDescendants()) do
+	for i,v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("ClickDetector") then
 			v.MaxActivationDistance=math.huge
 		end
@@ -12146,7 +12146,7 @@ cmd.add({"noclickdetectorlimits","nocdlimits","removecdlimits"},{"noclickdetecto
 end)
 
 cmd.add({"noproximitypromptlimits","nopplimits","removepplimits"},{"noproximitypromptlimits (nopplimits,removepplimits)","Sets all proximity prompts MaxActivationDistance to math.huge"},function()
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("ProximityPrompt") then
 			v.MaxActivationDistance=math.huge
 		end
@@ -12228,7 +12228,7 @@ cmd.add({"delete","remove","del"},{"delete {partname} (remove,del)","Removes any
 	end
 	bra=code
 
-	for _,v in pairs(workspace:GetDescendants()) do
+	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Name:lower()==bra:lower() then
 			v:Destroy()
 			delcount=delcount+1
@@ -12272,14 +12272,14 @@ cmd.add({"autodelete","autoremove","autodel"},{"autodelete {partname} (autoremov
 	local bra=bruh:lower()
 	if not FindInTable(autoRemover,bra) then
 		table.insert(autoRemover,bra)
-		for i,v in pairs(workspace:GetDescendants()) do
+		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if v.Name:lower()==bra then
 				v:Destroy()
 			end
 		end
 	end
 	if autormv==nil then
-		autormv=workspace.DescendantAdded:Connect(descendantadd)
+		autormv=game:GetService("Workspace").DescendantAdded:Connect(descendantadd)
 	end
 
 	wait();
@@ -12299,7 +12299,7 @@ cmd.add({"deleteclass","removeclass","dc"},{"deleteclass {ClassName} (removeclas
 	local delclass=0
 	local grr={...}
 	local JJ=grr[1]
-	for _,v in pairs(workspace:GetDescendants()) do
+	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.ClassName:lower()==JJ:lower() then
 			v:Destroy()
 			delclass=delclass+1
@@ -12336,14 +12336,14 @@ cmd.add({"autodeleteclass","autoremoveclass","autodc"},{"autodeleteclass {ClassN
 	local classicauto=JJ:lower()
 	if not FindInTable(autoclassic,classicauto) then
 		table.insert(autoclassic,classicauto)
-		for i,v in pairs(workspace:GetDescendants()) do
+		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if v.ClassName:lower()==classicauto then
 				v:Destroy()
 			end
 		end
 	end
 	if autoclass==nil then
-		autoclass=workspace.DescendantAdded:Connect(idkClass)
+		autoclass=game:GetService("Workspace").DescendantAdded:Connect(idkClass)
 	end
 
 	wait();
@@ -12437,7 +12437,7 @@ cmd.add({"tweengotopart","tgotopart","ttopart","ttoprt"},{"tweengotopart {partna
 
 	lol=code
 
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Name:lower()==lol:lower() and v:IsA("BasePart") then
 			if getHum() then 
 				getHum().Sit=false 
@@ -12455,7 +12455,7 @@ cmd.add({"gotopartclass","gpc","gotopartc","gotoprtc"},{"gotopartclass {classnam
 
 	local pooooo=args[1]
 
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.ClassName:lower()==pooooo:lower() and v:IsA("BasePart") then
 			if getHum() then 
 				getHum().Sit=false 
@@ -12482,7 +12482,7 @@ cmd.add({"bringpart","bpart","bprt"},{"bringpart {partname} (bpart,bprt)","Bring
 	end
 	bringmeit=code
 
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Name:lower()==bringmeit:lower() and v:IsA("BasePart") then
 			if getChar() then v:PivotTo(getChar():GetPivot()) end
 		end
@@ -12503,7 +12503,7 @@ cmd.add({"bringmodel","bmodel"},{"bringmodel {modelname} (bmodel)","Brings the m
 
 	givemethemodel=code
 
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Name:lower()==givemethemodel:lower() and v:IsA("Model") then
 			if getChar() then v:PivotTo(getChar():GetPivot()) end
 		end
@@ -12524,7 +12524,7 @@ cmd.add({"gotomodel","tomodel"},{"gotomodel {modelname} (tomodel)","Teleports yo
 
 	i_love_models=code
 
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v.Name:lower()==i_love_models:lower() and v:IsA("Model") then
 			if getHum() then 
 				getHum().Sit=false 
@@ -12635,7 +12635,7 @@ cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes
 	local partEspName=code:lower()
 	if not FindInTable(espParts,partEspName) then
 		table.insert(espParts,partEspName)
-		for i,v in pairs(workspace:GetDescendants()) do
+		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if v:IsA("BasePart") and v.Name:lower()==partEspName then
 				local a=Instance.new("BoxHandleAdornment")
 				a.Name=partEspName.."_PESP"
@@ -12658,14 +12658,14 @@ cmd.add({"esppart","partesp","pesp"},{"esppart {partname} (partesp,pesp)","Makes
 		end
 	end
 	if partEspTrigger==nil then
-		partEspTrigger=workspace.DescendantAdded:Connect(partAdded)
+		partEspTrigger=game:GetService("Workspace").DescendantAdded:Connect(partAdded)
 	end
 end)
 
 cmd.add({"unesppart","unpartesp","unpesp"},{"unesppart (unpartesp,unpesp)","Removes the esp from the parts"},function()
 	if partEspTrigger then partEspTrigger:Disconnect() partEspTrigger=nil end
 	espParts={}
-	for i,v in pairs(workspace:GetDescendants()) do
+	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("BoxHandleAdornment") and v.Name:sub(-5)=='_PESP' then
 			v:Destroy()
 		end
@@ -12704,12 +12704,12 @@ cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views
 end)
 
 cmd.add({"unviewpart","unviewp"},{"unviewpart (unviewp)","Unviews the part"},function()
-	local cam=workspace.CurrentCamera
+	local cam=game:GetService("Workspace").CurrentCamera
 	cam.CameraSubject=getHum()
 end)
 
 cmd.add({"console"},{"console","Opens developer console"},function()
-	game.StarterGui:SetCore("DevConsoleVisible",true)
+	game:GetService("StarterGui"):SetCore("DevConsoleVisible",true)
 end)
 
 local loophitbox=false
@@ -12872,7 +12872,7 @@ end)
 cmd.add({"firetouchinterests","fti"},{"firetouchinterests (fti)","Fires every Touch Interest that's in workspace"},function()
 	local ftiamount=0
 
-	for _,v in pairs(workspace:GetDescendants()) do
+	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
 			ftiamount=ftiamount+1
 			firetouchinterest(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart,v.Parent,0)--0 is touch
@@ -13246,14 +13246,14 @@ cmd.add({"fireproximityprompts","fpp","firepp"},{"fireproximityprompts (fpp,fire
 	local fppname=(...)
 	if fppname then
 		local name=fppname
-		for _,firedapp in ipairs(workspace:GetDescendants()) do
+		for _,firedapp in ipairs(game:GetService("Workspace"):GetDescendants()) do
 			if firedapp:IsA("ProximityPrompt") and firedapp.Name:lower()==name:lower() or firedapp:IsA("ProximityPrompt") and descandant.Parent.Name:lower()==name:lower() then
 				fppamount=fppamount+1
 				fireproximityprompt(firedapp,1)
 			end
 		end
 	else
-		for i,v in pairs(workspace:GetDescendants()) do
+		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			if v:IsA("ProximityPrompt") then
 				fppamount=fppamount+1
 				fireproximityprompt(v,1)
@@ -13654,7 +13654,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 	}
 
 	local plr=game:GetService("Players").LocalPlayer
-	local camera=workspace.CurrentCamera
+	local camera=game:GetService("Workspace").CurrentCamera
 	local UserInputService=game:GetService("UserInputService")
 	function onInput(input,gameProcessedEvent)
 		local inputState
@@ -13941,7 +13941,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				weld.Part1=game:GetService("Players").LocalPlayer.Character.HumanoidRootPart
 				weld.C0=CFrame.new(0,offset-1.5,0)
 				setDisplayDistance(offset+100)
-				workspace.CurrentCamera.CameraSubject=handle
+				game:GetService("Workspace").CurrentCamera.CameraSubject=handle
 				game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame=game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,offset,0)
 				game:GetService("Players").LocalPlayer.Character.Humanoid.HipHeight=offset
 				game:GetService("Players").LocalPlayer.Character.Humanoid:ChangeState(11)
@@ -13971,7 +13971,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				end
 				heldTool=nil
 				setDisplayDistance(100)
-				workspace.CurrentCamera.CameraSubject=game:GetService("Players").LocalPlayer.Character.Humanoid
+				game:GetService("Workspace").CurrentCamera.CameraSubject=game:GetService("Players").LocalPlayer.Character.Humanoid
 				game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame=game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame*CFrame.new(0,-offset,0)
 				game:GetService("Players").LocalPlayer.Character.Humanoid.HipHeight=0
 			end
@@ -14036,8 +14036,8 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 	local IsInvis=false
 	local IsRunning=true
 	local InvisibleCharacter=Character:Clone()
-	InvisibleCharacter.Parent=game.Lighting
-	local Void=workspace.FallenPartsDestroyHeight
+	InvisibleCharacter.Parent=game:GetService("Lighting")
+	local Void=game:GetService("Workspace").FallenPartsDestroyHeight
 	InvisibleCharacter.Name=""
 	local CF
 
@@ -14083,7 +14083,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 			pcall(function()
 				Player.Character=Character
 				wait()
-				Character.Parent=workspace
+				Character.Parent=game:GetService("Workspace")
 				Character:FindFirstChildWhichIsA'Humanoid':Destroy()
 				IsInvis=false
 				InvisibleCharacter.Parent=nil
@@ -14093,7 +14093,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 			pcall(function()
 				Player.Character=Character
 				wait()
-				Character.Parent=workspace
+				Character.Parent=game:GetService("Workspace")
 				Character:FindFirstChildWhichIsA'Humanoid':Destroy()
 				TurnVisible()
 			end)
@@ -14110,13 +14110,13 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		if IsInvis==false then return end
 		invisFix:Disconnect()
 		invisDied:Disconnect()
-		CF=workspace.CurrentCamera.CFrame
+		CF=game:GetService("Workspace").CurrentCamera.CFrame
 		Character=Character
 		local CF_1=Player.Character.HumanoidRootPart.CFrame
 		Character.HumanoidRootPart.CFrame=CF_1
-		InvisibleCharacter.Parent=game.Lighting
+		InvisibleCharacter.Parent=game:GetService("Lighting")
 		Player.Character=Character
-		Character.Parent=workspace
+		Character.Parent=game:GetService("Workspace")
 		IsInvis=false
 		Player.Character.Animate.Disabled=true
 		Player.Character.Animate.Disabled=false
@@ -14144,14 +14144,14 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 					wait(.1)
 					game:GetService("Workspace").CurrentCamera.CameraType=Enum.CameraType.Custom
 					InvisibleCharacter=InvisibleCharacter
-					Character.Parent=game.Lighting
+					Character.Parent=game:GetService("Lighting")
 					InvisibleCharacter.Parent=game:GetService("Workspace")
 					InvisibleCharacter.HumanoidRootPart.CFrame=CF_1
 					game:GetService("Players").LocalPlayer.Character=InvisibleCharacter
 					local workspace=game:GetService("Workspace")
 					Players=game:GetService("Players")
 					local speaker=game:GetService("Players").LocalPlayer
-					workspace.CurrentCamera:remove()
+					game:GetService("Workspace").CurrentCamera:remove()
 					wait(.1)
 					game:GetService("Workspace").CurrentCamera.CameraSubject=speaker.Character:FindFirstChildWhichIsA('Humanoid')
 					game:GetService("Workspace").CurrentCamera.CameraType="Custom"
@@ -14221,14 +14221,14 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 					wait(.1)
 					game:GetService("Workspace").CurrentCamera.CameraType=Enum.CameraType.Custom
 					InvisibleCharacter=InvisibleCharacter
-					Character.Parent=game.Lighting
+					Character.Parent=game:GetService("Lighting")
 					InvisibleCharacter.Parent=game:GetService("Workspace")
 					InvisibleCharacter.HumanoidRootPart.CFrame=CF_1
 					Player.Character=InvisibleCharacter
 					local workspace=game:GetService("Workspace")
 					Players=game:GetService("Players")
 					local speaker=game:GetService("Players").LocalPlayer
-					workspace.CurrentCamera:remove()
+					game:GetService("Workspace").CurrentCamera:remove()
 					wait(.1)
 					game:GetService("Workspace").CurrentCamera.CameraSubject=speaker.Character:FindFirstChildWhichIsA('Humanoid')
 					game:GetService("Workspace").CurrentCamera.CameraType="Custom"
@@ -14358,7 +14358,7 @@ cmd.add({"uafollow","unanchoredfollow"},{"uafollow (unanchoredfollow)","Makes un
 	local LocalPlayer=game:GetService("Players").LocalPlayer
 	local unanchoredparts={}
 	local movers={}
-	for index,part in pairs(workspace:GetDescendants()) do
+	for index,part in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if part:IsA("Part") and part.Anchored==false and part:IsDescendantOf(LocalPlayer.Character)==false then
 			table.insert(unanchoredparts,part)
 			part.Massless=true
@@ -14388,8 +14388,8 @@ end)
 
 cmd.add({"fov"},{"fov <number>","Makes your FOV to something custom you want (1-120 FOV)"},function(num)
 	local field=(num or 70)
-	--workspace.CurrentCamera.FieldOfView=tonumber(arg[1])
-	local hh=game:GetService("TweenService"):Create(workspace.CurrentCamera,TweenInfo.new(0,Enum.EasingStyle.Linear),{FieldOfView=tonumber(field)})
+	--game:GetService("Workspace").CurrentCamera.FieldOfView=tonumber(arg[1])
+	local hh=game:GetService("TweenService"):Create(game:GetService("Workspace").CurrentCamera,TweenInfo.new(0,Enum.EasingStyle.Linear),{FieldOfView=tonumber(field)})
 	hh:Play()
 end)
 
@@ -14399,7 +14399,7 @@ cmd.add({"loopfov","lfov"},{"loopfov <number> (lfov)","Makes your FOV to somethi
 	local field=(num or 70)
 	if fovcon then fovcon:Disconnect() fovcon=nil end
 	fovcon=game:GetService("RunService").RenderStepped:Connect(function()
-		local hh=game:GetService("TweenService"):Create(workspace.CurrentCamera,TweenInfo.new(0,Enum.EasingStyle.Linear),{FieldOfView=tonumber(field)})
+		local hh=game:GetService("TweenService"):Create(game:GetService("Workspace").CurrentCamera,TweenInfo.new(0,Enum.EasingStyle.Linear),{FieldOfView=tonumber(field)})
 		hh:Play()
 	end)
 end)
@@ -14615,10 +14615,10 @@ cmd.add({"freezeua","thawua"},{"freezeua (thawua)","freezes every unanchored par
 				end
 			end
 		end
-		for i,v in pairs(workspace:GetDescendants()) do
+		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 			FREEZENOOB(v)
 		end
-		freezingua=workspace.DescendantAdded:Connect(FREEZENOOB)
+		freezingua=game:GetService("Workspace").DescendantAdded:Connect(FREEZENOOB)
 	end
 end)
 
@@ -14645,7 +14645,7 @@ cmd.add({"highlightua","highlightunanchored"},{"highlightua (hightlightunanchore
 	wait();
 
 	DoNotif("Highlighted all unanchored parts")
-	for _,part in pairs(workspace:GetDescendants()) do
+	for _,part in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(game:GetService("Players").LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
 			local selectionBox=Instance.new("SelectionBox")
 			selectionBox.Adornee=part
@@ -14661,7 +14661,7 @@ cmd.add({"unhighlightua","unhighlightunanchored"},{"unhighlightua (unhightlightu
 
 	DoNotif("Unhighlighted unanchored parts")
 
-	for _,part in pairs(workspace:GetDescendants()) do
+	for _,part in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(game:GetService("Players").LocalPlayer.Character)==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
 			if part:FindFirstChild("SelectionBox") then
 				part.SelectionBox:Destroy()
@@ -14713,9 +14713,9 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 		end
 	end)
 	NACaller(function()
-		game.StarterGui:SetCoreGuiEnabled(0,false)
+		game:GetService("StarterGui"):SetCoreGuiEnabled(0,false)
 		wait(3);
-		game.StarterGui:SetCoreGuiEnabled(0,true)
+		game:GetService("StarterGui"):SetCoreGuiEnabled(0,true)
 	end)
 
 	DoNotif("UserId set to: "..ownId.."\nUsername set to: "..ownUser)
@@ -15052,23 +15052,23 @@ end
 gui.draggable=function(ui, dragui)
 	if not dragui then dragui = ui end
 	local UserInputService = game:GetService("UserInputService")
-	
+
 	local dragging
 	local dragInput
 	local dragStart
 	local startPos
-	
+
 	local function update(input)
 		local delta = input.Position - dragStart
 		ui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 	end
-	
+
 	dragui.InputBegan:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 			dragging = true
 			dragStart = input.Position
 			startPos = ui.Position
-			
+
 			input.Changed:Connect(function()
 				if input.UserInputState == Enum.UserInputState.End then
 					dragging = false
@@ -15076,13 +15076,13 @@ gui.draggable=function(ui, dragui)
 			end)
 		end
 	end)
-	
+
 	dragui.InputChanged:Connect(function(input)
 		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
 			dragInput = input
 		end
 	end)
-	
+
 	UserInputService.InputChanged:Connect(function(input)
 		if input == dragInput and dragging then
 			update(input)
