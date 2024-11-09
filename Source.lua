@@ -140,10 +140,7 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Added mobile supported dex (use dex command)',
-	log2='Added "Decompiler" command (allows you to decompile LocalScript/ModuleScript)'
-}
+local updLogs={}
 
 local updDate="10/15/2024"
 
