@@ -15085,6 +15085,7 @@ gui.draggable=function(ui, dragui)
 			update(input)
 		end
 	end)
+	ui.Active=true
 end
 gui.draggablev2=function(floght)
 	floght.Active=true
