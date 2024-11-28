@@ -96,7 +96,6 @@ until Notification~=nil --waits for the module to load (cause loadstring takes a
 local Notify=Notification.Notify;
 
 local function DoNotif(txt,dur,naem)
-	if not txt then txt='' end
 	if not dur then dur=5 end
 	if not naem then naem=adminName end
 	Notify({
@@ -2894,7 +2893,7 @@ cmd.add({"toolblockspam"},{"toolblockspam [amount]","Spawn blocks by the given a
 end)
 
 cmd.add({"equiptools","equipall"},{"equiptools","Equip all of your tools"},function()
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
+	local backpack=getBp()
 	if backpack then
 		for _,tool in pairs(backpack:GetChildren()) do
 			if tool:IsA("Tool") then
@@ -2958,23 +2957,23 @@ cmd.add({"boxreach"},{"boxreach {number}","Increases the hitbox of your held too
 	Tool.Handle.Size=Vector3.new(reachsize,reachsize,reachsize)
 end)
 
-AntiVoid = nil
+AntiVoidConnect = nil
 
-cmd.add({"antivoid"},{"antivoid","Increases the hitbox of your held tool in a box shape"},function(reachsize)
+cmd.add({"antivoid"},{"antivoid","Prevents you from falling into the void by launching you upwards"},function(reachsize)
 	wait()
-	if AntiVoid then AntiVoid:Disconnect() AntiVoid=nil end
-	AntiVoid = RunService.Stepped:Connect(function()
+	if AntiVoidConnect then AntiVoidConnect:Disconnect() AntiVoidConnect=nil end
+	AntiVoidConnect = RunService.Stepped:Connect(function()
 		local root = getRoot(LocalPlayer.Character)
 		if root and root.Position.Y <= OrgDestroyHeight + 25 then
 			root.Velocity = root.Velocity + Vector3.new(0, 250, 0)
 		end
 	end)
-	DoNotif("Enabled",nil,"antivoid")
+	DoNotif("Enabled",3,"antivoid")
 end)
 
-cmd.add({"unantivoid"},{"unantivoid","Increases the hitbox of your held tool in a box shape"},function(reachsize)
-	if AntiVoid then AntiVoid:Disconnect() AntiVoid=nil end
-	DoNotif("Disabled",nil,"antivoid")
+cmd.add({"unantivoid"},{"unantivoid","Disables antivoid"},function(reachsize)
+	if AntiVoidConnect then AntiVoidConnect:Disconnect() AntiVoidConnect=nil end
+	DoNotif("Disabled",3,"antivoid")
 end)
 
 cmd.add({"aura"},{"aura {number}","Sword aura"},function(reachsize)
@@ -7063,7 +7062,7 @@ end)
 
 cmd.add({"antichatlogs","antichatlogger"},{"antichatlogs (antichatlogger)","Prevents you from getting banning when typing unspeakable messages (game needs legacy chat service)"},function()
 	if not LegacyChat then
-		return DoNotif("Game doesn't use Legacy Chat Service",nil,"antichatlogs")
+		return DoNotif("Game doesn't use Legacy Chat Service",3,"antichatlogs")
 	end
 	local MsgPost, _ = pcall(function()
 		rawset(require(LocalPlayer:FindFirstChild("PlayerScripts"):FindFirstChild("ChatScript").ChatMain),"MessagePosted", {
@@ -7078,7 +7077,7 @@ cmd.add({"antichatlogs","antichatlogger"},{"antichatlogs (antichatlogger)","Prev
 			end
 		})
 	end)
-	DoNotif(MsgPost and "Enabled" or "Failed to enable antichatlogs",nil,"antichatlogs")
+	DoNotif(MsgPost and "Enabled" or "Failed to enable antichatlogs",3,"antichatlogs")
 end)
 
 
@@ -10465,62 +10464,6 @@ cmd.add({"mute","muteboombox"},{"mute <player> (muteboombox)","Mutes the players
 			end 
 		end
 	end
-end)
-
-cmd.add({"antivoid"},{"antivoid","Anti void."},function()
-	getgenv().AntiVoid=true--// toggle it on and off
-
-	--// Services
-	local Players=game:GetService("Players")
-
-	--// Vars
-	local LocalPlayer=Players.LocalPlayer
-
-	--// Check if anyone has the same handle as you
-	function toolMatch(Handle)
-		local allPlayers=Players:GetPlayers()
-		for i=1,#allPlayers do
-			--// Vars
-			local Player=allPlayers[i]
-			if (Player==LocalPlayer) then continue end--// ignore local player
-
-			--// Vars
-			local Character=Player.Character
-			local RightArm=Character:WaitForChild("Right Arm")
-			local RightGrip=RightArm:FindFirstChild("RightGrip")
-
-			--// Check if they share the same Part1 Handle of the Grip
-			if (RightGrip and RightGrip.Part1==Handle) then
-				return Player
-			end
-		end
-	end
-
-	--// Manager
-	function onCharacter(Character)
-		local RightArm=Character:WaitForChild("Right Arm")
-
-		--// See when you equip something
-		RightArm.ChildAdded:Connect(function(child)
-			if (child:IsA("Weld") and child.Name=="RightGrip" and getgenv().AntiVoid) then
-				--// Vars
-				local ConnectedHandle=child.Part1
-
-				--// Check if someone else has something equipped too with the same handle as you
-				local matched=toolMatch(ConnectedHandle)
-
-				--// Destroy the tool,if someone is voiding you
-				if (matched) then
-					ConnectedHandle.Parent:Destroy()
-					print(matched,"just tried to void you lol!")
-				end
-			end
-		end)
-	end
-
-	--// Initialise the script
-	onCharacter(LocalPlayer.Character)
-	LocalPlayer.CharacterAdded:Connect(onCharacter)
 end)
 
 TPWalk=false
