@@ -190,6 +190,7 @@ local IYLOADED=false--This is used for the ;iy command that executes infinite yi
 local Character=Player.Character;
 local Humanoid=Character and Character:FindFirstChildWhichIsA("Humanoid") or false
 local Clicked=true
+local LegacyChat=game:GetService("TextChatService").ChatVersion==Enum.ChatVersion.LegacyChatService
 _G.Spam=false
 --[[ FOR LOOP COMMANDS ]]--
 local view=false
@@ -207,6 +208,7 @@ local Loopstand=false
 local Looptornado=false
 local Loopmute=false
 local Loopglitch=false
+local OrgDestroyHeight = game:GetService("Workspace").FallenPartsDestroyHeight
 local Watch=false
 local Admin={}
 _G.NAadminsLol={
@@ -2951,6 +2953,44 @@ cmd.add({"reach"},{"reach {number}","Sword reach"},function(reachsize)
 	sb.Parent=Tool.Handle
 	Tool.Handle.Massless=true
 	Tool.Handle.Size=Vector3.new(Tool.Handle.Size.X,Tool.Handle.Size.Y,reachsize)
+end)
+
+cmd.add({"boxreach"},{"boxreach {number}","Increases the hitbox of your held tool in a box shape"},function(reachsize)
+	local reachsize=reachsize or 25
+	local Tool=LocalPlayer.Character:FindFirstChildOfClass("Tool") or getBp():FindFirstChildOfClass("Tool")
+	if Tool:FindFirstChild("OGSize3") then
+		Tool.Handle.Size=Tool.OGSize3.Value
+		Tool.OGSize3:Destroy()
+		Tool.Handle.FunTIMES:Destroy()
+	end
+	local val=Instance.new("Vector3Value",Tool)
+	val.Name="OGSize3"
+	val.Value=Tool.Handle.Size
+	local sb=Instance.new("SelectionBox")
+	sb.Adornee=Tool.Handle
+	sb.Name="FunTIMES"
+	sb.Parent=Tool.Handle
+	Tool.Handle.Massless=true
+	Tool.Handle.Size=Vector3.new(reachsize,reachsize,reachsize)
+end)
+
+AntiVoid = nil
+
+cmd.add({"antivoid"},{"antivoid","Increases the hitbox of your held tool in a box shape"},function(reachsize)
+	wait()
+	if AntiVoid then AntiVoid:Disconnect() AntiVoid=nil end
+	AntiVoid = RunService.Stepped:Connect(function()
+		local root = getRoot(LocalPlayer.Character)
+		if root and root.Position.Y <= OrgDestroyHeight + 25 then
+			root.Velocity = root.Velocity + Vector3.new(0, 250, 0)
+		end
+	end)
+	DoNotif("Enabled",nil,"antivoid")
+end)
+
+cmd.add({"unantivoid"},{"unantivoid","Increases the hitbox of your held tool in a box shape"},function(reachsize)
+	if AntiVoid then AntiVoid:Disconnect() AntiVoid=nil end
+	DoNotif("Disabled",nil,"antivoid")
 end)
 
 cmd.add({"aura"},{"aura {number}","Sword aura"},function(reachsize)
@@ -7035,6 +7075,26 @@ end)
 cmd.add({"undance"},{"undance","Stops the dance command"},function()
 	theanim:Stop()
 	theanim:Destroy()
+end)
+
+cmd.add({"antichatlogs","antichatlogger"},{"antichatlogs (antichatlogger)","Prevents you from getting banning when typing unspeakable messages (game needs legacy chat service)"},function()
+	if not LegacyChat then
+		return DoNotif("Game doesn't use Legacy Chat Service",nil,"antichatlogs")
+	end
+	local MsgPost, _ = pcall(function()
+		rawset(require(LocalPlayer:FindFirstChild("PlayerScripts"):FindFirstChild("ChatScript").ChatMain),"MessagePosted", {
+			["fire"] = function(msg)
+				return msg
+			end,
+			["wait"] = function()
+				return
+			end,
+			["connect"] = function()
+				return
+			end
+		})
+	end)
+	DoNotif(MsgPost and "Enabled" or "Failed to enable antichatlogs",nil,"antichatlogs")
 end)
 
 
@@ -15293,9 +15353,9 @@ end)
 --[[ CLOSE THE COMMAND BAR ]]--
 cmdInput.FocusLost:Connect(function(enterPressed)
 	--if enterPressed then
-		wrap(function()
-			lib.parseCommand(opt.prefix..cmdInput.Text)
-		end)
+	wrap(function()
+		lib.parseCommand(opt.prefix..cmdInput.Text)
+	end)
 	--end
 	gui.barDeselect()
 end)
