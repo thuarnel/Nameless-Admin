@@ -155,9 +155,13 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1="Added Tween Fly commands [bypasses most anticheats on games] ('tfly','tweenfly')";
+	log2="Fixed small bugs";
+	log3="Updated 'Antivoid' command"
+}
 
-local updDate="10/15/2024"
+local updDate="12/1/2024" --month,day,year
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -180,6 +184,7 @@ local COREGUI=gethui();
 local CoreGui=gethui();
 local coregui=gethui();
 local IsOnMobile=table.find({Enum.Platform.IOS,Enum.Platform.Android},UserInputService:GetPlatform());
+local IsOnPC=table.find({Enum.Platform.Windows,Enum.Platform.UWP,Enum.Platform.Linux,Enum.Platform.SteamOS,Enum.Platform.OSX,Enum.Platform.Chromecast,Enum.Platform.WebOS},UserInputService:GetPlatform());
 local sethidden=sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player=game:GetService("Players").LocalPlayer;
 local plr=game:GetService("Players").LocalPlayer;
@@ -6471,7 +6476,7 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 		Hum.PlatformStand = true
 		local new = gyro.cframe - gyro.cframe.p + pos.position
 
-		if not IsOnMobile then
+		if IsOnPC then
 			if keys.w then
 				new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
 			end

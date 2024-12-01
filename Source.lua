@@ -139,9 +139,13 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1="Added Tween Fly commands [bypasses most anticheats on games] ('tfly','tweenfly')";
+	log2="Fixed small bugs";
+	log3="Updated 'Antivoid' command"
+}
 
-local updDate="10/15/2024"
+local updDate="12/1/2024" --month,day,year
 
 --[[ VARIABLES ]]--
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -164,6 +168,7 @@ local COREGUI=gethui();
 local CoreGui=gethui();
 local coregui=gethui();
 local IsOnMobile=table.find({Enum.Platform.IOS,Enum.Platform.Android},UserInputService:GetPlatform());
+local IsOnPC=table.find({Enum.Platform.Windows,Enum.Platform.UWP,Enum.Platform.Linux,Enum.Platform.SteamOS,Enum.Platform.OSX,Enum.Platform.Chromecast,Enum.Platform.WebOS},UserInputService:GetPlatform());
 local sethidden=sethiddenproperty or set_hidden_property or set_hidden_prop
 local Player=game:GetService("Players").LocalPlayer;
 local plr=game:GetService("Players").LocalPlayer;
@@ -6319,7 +6324,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 			_G.functionspy.shutdown()
 		end)
 	end
-	coroutine.wrap(PRML_fake_script)()	
+	coroutine.wrap(PRML_fake_script)()
 end)
 
 local on=false
@@ -6393,6 +6398,115 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 			speedofthevfly=2
 		end
 	end
+end)
+
+TFlyEnabled = false
+tflyCORE = nil
+
+cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying"},function(...)
+	TFlyEnabled = true
+	local speed=(...)
+	if speed==nil then
+		speed=2
+	end
+	local e1, e2
+	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
+	local platform = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "Mobile" or "PC"
+
+	tflyCORE = Instance.new("Part", workspace)
+	tflyCORE.Size, tflyCORE.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
+	local Trs = tflyCORE
+
+	local keys = { a = false, d = false, w = false, s = false }
+	if platform == "PC" then
+		e1 = mouse.KeyDown:Connect(function(key)
+			if not Trs or not Trs.Parent then
+				e1:Disconnect()
+				e2:Disconnect()
+				return
+			end
+			if key == "w" then
+				keys.w = true
+			elseif key == "s" then
+				keys.s = true
+			elseif key == "a" then
+				keys.a = true
+			elseif key == "d" then
+				keys.d = true
+			end
+		end)
+		e2 = mouse.KeyUp:Connect(function(key)
+			if key == "w" then
+				keys.w = false
+			elseif key == "s" then
+				keys.s = false
+			elseif key == "a" then
+				keys.a = false
+			elseif key == "d" then
+				keys.d = false
+			end
+		end)
+	end
+
+	local Weld = Instance.new("Weld", tflyCORE)
+	Weld.Part0, Weld.Part1, Weld.C0 = tflyCORE, Hum.RootPart, CFrame.new(0, 0, 0)
+
+	local pos, gyro = Instance.new("BodyPosition", Trs), Instance.new("BodyGyro", Trs)
+	pos.maxForce, pos.position = Vector3.new(math.huge, math.huge, math.huge), Trs.Position
+	gyro.maxTorque, gyro.cframe = Vector3.new(9e9, 9e9, 9e9), Trs.CFrame
+
+	repeat
+		wait()
+		Hum.PlatformStand = true
+		local new = gyro.cframe - gyro.cframe.p + pos.position
+
+		if IsOnPC then
+			if keys.w then
+				new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+			end
+			if keys.s then
+				new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+			end
+			if keys.d then
+				new = new * CFrame.new(speed, 0, 0)
+			end
+			if keys.a then
+				new = new * CFrame.new(-speed, 0, 0)
+			end
+		elseif IsOnMobile then
+			local ControlModule = require(LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+			local direction = ControlModule:GetMoveVector()
+			if direction.Magnitude > 0 then
+				new = new + (direction.X * workspace.CurrentCamera.CFrame.RightVector * speed)
+				new = new - (direction.Z * workspace.CurrentCamera.CFrame.LookVector * speed)
+			end
+		end
+
+		pos.position = new.p
+		if keys.w then
+			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+		elseif keys.s then
+			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+		else
+			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+		end
+	until TFlyEnabled == false
+	if gyro then
+		gyro:Destroy()
+	end
+	if pos then
+		pos:Destroy()
+	end
+	Hum.PlatformStand = false
+	speed = 10
+end)
+
+cmd.add({"untfly","untweenfly"},{"untfly (untweenfly)","Disables tween fly"},function()
+	TFlyEnabled = false
+	--[[for i, v in pairs(tflyCORE:GetChildren()) do
+		v:Destroy()
+	end]]
+	if tflyCORE then tflyCORE:Destroy() end
 end)
 
 cmd.add({"unfly"},{"unfly","Disable flight"},function()
