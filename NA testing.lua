@@ -166,6 +166,12 @@ local updDate="12/1/2024" --month,day,year
 --[[ VARIABLES ]]--
 local cloneref = cloneref or blankfunction
 
+if not cloneref then
+	getgenv().cloneref=function(service)
+		return game:GetService(service)
+	end
+end
+
 local function SafeGetService(service)
     return cloneref(game:GetService(service))
 end
