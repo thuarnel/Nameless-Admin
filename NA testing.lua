@@ -821,6 +821,99 @@ function unmobilefly()
 	if Signal2 then Signal2:Disconnect() end
 end
 
+TFlyEnabled = false
+tflyCORE = nil
+
+function doTFLY(args)
+	TFlyEnabled = true
+	local speed = args and tonumber(args[1]) or 10
+	local controlModule = require(LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
+	local Hum = LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	local RootPart = LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+	if not Hum or not RootPart then
+		warn("Humanoid or RootPart not found.")
+		return
+	end
+
+	tflyCORE = Instance.new("Part", workspace)
+	tflyCORE.Size = Vector3.new(0.05, 0.05, 0.05)
+	tflyCORE.CanCollide = false
+	tflyCORE.Anchored = false
+
+	local Weld = Instance.new("Weld", tflyCORE)
+	Weld.Part0 = tflyCORE
+	Weld.Part1 = RootPart
+	Weld.C0 = CFrame.new(0, 0, 0)
+
+	local pos = Instance.new("BodyPosition", tflyCORE)
+	pos.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+	pos.Position = tflyCORE.Position
+
+	local gyro = Instance.new("BodyGyro", tflyCORE)
+	gyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+	gyro.CFrame = tflyCORE.CFrame
+
+	local keys = { a = false, d = false, w = false, s = false }
+	function keydown(key)
+		if key == "w" then keys.w = true end
+		if key == "s" then keys.s = true end
+		if key == "a" then keys.a = true end
+		if key == "d" then keys.d = true end
+	end
+
+	function keyup(key)
+		if key == "w" then keys.w = false end
+		if key == "s" then keys.s = false end
+		if key == "a" then keys.a = false end
+		if key == "d" then keys.d = false end
+	end
+
+	function updTFLY()
+		if not TFlyEnabled then return end
+		Hum.PlatformStand = true
+		local moveVector = Vector3.new()
+		local newGyroCFrame = workspace.CurrentCamera.CFrame
+
+		if not IsOnMobile then
+			if keys.w then moveVector = moveVector + workspace.CurrentCamera.CFrame.LookVector * speed end
+			if keys.s then moveVector = moveVector - workspace.CurrentCamera.CFrame.LookVector * speed end
+			if keys.a then moveVector = moveVector - workspace.CurrentCamera.CFrame.RightVector * speed end
+			if keys.d then moveVector = moveVector + workspace.CurrentCamera.CFrame.RightVector * speed end
+		elseif IsOnMobile then
+			if not controlModule then
+				controlModule = require(LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+			end
+			moveVector = controlModule:GetMoveVector() * speed
+		end
+
+		pos.Position = tflyCORE.Position + moveVector
+		gyro.CFrame = newGyroCFrame
+	end
+
+	local renderConnection = RunService.RenderStepped:Connect(updTFLY)
+	local inputConnections = {}
+
+	if not IsOnMobile then
+		table.insert(inputConnections, LocalPlayer:GetMouse().KeyDown:Connect(keydown))
+		table.insert(inputConnections, LocalPlayer:GetMouse().KeyUp:Connect(keyup))
+	end
+
+	function stopTFLY()
+		TFlyEnabled = false
+		Hum.PlatformStand = false
+		tflyCORE:Destroy()
+		pos:Destroy()
+		gyro:Destroy()
+		renderConnection:Disconnect()
+		for _, conn in ipairs(inputConnections) do
+			conn:Disconnect()
+		end
+	end
+
+	return stopTFLY
+end
+
 
 function x(v)
 	if v then
@@ -6411,115 +6504,14 @@ cmd.add({"fly"},{"fly [speed]","Enable flight"},function(...)
 	end
 end)
 
-TFlyEnabled = false
-tflyCORE = nil
-
 cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying"},function(args)
-	TFlyEnabled = true
-
-	local speed, e1, e2
-	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
-
-	tflyCORE = Instance.new("Part", workspace)
-	tflyCORE.Size, tflyCORE.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
-	local Trs = tflyCORE
-
-	local keys = { a = false, d = false, w = false, s = false }
-	e1 = mouse.KeyDown:Connect(function(key)
-		if not Trs or not Trs.Parent then
-			e1:Disconnect()
-			e2:Disconnect()
-			return
-		end
-		if key == "w" then
-			keys.w = true
-		elseif key == "s" then
-			keys.s = true
-		elseif key == "a" then
-			keys.a = true
-		elseif key == "d" then
-			keys.d = true
-		end
-	end)
-	e2 = mouse.KeyUp:Connect(function(key)
-		if key == "w" then
-			keys.w = false
-		elseif key == "s" then
-			keys.s = false
-		elseif key == "a" then
-			keys.a = false
-		elseif key == "d" then
-			keys.d = false
-		end
-	end)
-
-	local Weld = Instance.new("Weld", tflyCORE)
-	Weld.Part0, Weld.Part1, Weld.C0 = tflyCORE, Hum.RootPart, CFrame.new(0, 0, 0)
-
-	local pos, gyro = Instance.new("BodyPosition", Trs), Instance.new("BodyGyro", Trs)
-	pos.maxForce, pos.position = Vector3.new(math.huge, math.huge, math.huge), Trs.Position
-	gyro.maxTorque, gyro.cframe = Vector3.new(9e9, 9e9, 9e9), Trs.CFrame
-
-	repeat
-		wait()
-		Hum.PlatformStand = true
-		local new = gyro.cframe - gyro.cframe.p + pos.position
-		if not keys.w and not keys.s and not keys.a and not keys.d then
-			if not args[1] then
-				speed = tonumber(2) -- idfk why it errors here
-			else
-				speed = tonumber(args[1])
-			end
-		end
-		if keys.w then
-			new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-			speed = speed + 0
-		end
-		if keys.s then
-			new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
-			speed = speed + 0
-		end
-		if keys.d then
-			new = new * CFrame.new(speed, 0, 0)
-			speed = speed + 0
-		end
-		if keys.a then
-			new = new * CFrame.new(-speed, 0, 0)
-			speed = speed + 0
-		end
-
-		pos.position = new.p
-		if keys.w then
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
-				* CFrame.Angles(-math.rad(speed * 0), 0, 0)
-		elseif keys.s then
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame * CFrame.Angles(math.rad(speed * 0), 0, 0)
-		else
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
-		end
-	until TFlyEnabled == false
-	if gyro then
-		gyro:Destroy()
-	end
-	if pos then
-		pos:Destroy()
-	end
-	if e1 then
-		e1:Disconnect()
-		e1=nil
-	end
-	if e2 then
-		e2:Disconnect()
-		e2=nil
-	end
-	Hum.PlatformStand = false
-	speed = 10
+	doTFLY(args)
 end)
 
 cmd.add({"untfly","untweenfly"},{"untfly (untweenfly)","Disables tween fly"},function()
 	TFlyEnabled = false
-	for i, v in pairs(tflyCORE:GetChildren()) do
-		v:Destroy()
+	if tflyCORE then
+		tflyCORE:Destroy()
 	end
 end)
 
