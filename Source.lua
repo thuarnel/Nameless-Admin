@@ -6514,7 +6514,7 @@ end)
 
 cmd.add({"untfly","untweenfly"},{"untfly (untweenfly)","Disables tween fly"},function()
 	TFlyEnabled = false
-	for i, v in pairs(SafeGetService("Workspace"):GetChildren()) do
+	for i, v in pairs(SafeGetService("Workspace"):GetDescendants()) do
 		if v:GetAttribute("tflyPart") then
 			v:Destroy()
 		end
