@@ -6466,9 +6466,9 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 		local new = gyro.cframe - gyro.cframe.p + pos.position
 		if not keys.w and not keys.s and not keys.a and not keys.d then
 			if not args[1] then
-				speed = 2
+				speed = tonumber(2) -- idfk why it errors here
 			else
-				speed = args[1]
+				speed = tonumber(args[1])
 			end
 		end
 		if keys.w then
