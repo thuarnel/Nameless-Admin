@@ -6445,7 +6445,7 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 	local Trs = tflyCORE
 
 	local keys = { a = false, d = false, w = false, s = false }
-	if platform == "PC" then
+	if IsOnPC then
 		e1 = mouse.KeyDown:Connect(function(key)
 			if not Trs or not Trs.Parent then
 				e1:Disconnect()
