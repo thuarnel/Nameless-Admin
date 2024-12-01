@@ -6414,10 +6414,13 @@ end)
 TFlyEnabled = false
 tflyCORE = nil
 
-cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying"},function(args)
+cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying"},function(...)
 	TFlyEnabled = true
-
-	local speed, e1, e2
+	local speed=(...)
+	if speed==nil then
+		speed=2
+	end
+	local e1, e2
 	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
 	local platform = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "Mobile" or "PC"
 
@@ -6467,7 +6470,6 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 		wait()
 		Hum.PlatformStand = true
 		local new = gyro.cframe - gyro.cframe.p + pos.position
-		speed = args and tonumber(args[1]) or 2
 
 		if not IsOnMobile then
 			if keys.w then
@@ -6505,14 +6507,6 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 	end
 	if pos then
 		pos:Destroy()
-	end
-	if e1 then
-		e1:Disconnect()
-		e1=nil
-	end
-	if e2 then
-		e2:Disconnect()
-		e2=nil
 	end
 	Hum.PlatformStand = false
 	speed = 10
