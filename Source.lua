@@ -6423,8 +6423,7 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 	end
 	local e1, e2
 	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
-	local platform = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled and "Mobile" or "PC"
-
+	if tflyCORE then tflyCORE:Destroy() end
 	tflyCORE = Instance.new("Part", workspace)
 	tflyCORE.Size, tflyCORE.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	local Trs = tflyCORE
