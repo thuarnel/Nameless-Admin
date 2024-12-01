@@ -6439,8 +6439,8 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 	end
 	local e1, e2
 	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
-	if tflyCORE then tflyCORE:Destroy() end
 	tflyCORE = Instance.new("Part", workspace)
+	tflyCORE:SetAttribute("tflyPart",true)
 	tflyCORE.Size, tflyCORE.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	local Trs = tflyCORE
 
@@ -6530,10 +6530,12 @@ end)
 
 cmd.add({"untfly","untweenfly"},{"untfly (untweenfly)","Disables tween fly"},function()
 	TFlyEnabled = false
-	--[[for i, v in pairs(tflyCORE:GetChildren()) do
-		v:Destroy()
-	end]]
-	if tflyCORE then tflyCORE:Destroy() end
+	for i, v in pairs(SafeGetService("Workspace"):GetChildren()) do
+		if v:GetAttribute("tflyPart") then
+			v:Destroy()
+		end
+	end
+	--if tflyCORE then tflyCORE:Destroy() end
 end)
 
 cmd.add({"unfly"},{"unfly","Disable flight"},function()
