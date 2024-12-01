@@ -6335,7 +6335,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 			_G.functionspy.shutdown()
 		end)
 	end
-	coroutine.wrap(PRML_fake_script)()	
+	coroutine.wrap(PRML_fake_script)()
 end)
 
 local on=false
@@ -6514,9 +6514,10 @@ end)
 
 cmd.add({"untfly","untweenfly"},{"untfly (untweenfly)","Disables tween fly"},function()
 	TFlyEnabled = false
-	for i, v in pairs(tflyCORE:GetChildren()) do
+	--[[for i, v in pairs(tflyCORE:GetChildren()) do
 		v:Destroy()
-	end
+	end]]
+	if tflyCORE then tflyCORE:Destroy() end
 end)
 
 cmd.add({"unfly"},{"unfly","Disable flight"},function()
