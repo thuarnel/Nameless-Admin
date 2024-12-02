@@ -739,66 +739,83 @@ end
 
 
 local Signal1,Signal2=nil,nil
+local flyMobile=nil
+local MobileWeld=nil
 
 function mobilefly(speed)
 	local controlModule=require(SafeGetService("Players").LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
 	local character=SafeGetService("Players").LocalPlayer.Character or SafeGetService("Players").LocalPlayer.CharacterAdded:Wait()
-	local rootPart=getRoot(Character)
+	if flyMobile then flyMobile:Destroy() end
+	flyMobile=Instance.new("Part",workspace)
+	flyMobile.Name=randomString()
+	flyMobile.Size, flyMobile.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
+	if MobileWeld then MobileWeld:Destroy() end
+	MobileWeld=Instance.new("Weld",flyMobile)
+	MobileWeld.Name=randomString()
+	MobileWeld.Part0, MobileWeld.Part1, MobileWeld.C0 = flyMobile, character:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
 
-	local existingBV=rootPart:FindFirstChild("VelocityHandler")
-	local existingBG=rootPart:FindFirstChild("GyroHandler")
+	local existingBV=flyMobile:FindFirstChildWhichIsA("BodyVelocity")
+	local existingBG=flyMobile:FindFirstChildWhichIsA("BodyGyro")
 
 	if not existingBV then
 		local bv=Instance.new("BodyVelocity")
-		bv.Name="VelocityHandler"
+		bv.Name=randomString()
 		bv.MaxForce=Vector3.new(0,0,0)
 		bv.Velocity=Vector3.new(0,0,0)
-		bv.Parent=rootPart
+		bv.Parent=flyMobile
 	end
 
 	if not existingBG then
 		local bg=Instance.new("BodyGyro")
-		bg.Name="GyroHandler"
+		bg.Name=randomString()
 		bg.MaxTorque=Vector3.new(9e9,9e9,9e9)
 		bg.P=1000
 		bg.D=50
-		bg.Parent=rootPart
+		bg.Parent=flyMobile
 	end
 
 	Signal1=SafeGetService("Players").LocalPlayer.CharacterAdded:Connect(function(newChar)
-		local newRootPart=newChar:WaitForChild("HumanoidRootPart")
 
-		local newBV=newRootPart:FindFirstChild("VelocityHandler")
-		local newBG=newRootPart:FindFirstChild("GyroHandler")
+		local newBV=flyMobile:FindFirstChildWhichIsA("BodyVelocity")
+		local newBG=flyMobile:FindFirstChildWhichIsA("BodyGyro")
+		local newWeld=flyMobile:FindFirstChildWhichIsA("Weld")
 
 		if not newBV then
 			local bv=Instance.new("BodyVelocity")
-			bv.Name="VelocityHandler"
+			bv.Name=randomString()
 			bv.MaxForce=Vector3.new(0,0,0)
 			bv.Velocity=Vector3.new(0,0,0)
-			bv.Parent=newRootPart
+			bv.Parent=flyMobile
 		end
 
 		if not newBG then
 			local bg=Instance.new("BodyGyro")
-			bg.Name="GyroHandler"
+			bg.Name=randomString()
 			bg.MaxTorque=Vector3.new(9e9,9e9,9e9)
 			bg.P=1000
 			bg.D=50
-			bg.Parent=newRootPart
+			bg.Parent=flyMobile
 		end
+
+		if not newWeld then
+			MobileWeld=Instance.new("Weld",flyMobile)
+			MobileWeld.Name=randomString()
+			MobileWeld.Part0, MobileWeld.Part1, MobileWeld.C0 = flyMobile, newChar:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
+		else
+			MobileWeld.Part0, MobileWeld.Part1, MobileWeld.C0 = flyMobile, newChar:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
+		end
+
 	end)
 
 	local camera=SafeGetService("Workspace").CurrentCamera
 
-	Signal2=RunService.RenderStepped:Connect(function()
+	Signal2=SafeGetService("RunService").RenderStepped:Connect(function()
 		local character=SafeGetService("Players").LocalPlayer.Character
-		local rootPart=character and character:FindFirstChild("HumanoidRootPart")
 		local humanoid=character and character:FindFirstChildOfClass("Humanoid")
-		local bv=rootPart and rootPart:FindFirstChild("VelocityHandler")
-		local bg=rootPart and rootPart:FindFirstChild("GyroHandler")
+		local bv=flyMobile and flyMobile:FindFirstChildWhichIsA("BodyVelocity")
+		local bg=flyMobile and flyMobile:FindFirstChildWhichIsA("BodyGyro")
 
-		if character and humanoid and rootPart and bv and bg then
+		if character and humanoid and flyMobile and MobileWeld and bv and bg then
 			bv.MaxForce=Vector3.new(9e9,9e9,9e9)
 			bg.MaxTorque=Vector3.new(9e9,9e9,9e9)
 			humanoid.PlatformStand=true
@@ -821,18 +838,12 @@ end
 
 function unmobilefly()
 	local char=SafeGetService("Players").LocalPlayer.Character
-	root=getRoot(char)
-	if char and root then
-		if root:FindFirstChild("VelocityHandler") then
-			root.VelocityHandler:Destroy()
-		end
-		if root:FindFirstChild("GyroHandler") then
-			root.GyroHandler:Destroy()
-		end
-		local humanoid=character:FindFirstChildOfClass("Humanoid")
+	if char and flyMobile then
+		local humanoid=char:FindFirstChildOfClass("Humanoid")
 		if humanoid then
 			humanoid.PlatformStand=false
 		end
+		if flyMobile then flyMobile:Destroy() end
 	end
 	if Signal1 then Signal1:Disconnect() end
 	if Signal2 then Signal2:Disconnect() end
@@ -877,6 +888,9 @@ function sFLY(vfly)
 		local BG=Instance.new('BodyGyro',goofyFLY)
 		local BV=Instance.new('BodyVelocity',goofyFLY)
 		local Weld=Instance.new("Weld",goofyFLY)
+		BG.Name=randomString()
+		BV.Name=randomString()
+		Weld.Name=randomString()
 		Weld.Part0, Weld.Part1, Weld.C0 = goofyFLY, cmdlp.Character:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
 		BG.P=9e4
 		BG.maxTorque=Vector3.new(9e9,9e9,9e9)
