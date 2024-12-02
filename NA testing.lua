@@ -173,7 +173,7 @@ if not cloneref then
 end
 
 local function SafeGetService(service)
-    return cloneref(game:GetService(service))
+	return cloneref(game:GetService(service))
 end
 
 local PlaceId,JobId,GameId=game.PlaceId,game.JobId,game.GameId
@@ -860,25 +860,27 @@ local cmdlp=SafeGetService("Players").LocalPlayer
 plr=cmdlp
 
 local cmdm=plr:GetMouse()
-
+local goofyFLY=nil
 function sFLY(vfly)
-	FLYING=false
-	speedofthefly=10
-	speedofthevfly=10
 	while not cmdlp or not cmdlp.Character or not cmdlp.Character:FindFirstChild('HumanoidRootPart') or not cmdlp.Character:FindFirstChild('Humanoid') or not cmdm do
 		wait()
 	end 
-	local T=cmdlp.Character.HumanoidRootPart
+	if goofyFLY then goofyFLY:Destroy() end
+	goofyFLY=Instance.new("Part",workspace)
+	goofyFLY.Name=randomString()
+	goofyFLY.Size, goofyFLY.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	local CONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
 	local lCONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
 	local SPEED=0
 	function FLY()
 		FLYING=true
-		local BG=Instance.new('BodyGyro',T)
-		local BV=Instance.new('BodyVelocity',T)
+		local BG=Instance.new('BodyGyro',goofyFLY)
+		local BV=Instance.new('BodyVelocity',goofyFLY)
+		local Weld=Instance.new("Weld",goofyFLY)
+		Weld.Part0, Weld.Part1, Weld.C0 = goofyFLY, cmdlp.Character:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
 		BG.P=9e4
 		BG.maxTorque=Vector3.new(9e9,9e9,9e9)
-		BG.cframe=T.CFrame
+		BG.cframe=goofyFLY.CFrame
 		BV.velocity=Vector3.new(0,0,0)
 		BV.maxForce=Vector3.new(9e9,9e9,9e9)
 		spawn(function()
@@ -6547,6 +6549,7 @@ cmd.add({"unfly"},{"unfly","Disable flight"},function()
 		DoNotif("Not flying anymore")
 		FLYING=false
 		cmdlp.Character.Humanoid.PlatformStand=false
+		if goofyFLY then goofyFLY:Destroy() end
 	end
 	unmobilefly()
 	on=false
