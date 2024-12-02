@@ -156,9 +156,10 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1="Added Tween Fly commands [bypasses most anticheats on games] ('tfly','tweenfly')";
+	log1="Added Tween Fly commands ('tfly','tweenfly')";
 	log2="Fixed small bugs";
-	log3="Updated 'Antivoid' command"
+	log3="Updated 'Antivoid' command";
+	log4="Updated 'fly' command (bypasses most anticheats on games)";
 }
 
 local updDate="12/1/2024" --month,day,year
@@ -809,7 +810,7 @@ function mobilefly(speed)
 
 	local camera=SafeGetService("Workspace").CurrentCamera
 
-	Signal2=SafeGetService("RunService").RenderStepped:Connect(function()
+	Signal2=RunService.RenderStepped:Connect(function()
 		local character=SafeGetService("Players").LocalPlayer.Character
 		local humanoid=character and character:FindFirstChildOfClass("Humanoid")
 		local bv=flyMobile and flyMobile:FindFirstChildWhichIsA("BodyVelocity")
