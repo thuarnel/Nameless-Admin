@@ -144,9 +144,10 @@ local updLogs={
 	log2="Fixed small bugs";
 	log3="Updated 'Antivoid' command";
 	log4="Updated 'fly' command (bypasses most anticheats on games)";
+	log5="Added 'serverlist' command (shows a list of servers to join in)";
 }
 
-local updDate="12/1/2024" --month,day,year
+local updDate="12/2/2024" --month,day,year
 
 --[[ VARIABLES ]]--
 local cloneref = cloneref or blankfunction
@@ -10216,6 +10217,18 @@ cmd.add({"unheadbang","unmouthbang","unhb","unmb"},{"unheadbang (unmouthbang,unh
 	end
 end)
 
+cmd.add({"improvetextures"},{"improvetextures","Switches Textures"},function(h,d)
+	sethidden(SafeGetService("MaterialService"), "Use2022Materials", true)
+end)
+
+cmd.add({"undotextures"},{"undotextures","Switches Textures"},function(h,d)
+	sethidden(SafeGetService("MaterialService"), "Use2022Materials", false)
+end)
+
+cmd.add({"serverlist","serverlister","slist"},{"serverlist (serverlister,slist)","list of servers to join in"},function(h,d)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/ServerLister.lua"))();
+end)
+
 local HumanModCons={}
 
 cmd.add({"edgejump","ejump"},{"edgejump (ejump)","Automatically jumps when you get to the edge of an object"},function()
@@ -13323,50 +13336,94 @@ cmd.add({"fullbright","fullb","fb"},{"fullbright (fullb,fb)","Makes games that a
 	_G.FullBrightEnabled=not _G.FullBrightEnabled
 end)
 
-local brightLoop=nil
+local dayLoop=nil
 
-cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Makes the map brighter / more visible but looped"},function()
-	if brightLoop then
-		brightLoop:Disconnect()
+cmd.add({"loopday","lday"},{"loopday (lday)","Sunshiiiine!"},function()
+	if dayLoop then
+		dayLoop:Disconnect()
 	end
-	function brightFunc()
-		Lighting.ClockTime=14
-		Lighting.FogEnd=100000
-		Lighting.GlobalShadows=false
-		Lighting.OutdoorAmbient=Color3.fromRGB(128,128,128)
+	local function dayFunc()
+		SafeGetService("Lighting").ClockTime = 14
 	end
-	Lighting.Brightness=3
 
-	brightLoop=RunService.RenderStepped:Connect(brightFunc)
+	dayLoop = RunService.RenderStepped:Connect(dayFunc)
 end)
 
-cmd.add({"unloopfullbright","unloopfb","unlfb"},{"unloopfullbright (unloopfb,unlfb)","Unloops fullbright"},function()
-	if brightLoop then
-		brightLoop:Disconnect()
+cmd.add({"unloopday","unlday"},{"unloopday (unlday)","No more sunshine"},function()
+	if dayLoop then
+		dayLoop:Disconnect()
+	end
+end)
+
+local FullBrightLoop=nil
+
+cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Sunshiiiine!"},function()
+	if FullBrightLoop then
+		FullBrightLoop:Disconnect()
+	end
+	local function dayFunc()
+		SafeGetService("Lighting").Brightness=1
+		SafeGetService("Lighting").ClockTime=12
+		SafeGetService("Lighting").FogEnd=math.huge
+		SafeGetService("Lighting").GlobalShadows=false
+		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
+	end
+
+	FullBrightLoop = RunService.RenderStepped:Connect(dayFunc)
+end)
+
+cmd.add({"unloopfullbright","unloopfb","unlfb"},{"unloopfullbright (unloopfb,unlfb)","No more sunshine"},function()
+	if FullBrightLoop then
+		FullBrightLoop:Disconnect()
 	end
 end)
 
 
 local nightLoop=nil
 
-cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Changes the time to night for the client but looped"},function()
+cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Moonlight."},function()
 	if nightLoop then
 		nightLoop:Disconnect()
 	end
-	function nightFunc()
-		Lighting.ClockTime=0
-		Lighting.FogEnd=100000
-		Lighting.GlobalShadows=false
-		Lighting.OutdoorAmbient=Color3.fromRGB(128,128,128)
+	local function nightFunc()
+		SafeGetService("Lighting").Brightness=1
+		SafeGetService("Lighting").ClockTime=0
+		SafeGetService("Lighting").FogEnd=math.huge
+		SafeGetService("Lighting").GlobalShadows=false
+		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
 	end
-	Lighting.Brightness=0
 
-	nightLoop=RunService.RenderStepped:Connect(nightFunc)
+	nightLoop = RunService.RenderStepped:Connect(nightFunc)
 end)
 
-cmd.add({"unloopnight","unloopn","unln"},{"unloopnight (unloopn,unln)","Unloops night"},function()
+cmd.add({"unloopnight","unloopn","unln"},{"unloopnight (unloopn,unln)","No more moonlight."},function()
 	if nightLoop then
 		nightLoop:Disconnect()
+	end
+end)
+
+local fogLoop=nil
+
+cmd.add({"loopnofog","lnofog","lnf", "loopnf"},{"loopnofog (lnofog,lnf,loopnf)","See clearly forever!"},function()
+	if fogLoop then
+		fogLoop:Disconnect()
+	end
+	local function fogFunc()
+		local Lighting=SafeGetService("Lighting")
+		Lighting.FogEnd=math.huge
+		for i,v in pairs(Lighting:GetDescendants()) do
+			if v:IsA("Atmosphere") then
+				v:Destroy()
+			end
+		end
+	end
+
+	fogLoop = RunService.RenderStepped:Connect(fogFunc)
+end)
+
+cmd.add({"unloopnofog","unlnofog","unlnf","unloopnf"},{"unloopnofog (unlnofog,unlnf,unloopnf)","No more sight."},function()
+	if fogLoop then
+		fogLoop:Disconnect()
 	end
 end)
 
