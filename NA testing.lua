@@ -13353,14 +13353,21 @@ cmd.add({"fullbright","fullb","fb"},{"fullbright (fullb,fb)","Makes games that a
 end)
 
 local dayLoop=nil
+dayCon=nil
 
 cmd.add({"loopday","lday"},{"loopday (lday)","Sunshiiiine!"},function()
 	if dayLoop then
 		dayLoop:Disconnect()
 	end
+	if dayCon then
+        dayCon:Disconnect()
+    end
 	local function dayFunc()
 		SafeGetService("Lighting").ClockTime = 14
 	end
+	dayCon=SafeGetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+		SafeGetService("Lighting").ClockTime=14
+	end)
 
 	dayLoop = RunService.RenderStepped:Connect(dayFunc)
 end)
@@ -13369,13 +13376,33 @@ cmd.add({"unloopday","unlday"},{"unloopday (unlday)","No more sunshine"},functio
 	if dayLoop then
 		dayLoop:Disconnect()
 	end
+	if dayCon then
+        dayCon:Disconnect()
+    end
 end)
 
 local FullBrightLoop=nil
 
+fbCon,fbCon1,fbCon2,fbCon3,fbCon4=nil,nil,nil,nil,nil
+
 cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Sunshiiiine!"},function()
 	if FullBrightLoop then
 		FullBrightLoop:Disconnect()
+	end
+	if fbCon then
+		fbCon:Disconnect()
+	end
+	if fbCon1 then
+		fbCon1:Disconnect()
+	end
+	if fbCon2 then
+		fbCon2:Disconnect()
+	end
+	if fbCon3 then
+		fbCon3:Disconnect()
+	end
+	if fbCon4 then
+		fbCon4:Disconnect()
 	end
 	local function fbFunc()
 		SafeGetService("Lighting").Brightness=1
@@ -13385,6 +13412,22 @@ cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Sunshi
 		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
 	end
 
+	fbCon=SafeGetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+        SafeGetService("Lighting").Brightness=1
+    end)
+	fbCon1=SafeGetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+		SafeGetService("Lighting").ClockTime=12
+	end)
+	fbCon2=SafeGetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+        SafeGetService("Lighting").FogEnd=786543
+	end)
+	fbCon3=SafeGetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+        SafeGetService("Lighting").GlobalShadows=false
+    end)
+	fbCon4=SafeGetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
+	end)
+
 	FullBrightLoop = RunService.RenderStepped:Connect(fbFunc)
 end)
 
@@ -13392,14 +13435,46 @@ cmd.add({"unloopfullbright","unloopfb","unlfb"},{"unloopfullbright (unloopfb,unl
 	if FullBrightLoop then
 		FullBrightLoop:Disconnect()
 	end
+	if fbCon then
+		fbCon:Disconnect()
+	end
+	if fbCon1 then
+		fbCon1:Disconnect()
+	end
+	if fbCon2 then
+		fbCon2:Disconnect()
+	end
+	if fbCon3 then
+		fbCon3:Disconnect()
+	end
+	if fbCon4 then
+		fbCon4:Disconnect()
+	end
 end)
 
 
 local nightLoop=nil
 
+nightCon,nightCon1,nightCon2,nightCon3,nightCon4=nil,nil,nil,nil,nil
+
 cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Moonlight."},function()
 	if nightLoop then
 		nightLoop:Disconnect()
+	end
+	if nightCon then
+		nightCon:Disconnect()
+	end
+	if nightCon1 then
+		nightCon1:Disconnect()
+	end
+	if nightCon2 then
+		nightCon2:Disconnect()
+	end
+	if nightCon3 then
+		nightCon3:Disconnect()
+	end
+	if nightCon4 then
+		nightCon4:Disconnect()
 	end
 	local function nightFunc()
 		SafeGetService("Lighting").Brightness=1
@@ -13408,6 +13483,21 @@ cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Moonlight."},functio
 		SafeGetService("Lighting").GlobalShadows=false
 		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
 	end
+	nightCon=SafeGetService("Lighting"):GetPropertyChangedSignal("Brightness"):Connect(function()
+        SafeGetService("Lighting").Brightness=1
+    end)
+	nightCon1=SafeGetService("Lighting"):GetPropertyChangedSignal("ClockTime"):Connect(function()
+        SafeGetService("Lighting").ClockTime=0
+    end)
+	nightCon2=SafeGetService("Lighting"):GetPropertyChangedSignal("FogEnd"):Connect(function()
+        SafeGetService("Lighting").FogEnd=786543
+	end)
+	nightCon3=SafeGetService("Lighting"):GetPropertyChangedSignal("GlobalShadows"):Connect(function()
+        SafeGetService("Lighting").GlobalShadows=false
+    end)
+	nightCon4=SafeGetService("Lighting"):GetPropertyChangedSignal("Ambient"):Connect(function()
+		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
+	end)
 
 	nightLoop = RunService.RenderStepped:Connect(nightFunc)
 end)
@@ -13416,13 +13506,32 @@ cmd.add({"unloopnight","unloopn","unln"},{"unloopnight (unloopn,unln)","No more 
 	if nightLoop then
 		nightLoop:Disconnect()
 	end
+	if nightCon then
+        nightCon:Disconnect()
+    end
+    if nightCon1 then
+        nightCon1:Disconnect()
+	end
+	if nightCon2 then
+        nightCon2:Disconnect()
+    end
+    if nightCon3 then
+        nightCon3:Disconnect()
+	end
+	if nightCon4 then
+        nightCon4:Disconnect()
+    end
 end)
 
 local fogLoop=nil
+fogCon=nil
 
 cmd.add({"loopnofog","lnofog","lnf", "loopnf"},{"loopnofog (lnofog,lnf,loopnf)","See clearly forever!"},function()
 	if fogLoop then
 		fogLoop:Disconnect()
+	end
+	if fogCon then
+		fogCon:Disconnect()
 	end
 	local function fogFunc()
 		local Lighting=SafeGetService("Lighting")
@@ -13433,6 +13542,9 @@ cmd.add({"loopnofog","lnofog","lnf", "loopnf"},{"loopnofog (lnofog,lnf,loopnf)",
 			end
 		end
 	end
+	fogCon=Lighting:GetPropertyChangedSignal("FogEnd"):Connect(function()
+        Lighting.FogEnd=786543
+    end)
 
 	fogLoop = RunService.RenderStepped:Connect(fogFunc)
 end)
@@ -13441,6 +13553,9 @@ cmd.add({"unloopnofog","unlnofog","unlnf","unloopnf"},{"unloopnofog (unlnofog,un
 	if fogLoop then
 		fogLoop:Disconnect()
 	end
+	if fogCon then
+        fogCon:Disconnect()
+    end
 end)
 
 cmd.add({"brightness"},{"brightness","Changes the brightness lighting property"},function(...)
