@@ -4217,7 +4217,6 @@ cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk
 end)
 
 cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation on Most Games"},function()
-	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
 	local getrawmt = (debug and debug.getmetatable) or getrawmetatable
 				local setReadOnly = setreadonly
 					or (
@@ -4230,15 +4229,27 @@ cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation o
 							end
 						end
 					)
+				local lp = game:GetService("Players").LocalPlayer
 				local meta = getrawmt(game)
+				local caller = checkcaller or is_protosmasher_caller
+				local index = meta.__index
+				local newindex = meta.__newindex
 				local namecall = meta.__namecall
 				setReadOnly(meta, false)
-				meta.__namecall = newcclosure(function(self, ...)
-					local method = getnamecallmethod()
-					if method == "Kick" then
-						return DoNotif("A kick was prevented from running.")
+				meta.__newindex = newcclosure(function(self, meme, value)
+					if caller() then
+						return newindex(self, meme, value)
 					end
-					return namecall(self, ...)
+					if
+						tostring(self) == "HumanoidRootPart"
+						or tostring(self) == "Torso"
+						or tostring(self) == "UpperTorso"
+					then
+						if meme == "CFrame" or meme == "Position" then
+							return true
+						end
+					end
+					return newindex(self, meme, value)
 				end)
 				setReadOnly(meta, true)
 
