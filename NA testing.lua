@@ -4212,6 +4212,8 @@ cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk
 					return namecall(self, ...)
 				end)
 				setReadOnly(meta, true)
+
+				DoNotif("Anti Kick Enabled.")
 end)
 
 cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation on Most Games"},function()
@@ -4239,6 +4241,8 @@ cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation o
 					return namecall(self, ...)
 				end)
 				setReadOnly(meta, true)
+
+				DoNotif("teleport bypass enabled.")
 end)
 
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
