@@ -85,7 +85,7 @@ else
 end
 
 NACaller(function()
-	local teleportConnection=SafeGetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
+	local teleportConnection=game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
 		if (not teleportedServers) then
 			local queueonteleport=syn and syn.queue_on_teleport or queue_on_teleport or function() end
 			queueonteleport(loader)
