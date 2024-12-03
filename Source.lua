@@ -13361,15 +13361,15 @@ cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Sunshi
 	if FullBrightLoop then
 		FullBrightLoop:Disconnect()
 	end
-	local function dayFunc()
+	local function fbFunc()
 		SafeGetService("Lighting").Brightness=1
 		SafeGetService("Lighting").ClockTime=12
-		SafeGetService("Lighting").FogEnd=math.huge
+		SafeGetService("Lighting").FogEnd=786543
 		SafeGetService("Lighting").GlobalShadows=false
 		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
 	end
 
-	FullBrightLoop = RunService.RenderStepped:Connect(dayFunc)
+	FullBrightLoop = RunService.RenderStepped:Connect(fbFunc)
 end)
 
 cmd.add({"unloopfullbright","unloopfb","unlfb"},{"unloopfullbright (unloopfb,unlfb)","No more sunshine"},function()
@@ -13388,7 +13388,7 @@ cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Moonlight."},functio
 	local function nightFunc()
 		SafeGetService("Lighting").Brightness=1
 		SafeGetService("Lighting").ClockTime=0
-		SafeGetService("Lighting").FogEnd=math.huge
+		SafeGetService("Lighting").FogEnd=786543
 		SafeGetService("Lighting").GlobalShadows=false
 		SafeGetService("Lighting").Ambient=Color3.fromRGB(178,178,178)
 	end
@@ -13410,7 +13410,7 @@ cmd.add({"loopnofog","lnofog","lnf", "loopnf"},{"loopnofog (lnofog,lnf,loopnf)",
 	end
 	local function fogFunc()
 		local Lighting=SafeGetService("Lighting")
-		Lighting.FogEnd=math.huge
+		Lighting.FogEnd=786543
 		for i,v in pairs(Lighting:GetDescendants()) do
 			if v:IsA("Atmosphere") then
 				v:Destroy()
