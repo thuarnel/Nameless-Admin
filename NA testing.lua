@@ -1780,9 +1780,9 @@ cmd.add({"commands","cmds"},{"commands (cmds)","Open the command list"},function
 	gui.commands()
 end)
 
-cmd.add({"adonisfinder","adfind"},{"adonis finder (adfind)","Lets you see if the game has adonis admin"},function()
+--[[cmd.add({"adonisfinder","adfind"},{"adonis finder (adfind)","Lets you see if the game has adonis admin"},function()
 	loadstring(game:HttpGet("https://github.com/ltseverydayyou/Nameless-Admin/blob/main/AdonisScanner.lua?raw=adonfind"))()
-end)
+end)]]
 --Mobile Commands for the screen
 if IsOnMobile then
 
@@ -4187,8 +4187,58 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 	DoNotif("Anti sit disabled")
 end)
 
-cmd.add({"antikick","nokick"},{"antikick (nokick)","prevents you from getting kicked by LocalScripts or executed scripts"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
+cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk)","Bypass Kick on Most Games"},function()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
+	local getrawmt = (debug and debug.getmetatable) or getrawmetatable
+				local setReadOnly = setreadonly
+					or (
+						make_writeable
+						and function(table, readonly)
+							if readonly then
+								make_readonly(table)
+							else
+								make_writeable(table)
+							end
+						end
+					)
+				local meta = getrawmt(game)
+				local namecall = meta.__namecall
+				setReadOnly(meta, false)
+				meta.__namecall = newcclosure(function(self, ...)
+					local method = getnamecallmethod()
+					if method == "Kick" then
+						return DoNotif("A kick was prevented from running.")
+					end
+					return namecall(self, ...)
+				end)
+				setReadOnly(meta, true)
+end)
+
+cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation on Most Games"},function()
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
+	local getrawmt = (debug and debug.getmetatable) or getrawmetatable
+				local setReadOnly = setreadonly
+					or (
+						make_writeable
+						and function(table, readonly)
+							if readonly then
+								make_readonly(table)
+							else
+								make_writeable(table)
+							end
+						end
+					)
+				local meta = getrawmt(game)
+				local namecall = meta.__namecall
+				setReadOnly(meta, false)
+				meta.__namecall = newcclosure(function(self, ...)
+					local method = getnamecallmethod()
+					if method == "Kick" then
+						return DoNotif("A kick was prevented from running.")
+					end
+					return namecall(self, ...)
+				end)
+				setReadOnly(meta, true)
 end)
 
 cmd.add({"anticframeteleport","acframetp","acftp"},{"anticframeteleport (acframetp,acftp)","If a script tries to teleport you somewhere,it shouldn't work"},function()
