@@ -83,15 +83,7 @@ if getgenv().NATestingVer then
 else
 	loader=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]]
 end
-
-NACaller(function()
-	local teleportConnection=game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
-		if (not teleportedServers) then
-			local queueonteleport=syn and syn.queue_on_teleport or queue_on_teleport or function() end
-			queueonteleport(loader)
-		end
-	end)
-end)
+local queueteleport=(syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport) or function() end
 
 --Notification library
 local Notification=nil
@@ -1930,16 +1922,13 @@ cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
 end)
 
 cmd.add({"rjre","rejoinrefresh"},{"rjre (rejoinrefresh)","Rejoins and teleports you to the position where you were before"},function()
-
-	queueteleport=(syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
-
-
 	if not DONE then
 		DONE=true
 		local qot=print("a")
-		local hrp=getChar() and getChar():FindFirstChild("HumanoidRootPart")
+		local hrp=getRoot(getChar())
 		if hrp then
-			qot="task.spawn(function() end) repeat wait() until game and game:IsLoaded() local lp=SafeGetService('Players').LocalPlayer local char=lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart').CFrame=CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..")-char:WaitForChild('HumanoidRootPart').Position).Magnitude<10"
+			--qot="task.spawn(function() end) repeat wait() until game and game:IsLoaded() local lp=game:GetService('Players').LocalPlayer local char=lp.Character or lp.CharacterAdded:Wait() repeat char:WaitForChild('HumanoidRootPart',5).CFrame=CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..")-char:WaitForChild('HumanoidRootPart').Position).Magnitude<10"
+			qot="pcall(function() repeat task.wait() until game:IsLoaded() lp=game:GetService('Players').LocalPlayer local char=lp.Character or lp.CharacterAdded:Wait() local humRP=char:WaitForChild('HumanoidRootPart',5) repeat humRP.CFrame=CFrame.new("..tostring(hrp.CFrame)..") wait() until (Vector3.new("..tostring(hrp.Position)..")-humRP.Position).Magnitude<10 end)"
 		end
 		queueteleport(qot)
 		if #SafeGetService("Players"):GetPlayers() <=1 then
@@ -1958,8 +1947,10 @@ cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
 	if #SafeGetService("Players"):GetPlayers() <=1 then
 		SafeGetService("Players").LocalPlayer:Kick("Rejoining...")
 		wait()
+		SafeGetService("TeleportService"):TeleportCancel()
 		SafeGetService("TeleportService"):Teleport(PlaceId)
 	else
+		SafeGetService("TeleportService"):TeleportCancel()
 		SafeGetService("TeleportService"):TeleportToPlaceInstance(PlaceId,JobId,SafeGetService("Players").LocalPlayer)
 	end
 
@@ -13458,6 +13449,8 @@ NACaller(function()
 
 	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
+
+queueteleport(loader)
 
 print([[
 	╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
