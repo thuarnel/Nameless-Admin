@@ -3849,7 +3849,7 @@ cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"}
 		pos=CFrame.new(pos.X,pos.Y,pos.Z)
 		getRoot(getChar()).CFrame=pos
 	end)
-	tool.Parent=SafeGetService("Players").LocalPlayer.Backpack
+	tool.Parent=getBp()
 	wait(0.07)
 	local TweenService=SafeGetService("TweenService")
 	local UserInputService=SafeGetService("UserInputService")
@@ -3861,7 +3861,7 @@ cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"}
 	function onActivated()
 		local mouse=Players.LocalPlayer:GetMouse()
 		local pos=mouse.Hit+Vector3.new(0,2.5,0)
-		local humanoidRootPart=Players.LocalPlayer.getRoot(character)
+		local humanoidRootPart=getRoot(getChar())
 
 		local tweenInfo=TweenInfo.new(
 			1,
@@ -3880,7 +3880,7 @@ cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"}
 	end
 
 	tool.Activated:Connect(onActivated)
-	tool.Parent=Players.LocalPlayer.Backpack
+	tool.Parent=getBp()
 end)
 
 cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc with this. A really good and helpful script."},function()
@@ -4579,7 +4579,7 @@ cmd.add({"creep","ctp","scare"},{"ctp <player> (creep,scare)","Teleports from a 
 	wait()
 	tweenService,tweenInfo=SafeGetService("TweenService"),TweenInfo.new(1000,Enum.EasingStyle.Linear)
 
-	tween=tweenService:Create(SafeGetService("Players")["LocalPlayer"].getRoot(character),tweenInfo,{CFrame=CFrame.new(0,10000,0)})
+	tween=tweenService:Create(getRoot(getChar()),tweenInfo,{CFrame=CFrame.new(0,10000,0)})
 	tween:Play()
 	wait(1.5)
 	tween:Pause()
@@ -6071,7 +6071,7 @@ end)
 cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools script"},function()
 	local oldpos=getRoot(getChar()).CFrame
 	local boombox=getChar():FindFirstChildOfClass'Tool' or SafeGetService("Players").LocalPlayer.Backpack:FindFirstChildOfClass'Tool'
-	getChar():SetPrimaryPartCFrame(LocalPlayer.getRoot(character).CFrame+Vector3.new(1000))
+	getChar():SetPrimaryPartCFrame(getRoot(LocalPlayer.Character).CFrame+Vector3.new(1000))
 	boombox.Parent=getChar()
 	wait(.3)
 	boombox.Parent=SafeGetService("Workspace")
@@ -7544,7 +7544,7 @@ cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 
 	if type(Target)=="string" then return end
 
-	local oldpos=lp.getRoot(character).CFrame
+	local oldpos=getRoot(lp.Character).CFrame
 	local oldhh=lp.Character.Humanoid.HipHeight
 
 	local carpetAnim=Instance.new("Animation")
@@ -7567,9 +7567,9 @@ cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 					pos.x=pos.x+tTorso.Velocity.X / 2
 					pos.y=pos.y+tTorso.Velocity.Y / 2
 					pos.z=pos.z+tTorso.Velocity.Z / 2
-					lp.getRoot(character).CFrame=CFrame.new(Vector3.new(pos.x,pos.y,pos.z))
+					getRoot(getChar()).CFrame=CFrame.new(Vector3.new(pos.x,pos.y,pos.z))
 				else
-					lp.getRoot(character).CFrame=tTorso.CFrame
+					getRoot(getChar()).CFrame=tTorso.CFrame
 				end
 			end)
 		end)
@@ -7586,7 +7586,7 @@ cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 	wait(1)
 	lp.Character.Humanoid.Health=0
 	wait(SafeGetService("Players").RespawnTime+.6)
-	lp.getRoot(character).CFrame=oldpos
+	getRoot(getChar()).CFrame=oldpos
 end)
 
 cmd.add({"toolfling","push"},{"toolfling (push)","Tool fling"},function(plr)
@@ -8098,7 +8098,7 @@ cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSE
 	lib.LocalPlayerChat (A_1,A_2)
 	wait(1)
 	LocalPlayer=SafeGetService("Players").LocalPlayer
-	LocalPlayer.Character.Humanoid:MoveTo(LocalPlayer.getRoot(character).Position+LocalPlayer.getRoot(character).CFrame.lookVector*10)
+	LocalPlayer.Character.Humanoid:MoveTo(getRoot(getChar()).Position+getRoot(getChar()).CFrame.lookVector*10)
 	getChar().Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	wait(0.5)
 	getChar().Humanoid.Health=0
@@ -8649,7 +8649,7 @@ cmd.add({"headsit"},{"headsit <player>","Head sit."},function(...)
 
 	headSit=RunService.Heartbeat:Connect(function()
 		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(getChar()) and getChar():FindFirstChildOfClass('Humanoid').Sit==true then
-			getRoot(getChar()).CFrame=players.getRoot(character).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,1.6,0.4)
+			getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,1.6,0.4)
 		else
 			headSit:Disconnect()
 		end
@@ -8674,7 +8674,7 @@ cmd.add({"headstand"},{"headstand <player>","Stand on someones head"},function(.
 	end)
 	headSit=RunService.Heartbeat:Connect(function()
 		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(getChar()) then
-			getRoot(getChar()).CFrame=players.getRoot(character).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,4.6,0.4)
+			getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,4.6,0.4)
 		else
 			headSit:Disconnect()
 		end
@@ -9510,11 +9510,11 @@ cmd.add({"loopbanish","looppunish","loopjail"},{"loopbanish <player> (loopbanish
 			Player.Character.Humanoid:EquipTool(v)
 		end
 		task.wait()
-		Player.getRoot(character).CFrame=Players[Target].getRoot(character).CFrame
+		getRoot(character).CFrame=getRoot(Players[Target].Character).CFrame
 		task.wait()
-		Player.getRoot(character).CFrame=Players[Target].getRoot(character).CFrame
+		getRoot(character).CFrame=getRoot(Players[Target].Character).CFrame
 		task.wait(0.7)
-		Player.getRoot(character).CFrame=CFrame.new(Vector3.new(-100000,1000000000000000000000,-100000))
+		getRoot(character).CFrame=CFrame.new(Vector3.new(-100000,1000000000000000000000,-100000))
 		task.wait()
 		task.wait(4)
 		getChar().Humanoid.Health=0
@@ -12041,7 +12041,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		invisDied:Disconnect()
 		CF=SafeGetService("Workspace").CurrentCamera.CFrame
 		Character=Character
-		local CF_1=Player.getRoot(character).CFrame
+		local CF_1=getRoot(Player.Character).CFrame
 		getRoot(character).CFrame=CF_1
 		InvisibleCharacter.Parent=SafeGetService("Lighting")
 		Player.Character=Character
