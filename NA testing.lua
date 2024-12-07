@@ -2659,7 +2659,7 @@ cmd.add({"reach"},{"reach {number}","Sword reach"},function(reachsize)
 	Tool.Handle.Size=Vector3.new(Tool.Handle.Size.X,Tool.Handle.Size.Y,reachsize)
 end)
 
-cmd.add({"boxreach"},{"boxreach {number}","Increases the hitbox of your held tool in a box shape"},function(reachsize)
+cmd.add({"boxreach", "aura"},{"boxreach {number} (aura)","Increases the hitbox of your held tool in a box shape"},function(reachsize)
 	local reachsize=reachsize or 25
 	local Tool=getChar():FindFirstChildOfClass("Tool") or getBp():FindFirstChildOfClass("Tool")
 	if Tool:FindFirstChild("OGSize3") then
