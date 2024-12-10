@@ -10968,7 +10968,7 @@ cmd.add({"unloopday","unlday"},{"unloopday (unlday)","No more sunshine"},functio
 	end
 end)
 
-local fbCon,fbCon1,fbCon2,fbCon3,fbCon4=nil,nil,nil,nil,nil
+fbCon,fbCon1,fbCon2,fbCon3,fbCon4=nil,nil,nil,nil,nil
 
 cmd.add({"loopfullbright","loopfb","lfb"},{"loopfullbright (loopfb,lfb)","Sunshiiiine!"},function()
 	if fbCon then
@@ -11029,7 +11029,7 @@ cmd.add({"unloopfullbright","unloopfb","unlfb"},{"unloopfullbright (unloopfb,unl
 end)
 
 
-local nightCon,nightCon1,nightCon2,nightCon3,nightCon4=nil,nil,nil,nil,nil
+nightCon,nightCon1,nightCon2,nightCon3,nightCon4=nil,nil,nil,nil,nil
 
 cmd.add({"loopnight","loopn","ln"},{"loopnight (loopn,ln)","Moonlight."},function()
 	if nightCon then
@@ -11089,7 +11089,7 @@ cmd.add({"unloopnight","unloopn","unln"},{"unloopnight (unloopn,unln)","No more 
 	end
 end)
 
-local fogLoop=nil
+fogLoop=nil
 fogCon=nil
 
 cmd.add({"loopnofog","lnofog","lnf", "loopnf"},{"loopnofog (lnofog,lnf,loopnf)","See clearly forever!"},function()
