@@ -3908,7 +3908,7 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 end)
 
 cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/ModuleScript's"},function()
-	task.spawn(function()
+	--[[task.spawn(function()
 		assert(getscriptbytecode, "Exploit not supported.")
 
 		local API: string = "http://api.plusgiant5.com/"
@@ -3918,7 +3918,7 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 			local success: boolean, bytecode: string = pcall(getscriptbytecode, scriptPath)
 
 			if (not success) then
-				return -- Failed to get script bytecode, error:\n\n--[[\n{bytecode}\n--]]
+				return
 			end
 
 			local time_elapsed = os.clock() - last_call
@@ -3936,7 +3936,7 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 			last_call = os.clock()
 
 			if (httpResult.StatusCode ~= 200) then
-				return -- Error occured while requesting the API, error:\n\n--[[\n{httpResult.Body}\n--]]
+				return
 			else
 				return httpResult.Body
 			end
@@ -3954,7 +3954,8 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 		getgenv().disassemble = disassemble
 
 		-- by lovrewe
-	end)
+	end)]]
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/WompWomp.lua"))()
 end)
 
 cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"}, function(thingy)
