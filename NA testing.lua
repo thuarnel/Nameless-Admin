@@ -147,15 +147,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1="Added Tween Fly commands ('tfly','tweenfly')";
-	log2="Fixed small bugs";
-	log3="Updated 'Antivoid' command";
-	log4="Updated 'fly' command (bypasses most anticheats on games)";
-	log5="Added 'serverlist' command (shows a list of servers to join in)";
-}
+local updLogs={}
 
-local updDate="12/2/2024" --month,day,year
+local updDate="1/16/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 local cloneref = cloneref or blankfunction
