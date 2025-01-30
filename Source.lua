@@ -118,6 +118,11 @@ end
 local prefixCheck=";"
 if FileSupport then
 	prefixCheck=readfile("Nameless-Admin/Prefix.txt",';')
+	if prefixCheck:match("[a-zA-Z0-9]") then
+		prefixCheck=";"
+		writefile("Nameless-Admin/Prefix.txt",';')
+		DoNotif("Your prefix has been reset to the default (;) because it contained letters or numbers",5)
+	end
 else
 	prefixCheck=";"
 	DoNotif("Your exploit does not support read/write file",5)
@@ -1336,18 +1341,20 @@ end)
 		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminPlugin"))();
 	end)]]
 
-cmd.add({"prefix"},{"prefix <prefix>","Changes the admin prefix"},function(...)
-	local PrefixChange=(...)
-
-	if PrefixChange==nil then
-		DoNotif("Please enter a valid prefix",5)
-	elseif PrefixChange=="p" or PrefixChange=="[" or PrefixChange=="P" then
-		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?",5)
-	else
-		opt.prefix=PrefixChange
-		DoNotif("Prefix set to: "..PrefixChange,5)
-	end
-end)
+	cmd.add({"prefix"},{"prefix <prefix>","Changes the admin prefix"},function(...)
+		local PrefixChange = (...)
+	
+		if PrefixChange == nil then
+			DoNotif("Please enter a valid prefix", 5)
+		elseif PrefixChange:match("[a-zA-Z0-9]") then
+			DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.", 5)
+		elseif PrefixChange == "[" then
+			DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?", 5)
+		else
+			opt.prefix = PrefixChange
+			DoNotif("Prefix set to: " .. PrefixChange, 5)
+		end
+	end)
 
 
 cmd.add({"saveprefix"},{"saveprefix <prefix>","Saves the prefix to what u want"},function(...)
@@ -1356,7 +1363,9 @@ cmd.add({"saveprefix"},{"saveprefix <prefix>","Saves the prefix to what u want"}
 
 	if PrefixChange==nil then
 		DoNotif("Please enter a valid prefix",5)
-	elseif PrefixChange=="p" or PrefixChange=="[" or PrefixChange=="P" then
+	elseif PrefixChange:match("[a-zA-Z0-9]") then
+		DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.", 5)
+	elseif PrefixChange=="["then
 		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?",5)
 	else
 		writefile("Nameless-Admin/Prefix.txt",PrefixChange)

@@ -137,7 +137,7 @@ if FileSupport then
 	if prefixCheck:match("[a-zA-Z0-9]") then
 		prefixCheck=";"
 		writefile("Nameless-Admin/Prefix.txt",';')
-		DoNotif("Your prefix has been set back to default (;) due to it containing letters or numbers",5)
+		DoNotif("Your prefix has been reset to the default (;) because it contained letters or numbers",5)
 	end
 else
 	prefixCheck=";"
