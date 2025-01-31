@@ -154,7 +154,7 @@ local opt={
 --[[ Update Logs ]]--
 local updLogs={}
 
-local updDate="1/16/2025" --month,day,year
+local updDate="1/31/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 local cloneref = cloneref or blankfunction
@@ -3911,7 +3911,7 @@ cmd.add({"dex"},{"dex","Using this you can see the parts / guis / scripts etc wi
 end)
 
 cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/ModuleScript's"},function()
-	--[[task.spawn(function()
+	task.spawn(function()
 		assert(getscriptbytecode, "Exploit not supported.")
 
 		local API: string = "http://api.plusgiant5.com/"
@@ -3957,8 +3957,8 @@ cmd.add({"Decompiler"},{"Decompiler","Allows you to decompile LocalScript/Module
 		getgenv().disassemble = disassemble
 
 		-- by lovrewe
-	end)]]
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/WompWomp.lua"))()
+	end)
+	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/WompWomp.lua"))()
 end)
 
 cmd.add({"getidfromusername","gidu"},{"getidfromusername (gidu)","Copy a user's UserId by Username"}, function(thingy)
