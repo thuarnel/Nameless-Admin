@@ -4687,7 +4687,7 @@ local hastheyfixedit=nil
 
 cmd.add({"saveinstance","savegame"},{"saveinstance (savegame)","if it bugs out try removing stuff from your AutoExec folder"},function()
 	--saveinstance({})
-	hastheyfixedit=loadstring(game:HttpGet("https://github.com/MuhXd/Roblox-mobile-script/blob/main/Fluxus/SaveInstanceFix.lua?raw=thiswillreturnfalseuntilltheyfixit"))();
+	hastheyfixedit=loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))();
 
 	local Params={
 		RepoURL="https://raw.githubusercontent.com/luau/SynSaveInstance/main/",
@@ -13394,7 +13394,7 @@ if IsOnMobile then
 end
 
 --@ltseverydayyou (maxype)
---@MuhXd (Viper)
+--@Cosmella (Viper)
 
 --original by @qipu | loadstring(game:HttpGet("https://raw.githubusercontent.com/FilteringEnabled/NamelessAdmin/main/Source"))();
 
