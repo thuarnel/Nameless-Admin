@@ -8,7 +8,7 @@
   </a>&#8203; 
 <img src="https://github.com/Cosmella-v/Images/blob/main/1x1%20invis%20pixel.png?raw=true" width="10" height="1" alt="" />
   <a href="https://github.com/Cosmella-v">
-    <img src="https://img.shields.io/badge/Viper%20(@Cosmella-v)-darkgreen?logo=github&logoColor=white" alt="Viper's Github">
+    <img src="https://img.shields.io/badge/Viper%20(@Cosmella)-darkgreen?logo=github&logoColor=white" alt="Viper's Github">
   </a>&#8203;
 </div>
 
