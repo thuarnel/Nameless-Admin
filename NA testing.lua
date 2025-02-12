@@ -13423,8 +13423,6 @@ NACaller(function()
 	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
 
-queueteleport(loader)
-
 print([[
 	╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
 	┃┃╰╮┃┃        ┃┃          ┃╭━╮┃ ┃┃
