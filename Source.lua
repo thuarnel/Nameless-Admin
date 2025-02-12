@@ -136,9 +136,11 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={}
+local updLogs={
+	log1='fixed "fling" command';
+}
 
-local updDate="1/31/2025" --month,day,year
+local updDate="2/12/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
