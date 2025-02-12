@@ -13409,6 +13409,16 @@ NACaller(function()
 		DoNotif("Your Keybind Prefix: "..opt.prefix,10,adminName.." Keybind Prefix")
 		task.wait(5)
 		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
+
+		Notify({
+			Title = "Would you like to enabled QueueOnTeleport?",
+			Description = "With QueueOnTeleport "..adminName.." will automatically execute itself upon teleporting to a game or place.",
+			Duration = 3,
+			Buttons = {
+				{Text = "Yes", Callback = function() queueteleport(loader) end},
+				{Text = "No", Callback = function() end}
+			}
+		})
 	end)
 
 	cmdInput.PlaceholderText=adminName.." V"..curVer
