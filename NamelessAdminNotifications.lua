@@ -185,37 +185,75 @@ _G.Notifss = {
 		local Title = Properties.Title;
 		local Description = Properties.Description;
 		local Duration = Properties.Duration or 5;
-		if (Title) or (Description) then
-			local Y = Title and 26 or 0;
-			if (Description) then
-				local TextSize = TextService:GetTextSize(Description, DescriptionSettings.Size, DescriptionSettings.Font, Vector2.new(0, 0));
-				for i = 1, math.ceil(TextSize.X / MaxWidth) do
-					Y += TextSize.Y;
-				end
-				Y += 8;
+		local Buttons = Properties.Buttons or {};
+		local ButtonCount = #Buttons
+		local Y = Title and 26 or 0;
+
+		if (Description) then
+			local TextSize = TextService:GetTextSize(Description, DescriptionSettings.Size, DescriptionSettings.Font, Vector2.new(0, 0));
+			for i = 1, math.ceil(TextSize.X / MaxWidth) do
+				Y += TextSize.Y;
 			end
-			local NewLabel = Round2px();
-			NewLabel.Size = UDim2.new(1, 0, 0, Y);
-			NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects));
-			if (Title) then
-				local NewTitle = TitleLabel(Title);
-				NewTitle.Size = UDim2.new(1, -10, 0, 26);
-				NewTitle.Position = UDim2.fromOffset(10, 0);
-				NewTitle.Parent = NewLabel;
+			Y += 8;
+		end
+
+		if ButtonCount > 0 then
+			Y += 36 * ButtonCount
+		end
+
+		local NewLabel = Round2px();
+		NewLabel.Size = UDim2.new(1, 0, 0, Y);
+		NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects));
+
+		if (Title) then
+			local NewTitle = TitleLabel(Title);
+			NewTitle.Size = UDim2.new(1, -10, 0, 26);
+			NewTitle.Position = UDim2.fromOffset(10, 0);
+			NewTitle.Parent = NewLabel;
+		end
+
+		if (Description) then
+			local NewDescription = DescriptionLabel(Description);
+			NewDescription.TextWrapped = true;
+			NewDescription.Size = UDim2.fromScale(1, 1) + UDim2.fromOffset(-DescriptionPadding, Title and -26 or 0);
+			NewDescription.Position = UDim2.fromOffset(10, Title and 26 or 0);
+			NewDescription.TextYAlignment = Enum.TextYAlignment[Title and "Top" or "Center"];
+			NewDescription.Parent = NewLabel;
+		end
+
+		if ButtonCount > 0 then
+			local ButtonYPosition = Y - (ButtonCount * 36)
+			local clicked = false
+			for _, ButtonData in ipairs(Buttons) do
+				local Button = Instance.new("TextButton");
+				Button.Size = UDim2.new(1, -20, 0, 30);
+				Button.Position = UDim2.fromOffset(10, ButtonYPosition);
+				Button.Text = ButtonData.Text;
+				Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30);
+				Button.TextColor3 = Color3.fromRGB(255, 255, 255);
+				Button.Font = Enum.Font.Gotham;
+				Button.TextSize = 14;
+				Button.Parent = NewLabel;
+
+				Button.MouseButton1Click:Connect(function()
+					if not clicked then
+						clicked = true
+						ButtonData.Callback()
+						coroutine.wrap(FadeOutAfter)(NewLabel)
+					end
+				end)
+
+				ButtonYPosition = ButtonYPosition + 36
 			end
-			if (Description) then
-				local NewDescription = DescriptionLabel(Description);
-				NewDescription.TextWrapped = true;
-				NewDescription.Size = UDim2.fromScale(1, 1) + UDim2.fromOffset(-DescriptionPadding, Title and -26 or 0);
-				NewDescription.Position = UDim2.fromOffset(10, Title and 26 or 0);
-				NewDescription.TextYAlignment = Enum.TextYAlignment[Title and "Top" or "Center"];
-				NewDescription.Parent = NewLabel;
-			end
-			Shadow2px().Parent = NewLabel;
-			NewLabel.Parent = Container;
-			table.insert(InstructionObjects, {NewLabel, 0, false});
+		end
+
+		Shadow2px().Parent = NewLabel;
+		NewLabel.Parent = Container;
+		table.insert(InstructionObjects, {NewLabel, 0, false});
+
+		if ButtonCount == 0 then
 			coroutine.wrap(FadeOutAfter)(NewLabel, Duration);
 		end
-	end,	
+	end,
 }
 return _G.Notifss 
