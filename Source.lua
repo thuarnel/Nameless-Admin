@@ -138,6 +138,7 @@ local opt={
 --[[ Update Logs ]]--
 local updLogs={
 	log1='fixed "fling" command';
+	log2='Notifications have button options now (not that it matters)'
 }
 
 local updDate="2/12/2025" --month,day,year
@@ -196,11 +197,9 @@ local OrgDestroyHeight = game:GetService("Workspace").FallenPartsDestroyHeight
 local Watch=false
 local Admin={}
 _G.NAadminsLol={
-	156256804;--v3r
 	530829101;--Viper
 	229501685;--legshot
 	3470956640;--Bart3kk
-	1456118719;--zzz
 	817571515;--Aimlock
 	144324719;--Cosmic
 	1844177730;--glexinator
@@ -8968,7 +8967,6 @@ end)
 
 glueloop=nil
 cmd.add({"glue","loopgoto","lgoto"},{"glue <player> (loopgoto,lgoto)","Loop teleport to a player"},function(...)
-	glueloop=true
 	User=(...)
 	Target=getPlr(User)
 	if glueloop then glueloop:Disconnect() glueloop=nil end
@@ -13390,15 +13388,22 @@ NACaller(function()
 			DoNotif("Welcome to "..adminName.." V"..curVer.."\nUpdated On: "..updDate.."\nTime Taken To Load: "..loadedResults(NAresult),6,rngMsg().." "..hh)
 		end
 		--DoNotif(goof(),4,"Random Goofy Message")
-		DoNotif("Your Keybind Prefix: "..opt.prefix,10,adminName.." Keybind Prefix")
+		Notify({
+			Title = "Would you like to enabled QueueOnTeleport?",
+			Description = "With QueueOnTeleport "..adminName.." will automatically execute itself upon teleporting to a game or place.",
+			Duration = 3,
+			Buttons = {
+				{Text = "Yes", Callback = function() queueteleport(loader) end},
+				{Text = "No", Callback = function() end}
+			}
+		})
 		task.wait(5)
+		DoNotif("Your Keybind Prefix: "..opt.prefix,10,adminName.." Keybind Prefix")
 		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
 	end)
 
 	cmdInput.PlaceholderText=adminName.." V"..curVer
 end)
-
-queueteleport(loader)
 
 print([[
 	╭━╮ ╭╮        ╭╮          ╭━━━╮ ╭╮
