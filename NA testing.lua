@@ -13407,9 +13407,6 @@ NACaller(function()
 		end
 		--DoNotif(goof(),4,"Random Goofy Message")
 		DoNotif("Your Keybind Prefix: "..opt.prefix,10,adminName.." Keybind Prefix")
-		task.wait(5)
-		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
-
 		Notify({
 			Title = "Would you like to enabled QueueOnTeleport?",
 			Description = "With QueueOnTeleport "..adminName.." will automatically execute itself upon teleporting to a game or place.",
@@ -13419,6 +13416,8 @@ NACaller(function()
 				{Text = "No", Callback = function() end}
 			}
 		})
+		task.wait(5)
+		DoNotif('Added "updlog" command (displays any new changes added into '..adminName..')',3,"Info")
 	end)
 
 	cmdInput.PlaceholderText=adminName.." V"..curVer
