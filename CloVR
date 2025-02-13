@@ -1,25 +1,28 @@
---[[---------Settings---------]]--
+--[[---------Settings---------]] --
 local game = game
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 local sethidden = sethiddenproperty or set_hidden_property or set_hidden_prop
-coroutine.wrap(function()
-    while wait() do
-        sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
-        sethidden(Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+coroutine.wrap(
+    function()
+        while wait() do
+            sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
+            sethidden(Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+        end
     end
-end)()
-RunService.Stepped:Connect(function()
-sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
-Players.LocalPlayer.MaximumSimulationRadius = math.huge
-end)
+)()
+RunService.Stepped:Connect(
+    function()
+        sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
+        Players.LocalPlayer.MaximumSimulationRadius = math.huge
+    end
+)
 local bodyTransparency = 0 --Change the transparency of your character (0 - 1)
 local bodyVelocity = {-17.7, 0, -17.7} --Change your body parts velocity. First number value is the X value. Second number value is the Y value. Third number value is the Z value.
 local hatVelocity = {-17.7, 0, -17.7} --Change your accessory's velocity. First number value is the X value. Second number value is the Y value. Third number value is the Z value.
+ --
 --Velocity is not recommended to be (-17.7, 0, -17.7) in R15 since body parts often fall in R15.
---[[--------------------------]]--
-
-local player1 = Players.LocalPlayer
+--[[--------------------------]] local player1 = Players.LocalPlayer
 local character1 = player1.Character
 
 --Fake Character--
@@ -38,16 +41,18 @@ local player1 = Players.LocalPlayer
 local character1 = player1.Character
 local hrp = character1.HumanoidRootPart
 
-for i,v in pairs(character1:GetChildren()) do
+for i, v in pairs(character1:GetChildren()) do
     if v:IsA("LocalScript") then
         v:Destroy()
     end
 end
 
 local camera = workspace.CurrentCamera
-workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
-	camera = (workspace.CurrentCamera or workspace:FindFirstChild("Camera") or Instance.new("Camera"))
-end)
+workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(
+    function()
+        camera = (workspace.CurrentCamera or workspace:FindFirstChild("Camera") or Instance.new("Camera"))
+    end
+)
 
 local reanimFolder = Instance.new("Folder", character1)
 reanimFolder.Name = "FakeCharacter"
@@ -104,9 +109,10 @@ cHRP.Transparency = 1
 cHRP.CanCollide = false
 
 --Transparency
-for i,v in pairs(model:GetChildren()) do
+for i, v in pairs(model:GetChildren()) do
     if v:IsA("Part") and v.Name ~= "HumanoidRootPart" then
-        v.Transparency = 1--0.5
+        v.Transparency = 1
+     --0.5
     end
 end
 
@@ -178,37 +184,170 @@ headMesh.Scale = Vector3.new(1.25, 1.25, 1.25)
 local reanimation = model
 
 --Creating Attachments
-CreateAttachment(cHead, Vector3.new(0,0.60000002384186,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "HairAttachment")
-CreateAttachment(cHead, Vector3.new(0,0.60000002384186,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "HatAttachment")
-CreateAttachment(cHead, Vector3.new(0,0,-0.60000002384186), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "FaceFrontAttachment")
-CreateAttachment(cHead, Vector3.new(0,0,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "FaceCenterAttachment")
-CreateAttachment(cTorso, Vector3.new(0,1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "NeckAttachment")
-CreateAttachment(cTorso, Vector3.new(0,0,-0.5), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "BodyFrontAttachment")
-CreateAttachment(cTorso, Vector3.new(0,0,0.5), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "BodyBackAttachment")
-CreateAttachment(cTorso, Vector3.new(-1,1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "LeftCollarAttachment")
-CreateAttachment(cTorso, Vector3.new(1,1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "RightCollarAttachment")
-CreateAttachment(cTorso, Vector3.new(0,-1,-0.5), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "WaistFrontAttachment")
-CreateAttachment(cTorso, Vector3.new(0,-1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "WaistCenterAttachment")
-CreateAttachment(cTorso, Vector3.new(0,-1,0.5), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "WaistBackAttachment")
-CreateAttachment(cLArm, Vector3.new(0,1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "LeftShoulderAttachment")
-CreateAttachment(cLArm, Vector3.new(0,-1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "LeftGripAttachment")
-CreateAttachment(cRArm, Vector3.new(0,1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "RightShoulderAttachment")
-CreateAttachment(cRArm, Vector3.new(0,-1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "RightGripAttachment")
-CreateAttachment(cLLeg, Vector3.new(0,-1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "LeftFootAttachment")
-CreateAttachment(cRLeg, Vector3.new(0,-1,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "RightFootAttachment")
-CreateAttachment(cHRP, Vector3.new(0,0,0), Vector3.new(-0,0,0), Vector3.new(1,0,0), Vector3.new(0,1,0), "RootAttachment")
+CreateAttachment(
+    cHead,
+    Vector3.new(0, 0.60000002384186, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "HairAttachment"
+)
+CreateAttachment(
+    cHead,
+    Vector3.new(0, 0.60000002384186, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "HatAttachment"
+)
+CreateAttachment(
+    cHead,
+    Vector3.new(0, 0, -0.60000002384186),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "FaceFrontAttachment"
+)
+CreateAttachment(
+    cHead,
+    Vector3.new(0, 0, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "FaceCenterAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, 1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "NeckAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, 0, -0.5),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "BodyFrontAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, 0, 0.5),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "BodyBackAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(-1, 1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "LeftCollarAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(1, 1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "RightCollarAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, -1, -0.5),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "WaistFrontAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, -1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "WaistCenterAttachment"
+)
+CreateAttachment(
+    cTorso,
+    Vector3.new(0, -1, 0.5),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "WaistBackAttachment"
+)
+CreateAttachment(
+    cLArm,
+    Vector3.new(0, 1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "LeftShoulderAttachment"
+)
+CreateAttachment(
+    cLArm,
+    Vector3.new(0, -1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "LeftGripAttachment"
+)
+CreateAttachment(
+    cRArm,
+    Vector3.new(0, 1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "RightShoulderAttachment"
+)
+CreateAttachment(
+    cRArm,
+    Vector3.new(0, -1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "RightGripAttachment"
+)
+CreateAttachment(
+    cLLeg,
+    Vector3.new(0, -1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "LeftFootAttachment"
+)
+CreateAttachment(
+    cRLeg,
+    Vector3.new(0, -1, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "RightFootAttachment"
+)
+CreateAttachment(
+    cHRP,
+    Vector3.new(0, 0, 0),
+    Vector3.new(-0, 0, 0),
+    Vector3.new(1, 0, 0),
+    Vector3.new(0, 1, 0),
+    "RootAttachment"
+)
 
 --Cloning Hats (For Netless)
-for i,v in pairs(character1:GetChildren()) do
+for i, v in pairs(character1:GetChildren()) do
     if v:IsA("Accessory") then
         local clone = v:Clone()
         local weld = v.Handle:FindFirstChildWhichIsA("Weld")
         local weldPart1 = weld.Part1
         local newWeld = Instance.new("Weld")
-	newWeld.Parent = clone.Handle
+        newWeld.Parent = clone.Handle
         local CFrame0 = v.Handle.AccessoryWeld.C0
         local CFrame1 = v.Handle.AccessoryWeld.C1
-        
+
         clone.Handle:FindFirstChild("AccessoryWeld"):Destroy()
         clone.Parent = reanimation
         newWeld.Name = "AccessoryWeld"
@@ -236,7 +375,8 @@ local StudsOffset = 0 -- Character height (negative if you're too high)
 local Smoothness = .5 -- Character interpolation (0.1 - 1 = smooth - rigid)
 local AnchorCharacter = false -- Prevent physics from causing inconsistencies
 local HideCharacter = false -- Hide character on a platform
-local NoCollision = true-- Disable player collision
+local NoCollision = true
+ -- Disable player collision
 local ChatEnabled = true -- See chat on your left hand in-game
 local ChatLocalRange = 75 -- Local chat range
 local ViewportEnabled = true -- View nearby players in a frame
@@ -371,9 +511,9 @@ Script = function()
     end
     local function CreateAlignment(Limb, Part0)
         local Attachment0 = Instance.new("Attachment")
-	Attachment0.Parent = Part0 or Anchor
+        Attachment0.Parent = Part0 or Anchor
         local Attachment1 = Instance.new("Attachment")
-	Attachment1.Parent = Limb
+        Attachment1.Parent = Limb
         local Orientation = Instance.new("AlignOrientation")
         local Position = Instance.new("AlignPosition")
         Orientation.Attachment0 = Attachment1
@@ -382,20 +522,20 @@ Script = function()
         Orientation.MaxTorque = 20000
         Orientation.Responsiveness = 40
         Orientation.Parent = reanimation["HumanoidRootPart"]
-        
-        Orientation.Name = Limb.Name.."'s AlignRot"
+
+        Orientation.Name = Limb.Name .. "'s AlignRot"
         Orientation.MaxAngularVelocity = 100
-        
+
         Position.Attachment0 = Attachment1
         Position.Attachment1 = Attachment0
         Position.RigidityEnabled = false
         Position.MaxForce = 40000
         Position.Responsiveness = 40
         Position.Parent = reanimation["HumanoidRootPart"]
-        
-        Position.Name = Limb.Name.."'s AlignPos"
+
+        Position.Name = Limb.Name .. "'s AlignPos"
         Position.MaxVelocity = 100
-        
+
         Limb.Massless = false
         local Motor = GetMotorForLimb(Limb)
         if Motor then
@@ -528,7 +668,7 @@ Script = function()
                     local Attachment0 = reanimation:FindFirstChild(tostring(Attachment1), true)
                     local Orientation = Instance.new("AlignOrientation")
                     local Position = Instance.new("AlignPosition")
-                    
+
                     Orientation.Attachment0 = Attachment1
                     Orientation.Attachment1 = Attachment0
                     Orientation.RigidityEnabled = false
@@ -536,7 +676,7 @@ Script = function()
                     Orientation.MaxTorque = 20000
                     Orientation.Responsiveness = 40
                     Orientation.Parent = reanimation["Head"]
-                    
+
                     Position.Attachment0 = Attachment1
                     Position.Attachment1 = Attachment0
                     Position.RigidityEnabled = false
@@ -547,7 +687,6 @@ Script = function()
                 end
             end
         end
-        
     end
     --[[
  Movement
@@ -560,7 +699,7 @@ Script = function()
     VirtualRig:FindFirstChildOfClass("Humanoid").Health = 0
     --VirtualRig:FindFirstChild("HumanoidRootPart").CFrame = character1.HumanoidRootPart.CFrame
     VirtualRig:BreakJoints()
-    for i,v in pairs(VirtualRig:GetChildren()) do
+    for i, v in pairs(VirtualRig:GetChildren()) do
         if v:IsA("BasePart") then
             v.CFrame = character1.HumanoidRootPart.CFrame
         end
@@ -704,7 +843,9 @@ Script = function()
         Dist = math.clamp(Dist, 0, 5)
         local FootTarget =
             VirtualRig.LowerTorso.CFrame * CFrame.new(FootPlacementSettings.RightOffset) - Vector3.new(0, Dist, 0) +
-            Character:FindFirstChildOfClass("Humanoid").MoveDirection * (VirtualBody:FindFirstChildOfClass("Humanoid").WalkSpeed / 8) * 2
+            Character:FindFirstChildOfClass("Humanoid").MoveDirection *
+                (VirtualBody:FindFirstChildOfClass("Humanoid").WalkSpeed / 8) *
+                2
         if FootReady(VirtualRig.RightFoot, FootTarget) then
             VirtualRig.RightFoot.BodyPosition.Position = FootTarget.p
             VirtualRig.RightFoot.BodyGyro.CFrame = Flatten(VirtualRig.LowerTorso.CFrame)
@@ -712,7 +853,9 @@ Script = function()
         FootYield()
         local FootTarget =
             VirtualRig.LowerTorso.CFrame * CFrame.new(FootPlacementSettings.LeftOffset) - Vector3.new(0, Dist, 0) +
-            Character:FindFirstChildOfClass("Humanoid").MoveDirection * (VirtualBody:FindFirstChildOfClass("Humanoid").WalkSpeed / 8) * 2
+            Character:FindFirstChildOfClass("Humanoid").MoveDirection *
+                (VirtualBody:FindFirstChildOfClass("Humanoid").WalkSpeed / 8) *
+                2
         if FootReady(VirtualRig.LeftFoot, FootTarget) then
             VirtualRig.LeftFoot.BodyPosition.Position = FootTarget.p
             VirtualRig.LeftFoot.BodyGyro.CFrame = Flatten(VirtualRig.LowerTorso.CFrame)
@@ -980,7 +1123,7 @@ Script = function()
             Camera.CameraSubject = VirtualBody:FindFirstChildOfClass("Humanoid")
             if RagdollEnabled then
                 Character.HumanoidRootPart.CFrame = VirtualRig.UpperTorso.CFrame
-                --Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
+            --Character.HumanoidRootPart.Velocity = Vector3.new(0, 0, 0)
             end
             if not VRReady then
                 OnUserCFrameChanged(Enum.UserCFrame.Head, CFrame.new(0, 0, 0))
@@ -1104,7 +1247,7 @@ Script = function()
             VirtualRig:Destroy()
             VirtualBody:Destroy()
             if RagdollEnabled then
-                --Network:Unclaim()
+            --Network:Unclaim()
             end
             if AutoRun then
                 delay(
@@ -1185,45 +1328,45 @@ end
 Permadeath = function()
     local ch = Players.LocalPlayer.Character
     local prt = Instance.new("Model")
-	prt.Parent = workspace
+    prt.Parent = workspace
     local z1 = Instance.new("Part")
-	z1.Parent = prt
+    z1.Parent = prt
     z1.Name = "Torso"
     z1.CanCollide = false
     z1.Anchored = true
     local z2 = Instance.new("Part")
-	z2.Parent = prt
+    z2.Parent = prt
     z2.Name = "Head"
     z2.Anchored = true
     z2.CanCollide = false
     local z3 = Instance.new("Humanoid")
-	z3.Parent = prt
+    z3.Parent = prt
     z3.Name = "Humanoid"
     z1.Position = Vector3.new(0, 9999, 0)
     z2.Position = Vector3.new(0, 9991, 0)
     Players.LocalPlayer.Character = prt
-    wait(Players.RespawnTime/2)
+    wait(Players.RespawnTime / 2)
     -- warn("50%")
     Players.LocalPlayer.Character = ch
-    wait(Players.RespawnTime/2 + 0.5)
+    wait(Players.RespawnTime / 2 + 0.5)
     -- warn("100%")
 end
 Respawn = function()
     local ch = Players.LocalPlayer.Character
     local prt = Instance.new("Model")
-	prt.Parent = workspace
+    prt.Parent = workspace
     local z1 = Instance.new("Part")
-	z1.Parent = prt
+    z1.Parent = prt
     z1.Name = "Torso"
     z1.CanCollide = false
     z1.Anchored = true
     local z2 = Instance.new("Part")
-	z2.Parent = prt
+    z2.Parent = prt
     z2.Name = "Head"
     z2.Anchored = true
     z2.CanCollide = false
     local z3 = Instance.new("Humanoid")
-	z3.Parent = prt
+    z3.Parent = prt
     z3.Name = "Humanoid"
     z1.Position = Vector3.new(0, 9999, 0)
     z2.Position = Vector3.new(0, 9991, 0)
@@ -1249,7 +1392,8 @@ ChatHUDFunc = function()
     local Local = ChatHUD.Local
     local Camera = workspace.CurrentCamera
     Template.Parent = nil
-    ChatHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+    ChatHUD.Parent =
+        gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
     --[[
  Code
  --]]
@@ -1339,7 +1483,9 @@ ChatHUDFunc = function()
     local ChatPart = ChatHUD.Part
     ChatHUD.Adornee = ChatPart
     if VRReady then
-        ChatHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+        ChatHUD.Parent =
+            gethui() or
+            (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
         ChatHUD.Enabled = true
         ChatHUD.AlwaysOnTop = true
         local OnInput =
@@ -1391,7 +1537,8 @@ ViewHUDFunc = function()
     local Viewport = ViewHUD.Viewport
     local Viewcam = Instance.new("Camera")
     local ViewPart = ViewHUD.Part
-    ViewHUD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+    ViewHUD.Parent =
+        gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
     Viewcam.Parent = Viewport
     Viewcam.CameraType = Enum.CameraType.Scriptable
     Viewport.CurrentCamera = Viewcam
@@ -1517,120 +1664,124 @@ ViewHUDFunc = function()
             ViewHUD = nil
         end
     )
-    
+
     ------------------------Part of modification------------------------
-    for i,v in pairs(character1:GetDescendants()) do
+    for i, v in pairs(character1:GetDescendants()) do
         if v:IsA("Motor6D") then
             v:Destroy()
         end
     end
-    
+
     if character1:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15 then
         character1:BreakJoints()
     end
-    
-    for i,v in pairs(reanimation:GetChildren()) do
+
+    for i, v in pairs(reanimation:GetChildren()) do
         if v:IsA("BasePart") then
             v.Anchored = false
         end
     end
-    
-    game:GetService("RunService").Heartbeat:Connect(function()
-        for i,v in pairs(character1:GetChildren()) do
-            if v:IsA("BasePart") then
-                v.Velocity = Vector3.new(bodyVelocity[1], bodyVelocity[2], bodyVelocity[3])
-                if character1:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
-                    v.CFrame = reanimation:FindFirstChild(v.Name).CFrame
-                else
-                    --Head
-                    if character1:FindFirstChild("Head") then
-                        character1.Head.CFrame = reanimation.Head.CFrame
-                    end
-                    
-                    --Torso
-                    if character1:FindFirstChild("UpperTorso") then
-                        character1.UpperTorso.CFrame = reanimation.Torso.CFrame * CFrame.new(0, 0.185, 0)
-                    end
-                    if character1:FindFirstChild("LowerTorso") then
-                        character1.LowerTorso.CFrame = reanimation.Torso.CFrame * CFrame.new(0, -0.8, 0)
-                    end
-                    
-                    --HumanoidRootPart
-                    if character1:FindFirstChild("HumanoidRootPart") then
-                        character1.HumanoidRootPart.CFrame = cHRP.CFrame
-                    end
-                    
-                    --Left Arm
-                    if character1:FindFirstChild("LeftUpperArm") then
-                        character1.LeftUpperArm.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, 0.4, 0)
-                    end
-                    if character1:FindFirstChild("LeftLowerArm") then
-                        character1.LeftLowerArm.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, -0.19, 0)
-                    end
-                    if character1:FindFirstChild("LeftHand") then
-                        character1.LeftHand.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, -0.84, 0)
-                    end
-                    
-                    --Right Arm
-                    if character1:FindFirstChild("RightUpperArm") then
-                        character1.RightUpperArm.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, 0.4, 0)
-                    end
-                    if character1:FindFirstChild("RightLowerArm") then
-                        character1.RightLowerArm.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, -0.19, 0)
-                    end
-                    if character1:FindFirstChild("RightHand") then
-                        character1.RightHand.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, -0.84, 0)
-                    end
-                    
-                    --Left Leg
-                    if character1:FindFirstChild("LeftUpperLeg") then
-                        character1.LeftUpperLeg.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, 0.55, 0)
-                    end
-                    if character1:FindFirstChild("LeftLowerLeg") then
-                        character1.LeftLowerLeg.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, -0.19, 0)
-                    end
-                    if character1:FindFirstChild("LeftFoot") then
-                        character1.LeftFoot.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, -0.85, 0)
-                    end
-                    
-                    --Right Leg
-                    if character1:FindFirstChild("RightUpperLeg") then
-                        character1.RightUpperLeg.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, 0.55, 0)
-                    end
-                    if character1:FindFirstChild("RightLowerLeg") then
-                        character1.RightLowerLeg.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, -0.19, 0)
-                    end
-                    if character1:FindFirstChild("RightFoot") then
-                        character1.RightFoot.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, -0.85, 0)
+
+    game:GetService("RunService").Heartbeat:Connect(
+        function()
+            for i, v in pairs(character1:GetChildren()) do
+                if v:IsA("BasePart") then
+                    v.Velocity = Vector3.new(bodyVelocity[1], bodyVelocity[2], bodyVelocity[3])
+                    if character1:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R6 then
+                        v.CFrame = reanimation:FindFirstChild(v.Name).CFrame
+                    else
+                        --Head
+                        if character1:FindFirstChild("Head") then
+                            character1.Head.CFrame = reanimation.Head.CFrame
+                        end
+
+                        --Torso
+                        if character1:FindFirstChild("UpperTorso") then
+                            character1.UpperTorso.CFrame = reanimation.Torso.CFrame * CFrame.new(0, 0.185, 0)
+                        end
+                        if character1:FindFirstChild("LowerTorso") then
+                            character1.LowerTorso.CFrame = reanimation.Torso.CFrame * CFrame.new(0, -0.8, 0)
+                        end
+
+                        --HumanoidRootPart
+                        if character1:FindFirstChild("HumanoidRootPart") then
+                            character1.HumanoidRootPart.CFrame = cHRP.CFrame
+                        end
+
+                        --Left Arm
+                        if character1:FindFirstChild("LeftUpperArm") then
+                            character1.LeftUpperArm.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, 0.4, 0)
+                        end
+                        if character1:FindFirstChild("LeftLowerArm") then
+                            character1.LeftLowerArm.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, -0.19, 0)
+                        end
+                        if character1:FindFirstChild("LeftHand") then
+                            character1.LeftHand.CFrame = reanimation["Left Arm"].CFrame * CFrame.new(0, -0.84, 0)
+                        end
+
+                        --Right Arm
+                        if character1:FindFirstChild("RightUpperArm") then
+                            character1.RightUpperArm.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, 0.4, 0)
+                        end
+                        if character1:FindFirstChild("RightLowerArm") then
+                            character1.RightLowerArm.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, -0.19, 0)
+                        end
+                        if character1:FindFirstChild("RightHand") then
+                            character1.RightHand.CFrame = reanimation["Right Arm"].CFrame * CFrame.new(0, -0.84, 0)
+                        end
+
+                        --Left Leg
+                        if character1:FindFirstChild("LeftUpperLeg") then
+                            character1.LeftUpperLeg.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, 0.55, 0)
+                        end
+                        if character1:FindFirstChild("LeftLowerLeg") then
+                            character1.LeftLowerLeg.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, -0.19, 0)
+                        end
+                        if character1:FindFirstChild("LeftFoot") then
+                            character1.LeftFoot.CFrame = reanimation["Left Leg"].CFrame * CFrame.new(0, -0.85, 0)
+                        end
+
+                        --Right Leg
+                        if character1:FindFirstChild("RightUpperLeg") then
+                            character1.RightUpperLeg.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, 0.55, 0)
+                        end
+                        if character1:FindFirstChild("RightLowerLeg") then
+                            character1.RightLowerLeg.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, -0.19, 0)
+                        end
+                        if character1:FindFirstChild("RightFoot") then
+                            character1.RightFoot.CFrame = reanimation["Right Leg"].CFrame * CFrame.new(0, -0.85, 0)
+                        end
                     end
                 end
-            end
-            
-            if v:IsA("Accessory") then
-                v.Handle.Velocity = Vector3.new(hatVelocity[1], hatVelocity[2], hatVelocity[3])
-                v.Handle.CFrame = reanimation:FindFirstChild(v.Name).Handle.CFrame
-            end
-        end
-    end)
-    
-    game:GetService("RunService").Stepped:Connect(function()
-        for i,v in pairs(reanimation:GetChildren()) do
-            if v:IsA("BasePart") then
-                v.CanCollide = false
+
+                if v:IsA("Accessory") then
+                    v.Handle.Velocity = Vector3.new(hatVelocity[1], hatVelocity[2], hatVelocity[3])
+                    v.Handle.CFrame = reanimation:FindFirstChild(v.Name).Handle.CFrame
+                end
             end
         end
-    end)
-    
-    
+    )
+
+    game:GetService("RunService").Stepped:Connect(
+        function()
+            for i, v in pairs(reanimation:GetChildren()) do
+                if v:IsA("BasePart") then
+                    v.CanCollide = false
+                end
+            end
+        end
+    )
+
     --------------------------------------------------------------------
-    
+
     wait(9e9)
 end
 Script()
 wait(2)
 local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
-local character = reanimation--lp.Character
+local character = reanimation
+ --lp.Character
 local A0LL = Instance.new("Attachment")
 A0LL.Parent = character["Left Leg"]
 A0LL.Position = Vector3.new(0, 1, 0)
@@ -1663,13 +1814,17 @@ socket5.Attachment0 = A0H
 socket5.Attachment1 = A1H
 -----------------------------------------------------------
 wait(9e9)
-coroutine.wrap(function()
-    while wait() do
-        sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
-        sethidden(Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+coroutine.wrap(
+    function()
+        while wait() do
+            sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
+            sethidden(Players.LocalPlayer, "MaximumSimulationRadius", math.huge)
+        end
     end
-end)()
-RunService.Stepped:Connect(function()
-	sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
-	Players.LocalPlayer.MaximumSimulationRadius = math.huge
-end)
+)()
+RunService.Stepped:Connect(
+    function()
+        sethidden(Players.LocalPlayer, "SimulationRadius", math.huge)
+        Players.LocalPlayer.MaximumSimulationRadius = math.huge
+    end
+)
