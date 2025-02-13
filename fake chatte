@@ -51,7 +51,8 @@ local UIGradient = Instance.new("UIGradient")
 --Properties:
 
 ChatGUI.Name = "ChatGUI"
-ChatGUI.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+ChatGUI.Parent =
+    gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 ChatGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ChatGUI.ResetOnSpawn = false
 
@@ -378,57 +379,85 @@ Title.TextWrapped = true
 UICorner_15.CornerRadius = UDim.new(0, 9)
 UICorner_15.Parent = FakeChatUI
 
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
+UIGradient.Color =
+    ColorSequence.new {
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)),
+    ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))
+}
 UIGradient.Parent = FakeChatUI
 
-System.MouseButton1Click:Connect(function()
-PlayerBox.Text = "{System}"
-end)
+System.MouseButton1Click:Connect(
+    function()
+        PlayerBox.Text = "{System}"
+    end
+)
 
-Roblox.MouseButton1Click:Connect(function()
-    PlayerBox.Text = "[Roblox]"
-    end)
+Roblox.MouseButton1Click:Connect(
+    function()
+        PlayerBox.Text = "[Roblox]"
+    end
+)
 
-    builderman.MouseButton1Click:Connect(function()
+builderman.MouseButton1Click:Connect(
+    function()
         PlayerBox.Text = "[builderman]"
-        end)
+    end
+)
 
-        mrflimflam.MouseButton1Click:Connect(function()
-            PlayerBox.Text = "[mrflimflam]"
-            end)
+mrflimflam.MouseButton1Click:Connect(
+    function()
+        PlayerBox.Text = "[mrflimflam]"
+    end
+)
 
-            Hunt.MouseButton1Click:Connect(function()
-                MessageBox.Text = "Hunt down player 'Player', for a million robux."
-                PlayerBox.Text = "{System}"
-                end)
+Hunt.MouseButton1Click:Connect(
+    function()
+        MessageBox.Text = "Hunt down player 'Player', for a million robux."
+        PlayerBox.Text = "{System}"
+    end
+)
 
-                Shutdown.MouseButton1Click:Connect(function()
-                    MessageBox.Text = "Shutting down server in 2 minutes."
-                    PlayerBox.Text = "{System}"
-                    end)
+Shutdown.MouseButton1Click:Connect(
+    function()
+        MessageBox.Text = "Shutting down server in 2 minutes."
+        PlayerBox.Text = "{System}"
+    end
+)
 
-                    TeamJoin.MouseButton1Click:Connect(function()
-                        MessageBox.Text = "You are now on the 'Admin' team"
-                        PlayerBox.Text = "{Team}"
-                        end)
+TeamJoin.MouseButton1Click:Connect(
+    function()
+        MessageBox.Text = "You are now on the 'Admin' team"
+        PlayerBox.Text = "{Team}"
+    end
+)
 
-                        FriendJoined.MouseButton1Click:Connect(function()
-                            MessageBox.Text = "Your friend Name has joined the experience"
-                            PlayerBox.Text = "{System}"
-                            end)    
+FriendJoined.MouseButton1Click:Connect(
+    function()
+        MessageBox.Text = "Your friend Name has joined the experience"
+        PlayerBox.Text = "{System}"
+    end
+)
 
-                            ChatButton.MouseButton1Click:Connect(function()
-    local A_1 = NameBox.Text.."                                                                                                                             "..""..PlayerBox.Text..": ".. MessageBox.Text
-                                local A_2 = "All"
-								if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-									game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
-									else
-							  game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1,A_2)
-								 end
-                            end)
-                            
-                            Exit.MouseButton1Click:Connect(function()
-                            ChatGUI:Destroy()
-                            end)
-                            
-                            
+ChatButton.MouseButton1Click:Connect(
+    function()
+        local A_1 =
+            NameBox.Text ..
+            "                                                                                                                             " ..
+                "" .. PlayerBox.Text .. ": " .. MessageBox.Text
+        local A_2 = "All"
+        if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
+            game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync(A_1)
+        else
+            game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(A_1, A_2)
+        end
+    end
+)
+
+Exit.MouseButton1Click:Connect(
+    function()
+        ChatGUI:Destroy()
+    end
+)
