@@ -19,7 +19,8 @@ local scroll = Instance.new("ScrollingFrame")
 local uilist = Instance.new("UIListLayout")
 
 screenxD.Name = "eternalness7"
-screenxD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+screenxD.Parent =
+    gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
 screenxD.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = screenxD
@@ -30,12 +31,12 @@ Frame.BorderSizePixel = 0
 Frame.Position = UDim2.new(0.651976228, 0, 0.542930365, 0)
 Frame.Size = UDim2.new(0, 402, 0, 262)
 
-local drag = Instance.new("Frame",screenxD)
-drag.BackgroundColor3 = Color3.fromRGB(114,137,218)
+local drag = Instance.new("Frame", screenxD)
+drag.BackgroundColor3 = Color3.fromRGB(114, 137, 218)
 drag.BorderSizePixel = 1
 drag.BackgroundTransparency = 1
-drag.Position = UDim2.new(0.107,0,0.216,0)
-drag.Size = UDim2.new(0,256,0,20)
+drag.Position = UDim2.new(0.107, 0, 0.216, 0)
+drag.Size = UDim2.new(0, 256, 0, 20)
 
 Container.Name = "Container"
 Container.Parent = Frame
@@ -51,7 +52,12 @@ Container.Size = UDim2.new(1, -10, 1.00769234, -30)
 UICorner.CornerRadius = UDim.new(0, 9)
 UICorner.Parent = Container
 
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
+UIGradient.Color =
+    ColorSequence.new {
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)),
+    ColorSequenceKeypoint.new(0.50, Color3.fromRGB(12, 4, 20)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))
+}
 UIGradient.Parent = Container
 
 Topbar.Name = "Topbar"
@@ -105,8 +111,8 @@ Minimize.TextSize = 18.000
 ImageLabel_2.Parent = Minimize
 ImageLabel_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ImageLabel_2.BackgroundTransparency = 1.000
-ImageLabel_2.Position = UDim2.new(-0.448, 0,0, 0)
-ImageLabel_2.Size = UDim2.new(0, 12,0, 15)
+ImageLabel_2.Position = UDim2.new(-0.448, 0, 0, 0)
+ImageLabel_2.Size = UDim2.new(0, 12, 0, 15)
 ImageLabel_2.Image = "http://www.roblox.com/asset/?id=10555881849"
 ImageLabel_2.ImageColor3 = Color3.fromRGB(12, 4, 20)
 ImageLabel_2.ImageTransparency = 0.500
@@ -122,8 +128,8 @@ TopBar.Size = UDim2.new(0, 186, 0, 16)
 ImageLabel_3.Parent = TopBar
 ImageLabel_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 ImageLabel_3.BackgroundTransparency = 1.000
-ImageLabel_3.Position = UDim2.new(1, 0,0.059, 0)
-ImageLabel_3.Size = UDim2.new(0, 12,0, 15)
+ImageLabel_3.Position = UDim2.new(1, 0, 0.059, 0)
+ImageLabel_3.Size = UDim2.new(0, 12, 0, 15)
 ImageLabel_3.Image = "http://www.roblox.com/asset/?id=8650484523"
 ImageLabel_3.ImageColor3 = Color3.fromRGB(12, 4, 20)
 ImageLabel_3.ImageTransparency = 0.500
@@ -154,7 +160,14 @@ Title.TextWrapped = true
 UICorner_2.CornerRadius = UDim.new(0, 9)
 UICorner_2.Parent = Frame
 
-UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)), ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))}
+UIGradient_2.Color =
+    ColorSequence.new {
+    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(12, 4, 20)),
+    ColorSequenceKeypoint.new(0.38, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(0.52, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(0.68, Color3.fromRGB(4, 4, 4)),
+    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(12, 4, 20))
+}
 UIGradient_2.Parent = Frame
 
 scroll.Parent = Frame
@@ -176,148 +189,193 @@ uilist.SortOrder = Enum.SortOrder.LayoutOrder
 uilist.Padding = UDim.new(0, 3)
 
 local function clicky()
-	Exit.MouseButton1Click:Connect(function()
-		Exit.Parent.Parent.Parent:Destroy()
-	end)
+    Exit.MouseButton1Click:Connect(
+        function()
+            Exit.Parent.Parent.Parent:Destroy()
+        end
+    )
 end
 coroutine.wrap(clicky)()
 local function itouch()
-	local UserInputService = game:GetService("UserInputService")
-	local runService = (game:GetService("RunService"));
-	
-	local gui = Frame
-	
-	local dragging
-	local dragInput
-	local dragStart
-	local startPos
-	
-	function Lerp(a, b, m)
-		return a + (b - a) * m
-	end;
-	
-	local lastMousePos
-	local lastGoalPos
-	local DRAG_SPEED = (8);
-	function Update(dt)
-		if not (startPos) then return end;
-		if not (dragging) and (lastGoalPos) then
-			gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED))
-			return 
-		end;
-	
-		local delta = (lastMousePos - UserInputService:GetMouseLocation())
-		local xGoal = (startPos.X.Offset - delta.X);
-		local yGoal = (startPos.Y.Offset - delta.Y);
-		lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
-		gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
-	end;
-	
-	gui.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			dragging = true
-			dragStart = input.Position
-			startPos = gui.Position
-			lastMousePos = UserInputService:GetMouseLocation()
-	
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragging = false
-				end
-			end)
-		end
-	end)
-	
-	gui.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
-	end)
-	
-	runService.Heartbeat:Connect(Update)
+    local UserInputService = game:GetService("UserInputService")
+    local runService = (game:GetService("RunService"))
+
+    local gui = Frame
+
+    local dragging
+    local dragInput
+    local dragStart
+    local startPos
+
+    function Lerp(a, b, m)
+        return a + (b - a) * m
+    end
+
+    local lastMousePos
+    local lastGoalPos
+    local DRAG_SPEED = (8)
+    function Update(dt)
+        if not (startPos) then
+            return
+        end
+        if not (dragging) and (lastGoalPos) then
+            gui.Position =
+                UDim2.new(
+                startPos.X.Scale,
+                Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED),
+                startPos.Y.Scale,
+                Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED)
+            )
+            return
+        end
+
+        local delta = (lastMousePos - UserInputService:GetMouseLocation())
+        local xGoal = (startPos.X.Offset - delta.X)
+        local yGoal = (startPos.Y.Offset - delta.Y)
+        lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
+        gui.Position =
+            UDim2.new(
+            startPos.X.Scale,
+            Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED),
+            startPos.Y.Scale,
+            Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED)
+        )
+    end
+
+    gui.InputBegan:Connect(
+        function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                dragging = true
+                dragStart = input.Position
+                startPos = gui.Position
+                lastMousePos = UserInputService:GetMouseLocation()
+
+                input.Changed:Connect(
+                    function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragging = false
+                        end
+                    end
+                )
+            end
+        end
+    )
+
+    gui.InputChanged:Connect(
+        function(input)
+            if
+                input.UserInputType == Enum.UserInputType.MouseMovement or
+                    input.UserInputType == Enum.UserInputType.Touch
+             then
+                dragInput = input
+            end
+        end
+    )
+
+    runService.Heartbeat:Connect(Update)
 end
 coroutine.wrap(itouch)()
 
 local UIS = game:GetService("UserInputService")
-local function dragify(Frame,boool)
-	local frametomove = Frame
-	local dragToggle,dragInput,dragStart,startPos
-	local dragSpeed = 0
-	local function updateInput(input)
-		local Delta = input.Position - dragStart
-		frametomove.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-	end
-	Frame.InputBegan:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and UIS:GetFocusedTextBox() == nil then
-			dragToggle = true
-			dragStart = input.Position
-			startPos = frametomove.Position
-			input.Changed:Connect(function()
-				if input.UserInputState == Enum.UserInputState.End then
-					dragToggle = false
-				end
-			end)	
-		end
-	end)
-	Frame.InputChanged:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-			dragInput = input
-		end
-	end)
-	UIS.InputChanged:Connect(function(input)
-		if input == dragInput and dragToggle then
-			updateInput(input)
-		end
-	end)
+local function dragify(Frame, boool)
+    local frametomove = Frame
+    local dragToggle, dragInput, dragStart, startPos
+    local dragSpeed = 0
+    local function updateInput(input)
+        local Delta = input.Position - dragStart
+        frametomove.Position =
+            UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
+    end
+    Frame.InputBegan:Connect(
+        function(input)
+            if
+                (input.UserInputType == Enum.UserInputType.MouseButton1 or
+                    input.UserInputType == Enum.UserInputType.Touch) and
+                    UIS:GetFocusedTextBox() == nil
+             then
+                dragToggle = true
+                dragStart = input.Position
+                startPos = frametomove.Position
+                input.Changed:Connect(
+                    function()
+                        if input.UserInputState == Enum.UserInputState.End then
+                            dragToggle = false
+                        end
+                    end
+                )
+            end
+        end
+    )
+    Frame.InputChanged:Connect(
+        function(input)
+            if
+                input.UserInputType == Enum.UserInputType.MouseMovement or
+                    input.UserInputType == Enum.UserInputType.Touch
+             then
+                dragInput = input
+            end
+        end
+    )
+    UIS.InputChanged:Connect(
+        function(input)
+            if input == dragInput and dragToggle then
+                updateInput(input)
+            end
+        end
+    )
 end
 dragify(drag)
 
 local function createbutton(id)
-	local str = string.match(tostring(id) , "%d+")
-	local button = Instance.new("TextButton",scroll)
-	button.BorderSizePixel = 0
-	button.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
-	button.BackgroundTransparency = 0.9
-	button.Size = UDim2.new(1,0,0,50)
-	button.Text = ""
-	local name = Instance.new("TextLabel",button)
-	name.BackgroundTransparency = 1
-	name.Size = UDim2.new(1,0,0.5,0)
-	name.TextSize = 14
-	name.Font = Enum.Font.Gotham
-	name.TextColor3 = Color3.fromRGB(255,255,255)
-	name.TextXAlignment = Enum.TextXAlignment.Center
-	local id = name:Clone()
-	id.Parent = button
-	id.AnchorPoint = Vector2.new(0,1)
-	id.Position = UDim2.new(0,0,1,0)
-	id.Text = str
-	name.Text = game:GetService("MarketplaceService"):GetProductInfo(tonumber(str)).Name
-	button.Activated:Connect(function()
-		setclipboard(str)
-	end)
+    local str = string.match(tostring(id), "%d+")
+    local button = Instance.new("TextButton", scroll)
+    button.BorderSizePixel = 0
+    button.BackgroundColor3 = Color3.fromRGB(12, 4, 20)
+    button.BackgroundTransparency = 0.9
+    button.Size = UDim2.new(1, 0, 0, 50)
+    button.Text = ""
+    local name = Instance.new("TextLabel", button)
+    name.BackgroundTransparency = 1
+    name.Size = UDim2.new(1, 0, 0.5, 0)
+    name.TextSize = 14
+    name.Font = Enum.Font.Gotham
+    name.TextColor3 = Color3.fromRGB(255, 255, 255)
+    name.TextXAlignment = Enum.TextXAlignment.Center
+    local id = name:Clone()
+    id.Parent = button
+    id.AnchorPoint = Vector2.new(0, 1)
+    id.Position = UDim2.new(0, 0, 1, 0)
+    id.Text = str
+    name.Text = game:GetService("MarketplaceService"):GetProductInfo(tonumber(str)).Name
+    button.Activated:Connect(
+        function()
+            setclipboard(str)
+        end
+    )
 end
 
 local animationtabl = {}
 
 while true do
-	local localPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
-	if localPlayer then
-		local a = localPlayer:GetPlayingAnimationTracks()
-		for i, track in pairs(a) do
-			task.spawn(function()
-				local pass = true
-				for _,v in pairs(animationtabl) do
-					if v == track.Animation.AnimationId then
-						pass = false
-					end
-				end
-				if pass then
-					table.insert(animationtabl,track.Animation.AnimationId)
-					createbutton(track.Animation.AnimationId)
-				end
-			end)
-		end
-	end
-	task.wait()
+    local localPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("Humanoid")
+    if localPlayer then
+        local a = localPlayer:GetPlayingAnimationTracks()
+        for i, track in pairs(a) do
+            task.spawn(
+                function()
+                    local pass = true
+                    for _, v in pairs(animationtabl) do
+                        if v == track.Animation.AnimationId then
+                            pass = false
+                        end
+                    end
+                    if pass then
+                        table.insert(animationtabl, track.Animation.AnimationId)
+                        createbutton(track.Animation.AnimationId)
+                    end
+                end
+            )
+        end
+    end
+    task.wait()
 end
