@@ -5599,7 +5599,7 @@ cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera
 				x = x + direction.X * speed
 			end
 			if direction.Z ~= 0 then
-				z = z - direction.Z * speed
+				z = z + direction.Z * speed
 			end
 		end
 
