@@ -241,7 +241,9 @@ local camera=game:GetService("Workspace").CurrentCamera
 local camtype=camera.CameraType
 local Commands,Aliases={},{}
 local player,plr,lp=game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer
-local ctrlModule=require(game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerScripts"):WaitForChild('PlayerModule',5):WaitForChild("ControlModule",5))
+local ctrlModule= nil 
+
+pcall(function() ctrlModule=require(game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerScripts"):WaitForChild('PlayerModule',5):WaitForChild("ControlModule",5)) end)
 
 local bringc={}
 
