@@ -153,10 +153,10 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='fixed "fling" command';
+	log1='freecam support for mobile';
 }
 
-local updDate="2/12/2025" --month,day,year
+local updDate="2/28/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 

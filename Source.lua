@@ -137,10 +137,10 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='fixed "fling" command';
+	log1='freecam support for mobile';
 }
 
-local updDate="2/12/2025" --month,day,year
+local updDate="2/28/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
@@ -225,6 +225,7 @@ local camera=game:GetService("Workspace").CurrentCamera
 local camtype=camera.CameraType
 local Commands,Aliases={},{}
 local player,plr,lp=game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer,game:GetService("Players").LocalPlayer
+local ctrlModule=require(game:GetService("Players").LocalPlayer:FindFirstChildOfClass("PlayerScripts"):WaitForChild('PlayerModule',5):WaitForChild("ControlModule",5))
 
 local bringc={}
 
@@ -716,10 +717,9 @@ local flyMobile=nil
 local MobileWeld=nil
 
 function mobilefly(speed)
-	local controlModule=require(game:GetService("Players").LocalPlayer.PlayerScripts:WaitForChild('PlayerModule'):WaitForChild("ControlModule"))
 	local character=getChar() or LocalPlayer.CharacterAdded:Wait()
 	if flyMobile then flyMobile:Destroy() end
-	flyMobile=Instance.new("Part",workspace)
+	flyMobile=Instance.new("Part",game:GetService("Workspace"))
 	flyMobile.Name=randomString()
 	flyMobile.Size, flyMobile.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	if MobileWeld then MobileWeld:Destroy() end
@@ -794,7 +794,7 @@ function mobilefly(speed)
 			humanoid.PlatformStand=true
 
 			bg.CFrame=camera.CFrame
-			local direction=controlModule:GetMoveVector()
+			local direction=ctrlModule:GetMoveVector()
 			local newVelocity=Vector3.new()
 
 			if direction.X~=0 then
@@ -850,7 +850,7 @@ function sFLY(vfly)
 		wait()
 	end 
 	if goofyFLY then goofyFLY:Destroy() end
-	goofyFLY=Instance.new("Part",workspace)
+	goofyFLY=Instance.new("Part",game:GetService("Workspace"))
 	goofyFLY.Name=randomString()
 	goofyFLY.Size, goofyFLY.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	local CONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
@@ -2249,7 +2249,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 	Backpack=player.Backpack
 	Mouse=player:GetMouse()
 
-	Parts_Folder=Instance.new("Folder",workspace)
+	Parts_Folder=Instance.new("Folder",game:GetService("Workspace"))
 
 	for i,v in pairs(player.Character:GetChildren()) do
 		if v:IsA("Accessory") then
@@ -2407,7 +2407,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 	camera=game:GetService("Workspace").CurrentCamera
 	input=game:GetService("UserInputService")
 
-	Camera_Part=Instance.new("Part",workspace)
+	Camera_Part=Instance.new("Part",game:GetService("Workspace"))
 	Camera_Part.Anchored=true
 	Camera_Part.Transparency=0.85
 	Camera_Part.Shape=Enum.PartType.Ball
@@ -5363,7 +5363,7 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 	end
 	local e1, e2
 	local Hum, mouse = LocalPlayer.Character:FindFirstChildOfClass("Humanoid"), LocalPlayer:GetMouse()
-	tflyCORE = Instance.new("Part", workspace)
+	tflyCORE = Instance.new("Part",game:GetService("Workspace"))
 	tflyCORE:SetAttribute("tflyPart",true)
 	tflyCORE.Size, tflyCORE.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
 	local Trs = tflyCORE
@@ -5425,8 +5425,7 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 				new = new * CFrame.new(-speed, 0, 0)
 			end
 		elseif IsOnMobile then
-			local ControlModule = require(LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
-			local direction = ControlModule:GetMoveVector()
+			local direction = ctrlModule:GetMoveVector()
 			if direction.Magnitude > 0 then
 				new = new + (direction.X * workspace.CurrentCamera.CFrame.RightVector * speed)
 				new = new - (direction.Z * workspace.CurrentCamera.CFrame.LookVector * speed)
@@ -5549,7 +5548,13 @@ local fcpro=nil
 
 cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera"},function(speed)
 	if not speed then speed=5 end
-	if connections["freecam"] then lib.disconnect("freecam") camera.CameraSubject=character 	wrap(function() character.PrimaryPart.Anchored=false end) end
+
+	if connections["freecam"] then
+		lib.disconnect("freecam")
+		camera.CameraSubject = character
+		wrap(function() character.PrimaryPart.Anchored = false end)
+	end
+
 	local dir={w=false,a=false,s=false,d=false}
 	local cf=Instance.new("CFrameValue")
 	local camPart=Instance.new("Part")
@@ -5572,6 +5577,16 @@ cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera
 		if dir.q then y=1*speed end
 		if dir.e then y=-1*speed end
 
+		if IsOnMobile then
+			local direction = ctrlModule:GetMoveVector()
+			if direction.X ~= 0 then
+				x = x + direction.X * speed
+			end
+			if direction.Z ~= 0 then
+				z = z + direction.Z * speed
+			end
+		end
+
 		primaryPart.CFrame=CFrame.new(
 			primaryPart.CFrame.p,
 			(camera.CFrame*CFrame.new(0,0,-100)).p
@@ -5581,6 +5596,7 @@ cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera
 		cf.Value=cf.Value:lerp(moveDir,0.2)
 		primaryPart.CFrame=primaryPart.CFrame:lerp(primaryPart.CFrame*cf.Value,0.2)
 	end))
+
 	lib.connect("freecam",UserInputService.InputBegan:Connect(function(input,event)
 		if event then return end
 		local code,codes=input.KeyCode,Enum.KeyCode
@@ -5600,6 +5616,7 @@ cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera
 			dir.q=true
 		end
 	end))
+
 	lib.connect("freecam",UserInputService.InputEnded:Connect(function(input,event)
 		if event then return end
 		local code,codes=input.KeyCode,Enum.KeyCode
@@ -9172,7 +9189,7 @@ cmd.add({"airwalk","float","aw"},{"airwalk (float,aw)","Press space to go up,una
 
 	end
 
-	awPart=Instance.new("Part",workspace)
+	awPart=Instance.new("Part",game:GetService("Workspace"))
 	awPart.Size=Vector3.new(7,2,3)
 	awPart.CFrame=getRoot(getChar()).CFrame-Vector3.new(0,4,0)
 	awPart.Transparency=1
@@ -11821,7 +11838,7 @@ cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while
 				if weld then
 					weld:Destroy()
 				end
-				handle=Instance.new("Part",workspace)
+				handle=Instance.new("Part",game:GetService("Workspace"))
 				handle.Name="Handle"
 				handle.Transparency=1
 				handle.CanCollide=false
