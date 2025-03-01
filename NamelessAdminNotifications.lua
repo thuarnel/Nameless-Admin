@@ -14,23 +14,22 @@ end
 local Player = game:GetService("Players").LocalPlayer;
 local search = RunService:IsStudio() and Player.PlayerGui or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
 
-if _G.NANotifGui and _G.Notifss then
+if _G.NANotifGui and _G.NANotifGui.Parent then
 	return _G.Notifss
 else
-	local NotifGui = _G.NANotifGui or Instance.new("ScreenGui")
+	local NotifGui = Instance.new("ScreenGui")
 	NotifGui.Name = randomString()
 	NotifGui.Parent = search
 	_G.NANotifGui = NotifGui
 
-	local Container = _G.NAContainer or Instance.new("Frame")
+	local Container = Instance.new("Frame")
 	Container.Name = "Container"
 	Container.Position = UDim2.new(0, 20, 0.5, -20)
 	Container.Size = UDim2.new(0, 300, 0.5, 0)
 	Container.BackgroundTransparency = 1
 	Container.Parent = NotifGui
-
-	_G.NAContainer = Container
 end
+
 
 local function Image(ID, Button)
 	local NewImage = Instance.new(string.format("Image%s", Button and "Button" or "Label"));
