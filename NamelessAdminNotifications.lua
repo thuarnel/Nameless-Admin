@@ -189,20 +189,22 @@ _G.Notifss = {
 		local ButtonCount = #Buttons
 		local Y = Title and 26 or 0;
 
+		local ButtonYPosition = Title and 26 or 0
+
 		if (Description) then
-			local TextSize = TextService:GetTextSize(Description, DescriptionSettings.Size, DescriptionSettings.Font, Vector2.new(0, 0));
-			for i = 1, math.ceil(TextSize.X / MaxWidth) do
-				Y += TextSize.Y;
-			end
-			Y += 8;
+			local TextSize = TextService:GetTextSize(Description, DescriptionSettings.Size, DescriptionSettings.Font, Vector2.new(MaxWidth, math.huge))
+			local NumLines = math.ceil(TextSize.Y / (DescriptionSettings.Size + 5))
+
+			ButtonYPosition += TextSize.Y + 8
+			Y += TextSize.Y + (NumLines - 1) * 8
 		end
 
 		local RowsRequired = math.ceil(ButtonCount / 2)
 		Y += RowsRequired * 40
 
-		local NewLabel = Round2px();
-		NewLabel.Size = UDim2.new(1, 0, 0, Y);
-		NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects));
+		local NewLabel = Round2px()
+		NewLabel.Size = UDim2.new(1, 0, 0, Y)
+		NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects))
 
 		if (Title) then
 			local NewTitle = TitleLabel(Title);
@@ -225,8 +227,6 @@ _G.Notifss = {
 			local ButtonWidth = (MaxWidth - ButtonSpacing) / 2
 			local MaxButtonHeight = 30
 			local clicked = false
-
-			local ButtonYPosition = Title and 26 or 0
 
 			for row = 1, RowsRequired do
 				local rowButtonCount = math.min(2, ButtonCount - (row - 1) * 2)
@@ -265,6 +265,7 @@ _G.Notifss = {
 		if ButtonCount == 0 then
 			coroutine.wrap(FadeOutAfter)(NewLabel, Duration);
 		end
+
 	end,
 }
 return _G.Notifss
