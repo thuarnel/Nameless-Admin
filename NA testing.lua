@@ -4538,6 +4538,42 @@ cmd.add({"unshiftlock","unsl"},{"unshiftlock (unsl)","Disables shiftlock"},funct
 	end
 end)
 
+-- loops soon i am just not bothered rn
+
+cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
+	Notify({
+		Title = "Enable a Specific Core Gui Element",
+		--Description = '',
+		--Duration = 3,
+		Buttons = {
+			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end}, 
+			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end}, 
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) end}, 
+			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end}, 
+			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end}, 
+			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end}, 
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) end} 
+		}
+	})
+end)
+
+cmd.add({"disable"}, {"disable", "Disables a specific CoreGui"}, function()
+	Notify({
+		Title = "Disable a Specific Core Gui Element",
+		--Description = '',
+		--Duration = 3,
+		Buttons = {
+			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", false) end}, 
+			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false) end}, 
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false) end}, 
+			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false) end}, 
+			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false) end}, 
+			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false) end}, 
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false) end} 
+		}
+	})
+end)
+
 cmd.add({"ctrlshiftlock","ctrlsl"},{"ctrlshiftlock (ctrlsl)","Enables shift lock if you press Control"},function()
 	game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule.CameraModule.MouseLockController.BoundKeys.Value="LeftControl,RightControl"
 end)
