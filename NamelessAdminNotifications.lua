@@ -204,7 +204,7 @@ _G.Notifss = {
 
 		local NewLabel = Round2px()
 		NewLabel.Size = UDim2.new(1, 0, 0, Y)
-		NewLabel.AnchorPoint=Vector2.new(0,0.5)
+		--NewLabel.AnchorPoint=Vector2.new(0,0.5)
 		NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects))
 
 		if (Title) then
