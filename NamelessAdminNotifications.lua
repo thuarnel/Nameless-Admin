@@ -2,22 +2,31 @@ local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
 local TextService = game:GetService("TextService");
 
-local Player = game:GetService("Players").LocalPlayer;
-local search = RunService:IsStudio() and Player.PlayerGui or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
-if search:FindFirstChild("AkaliNotif") and _G.Notifss then
-	return _G.Notifss
-else
-	NotifGui= Instance.new("ScreenGui");
-	NotifGui.Name = "AkaliNotif";
-	NotifGui.Parent = search
-	Container = Instance.new("Frame");
-	Container.Name = "Container";
-	Container.Position = UDim2.new(0, 20, 0.5, -20);
-	Container.Size = UDim2.new(0, 300, 0.5, 0);
-	Container.BackgroundTransparency = 1;
-	Container.Parent = NotifGui;
+function randomString()
+	local length=math.random(10,20)
+	local array={}
+	for i=1,length do
+		array[i]=string.char(math.random(32,126))
+	end
+	return table.concat(array)
 end
 
+local Player = game:GetService("Players").LocalPlayer;
+local search = RunService:IsStudio() and Player.PlayerGui or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
+
+if not _G.NANotifGui then
+	local NotifGui = Instance.new("ScreenGui")
+	NotifGui.Name = randomString()
+	NotifGui.Parent = search
+	_G.NANotifGui = NotifGui
+
+	local Container = Instance.new("Frame")
+	Container.Name = "Container"
+	Container.Position = UDim2.new(0, 20, 0.5, -20)
+	Container.Size = UDim2.new(0, 300, 0.5, 0)
+	Container.BackgroundTransparency = 1
+	Container.Parent = NotifGui
+end
 
 local function Image(ID, Button)
 	local NewImage = Instance.new(string.format("Image%s", Button and "Button" or "Label"));
