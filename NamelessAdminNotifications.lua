@@ -197,9 +197,8 @@ _G.Notifss = {
 			Y += 8;
 		end
 
-		if ButtonCount > 0 then
-			Y += 36 * ButtonCount
-		end
+		local RowsRequired = math.ceil(ButtonCount / 2)
+		Y += RowsRequired * 40
 
 		local NewLabel = Round2px();
 		NewLabel.Size = UDim2.new(1, 0, 0, Y);
@@ -222,28 +221,40 @@ _G.Notifss = {
 		end
 
 		if ButtonCount > 0 then
-			local ButtonYPosition = Y - (ButtonCount * 36)
+			local ButtonSpacing = 10
+			local ButtonWidth = (MaxWidth - ButtonSpacing) / 2
+			local MaxButtonHeight = 30
 			local clicked = false
-			for _, ButtonData in ipairs(Buttons) do
-				local Button = Instance.new("TextButton");
-				Button.Size = UDim2.new(1, -20, 0, 30);
-				Button.Position = UDim2.fromOffset(10, ButtonYPosition);
-				Button.Text = ButtonData.Text;
-				Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30);
-				Button.TextColor3 = Color3.fromRGB(255, 255, 255);
-				Button.Font = Enum.Font.Gotham;
-				Button.TextSize = 14;
-				Button.Parent = NewLabel;
 
-				Button.MouseButton1Click:Connect(function()
-					if not clicked then
-						clicked = true
-						ButtonData.Callback()
-						coroutine.wrap(FadeOutAfter)(NewLabel)
-					end
-				end)
+			local ButtonYPosition = Title and 26 or 0
 
-				ButtonYPosition = ButtonYPosition + 36
+			for row = 1, RowsRequired do
+				local rowButtonCount = math.min(2, ButtonCount - (row - 1) * 2)
+				local totalRowWidth = rowButtonCount * ButtonWidth + (rowButtonCount - 1) * ButtonSpacing
+				local startX = (MaxWidth - totalRowWidth) / 2
+
+				for col = 1, rowButtonCount do
+					local Button = Instance.new("TextButton")
+					Button.Size = UDim2.new(0, ButtonWidth, 0, MaxButtonHeight)
+					local buttonXPos = startX + (col - 1) * (ButtonWidth + ButtonSpacing)
+					Button.Position = UDim2.new(0.03, buttonXPos, 0, ButtonYPosition)
+					Button.Text = Buttons[(row - 1) * 2 + col].Text
+					Button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+					Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+					Button.Font = Enum.Font.Gotham
+					Button.TextScaled = true
+					Button.Parent = NewLabel
+
+					Button.MouseButton1Click:Connect(function()
+						if not clicked then
+							clicked = true
+							Buttons[(row - 1) * 2 + col].Callback()
+							coroutine.wrap(FadeOutAfter)(NewLabel)
+						end
+					end)
+				end
+
+				ButtonYPosition = ButtonYPosition + MaxButtonHeight + ButtonSpacing
 			end
 		end
 
@@ -256,4 +267,4 @@ _G.Notifss = {
 		end
 	end,
 }
-return _G.Notifss 
+return _G.Notifss
