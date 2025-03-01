@@ -2,32 +2,20 @@ local TweenService = game:GetService("TweenService");
 local RunService = game:GetService("RunService");
 local TextService = game:GetService("TextService");
 
-function randomString()
-	local length=math.random(10,20)
-	local array={}
-	for i=1,length do
-		array[i]=string.char(math.random(32,126))
-	end
-	return table.concat(array)
-end
-
 local Player = game:GetService("Players").LocalPlayer;
 local search = RunService:IsStudio() and Player.PlayerGui or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
-
-if _G.NANotifGui and _G.Notifss then
+if search:FindFirstChild("AkaliNotif") and _G.Notifss then
 	return _G.Notifss
 else
-	local NotifGui = Instance.new("ScreenGui")
-	NotifGui.Name = randomString()
+	NotifGui= Instance.new("ScreenGui");
+	NotifGui.Name = "AkaliNotif";
 	NotifGui.Parent = search
-	_G.NANotifGui = NotifGui
-
-	local Container = Instance.new("Frame")
-	Container.Name = "Container"
-	Container.Position = UDim2.new(0, 20, 0.5, -20)
-	Container.Size = UDim2.new(0, 300, 0.5, 0)
-	Container.BackgroundTransparency = 1
-	Container.Parent = NotifGui
+	Container = Instance.new("Frame");
+	Container.Name = "Container";
+	Container.Position = UDim2.new(0, 20, 0.5, -20);
+	Container.Size = UDim2.new(0, 300, 0.5, 0);
+	Container.BackgroundTransparency = 1;
+	Container.Parent = NotifGui;
 end
 
 
@@ -114,7 +102,7 @@ local DescriptionSettings = {
 	Size = 14;
 }
 
-local MaxWidth = (_G.NAContainer.AbsoluteSize.X - Padding - DescriptionPadding);
+local MaxWidth = (Container.AbsoluteSize.X - Padding - DescriptionPadding);
 
 local function Label(Text, Font, Size, Button)
 	local Label = Instance.new(string.format("Text%s", Button and "Button" or "Label"));
@@ -271,7 +259,7 @@ _G.Notifss = {
 		end
 
 		Shadow2px().Parent = NewLabel;
-		NewLabel.Parent = _G.NAContainer;
+		NewLabel.Parent = Container;
 		table.insert(InstructionObjects, {NewLabel, 0, false});
 
 		if ButtonCount == 0 then
