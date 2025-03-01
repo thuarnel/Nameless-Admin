@@ -13,7 +13,8 @@ else
 	Container = Instance.new("Frame");
 	Container.Name = "Container";
 	Container.Position = UDim2.new(0, 20, 0.5, 0);
-	Container.Size = UDim2.new(0, 300, 0, 0);
+	Container.Size = UDim2.new(0, 300, 0.3, 0);
+	Container.AnchorPoint=Vector2.new(0,0.5);
 	Container.BackgroundTransparency = 1;
 	Container.Parent = NotifGui;
 end
