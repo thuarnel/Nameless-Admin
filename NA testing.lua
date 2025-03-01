@@ -2638,39 +2638,41 @@ end)
 cmd.add({"reach"},{"reach {number}","Sword reach"},function(reachsize)
 	local reachsize=reachsize or 25
 	local Tool=getChar():FindFirstChildOfClass("Tool") or getBp():FindFirstChildOfClass("Tool")
+	local toolHnld = Tool:FindFirstChild("Handle") or Tool:FindFirstChildWhichIsA("BasePart")
 	if Tool:FindFirstChild("OGSize3") then
-		Tool.Handle.Size=Tool.OGSize3.Value
+		toolHnld.Size=Tool.OGSize3.Value
 		Tool.OGSize3:Destroy()
-		Tool.Handle.FunTIMES:Destroy()
+		toolHnld.FunTIMES:Destroy()
 	end
 	local val=Instance.new("Vector3Value",Tool)
 	val.Name="OGSize3"
-	val.Value=Tool.Handle.Size
+	val.Value=toolHnld.Size
 	local sb=Instance.new("SelectionBox")
-	sb.Adornee=Tool.Handle
+	sb.Adornee=toolHnld
 	sb.Name="FunTIMES"
-	sb.Parent=Tool.Handle
-	Tool.Handle.Massless=true
-	Tool.Handle.Size=Vector3.new(Tool.Handle.Size.X,Tool.Handle.Size.Y,reachsize)
+	sb.Parent=toolHnld
+	toolHnld.Massless=true
+	toolHnld.Size=Vector3.new(toolHnld.Size.X,toolHnld.Size.Y,reachsize)
 end)
 
 cmd.add({"boxreach", "aura"},{"boxreach {number} (aura)","Increases the hitbox of your held tool in a box shape"},function(reachsize)
 	local reachsize=reachsize or 25
 	local Tool=getChar():FindFirstChildOfClass("Tool") or getBp():FindFirstChildOfClass("Tool")
+	local toolHnld = Tool:FindFirstChild("Handle") or Tool:FindFirstChildWhichIsA("BasePart")
 	if Tool:FindFirstChild("OGSize3") then
-		Tool.Handle.Size=Tool.OGSize3.Value
+		toolHnld.Size=Tool.OGSize3.Value
 		Tool.OGSize3:Destroy()
-		Tool.Handle.FunTIMES:Destroy()
+		toolHnld.FunTIMES:Destroy()
 	end
 	local val=Instance.new("Vector3Value",Tool)
 	val.Name="OGSize3"
-	val.Value=Tool.Handle.Size
+	val.Value=toolHnld.Size
 	local sb=Instance.new("SelectionBox")
-	sb.Adornee=Tool.Handle
+	sb.Adornee=toolHnld
 	sb.Name="FunTIMES"
-	sb.Parent=Tool.Handle
-	Tool.Handle.Massless=true
-	Tool.Handle.Size=Vector3.new(reachsize,reachsize,reachsize)
+	sb.Parent=toolHnld
+	toolHnld.Massless=true
+	toolHnld.Size=Vector3.new(reachsize,reachsize,reachsize)
 end)
 
 AntiVoidConnect = nil
