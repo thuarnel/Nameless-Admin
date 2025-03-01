@@ -14,7 +14,7 @@ end
 local Player = game:GetService("Players").LocalPlayer;
 local search = RunService:IsStudio() and Player.PlayerGui or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"));
 
-if _G.NANotifGui and _G.NANotifGui.Parent then
+if _G.NANotifGui and _G.Notifss then
 	return _G.Notifss
 else
 	local NotifGui = Instance.new("ScreenGui")
