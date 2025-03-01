@@ -12,8 +12,8 @@ else
 	NotifGui.Parent = search
 	Container = Instance.new("Frame");
 	Container.Name = "Container";
-	Container.Position = UDim2.new(0, 20, 0.5, -20);
-	Container.Size = UDim2.new(0, 300, 0.5, 0);
+	Container.Position = UDim2.new(0, 20, 0.5, 0);
+	Container.Size = UDim2.new(0, 300, 0, 0);
 	Container.BackgroundTransparency = 1;
 	Container.Parent = NotifGui;
 end
@@ -204,6 +204,7 @@ _G.Notifss = {
 
 		local NewLabel = Round2px()
 		NewLabel.Size = UDim2.new(1, 0, 0, Y)
+		NewLabel.AnchorPoint=Vector2.new(0,0.5)
 		NewLabel.Position = UDim2.new(-1, 20, 0, CalculateBounds(CachedObjects).Y + (Padding * #CachedObjects))
 
 		if (Title) then
