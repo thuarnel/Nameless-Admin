@@ -51,8 +51,7 @@ local UIGradient = Instance.new("UIGradient")
 --Properties:
 
 ChatGUI.Name = "ChatGUI"
-ChatGUI.Parent =
-    gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+ChatGUI.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 ChatGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ChatGUI.ResetOnSpawn = false
 

@@ -379,7 +379,7 @@ local UIGradient_2 = Instance.new("UIGradient")
 --Properties:
 
 benis.Name = "benis"
-benis.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+benis.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 benis.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 benis.ResetOnSpawn = false
 

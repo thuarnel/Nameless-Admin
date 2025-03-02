@@ -17,7 +17,7 @@ local Exit = Instance.new("TextButton")
 local Lines = Instance.new("TextLabel")
 local ScrollingFrame = Instance.new("ScrollingFrame")
 
-ScreenGui.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+ScreenGui.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Open.Name = "Open"

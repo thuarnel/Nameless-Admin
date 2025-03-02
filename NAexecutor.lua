@@ -25,7 +25,7 @@ local Minimize = Instance.new("TextButton")
 local ImageLabel_2 = Instance.new("ImageLabel")
 
 exec.Name = "exec"
-exec.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+exec.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 exec.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 exec.ResetOnSpawn = false
 

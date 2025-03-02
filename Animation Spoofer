@@ -19,8 +19,7 @@ local scroll = Instance.new("ScrollingFrame")
 local uilist = Instance.new("UIListLayout")
 
 screenxD.Name = "eternalness7"
-screenxD.Parent =
-    gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+screenxD.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 screenxD.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = screenxD
