@@ -137,11 +137,10 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Added 2 commands "enable" and "disable" (self explanatory)';
-	log2='Updated Notification System (button stuff idk)';
+	log1='Improved Search Engine';
 }
 
-local updDate="3/1/2025" --month,day,year
+local updDate="3/2/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
@@ -13248,15 +13247,35 @@ end
 
 --[[ CMDS COMMANDS SEARCH FUNCTION ]]--
 commandsFilter.Changed:Connect(function(p)
-	if p~="Text" then return end
-	for i,v in pairs(commandsList:GetChildren()) do
+	if p ~= "Text" then return end
+
+	local searchQuery = commandsFilter.Text:lower():gsub("%s+", "")
+	local results = {}
+
+	for _, v in pairs(commandsList:GetChildren()) do
 		if v:IsA("TextLabel") then
-			if v.Name:find(commandsFilter.Text:lower()) and v.Name:find(commandsFilter.Text:lower()) <=2 then
-				v.Visible=true
-			else
-				v.Visible=false
+			local commandName = v.Name:lower()
+			local startMatch = commandName:sub(1, #searchQuery) == searchQuery
+			local containsMatch = commandName:find(searchQuery) ~= nil
+
+			if startMatch or containsMatch then
+				table.insert(results, {label = v, priority = startMatch and 1 or 2})
 			end
 		end
+	end
+
+	table.sort(results, function(a, b)
+		return a.priority < b.priority
+	end)
+
+	for _, v in pairs(commandsList:GetChildren()) do
+		if v:IsA("TextLabel") then
+			v.Visible = false
+		end
+	end
+
+	for _, result in ipairs(results) do
+		result.label.Visible = true
 	end
 end)
 

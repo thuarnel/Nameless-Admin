@@ -153,11 +153,10 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Added 2 commands "enable" and "disable" (self explanatory)';
-	log2='Updated Notification System (button stuff idk)';
+	log1='Improved Search Engine';
 }
 
-local updDate="3/1/2025" --month,day,year
+local updDate="3/2/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
