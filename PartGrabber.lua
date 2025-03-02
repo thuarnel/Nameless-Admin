@@ -8,6 +8,7 @@ local UICorner = Instance.new("UICorner")
 local UIGradient = Instance.new("UIGradient")
 local grab = Instance.new("TextButton")
 local Found = Instance.new("TextLabel")
+local del = Instance.new("TextButton")
 local Topbar = Instance.new("Frame")
 local Icon = Instance.new("ImageLabel")
 local Exit = Instance.new("TextButton")
@@ -22,17 +23,21 @@ local UICorner_2 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 
 prtGrab.Name = "prtGrab"
-prtGrab.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
+prtGrab.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
 prtGrab.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+prtGrab.ResetOnSpawn = false
 
 Main.Name = "Main"
 Main.Parent = prtGrab
+Main.Active = true
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
 Main.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Main.BackgroundTransparency = 0.140
 Main.BorderColor3 = Color3.fromRGB(139, 139, 139)
 Main.BorderSizePixel = 0
 Main.ClipsDescendants = true
-Main.Position = UDim2.new(0.307999998, 0, 1.26199996, 0)
+Main.Draggable = true
+Main.Position = UDim2.new(0.5, 0, 3, 0)
 Main.Size = UDim2.new(0, 402, 0, 146)
 
 Container.Name = "Container"
@@ -57,7 +62,7 @@ grab.Parent = Container
 grab.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
 grab.BorderColor3 = Color3.fromRGB(139, 139, 139)
 grab.BorderSizePixel = 0
-grab.Position = UDim2.new(0.354591846, 0, 0.75548321, 0)
+grab.Position = UDim2.new(0.53061223, 0, 0.75548321, 0)
 grab.Size = UDim2.new(0, 110, 0, 29)
 grab.Font = Enum.Font.SourceSans
 grab.Text = "Copy Path"
@@ -80,6 +85,20 @@ Found.TextColor3 = Color3.fromRGB(255, 255, 255)
 Found.TextScaled = true
 Found.TextSize = 14.000
 Found.TextWrapped = true
+
+del.Name = "del"
+del.Parent = Container
+del.BackgroundColor3 = Color3.fromRGB(24, 24, 24)
+del.BorderColor3 = Color3.fromRGB(139, 139, 139)
+del.BorderSizePixel = 0
+del.Position = UDim2.new(0.219387755, 0, 0.75548321, 0)
+del.Size = UDim2.new(0, 110, 0, 29)
+del.Font = Enum.Font.SourceSans
+del.Text = "Delete Part"
+del.TextColor3 = Color3.fromRGB(255, 255, 255)
+del.TextScaled = true
+del.TextSize = 14.000
+del.TextWrapped = true
 
 Topbar.Name = "Topbar"
 Topbar.Parent = Main
@@ -185,90 +204,111 @@ UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fr
 UIGradient_2.Parent = Main
 
 local idk=nil
-
+local prtClicked=nil
+local box=nil
 
 local function BLBPRD_fake_script()
 
-    local players = game:GetService("Players")
-    local player = players.LocalPlayer
-    local mouse = player:GetMouse()
+	local players = game:GetService("Players")
+	local player = players.LocalPlayer
+	local mouse = player:GetMouse()
 
-    local function GetInstancePath(obj)
-        local path = {}
+	mouse.TargetFilter=nil
 
-        function b(obj)
-            return obj.Parent == game and obj ~= game
-        end
+	local function GetInstancePath(obj)
+		local path = {}
 
-        if b(obj) then
-            table.insert(path, string.format('game:GetService("%s")',obj.ClassName))
-        else
-            while obj and obj.Parent do
-                local name = obj.Name
-                if name:match("^[%a_][%w_]*$") then
-                    table.insert(path, 1, "."..name)
-                else
-                    table.insert(path, 1, '["'..name:gsub('"', '\\"')..'"]')
-                end
+		function b(obj)
+			return obj.Parent == game and obj ~= game
+		end
 
-                if b(obj.Parent) then
-                    table.insert(path, 1, string.format('game:GetService("%s")', obj.Parent.ClassName))
-                    break
-                end
+		if b(obj) then
+			table.insert(path, string.format('game:GetService("%s")',obj.ClassName))
+		else
+			while obj and obj.Parent do
+				local name = obj.Name
+				if name:match("^[%a_][%w_]*$") then
+					table.insert(path, 1, "."..name)
+				else
+					table.insert(path, 1, '["'..name:gsub('"', '\\"')..'"]')
+				end
 
-                obj = obj.Parent
-            end
-        end
+				if b(obj.Parent) then
+					table.insert(path, 1, string.format('game:GetService("%s")', obj.Parent.ClassName))
+					break
+				end
 
-        return table.concat(path):gsub("^%.", "")
-    end
+				obj = obj.Parent
+			end
+		end
 
-    local function prt()
-        if mouse.Target then
-            Found.Text = GetInstancePath(mouse.Target)
-        else
-            warn("Error while getting path")
-        end
-    end
-    if idk then idk:Disconnect() idk=nil end
-    idk=mouse.Button1Down:Connect(prt)
+		return table.concat(path):gsub("^%.", "")
+	end
+
+	local function prt()
+		if mouse.Target then
+			Found.Text = GetInstancePath(mouse.Target)
+			prtClicked = mouse.Target
+
+			if box then box:Destroy() box=nil end
+
+			box = Instance.new("SelectionBox")
+			box.Adornee = prtClicked
+			box.Name = math.random(1,69)
+			box.LineThickness = 0.05
+			box.Color3 = Color3.fromRGB(0, 255, 255)
+			box.Parent = prtClicked
+		else
+			warn("Error while getting path")
+		end
+	end
+	if idk then idk:Disconnect() idk=nil end
+	idk=mouse.Button1Down:Connect(prt)
 end
 coroutine.wrap(BLBPRD_fake_script)()
 local function UUVHNZD_fake_script()
-    grab.MouseButton1Click:Connect(function()
-        setclipboard(Found.Text)
-    end)
+	grab.MouseButton1Click:Connect(function()
+		setclipboard(Found.Text)
+	end)
 end
 coroutine.wrap(UUVHNZD_fake_script)()
+local function AUVHNZD_fake_script()
+	del.MouseButton1Click:Connect(function()
+		if prtClicked then prtClicked:Destroy() end
+	end)
+end
+coroutine.wrap(AUVHNZD_fake_script)()
 local function AUPMILR_fake_script()
-    Exit.MouseButton1Click:Connect(function()
-        Exit.Parent.Parent.Parent:Destroy()
-        if idk then idk:Disconnect() idk=nil end
-        getgenv().prtGrabLoaded=false
-    end)
+	Exit.MouseButton1Click:Connect(function()
+		Exit.Parent.Parent.Parent:Destroy()
+		if idk then idk:Disconnect() idk=nil end
+		if box then box:Destroy() box=nil end
+		if prtClicked then prtClicked=nil end
+		getgenv().prtGrabLoaded=false
+	end)
 end
 coroutine.wrap(AUPMILR_fake_script)()
 local function XOURFQ_fake_script()
-    p = false
-    Minimize.MouseButton1Click:Connect(function()
-        if not p then
-            p = not p
-            Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
-        else
-            p = not p
-            Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
-        end
-    end)
+	p = false
+	Minimize.MouseButton1Click:Connect(function()
+		if not p then
+			p = not p
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 20), "Out", "Quint", 1, true)
+		else
+			p = not p
+			Minimize.Parent.Parent:TweenSize(UDim2.new(0, 402, 0, 146), "Out", "Quint", 1, true)
+		end
+	end)
 
 end
 coroutine.wrap(XOURFQ_fake_script)()
 local function PLFU_fake_script()
-    Main.Active = true
-    Main.Parent.ResetOnSpawn = false
-    Main.Draggable = true
+	Main.Active = true
+	Main.Parent.ResetOnSpawn = false
+	Main.Draggable = true
 end
 coroutine.wrap(PLFU_fake_script)()
 local function BSHNZC_fake_script()
-    Main:TweenPosition(UDim2.new(0.308, 0,0.262, 0), "Out", "Quint",1,true)
+	Main:TweenPosition(UDim2.new(0.5, 0,0.5, 0), "Out", "Quint",1,true)
 end
 coroutine.wrap(BSHNZC_fake_script)()
