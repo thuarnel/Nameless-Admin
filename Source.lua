@@ -5812,69 +5812,6 @@ cmd.add({"unfakelag","unflag"},{"unfakelag (unflag)","stops the fake lag command
 	FakeLag=false
 end)
 
-cmd.add({"circlemath","cm"},{"circlemath <mode> <size>","Gay circle math\nModes: abc..."},function(mode,size)
-	local mode=mode or "a"
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
-	lib.disconnect("cm")
-	if backpack and character.Parent then
-		local tools=getAllTools()
-		for i,tool in pairs(tools) do
-			local cpos,g=(math.pi*2)*(i/#tools),CFrame.new()
-			local tcon={}
-			tool.Parent=backpack
-
-			if mode=="a" then
-				size=tonumber(size) or 2
-				g=(
-					CFrame.new(0,0,size)*
-						CFrame.Angles(rad(90),0,cpos)
-				)
-			elseif mode=="b" then
-				size=tonumber(size) or 2
-				g=(
-					CFrame.new(i-#tools/2,0,0)*
-						CFrame.Angles(rad(90),0,0)
-				)
-			elseif mode=="c" then
-				size=tonumber(size) or 2
-				g=(
-					CFrame.new(cpos/3,0,0)*
-						CFrame.Angles(rad(90),0,cpos*2)
-				)
-			elseif mode=="d" then
-				size=tonumber(size) or 2
-				g=(
-					CFrame.new(clamp(tan(cpos),-3,3),0,0)*
-						CFrame.Angles(rad(90),0,cpos)
-				)
-			elseif mode=="e" then
-				size=tonumber(size) or 2
-				g=(
-					CFrame.new(0,0,clamp(tan(cpos),-5,5))*
-						CFrame.Angles(rad(90),0,cpos)
-				)
-			end
-			tool.Grip=g
-			tool.Parent=character
-
-			tcon[#tcon]=lib.connect("cm",mouse.Button1Down:Connect(function()
-				tool:Activate()
-			end))
-			tcon[#tcon]=lib.connect("cm",tool.Changed:Connect(function(p)
-				if p=="Grip" and tool.Grip~=g then
-					tool.Grip=g
-				end
-			end))
-
-			lib.connect("cm",tool.AncestryChanged:Connect(function()
-				for i=1,#tcon do
-					tcon[i]:Disconnect()
-				end
-			end))
-		end
-	end
-end)
-
 local r=math.rad
 local center=CFrame.new(1.5,0.5,-1.5)
 
