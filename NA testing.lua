@@ -10693,15 +10693,17 @@ cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every
 	local count = 0
 	for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
+			task.spawn(function()
+				firetouchinterest(root,v.Parent,0)--0 is touch
+				task.wait();
+				firetouchinterest(root,v.Parent,1)--1 is untouch
+			end)
 			local part = v:FindFirstAncestorWhichIsA("BasePart")
 			if part then
 				local originalCFrame = part.CFrame
 				part.CFrame = root.CFrame
 
-				task.spawn(function()
-					firetouchinterest(part, root, 1)
-					task.wait()
-					firetouchinterest(part, root, 0)
+				task.delay(0.1, function()
 					part.CFrame = originalCFrame
 				end)
 
