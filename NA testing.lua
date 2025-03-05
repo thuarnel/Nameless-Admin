@@ -13208,7 +13208,7 @@ commandsFilter.Changed:Connect(function(p)
 	for _, v in pairs(commandsList:GetChildren()) do
 		if v:IsA("TextLabel") then
 			local commandText = v.Name:lower()
-			local commandName = commandText:gsub("<.->", ""):gsub("%[.-%]", ""):gsub("%s+", "")
+			local commandName = commandText:gsub("<.->", ""):gsub("%[.-%]", ""):gsub("{.-}", ""):gsub("%s+", "")
 
 			local startMatch = commandName:sub(1, #searchQuery) == searchQuery
 			local containsMatch = commandName:find(searchQuery) ~= nil
