@@ -13,7 +13,7 @@ NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=false end)
 
 --[[ Version ]]--
-local curVer=2.2
+local curVer=2.3
 
 --[[ Brand ]]--
 local mainName='Nameless Admin'
@@ -137,10 +137,12 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Improved Search Engine';
+	log1='Headsit & Headstand commands are fixed and will no longer fling you';
+	log2='updated "bhop" command and gave it a variable name "loopjump"';
+	log3='improved "firetouchinterests" command to function properly';
 }
 
-local updDate="3/2/2025" --month,day,year
+local updDate="3/05/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
@@ -8619,57 +8621,96 @@ cmd.add({"freegamepass","freegp"},{"freegamepass (freegp)","Makes the client thi
 	DoNotif("Free gamepass has been executed,keep in mind this wont always work")
 end)
 
-cmd.add({"headsit"},{"headsit <player>","Head sit."},function(...)
-	Username=(...)
-	if headSit then 
-		headSit:Disconnect()
-	end
+local headSit,sitDied=nil,nil
 
-	local players=getPlr(Username)
-	local sitPlr=players.Name
+cmd.add({"headsit"}, {"headsit <player>", "Head sit."}, function(...)
+	local Username = (...)
+	if headSit then headSit:Disconnect() headSit = nil end
 
-	sitDied=getChar():FindFirstChildOfClass'Humanoid'.Died:Connect(function()
-		sitLoop=sitLoop:Disconnect()
+	local plr = getPlr(Username)
+	if not plr then return end
+
+	local char = getChar()
+	local hum = char and char:FindFirstChildOfClass("Humanoid")
+	if not hum then return end
+
+	sitDied = hum.Died:Connect(function()
+		if headSit then headSit:Disconnect() headSit = nil end
 	end)
-	getChar():FindFirstChildOfClass('Humanoid').Sit=true
 
-	headSit=RunService.Heartbeat:Connect(function()
-		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(getChar()) and getChar():FindFirstChildOfClass('Humanoid').Sit==true then
-			getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,1.6,0.4)
-		else
-			headSit:Disconnect()
+	hum.Sit = true
+
+	headSit = RunService.Heartbeat:Connect(function()
+		if game.Players:FindFirstChild(plr.Name) and plr.Character then
+			local plrRoot, charRoot = getRoot(plr.Character), getRoot(char)
+			if plrRoot and charRoot and hum.Sit then
+				charRoot.CFrame = plrRoot.CFrame * CFrame.new(0, 1.6, 0.4)
+				return
+			end
 		end
+		headSit:Disconnect()
+		headSit = nil
 	end)
 end)
 
-cmd.add({"unheadsit"},{"unheadsit","Stop the headsit command"},function()
-	getChar().Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+cmd.add({"unheadsit"}, {"unheadsit", "Stop the headsit command."}, function()
+	if headSit then headSit:Disconnect() headSit = nil end
+	if sitDied then sitDied:Disconnect() sitDied = nil end
+
+	local hum = getChar():FindFirstChildOfClass("Humanoid")
+	if hum then hum:ChangeState(Enum.HumanoidStateType.Jumping) end
 end)
 
 cmd.add({"jump"},{"jump","jump."},function()
 	getHum():ChangeState(Enum.HumanoidStateType.Jumping)
 end)
 
-cmd.add({"headstand"},{"headstand <player>","Stand on someones head"},function(...)
-	Username=(...)
-	if headSit then headSit:Disconnect() end
-	local players=getPlr(Username)
-	local sitPlr=players.Name
-	sitDied=getChar():FindFirstChildOfClass'Humanoid'.Died:Connect(function()
-		sitLoop=sitLoop:Disconnect()
-	end)
-	headSit=RunService.Heartbeat:Connect(function()
-		if Players:FindFirstChild(players.Name) and players.Character~=nil and getRoot(players.Character) and getRoot(getChar()) then
-			getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.Angles(0,math.rad(0),0)*CFrame.new(0,4.6,0.4)
-		else
-			headSit:Disconnect()
+local jL = nil
+
+cmd.add({"loopjump","bhop"}, {"loopjump (bhop)", "Continuously jump."}, function()
+	if jL then jL:Disconnect() end
+	jL = RunService.Heartbeat:Connect(function()
+		local h = getHum()
+		if h and h:GetState() ~= Enum.HumanoidStateType.Freefall then
+			h:ChangeState(Enum.HumanoidStateType.Jumping)
 		end
 	end)
 end)
 
-cmd.add({"unheadstand"},{"unheadstand <player>","Stop the headstand command"},function()
-	headSit=headSit:Disconnect()
-	sitDied:Disconnect()
+cmd.add({"unloopjump","unbhop"}, {"unloopjump (unbhop)", "Stop continuous jumping."}, function()
+	if jL then jL:Disconnect() jL = nil end
+end)
+
+local headStand,standDied=nil,nil
+
+cmd.add({"headstand"}, {"headstand <player>", "Stand on someone's head."}, function(...)
+	local Username = (...)
+	if headStand then headStand:Disconnect() headStand = nil end
+
+	local plr = getPlr(Username)
+	if not plr then return end
+
+	local char = getChar()
+	local hum = char and char:FindFirstChildOfClass("Humanoid")
+	if not hum then return end
+
+	standDied = hum.Died:Connect(function()
+		if headStand then headStand:Disconnect() headStand = nil end
+	end)
+
+	headStand = RunService.Heartbeat:Connect(function()
+		if Players:FindFirstChild(plr.Name) and plr.Character and getRoot(plr.Character) and getRoot(char) then
+			getRoot(char).CFrame = getRoot(plr.Character).CFrame * CFrame.new(0, 4.6, 0.4)
+		else
+			headStand:Disconnect()
+			headStand = nil
+		end
+	end)
+end)
+
+cmd.add({"unheadstand"}, {"unheadstand", "Stop the headstand command."}, function()
+	if headStand then headStand:Disconnect() headStand = nil end
+	if standDied then standDied:Disconnect() standDied = nil end
 end)
 
 local loopws=false
@@ -10624,21 +10665,36 @@ cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
 	end)
 end)
 
-cmd.add({"firetouchinterests","fti"},{"firetouchinterests (fti)","Fires every Touch Interest that's in workspace"},function()
-	local ftiamount=0
+cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every Touch Interest in workspace."}, function()
+	if not firetouchinterest then
+		DoNotif("Incompatible Exploit: Missing firetouchinterest")
+		return
+	end
 
-	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+	local root = getRoot(getChar())
+	if not root then return end
+
+	local count = 0
+	for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
-			ftiamount=ftiamount+1
-			firetouchinterest(getRoot(getChar()),v.Parent,0)--0 is touch
-			task.wait();
-			firetouchinterest(getRoot(getChar()),v.Parent,1)--1 is untouch
+			local part = v:FindFirstAncestorWhichIsA("BasePart")
+			if part then
+				local originalCFrame = part.CFrame
+				part.CFrame = root.CFrame
+
+				task.spawn(function()
+					firetouchinterest(part, root, 1)
+					task.wait()
+					firetouchinterest(part, root, 0)
+					part.CFrame = originalCFrame
+				end)
+
+				count = count + 1
+			end
 		end
 	end
 
-	wait();
-
-	DoNotif("Fired "..ftiamount.." amount of touch interests")
+	DoNotif("Fired " .. count .. " Touch Interests")
 end)
 
 local infJump=nil
@@ -11253,9 +11309,9 @@ cmd.add({"chatspy"},{"chatspy","Spies on chat,enables chat,spies whispers etc."}
 	chatFrame.ChatBarParentFrame.Position=chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 end)
 
-
-cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
-	--[[ bhop functions ]]--
+-- this seriously looks ridiculous
+--[[cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
+	--[[ bhop functions
 	local player
 	local character
 	local collider
@@ -11595,7 +11651,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		update(updateDT);
 	end
 	main()
-end)
+end)]]
 
 cmd.add({"firstp","1stp","firstperson","fp"},{"firstperson (1stp,firstp,fp)","Makes you go in first person mode"},function()
 	Player.CameraMode="LockFirstPerson"

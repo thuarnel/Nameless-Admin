@@ -29,7 +29,7 @@ NACaller(function() getgenv().RealNamelessLoaded=true end)
 NACaller(function() getgenv().NATestingVer=true end)
 
 --[[ Version ]]--
-local curVer=2.2
+local curVer=2.3
 
 --[[ Brand ]]--
 local mainName='Nameless Admin'
@@ -153,10 +153,12 @@ local opt={
 
 --[[ Update Logs ]]--
 local updLogs={
-	log1='Improved Search Engine';
+	log1='Headsit & Headstand commands are fixed and will no longer fling you';
+	log2='updated "bhop" command and gave it a variable name "loopjump"';
+	log3='improved "firetouchinterests" command to function properly';
 }
 
-local updDate="3/2/2025" --month,day,year
+local updDate="3/05/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
