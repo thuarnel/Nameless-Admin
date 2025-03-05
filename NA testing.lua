@@ -13210,11 +13210,28 @@ commandsFilter.Changed:Connect(function(p)
 			local commandText = v.Name:lower()
 			local commandName = commandText:gsub("<.->", ""):gsub("%[.-%]", ""):gsub("{.-}", ""):gsub("%s+", "")
 
-			local startMatch = commandName:sub(1, #searchQuery) == searchQuery
+			local aliasText = commandText:match("%((.-)%)")
+			local aliasMatch = false
+
+			if aliasText then
+				local aliasList = {}
+				for alias in aliasText:gmatch("[^,]+") do
+					table.insert(aliasList, alias:lower():gsub("%s+", ""))
+				end
+
+				for _, alias in ipairs(aliasList) do
+					if alias == searchQuery then
+						aliasMatch = true
+						break
+					end
+				end
+			end
+
+			local startMatch = commandName == searchQuery
 			local containsMatch = commandName:find(searchQuery) ~= nil
 
-			if startMatch or containsMatch then
-				table.insert(results, {label = v, priority = startMatch and 1 or 2})
+			if startMatch or containsMatch or aliasMatch then
+				table.insert(results, {label = v, priority = startMatch and 1 or (aliasMatch and 2 or 3)})
 			end
 		end
 	end
