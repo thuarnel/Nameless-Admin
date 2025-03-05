@@ -13207,12 +13207,21 @@ commandsFilter.Changed:Connect(function(p)
 
 	for _, v in pairs(commandsList:GetChildren()) do
 		if v:IsA("TextLabel") then
-			local commandName = v.Name:lower()
+			local commandText = v.Name:lower()
+			local commandName = commandText:gsub("<.->", ""):gsub("%s+", "")
+			local alias = commandText:match("%((.-)%)")
+			local aliasMatch = false
+
+			if alias then
+				alias = alias:lower():gsub("%s+", "")
+				aliasMatch = alias:sub(1, #searchQuery) == searchQuery or alias:find(searchQuery)
+			end
+
 			local startMatch = commandName:sub(1, #searchQuery) == searchQuery
 			local containsMatch = commandName:find(searchQuery) ~= nil
 
-			if startMatch or containsMatch then
-				table.insert(results, {label = v, priority = startMatch and 1 or 2})
+			if startMatch or containsMatch or aliasMatch then
+				table.insert(results, {label = v, priority = startMatch and 1 or (aliasMatch and 2 or 3)})
 			end
 		end
 	end
