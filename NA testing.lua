@@ -8679,17 +8679,19 @@ cmd.add({"jump"},{"jump","jump."},function()
 	getHum():ChangeState(Enum.HumanoidStateType.Jumping)
 end)
 
-local jL=nil
+local jL = nil
 
-cmd.add({"loopjump"}, {"loopjump", "Continuously jump."}, function()
+cmd.add({"loopjump","bhop"}, {"loopjump (bhop)", "Continuously jump."}, function()
 	if jL then jL:Disconnect() end
 	jL = RunService.Heartbeat:Connect(function()
 		local h = getHum()
-		if h then h:ChangeState(Enum.HumanoidStateType.Jumping) end
+		if h and h:GetState() ~= Enum.HumanoidStateType.Freefall then
+			h:ChangeState(Enum.HumanoidStateType.Jumping)
+		end
 	end)
 end)
 
-cmd.add({"unloopjump"}, {"unloopjump", "Stop continuous jumping."}, function()
+cmd.add({"unloopjump","unbhop"}, {"unloopjump (unbhop)", "Stop continuous jumping."}, function()
 	if jL then jL:Disconnect() jL = nil end
 end)
 
@@ -10677,21 +10679,36 @@ cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
 	end)
 end)
 
-cmd.add({"firetouchinterests","fti"},{"firetouchinterests (fti)","Fires every Touch Interest that's in workspace"},function()
-	local ftiamount=0
+cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every Touch Interest in workspace."}, function()
+	if not firetouchinterest then
+		DoNotif("Incompatible Exploit: Missing firetouchinterest")
+		return
+	end
 
-	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
+	local root = getRoot(getChar())
+	if not root then return end
+
+	local count = 0
+	for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
-			ftiamount=ftiamount+1
-			firetouchinterest(getRoot(getChar()),v.Parent,0)--0 is touch
-			task.wait();
-			firetouchinterest(getRoot(getChar()),v.Parent,1)--1 is untouch
+			local part = v:FindFirstAncestorWhichIsA("BasePart")
+			if part then
+				local originalCFrame = part.CFrame
+				part.CFrame = root.CFrame
+
+				task.spawn(function()
+					firetouchinterest(part, root, 1)
+					task.wait()
+					firetouchinterest(part, root, 0)
+					part.CFrame = originalCFrame
+				end)
+
+				count = count + 1
+			end
 		end
 	end
 
-	wait();
-
-	DoNotif("Fired "..ftiamount.." amount of touch interests")
+	DoNotif("Fired " .. count .. " Touch Interests")
 end)
 
 local infJump=nil
@@ -11306,9 +11323,9 @@ cmd.add({"chatspy"},{"chatspy","Spies on chat,enables chat,spies whispers etc."}
 	chatFrame.ChatBarParentFrame.Position=chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 end)
 
-
-cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
-	--[[ bhop functions ]]--
+-- this seriously looks ridiculous
+--[[cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
+	--[[ bhop functions
 	local player
 	local character
 	local collider
@@ -11648,7 +11665,7 @@ cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk wha
 		update(updateDT);
 	end
 	main()
-end)
+end)]]
 
 cmd.add({"firstp","1stp","firstperson","fp"},{"firstperson (1stp,firstp,fp)","Makes you go in first person mode"},function()
 	Player.CameraMode="LockFirstPerson"
