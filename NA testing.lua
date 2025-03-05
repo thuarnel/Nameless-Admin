@@ -10681,38 +10681,32 @@ cmd.add({"breakcars","bcars"},{"breakcars (bcars)","Breaks any car"},function()
 	end)
 end)
 
-cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every Touch Interest in workspace."}, function()
-	if not firetouchinterest then
-		DoNotif("Incompatible Exploit: Missing firetouchinterest")
-		return
-	end
+cmd.add({"firetouchinterests", "fti"}, {"firetouchinterests (fti)", "Fires every Touch Interest that's in workspace"}, function()
+	local ftiamount = 0
 
-	local root = getRoot(getChar())
-	if not root then return end
-
-	local count = 0
-	for _, v in ipairs(game:GetService("Workspace"):GetDescendants()) do
+	for _, v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		if v:IsA("TouchTransmitter") then
-			task.spawn(function()
-				firetouchinterest(root,v.Parent,0)--0 is touch
-				task.wait();
-				firetouchinterest(root,v.Parent,1)--1 is untouch
-			end)
+			ftiamount = ftiamount + 1
+            task.spawn(function()
+                firetouchinterest(getRoot(getChar()), v.Parent, 0)  -- 0 is touch
+				task.wait()
+				firetouchinterest(getRoot(getChar()), v.Parent, 1)  -- 1 is untouch
+            end)
 			local part = v:FindFirstAncestorWhichIsA("BasePart")
 			if part then
-				local originalCFrame = part.CFrame
-				part.CFrame = root.CFrame
-
+                task.wait()
+				local ogFrame = part.CFrame
+				part.CFrame = getRoot(getChar()).CFrame
 				task.delay(0.1, function()
-					part.CFrame = originalCFrame
+					part.CFrame = ogFrame
 				end)
-
-				count = count + 1
 			end
 		end
 	end
 
-	DoNotif("Fired " .. count .. " Touch Interests")
+	wait()
+
+	DoNotif("Fired " .. ftiamount .. " amount of touch interests")
 end)
 
 local infJump=nil
