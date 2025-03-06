@@ -3395,33 +3395,27 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 	DoNotif("Anti sit disabled")
 end)
 
-cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk)","Bypass Kick on Most Games"},function()
-	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
-	local getrawmt = (debug and debug.getmetatable) or getrawmetatable
-	local setReadOnly = setreadonly
-		or (
-			make_writeable
-			and function(table, readonly)
-				if readonly then
-					make_readonly(table)
-				else
-					make_writeable(table)
-				end
-			end
-		)
-	local meta = getrawmt(game)
-	local namecall = meta.__namecall
-	setReadOnly(meta, false)
-	meta.__namecall = newcclosure(function(self, ...)
-		local method = getnamecallmethod()
-		if method == "Kick" then
-			return DoNotif("A kick was prevented from running.")
-		end
-		return namecall(self, ...)
-	end)
-	setReadOnly(meta, true)
+cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk)","Bypass Kick on Most Games"}, function()
+    local oldNamecall
+    oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+        local method = getnamecallmethod()
+        if method == "Kick" and self:IsA("Player") then
+            DoNotif("A kick attempt was blocked.")
+            return
+        end
+        return oldNamecall(self, ...)
+    end)
 
-	DoNotif("Anti Kick Enabled.")
+    local oldIndex
+    oldIndex = hookmetamethod(game, "__index", function(self, key)
+        if self:IsA("Player") and key == "Parent" then
+            DoNotif("An attempt to remove you from the game was blocked.")
+            return game
+        end
+        return oldIndex(self, key)
+    end)
+
+    DoNotif("Anti-Kick Enabled.")
 end)
 
 cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation on Most Games"},function()
