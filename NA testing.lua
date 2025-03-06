@@ -685,7 +685,7 @@ function ESP(plr)
                 if plr.Character and plr.Character:FindFirstChild('Head') then
                     local BillboardGui=Instance.new("BillboardGui")
                     local TextLabel=Instance.new("TextLabel")
-                    BillboardGui.Adornee=plr.Character.Head
+                    BillboardGui.Adornee=plr.Character:WaitForChild("Head",5)
                     BillboardGui.Name=plr.Name
                     BillboardGui.Parent=ESPholder
                     BillboardGui.Size=UDim2.new(0,100,0,150)
