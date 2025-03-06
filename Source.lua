@@ -3379,33 +3379,40 @@ cmd.add({"unantisit"},{"unantisit","Disable antisit command"},function()
 	DoNotif("Anti sit disabled")
 end)
 
-cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk)","Bypass Kick on Most Games"},function()
-	--loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/btrAntiKick.lua"))()--Better Version
-	local getrawmt = (debug and debug.getmetatable) or getrawmetatable
-	local setReadOnly = setreadonly
-		or (
-			make_writeable
-			and function(table, readonly)
-				if readonly then
-					make_readonly(table)
-				else
-					make_writeable(table)
-				end
-			end
-		)
-	local meta = getrawmt(game)
-	local namecall = meta.__namecall
-	setReadOnly(meta, false)
-	meta.__namecall = newcclosure(function(self, ...)
-		local method = getnamecallmethod()
-		if method == "Kick" then
-			return DoNotif("A kick was prevented from running.")
-		end
-		return namecall(self, ...)
-	end)
-	setReadOnly(meta, true)
+cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk)","Bypass Kick on Most Games"}, function()
+    local getrawmt = (debug and debug.getmetatable) or getrawmetatable
+    local setReadOnly = setreadonly or (
+        make_writeable and function(table, readonly)
+            if readonly then
+                make_readonly(table)
+            else
+                make_writeable(table)
+            end
+        end
+    )
+    
+    local player = game:GetService("Players").LocalPlayer
+    local meta = getrawmt(game)
+    local oldNamecall = meta.__namecall
 
-	DoNotif("Anti Kick Enabled.")
+    setReadOnly(meta, false)
+
+    meta.__namecall = newcclosure(function(self, ...)
+        local method = getnamecallmethod()
+
+        if (method == "Kick" or method == "kick") and self == player then
+            DoNotif("A kick attempt was blocked.")
+            return
+        elseif (method == "Destroy" or method == "destroy") and self == player then
+            DoNotif("An attempt to destroy you was blocked.")
+            return
+        end
+
+        return oldNamecall(self, ...)
+    end)
+
+    setReadOnly(meta, true)
+    DoNotif("Anti-Kick Enabled")
 end)
 
 cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation on Most Games"},function()
@@ -4594,13 +4601,14 @@ cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
 		--Description = '',
 		--Duration = 3,
 		Buttons = {
-			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end}, 
-			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end}, 
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) end}, 
-			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end}, 
-			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end}, 
-			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end}, 
-			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) end} 
+			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end};
+			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) end};
+			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end};
+			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end};
+			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end};
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) end};
+			{Text = "Cancel", Callback = function() end};
 		}
 	})
 end)
@@ -4611,13 +4619,14 @@ cmd.add({"disable"}, {"disable", "Disables a specific CoreGui"}, function()
 		--Description = '',
 		--Duration = 3,
 		Buttons = {
-			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", false) end}, 
-			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false) end}, 
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false) end}, 
-			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false) end}, 
-			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false) end}, 
-			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false) end}, 
-			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false) end} 
+			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", false) end};
+			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false) end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false) end};
+			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, false) end};
+			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false) end};
+			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false) end};
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false) end};
+			{Text = "Cancel", Callback = function() end};
 		}
 	})
 end)
