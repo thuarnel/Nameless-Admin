@@ -12703,6 +12703,18 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 	print'set'
 end)
 
+cmd.add({"setname"},{"setname","set your Name to anything"},function(...)
+	Player.Name=(...)
+end)
+
+cmd.add({"setid"},{"setid","set your UserId to anything"},function(...)
+	Player.UserId=tonumber(...)
+end)
+
+cmd.add({"setdisplay"},{"setdisplay","set your DisplayName to anything"},function(...)
+	Player.DisplayName=(...)
+end)
+
 cmd.add({"errorchat"},{"errorchat","Makes the chat error appear when roblox chat is slow"},function()
 	for i=1,3 do 
 		lib.LocalPlayerChat("\0","All")
