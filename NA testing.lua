@@ -4688,10 +4688,10 @@ cmd.add({"locate"},{"locate <username>","locate where the players are"},function
     Username=(...)
     local target=getPlr(Username)
     if target then
-        ESPenabled=true
         ESP(target)
     end
 end)
+
 
 cmd.add({"unesp","unlocate"},{"unesp (unlocate)","Disables esp"},function()
     ESPenabled=false
