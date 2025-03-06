@@ -152,14 +152,9 @@ local opt={
 }
 
 --[[ Update Logs ]]--
-local updLogs={
-	log1='Headsit & Headstand commands are fixed and will no longer fling you';
-	log2='updated "bhop" command and gave it a variable name "loopjump"';
-	log3='improved "firetouchinterests" command to function properly';
-	log4='fixed "adonisbypass" command by the_king.78';
-}
+local updLogs={}
 
-local updDate="3/06/2025" --month,day,year
+local updDate="3/07/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
