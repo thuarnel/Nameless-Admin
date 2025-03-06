@@ -10611,20 +10611,23 @@ cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views
 		end
 	end
 
+	local found = false
 	for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		local lwr=v.Name:lower()
-		if lwr==args:lower() then
+		if lwr==args:lower() and not found then
 			if v:IsA("BasePart") then
-				wait(0.1)
 				game:GetService("Workspace").CurrentCamera.CameraSubject=v
+				found = true
+				break
 			elseif v:IsA("Model") or v:IsA("Folder") then
 				for _,j in ipairs(v:GetDescendants()) do
 					if j:IsA("BasePart") then
-						wait(0.1)
 						game:GetService("Workspace").CurrentCamera.CameraSubject=j
+						found = true
 						break
 					end
 				end
+				if found then break end
 			end
 		end
 	end
