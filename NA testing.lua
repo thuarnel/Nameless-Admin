@@ -652,88 +652,99 @@ local function placeName()
 end
 
 function removeESP()
-    for _, player in pairs(game:GetService("Players"):GetPlayers()) do
-        local espFolder = COREGUI:FindFirstChild(player.Name .. "_ESP")
-        if espFolder then
-            espFolder:Destroy()
-        end
-        
-        if player._espConnections then
-            for _, conn in pairs(player._espConnections) do
-                conn:Disconnect()
-            end
-            player._espConnections = nil
+    for i,c in pairs(COREGUI:GetChildren()) do
+        if string.sub(c.Name,-4)=='_ESP' then
+            c:Destroy()
         end
     end
 end
 
-local function ESP(plr)
-    local espHolder = Instance.new("Folder")
-    espHolder.Name = plr.Name .. "_ESP"
-    espHolder.Parent = COREGUI
-
-    if plr._espConnections then
-        for _, conn in pairs(plr._espConnections) do
-            conn:Disconnect()
+function ESP(plr)
+    task.spawn(function()
+        for i,v in pairs(COREGUI:GetChildren()) do
+            if v.Name==plr.Name..'_ESP' then
+                v:Destroy()
+            end
         end
-    end
-    plr._espConnections = {}
-
-    local function createESP(character)
-        if not ESPenabled or not character then return end
-
-        local root
-        repeat
-            root = character:FindFirstChild("HumanoidRootPart")
-            task.wait()
-        until root and character:FindFirstChildOfClass("Humanoid")
-
-        local highlight = Instance.new("Highlight")
-        highlight.Name = plr.Name
-        highlight.Adornee = character
-        highlight.FillTransparency = 0.45
-        highlight.FillColor = Color3.fromRGB(0, 255, 0)
-        highlight.Parent = espHolder
-
-        local billboard = Instance.new("BillboardGui")
-        local textLabel = Instance.new("TextLabel")
-        billboard.Adornee = character.Head
-        billboard.Size = UDim2.new(0, 100, 0, 150)
-        billboard.StudsOffset = Vector3.new(0, 1, 0)
-        billboard.AlwaysOnTop = true
+        wait()
         
-        textLabel.Text = "@" .. plr.Name .. " | " .. plr.DisplayName
-        textLabel.BackgroundTransparency = 1
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.Font = Enum.Font.SourceSansSemibold
-        textLabel.TextSize = 17
-        textLabel.TextColor3 = Color3.new(1, 1, 1)
-        textLabel.TextStrokeTransparency = 0.3
-        textLabel.Parent = billboard
-        billboard.Parent = espHolder
+        local function makeESP()
+            if plr.Character and plr.Name~=Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
+                local ESPholder=Instance.new("Folder")
+                ESPholder.Name=plr.Name..'_ESP'
+                ESPholder.Parent=COREGUI
+                repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
 
-        local renderConn
-        renderConn = game:GetService("RunService").RenderStepped:Connect(function()
-            if not character.Parent or not root then
-                renderConn:Disconnect()
+                local a=Instance.new("Highlight")
+                a.Name=plr.Name
+                a.Parent=ESPholder
+                a.Adornee=plr.Character
+                a.FillTransparency=0.45
+                a.FillColor=Color3.fromRGB(0,255,0)
+
+                if plr.Character and plr.Character:FindFirstChild('Head') then
+                    local BillboardGui=Instance.new("BillboardGui")
+                    local TextLabel=Instance.new("TextLabel")
+                    BillboardGui.Adornee=plr.Character.Head
+                    BillboardGui.Name=plr.Name
+                    BillboardGui.Parent=ESPholder
+                    BillboardGui.Size=UDim2.new(0,100,0,150)
+                    BillboardGui.StudsOffset=Vector3.new(0,1,0)
+                    BillboardGui.AlwaysOnTop=true
+                    TextLabel.Parent=BillboardGui
+                    TextLabel.BackgroundTransparency=1
+                    TextLabel.Position=UDim2.new(0,0,0,-50)
+                    TextLabel.Size=UDim2.new(0,100,0,100)
+                    TextLabel.Font=Enum.Font.SourceSansSemibold
+                    TextLabel.TextSize=17
+                    TextLabel.TextColor3=Color3.new(12,4,20)
+                    TextLabel.TextStrokeTransparency=0.3
+                    TextLabel.TextYAlignment=Enum.TextYAlignment.Bottom
+                    TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName..''
+                    TextLabel.ZIndex=10
+                    
+                    local espLoopFunc
+                    espLoopFunc = RunService.RenderStepped:Connect(function()
+                        if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+                            if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+                                local pos=math.floor((getRoot(Players.LocalPlayer.Character).Position-getRoot(plr.Character).Position).magnitude)
+                                TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName ..' | Studs: '..pos
+                                a.Adornee=plr.Character
+                            end
+                        else
+                            espLoopFunc:Disconnect()
+                        end
+                    end)
+                    
+                    ESPholder:SetAttribute("LoopConnection", true)
+                end
+            end
+        end
+        
+        makeESP()
+        
+        local addedConnection
+        addedConnection = plr.CharacterAdded:Connect(function()
+            if not ESPenabled then
+                addedConnection:Disconnect()
                 return
             end
-            local distance = math.floor((root.Position - Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude)
-            textLabel.Text = "@" .. plr.Name .. " | " .. plr.DisplayName .. "\n" .. distance .. " studs"
+            
+            for i,v in pairs(COREGUI:GetChildren()) do
+                if v.Name==plr.Name..'_ESP' then
+                    v:Destroy()
+                end
+            end
+            
+            task.wait(1)
+            
+            makeESP()
         end)
-
-        table.insert(plr._espConnections, renderConn)
-    end
-
-    if plr.Character then
-        createESP(plr.Character)
-    end
-
-    local charConn = plr.CharacterAdded:Connect(function(newChar)
-        espHolder:ClearAllChildren()
-        createESP(newChar)
+        
+        if COREGUI:FindFirstChild(plr.Name..'_ESP') then
+            COREGUI:FindFirstChild(plr.Name..'_ESP'):SetAttribute("AddedConnection", true)
+        end
     end)
-    table.insert(plr._espConnections, charConn)
 end
 
 
@@ -4656,74 +4667,40 @@ cmd.add({"ctrlshiftlock","ctrlsl"},{"ctrlshiftlock (ctrlsl)","Enables shift lock
 	game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule.CameraModule.MouseLockController.BoundKeys.Value="LeftControl,RightControl"
 end)
 
-local ESPenabled = false
-local trackedPlayers = {}
-
-cmd.add({"esp"}, {"esp", "Show all players' locations"}, function()
-    ESPenabled = true
-    removeESP() -- Clear any existing ESP first
-    
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= Players.LocalPlayer then
-            ESP(player)
-            trackedPlayers[player.Name] = true
+cmd.add({"esp"},{"esp","locate where the players are"},function()
+    ESPenabled=true
+    for _,v in pairs(Players:GetPlayers()) do
+        if v.Name~=Players.LocalPlayer.Name then
+            ESP(v)
         end
     end
     
-    -- Handle new players joining
-    if not playerJoinedConn then
-        playerJoinedConn = Players.PlayerAdded:Connect(function(newPlayer)
-            if ESPenabled and newPlayer ~= Players.LocalPlayer then
-                ESP(newPlayer)
-                trackedPlayers[newPlayer.Name] = true
+    if not _G.ESPJoinConnection then
+        _G.ESPJoinConnection = Players.PlayerAdded:Connect(function(plr)
+            if ESPenabled and plr.Name~=Players.LocalPlayer.Name then
+                ESP(plr)
             end
-        end)
-    end
-    
-    -- Handle players leaving
-    if not playerLeftConn then
-        playerLeftConn = Players.PlayerRemoving:Connect(function(player)
-            local espFolder = COREGUI:FindFirstChild(player.Name .. "_ESP")
-            if espFolder then
-                espFolder:Destroy()
-            end
-            trackedPlayers[player.Name] = nil
         end)
     end
 end)
 
-cmd.add({"locate"}, {"locate <username>", "Track specific player"}, function(...)
-    local username = (...)
-    local target = getPlr(username)
-    
-    if not target then
-        return print("Player not found:", username)
+cmd.add({"locate"},{"locate <username>","locate where the players are"},function(...)
+    Username=(...)
+    local target=getPlr(Username)
+    if target then
+        ESPenabled=true
+        ESP(target)
     end
-    
-    local espFolder = COREGUI:FindFirstChild(target.Name .. "_ESP")
-    if espFolder then
-        espFolder:Destroy()
-    end
-    
-    ESP(target)
-    trackedPlayers[target.Name] = true
 end)
 
-cmd.add({"unesp", "unlocate"}, {"unesp", "Disable all ESP"}, function()
-    ESPenabled = false
-    
-    if playerJoinedConn then
-        playerJoinedConn:Disconnect()
-        playerJoinedConn = nil
-    end
-    
-    if playerLeftConn then
-        playerLeftConn:Disconnect()
-        playerLeftConn = nil
-    end
-    
+cmd.add({"unesp","unlocate"},{"unesp (unlocate)","Disables esp"},function()
+    ESPenabled=false
     removeESP()
-    trackedPlayers = {}
+    
+    if _G.ESPJoinConnection then
+        _G.ESPJoinConnection:Disconnect()
+        _G.ESPJoinConnection = nil
+    end
 end)
 
 cmd.add({"crash"},{"crash","crashes ur client lol"},function()
