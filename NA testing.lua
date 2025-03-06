@@ -4752,61 +4752,6 @@ cmd.add({"netless","net"},{"netless (net)","Executes netless which makes scripts
 	DoNotif("Netless has been activated,re-run this script if you die")
 end)
 
-cmd.add({"hatsleash","hl"},{"hatsleash","Makes you be able to carry your hats"},function()
-	--[[ PROBABLY PATCHED ]]--
-	for _,v in pairs(getChar():getChildren()) do
-		if v.ClassName=="Accessory" then
-			for i,k in pairs(v:GetDescendants()) do
-				if k.ClassName=="Attachment" then
-					s=Instance.new("RopeConstraint")
-					k.Parent.CanCollide=true
-					s.Parent=getRoot(getChar())
-					s.Attachment1=k
-					s.Attachment0=getChar():FindFirstChild("Head").FaceCenterAttachment
-					s.Visible=true
-					s.Length=10
-					v.Handle.AccessoryWeld:Destroy()
-				end
-			end
-		end
-	end
-end)
-
-cmd.add({"toolleash","tl"},{"toolleash","Makes you be able to carry your tools"},function()
-	--[[ PROBABLY PATCHED ]]--
-	for _,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-		v.Parent=getChar()
-	end
-
-	for _,v in pairs(getChar():GetChildren()) do
-		if v.ClassName=="Tool" then
-			x=Instance.new("Attachment")
-			s=Instance.new("RopeConstraint")
-			v.Handle.CanCollide=true
-			x.Parent=v.Handle
-			s.Parent=getRoot(getChar())
-			s.Attachment1=getChar()["Right Arm"].RightGripAttachment
-			s.Attachment0=v.Handle.Attachment
-			s.Length=100
-			s.Visible=true
-			wait()
-		end
-	end
-	for _,v in pairs(getChar():GetDescendants()) do
-		if v.Name=="RightGrip" then
-			v:Destroy()
-		end
-	end
-
-	while wait() do
-		for _,v in pairs(getChar():GetChildren()) do
-			if v.ClassName=="Tool" then
-				v.Handle.Velocity=Vector3.new(math.random(-100,100),5,math.random(-100,100))
-			end
-		end
-	end
-end)
-
 cmd.add({"reset","die"},{"reset (die)","Makes your health be 0"},function()
 	Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
 	Player.Character:FindFirstChildOfClass("Humanoid").Health=0
@@ -6262,23 +6207,35 @@ cmd.add({"animspoofer","animationspoofer","spoofanim","animspoof"},{"animationsp
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Animation%20Spoofer"))()
 end)
 
-cmd.add({"animationspeed","animspeed"},{"animationspeed <speed> (animspeed)","speeds up your animations"},function(...)
-    local speed = tonumber(...) or 1
+local animSpeed
+
+cmd.add({"animationspeed", "animspeed"}, {"animationspeed <speed> (animspeed)", "speeds up your animations"}, function(speed)
+    speed = tonumber(speed) or 1
     
-    local character = LocalPlayer.Character
-    if character then
-        local humanoid = getHum()
+    if animSpeed then
+        animSpeed:Disconnect()
+    end
+
+    animSpeed = RunService.Heartbeat:Connect(function()
+        local humanoid = getChar():FindFirstChildOfClass("Humanoid") or getChar():FindFirstChildOfClass("AnimationController")
         if humanoid then
-            local animator = humanoid:FindFirstChildOfClass("Animator")
-            if animator then
-                for _, track in pairs(animator:GetPlayingAnimationTracks()) do
-                    track:AdjustSpeed(speed)
-                end
+            for _, track in pairs(humanoid:GetPlayingAnimationTracks()) do
+                track:AdjustSpeed(speed)
             end
         end
-    end
+    end)
     
     DoNotif("Animation speed set to " .. speed)
+end)
+
+cmd.add({"unanimationspeed", "unanimspeed"}, {"unanimationspeed (unanimspeed)", "stops the animation speed loop"}, function()
+    if animSpeed then
+        animSpeed:Disconnect()
+        animSpeed = nil
+        DoNotif("Animation speed disabled")
+    else
+        DoNotif("No active animation speed to disable")
+    end
 end)
 
 cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nModes: tor/sph/inf/rng/whl/wht/voi"},function(mode,size)
