@@ -5540,10 +5540,10 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 
 		if IsOnPC then
 			if keys.w then
-				new = new + workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+				new = new + game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector * speed
 			end
 			if keys.s then
-				new = new - workspace.CurrentCamera.CoordinateFrame.lookVector * speed
+				new = new - game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector * speed
 			end
 			if keys.d then
 				new = new * CFrame.new(speed, 0, 0)
@@ -5554,18 +5554,18 @@ cmd.add({"tfly", "tweenfly"},{"tfly [speed] (tweenfly)","Basically smooth flying
 		elseif IsOnMobile then
 			local direction = ctrlModule:GetMoveVector()
 			if direction.Magnitude > 0 then
-				new = new + (direction.X * workspace.CurrentCamera.CFrame.RightVector * speed)
-				new = new - (direction.Z * workspace.CurrentCamera.CFrame.LookVector * speed)
+				new = new + (direction.X * game:GetService("Workspace").CurrentCamera.CFrame.RightVector * speed)
+				new = new - (direction.Z * game:GetService("Workspace").CurrentCamera.CFrame.LookVector * speed)
 			end
 		end
 
 		pos.position = new.p
 		if keys.w then
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+			gyro.cframe = game:GetService("Workspace").CurrentCamera.CoordinateFrame
 		elseif keys.s then
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+			gyro.cframe = game:GetService("Workspace").CurrentCamera.CoordinateFrame
 		else
-			gyro.cframe = workspace.CurrentCamera.CoordinateFrame
+			gyro.cframe = game:GetService("Workspace").CurrentCamera.CoordinateFrame
 		end
 	until TFlyEnabled == false
 	if gyro then
@@ -8008,11 +8008,11 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 			if THumanoid and THumanoid.Sit and not AllBool then
 			end
 			if THead then
-				workspace.CurrentCamera.CameraSubject = THead
+				game:GetService("Workspace").CurrentCamera.CameraSubject = THead
 			elseif not THead and Handle then
-				workspace.CurrentCamera.CameraSubject = Handle
+				game:GetService("Workspace").CurrentCamera.CameraSubject = Handle
 			elseif THumanoid and TRootPart then
-				workspace.CurrentCamera.CameraSubject = THumanoid
+				game:GetService("Workspace").CurrentCamera.CameraSubject = THumanoid
 			end
 			if not TCharacter:FindFirstChildWhichIsA("BasePart") then
 				return
@@ -8089,7 +8089,7 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 				until BasePart.Velocity.Magnitude > 500 or BasePart.Parent ~= TargetPlayer.Character or TargetPlayer.Parent ~= Players or not TargetPlayer.Character == TCharacter or THumanoid.Sit or Humanoid.Health <= 0 or tick() > Time + TimeToWait
 			end
 
-			workspace.FallenPartsDestroyHeight = 0/0
+			game:GetService("Workspace").FallenPartsDestroyHeight = 0/0
 
 			local BV = Instance.new("BodyVelocity")
 			BV.Name = "EpixVel"
@@ -8116,7 +8116,7 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 
 			BV:Destroy()
 			Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
-			workspace.CurrentCamera.CameraSubject = Humanoid
+			game:GetService("Workspace").CurrentCamera.CameraSubject = Humanoid
 
 			repeat
 				RootPart.CFrame = getgenv().OldPos * CFrame.new(0, .5, 0)
@@ -8129,7 +8129,7 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 				end)
 				task.wait()
 			until (RootPart.Position - getgenv().OldPos.p).Magnitude < 25
-			workspace.FallenPartsDestroyHeight = getgenv().FPDH
+			game:GetService("Workspace").FallenPartsDestroyHeight = getgenv().FPDH
 		else
 		end
 	end
@@ -8224,23 +8224,36 @@ cmd.add({"unlookat","unstare"},{"unstare (unlookat)","Stops staring"},function()
 	Staring:Disconnect()
 end)
 
-cmd.add({"watch","view","specate"},{"view <player>","Watch the given player"},function(...)
-	game:GetService("Workspace").CurrentCamera.CameraSubject=character:FindFirstChildWhichIsA("Humanoid")
-	view=false
-	wait(0.3)
-	view=true
-	Username=(...)
+local conn, loop = nil, nil
 
-	local target=getPlr(Username)
-	repeat wait()
-		game:GetService("Workspace").CurrentCamera.CameraSubject=target.Character.Humanoid
-	until view==false
+cmd.add({"watch","view","spectate"}, {"view <p>","Spectate player"}, function(...)
+    if conn then conn:Disconnect() end
+    if loop then coroutine.close(loop) end
+
+    local t = getPlr((...))
+    if not t then return end
+
+    conn = t.CharacterAdded:Connect(function(c)
+        repeat wait() until c:FindFirstChildWhichIsA("Humanoid")
+        game:GetService("Workspace").CurrentCamera.CameraSubject = c:FindFirstChildWhichIsA("Humanoid")
+    end)
+
+    loop = coroutine.create(function()
+        repeat
+            if t.Character and t.Character:FindFirstChildWhichIsA("Humanoid") then
+                game:GetService("Workspace").CurrentCamera.CameraSubject = t.Character:FindFirstChildWhichIsA("Humanoid")
+            end
+            wait()
+        until not conn
+    end)
+    
+    coroutine.resume(loop)
 end)
 
-cmd.add({"unwatch","unview","unspectate"},{"unview","Stop watching a player"},function()
-	view=false
-	wait();
-	game:GetService("Workspace").CurrentCamera.CameraSubject=getHum()
+cmd.add({"unwatch","unview"}, {"unview","Stop spectating"}, function()
+    if conn then conn:Disconnect() conn = nil end
+    if loop then coroutine.close(loop) loop = nil end
+    game:GetService("Workspace").CurrentCamera.CameraSubject = getHum()
 end)
 
 cmd.add({"pp","penis"},{"penis (pp)","benis :flushed:"},function()
@@ -10585,8 +10598,7 @@ cmd.add({"viewpart","viewp","vpart"},{"viewpart {partname} (viewp,vpart)","Views
 end)
 
 cmd.add({"unviewpart","unviewp"},{"unviewpart (unviewp)","Unviews the part"},function()
-	local cam=game:GetService("Workspace").CurrentCamera
-	cam.CameraSubject=getHum()
+	game:GetService("Workspace").CurrentCamera.CameraSubject = getHum()
 end)
 
 cmd.add({"console"},{"console","Opens developer console"},function()
