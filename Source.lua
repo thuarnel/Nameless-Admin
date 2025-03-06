@@ -3233,6 +3233,10 @@ cmd.add({"UNCTest","UNC"},{"UNCTest (UNC)","Test how many functions your executo
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/UNC%20test"))()
 end)
 
+cmd.add({"sUNCtest","sUNC"},{"sUNCtest (sUNC)","uses Super UNC test that test the functions if they're working"},function()
+	loadstring(game:HttpGet("https://gitlab.com/sens3/nebunu/-/raw/main/HummingBird8's_sUNC_yes_i_moved_to_gitlab_because_my_github_acc_got_brickedd/sUNCm0m3n7.lua"))()
+end)
+
 cmd.add({"vulnerabilitytest","vulntest"},{"vulnerabilitytest (vulntest)","Test if your executor is Vulnerable"},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/VulnTest.lua"))()
 end)
