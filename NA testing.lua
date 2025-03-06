@@ -3107,10 +3107,6 @@ cmd.add({"unsync"},{"unsync","Unsyncs all in-game audios"},function()
 	massplay=false
 end)
 
-cmd.add({"enableinventory","enableinv"},{"enableinv (enableinventory)","Lets you see what you have in your inventory since some games hide it"},function(...)
-	game:GetService("StarterGui"):SetCoreGuiEnabled(2,true)
-end)
-
 cmd.add({"copytools","ctools"},{"copytools <player> (ctools)","Copies the tools the given player has"},function(...)
 	PLAYERNAMEHERE=(...)
 	Target=getPlr(PLAYERNAMEHERE)
@@ -4908,12 +4904,11 @@ end)
 end)]]
 
 cmd.add({"jobid"},{"jobid","Copies your job id"},function()
-	local jobId='Roblox.GameLauncher.joinGameInstance('..PlaceId..',"'..JobId..'")'
 	if setclipboard then
-		setclipboard(tostring(jobId))
+		setclipboard(tostring(JobId))
 		wait();
 
-		DoNotif("Copied your jobid ("..jobId..")")
+		DoNotif("Copied your jobid ("..JobId..")")
 	else
 		DoNotif("Your executor does not support setclipboard")
 	end
@@ -6267,6 +6262,25 @@ cmd.add({"animspoofer","animationspoofer","spoofanim","animspoof"},{"animationsp
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Animation%20Spoofer"))()
 end)
 
+cmd.add({"animationspeed","animspeed"},{"animationspeed <speed> (animspeed)","speeds up your animations"},function(...)
+    local speed = tonumber(...) or 1
+    
+    local character = LocalPlayer.Character
+    if character then
+        local humanoid = getHum()
+        if humanoid then
+            local animator = humanoid:FindFirstChildOfClass("Animator")
+            if animator then
+                for _, track in pairs(animator:GetPlayingAnimationTracks()) do
+                    track:AdjustSpeed(speed)
+                end
+            end
+        end
+    end
+    
+    DoNotif("Animation speed set to " .. speed)
+end)
+
 cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nModes: tor/sph/inf/rng/whl/wht/voi"},function(mode,size)
 	local size=tonumber(size) or 5
 	lib.disconnect("tooldance")
@@ -6677,45 +6691,6 @@ cmd.add({"toolorbit"},{"toolorbit [height] [distance] [amount]","Make your tools
 	end
 end)
 
-cmd.add({"blockhats"},{"blockhats","Remove the meshes in your hats"},function()
-	for _,hat in pairs(character:GetChildren()) do
-		if hat:IsA("Accoutrement") and hat:FindFirstChild("Handle") then
-			local handle=hat.Handle
-			if handle:FindFirstChildWhichIsA("SpecialMesh") then
-				handle:FindFirstChildWhichIsA("SpecialMesh"):Destroy()
-			end
-		end
-	end
-end)
-
-cmd.add({"blocktools"},{"blocktools","Remove the meshes in your tools"},function()
-	for _,tool in pairs(character:GetChildren()) do
-		if tool:IsA("Tool") then
-			for _,mesh in pairs(tool:GetDescendants()) do
-				if mesh:IsA("DataModelMesh") then
-					mesh:Destroy()
-				end
-			end
-		end
-	end
-end)
-
-cmd.add({"notoolmesh","ntm","notoolmeshes"},{"notoolmesh (ntm)","Makes tools not have meshes"},function()
-	for i,v in pairs(getChar():GetChildren()) do
-		if (v:IsA("Tool")) then
-			v.Handle.Mesh:Destroy()
-		end
-	end
-end)
-
-cmd.add({"nomeshes","nomesh","blocks"},{"nomeshes","Remove all character meshes"},function()
-	for _,mesh in pairs(character:GetDescendants()) do
-		if mesh:IsA("DataModelMesh") then
-			mesh:Destroy()
-		end
-	end
-end)
-
 cmd.add({"nodecals","nodecal","notextures"},{"nodecals","Remove all character images"},function()
 	for _,img in pairs(character:GetDescendants()) do
 		if img:IsA("Decal") or img:IsA("Texture") then
@@ -6817,20 +6792,30 @@ cmd.add({"unspinfling","unsfling"},{"unspinfling (unsfling)","Stop the spinfling
 end)
 
 cmd.add({"claimua","claimunanchored"},{"claimunanchored (claimua)","Teleports to every single unanchored part meaning that the ownership is yours"},function()
-	local parts=game:GetService("Workspace"):GetDescendants()
-	local targetParts={}
-	for i,child in pairs(parts) do
-		if child:IsA("BasePart") and not child.Anchored then
-			table.insert(targetParts,child)
-		end
-	end
+    local parts = game:GetService("Workspace"):GetDescendants()
+    local targetParts = {}
+    
+    for _, child in pairs(parts) do
+        if child:IsA("BasePart") and not child.Anchored then
+            table.insert(targetParts, child)
+        end
+    end
 
-	local index=1
-	while targetParts[index] do
-		getChar():MoveTo(targetParts[index].Position)
-		repeat wait(0.04) until (getChar().Humanoid.MoveDirection.Magnitude==0) or (targetParts[index].Position-getRoot(getChar()).Position).Magnitude<10
-		index=index+1
-	end
+    local index = 1
+    while targetParts[index] do
+        local character = getChar()
+        local rootPart = getRoot(character)
+        
+        if character and rootPart then
+            character:MoveTo(targetParts[index].Position)
+            repeat
+                wait(0.04)
+            until (character.Humanoid.MoveDirection.Magnitude == 0) or 
+                  ((targetParts[index].Position - rootPart.Position).Magnitude < 10)
+        end
+        
+        index = index + 1
+    end
 end)
 
 --[ PLAYER ]--
@@ -6886,24 +6871,6 @@ cmd.add({"uporbit"},{"uporbit <player> <distance>","Orbit around a player on the
 	end
 end)
 
-cmd.add({"iplog","infolog"},{"iplog <playet>","grab the player's ip (real)"},function(...)
-
-	Username=(...)
-	target=getPlr(Username)
-
-	local ip=math.random(100,200)
-	local ipp=math.random(50,100)
-	local ippp=math.random(50,100)
-	local ipppp=math.random(100,200)
-	local description=target.Name.."'s ip is "..ip.."."..ipp.."."..ippp.."."..ipppp
-
-
-
-	wait();
-
-	DoNotif(description)
-end)
-
 cmd.add({"unorbit"},{"unorbit","Stop orbiting a player"},function()
 	lib.disconnect("orbit")
 end)
@@ -6942,7 +6909,7 @@ end)
 
 
 cmd.add({"height","hipheight","hh"},{"height <number> (hipheight,hh)","Changes your hipheight"},function(...)
-	getChar().Humanoid.HipHeight=(...)
+	getHum().HipHeight=(...)
 end)
 
 cmd.add({"uadelete","unanchoreddelete"},{"unanchoreddelete (uadelete)","Gives you btools to delete unanchored parts"},function()
@@ -8481,8 +8448,6 @@ cmd.add({"firekey","fkey"},{"firekey <key> (fkey)","makes you fire a keybind usi
     if keyCode then
         vim:SendKeyEvent(true, keyCode, 0, game)
         vim:SendKeyEvent(false, keyCode, 0, game)
-    else
-        print("Invalid key: " .. input)
     end
 end)
 
@@ -8752,30 +8717,28 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 end)
 
 cmd.add({"freegamepass","freegp"},{"freegamepass (freegp)","Makes the client think you own every gamepass in the game"},function()
-	local mt=getrawmetatable(game);
-	local old=mt.__namecall
-	local readonly=setreadonly or make_writeable
-
-	local MarketplaceService=game:GetService("MarketplaceService");
-
-	readonly(mt,false);
-
-	mt.__namecall=function(self,...)
-		local args={...}
-		local method=table.remove(args)
-
-		if (self==MarketplaceService and method:find("UserOwnsGamePassAsync")) then
-			return true and 1
-		end
-
-		return old(self,...)
-	end
-
-
-
-	wait();
-
-	DoNotif("Free gamepass has been executed,keep in mind this wont always work")
+    local mt = getrawmetatable(game)
+    local old = mt.__namecall
+    local readonly = setreadonly or make_writeable
+    
+    local MarketplaceService = game:GetService("MarketplaceService")
+    
+    readonly(mt, false)
+    
+    mt.__namecall = function(self, ...)
+        local args = {...}
+        local method = getnamecallmethod()
+        
+        if self == MarketplaceService and method == "UserOwnsGamePassAsync" then
+            return true
+        end
+        
+        return old(self, ...)
+    end
+    
+    wait()
+    
+    DoNotif("Free gamepass has been executed, keep in mind this won't always work")
 end)
 
 local headSit,sitDied=nil,nil
@@ -9480,31 +9443,39 @@ cmd.add({"mute","muteboombox"},{"mute <player> (muteboombox)","Mutes the players
 	end
 end)
 
-TPWalk=false
-cmd.add({"tpwalk","tpwalk"},{"tpwalk <number>","More undetectable walkspeed script"},function(...)
-	if TPWalk==true then
-		TPWalk=false
-		if TPWalking then TPWalking:Disconnect() TPWalking=nil end
-	end
-	TPWalk=true
-	Speed=(...)
-	TPWalking=RunService.Heartbeat:Wait()
-	game:GetService("RunService").Stepped:Connect(function()
-		if TPWalk==true then
-			if getChar():FindFirstChildWhichIsA("Humanoid").MoveDirection.Magnitude>0 then
-				if Speed then
-					getChar():TranslateBy(getChar():FindFirstChildWhichIsA("Humanoid").MoveDirection*Speed*TPWalking*10)
-				else
-					getChar():TranslateBy(getChar():FindFirstChildWhichIsA("Humanoid").MoveDirection*TPWalking*10)
-				end
-			end
-		end
-	end)
+TPWalk = false
+local TPWalkingConnection
+
+cmd.add({"tpwalk", "tpwalk"}, {"tpwalk <number>", "More undetectable walkspeed script"}, function(...)
+    if TPWalk then
+        TPWalk = false
+        if TPWalkingConnection then
+            TPWalkingConnection:Disconnect()
+            TPWalkingConnection = nil
+        end
+    end
+
+    TPWalk = true
+    local Speed = ...
+
+    TPWalkingConnection = game:GetService("RunService").Stepped:Connect(function(_, deltaTime)
+        if TPWalk then
+            local humanoid = getChar():FindFirstChildWhichIsA("Humanoid")
+            if humanoid and humanoid.MoveDirection.Magnitude > 0 then
+                local moveDirection = humanoid.MoveDirection
+                local translation = moveDirection * (Speed or 1) * deltaTime * 10
+                getChar():TranslateBy(translation)
+            end
+        end
+    end)
 end)
 
-cmd.add({"untpwalk"},{"untpwalk","Stops the tpwalk command"},function()
-	TPWalk=false
-	if TPWalking then TPWalking:Disconnect() TPWalking=nil end
+cmd.add({"untpwalk"}, {"untpwalk", "Stops the tpwalk command"}, function()
+    TPWalk = false
+    if TPWalkingConnection then
+        TPWalkingConnection:Disconnect()
+        TPWalkingConnection = nil
+    end
 end)
 
 cmd.add({"loopmute","loopmuteboombox"},{"loopmute <player> (loopmuteboombox)","Loop mutes the players boombox"},function(...)
