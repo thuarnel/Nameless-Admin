@@ -8455,9 +8455,35 @@ cmd.add({"exit"},{"exit","Close down roblox"},function()
 end)
 
 cmd.add({"firekey","fkey"},{"firekey <key> (fkey)","makes you fire a keybind using VirtualInputManager"},function(...)
-	local codex=(...)--real
-	vim:SendKeyEvent(true,codex,0,game)
-	vim:SendKeyEvent(false,codex,0,game)
+    local input = (...)
+    local keyMap = {
+        ["leftcontrol"] = Enum.KeyCode.LeftControl,
+        ["rightcontrol"] = Enum.KeyCode.RightControl,
+        ["leftshift"] = Enum.KeyCode.LeftShift,
+        ["rightshift"] = Enum.KeyCode.RightShift,
+        ["leftalt"] = Enum.KeyCode.LeftAlt,
+        ["rightalt"] = Enum.KeyCode.RightAlt,
+        ["space"] = Enum.KeyCode.Space,
+        ["tab"] = Enum.KeyCode.Tab,
+        ["escape"] = Enum.KeyCode.Escape,
+        ["enter"] = Enum.KeyCode.Return,
+        ["backspace"] = Enum.KeyCode.Backspace
+    }
+    
+    local keyCode
+    
+    if keyMap[input:lower()] then
+        keyCode = keyMap[input:lower()]
+    else
+        keyCode = Enum.KeyCode[input:upper()]
+    end
+    
+    if keyCode then
+        vim:SendKeyEvent(true, keyCode, 0, game)
+        vim:SendKeyEvent(false, keyCode, 0, game)
+    else
+        print("Invalid key: " .. input)
+    end
 end)
 
 cmd.add({"legresize"},{"legresize","Makes your legs very big r15 only"},function()
