@@ -685,7 +685,7 @@ function ESP(plr)
                 if plr.Character and plr.Character:FindFirstChild('Head') then
                     local BillboardGui=Instance.new("BillboardGui")
                     local TextLabel=Instance.new("TextLabel")
-                    BillboardGui.Adornee=plr.Character:WaitForChild("Head",5)
+                    BillboardGui.Adornee=plr.Character:FindFirstChild("Head")
                     BillboardGui.Name=plr.Name
                     BillboardGui.Parent=ESPholder
                     BillboardGui.Size=UDim2.new(0,100,0,150)
@@ -710,6 +710,7 @@ function ESP(plr)
                                 local pos=math.floor((getRoot(Players.LocalPlayer.Character).Position-getRoot(plr.Character).Position).magnitude)
                                 TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName ..' | Studs: '..pos
                                 a.Adornee=plr.Character
+								BillboardGui.Adornee=plr.Character:FindFirstChild("Head")
                             end
                         else
                             espLoopFunc:Disconnect()
@@ -1517,7 +1518,7 @@ cmd.add({"clickfling","mousefling"},{"mousefling (clickfling)","Fling a player b
 					TRootPart=THumanoid.RootPart
 				end
 				if TCharacter:FindFirstChild("Head") then
-					THead=TCharacter.Head
+					THead=TCharacter:FindFirstChild("Head")
 				end
 				if TCharacter:FindFirstChildOfClass("Accessory") then
 					Accessory=TCharacter:FindFirstChildOfClass("Accessory")
@@ -2353,7 +2354,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 			Part.Name=v.Name
 			Part.Anchored=true
 			Part.Size=v.Handle.Size-Vector3.new(0.001,0.001,0.001)
-			Part.Position=player.Character.Head.Position+Vector3.new(math.random(-5,5),math.random(-1,1),math.random(-5,5))
+			Part.Position=player.Character:FindFirstChild("Head").Position+Vector3.new(math.random(-5,5),math.random(-1,1),math.random(-5,5))
 			Part:SetAttribute("Moveable",true)
 			Part.Material=Enum.Material.SmoothPlastic
 			Part.CanCollide=false
@@ -2510,7 +2511,7 @@ cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
 	Camera_Part.Size=Vector3.new(0.5,0.5,0.5)
 	Camera_Part.Material=Enum.Material.SmoothPlastic
 
-	current_position=char.Head.Position
+	current_position=char:FindFirstChild("Head").Position
 
 	camera.CameraSubject=Camera_Part
 
@@ -3025,7 +3026,7 @@ cmd.add({"loopoof"},{"loopoof","Loops everyones character sounds (everyone can h
 	repeat wait(0.1)
 		for i,v in pairs(Players:GetPlayers()) do
 			if v.Character~=nil and v.Character:FindFirstChild'Head' then
-				for _,x in pairs(v.Character.Head:GetChildren()) do
+				for _,x in pairs(v.Character:FindFirstChild("Head"):GetChildren()) do
 					if x:IsA'Sound' then x.Playing=true end
 				end
 			end
@@ -4423,7 +4424,7 @@ cmd.add({"controlnpcs","cnpcs"},{"controlnpcs (cnpcs)","Keybind: CTRL+LEFTCLICK"
 				end
 			end
 			PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(5,0,0)
-			PlayerCharacter.Head.Anchored=true
+			PlayerCharacter:FindFirstChild("Head").Anchored=true
 			PlayerCharacter.UpperTorso.Anchored=true
 			A0.Parent=npcRootPart
 			AP.Parent=npcRootPart
@@ -4512,7 +4513,7 @@ cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
 						end
 					end
 					PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(0,0,0)
-					PlayerCharacter.Head.Anchored=false
+					PlayerCharacter:FindFirstChild("Head").Anchored=false
 					PlayerCharacter.Torso.Anchored=false
 					A0.Parent=npc
 					AP.Parent=npc
@@ -4765,7 +4766,7 @@ cmd.add({"hatsleash","hl"},{"hatsleash","Makes you be able to carry your hats"},
 					k.Parent.CanCollide=true
 					s.Parent=getRoot(getChar())
 					s.Attachment1=k
-					s.Attachment0=getChar().Head.FaceCenterAttachment
+					s.Attachment0=getChar():FindFirstChild("Head").FaceCenterAttachment
 					s.Visible=true
 					s.Length=10
 					v.Handle.AccessoryWeld:Destroy()
@@ -6190,7 +6191,7 @@ cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools
 	else
 		wait(.2)
 		local grabber=game:GetService("Players"):GetPlayerFromCharacter(boombox.Parent) or boombox.Parent.Parent
-		getChar():SetPrimaryPartCFrame(grabber.Character.Head.CFrame+Vector3.new(0,3,0))
+		getChar():SetPrimaryPartCFrame(grabber.Character:FindFirstChild("Head").CFrame+Vector3.new(0,3,0))
 		DoNotif("Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing")
 	end
 end)
@@ -7525,7 +7526,7 @@ cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
 	speaker.CameraMinZoomDistance=0.5
 	speaker.CameraMaxZoomDistance=400
 	speaker.CameraMode="Classic"
-	speaker.Character.Head.Anchored=false
+	speaker.Character:FindFirstChild("Head").Anchored=false
 end)
 
 cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
@@ -7799,7 +7800,7 @@ cmd.add({"lfling"},{"lfling <player>","Fling the given player using leg resize"}
 			TRootPart=THumanoid.RootPart
 		end
 		if TCharacter:FindFirstChild("Head") then
-			THead=TCharacter.Head
+			THead=TCharacter:FindFirstChild("Head")
 		end
 		if TCharacter:FindFirstChildOfClass("Accessory") then
 			Accessory=TCharacter:FindFirstChildOfClass("Accessory")
@@ -8024,7 +8025,7 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 			TRootPart = THumanoid.RootPart
 		end
 		if TCharacter:FindFirstChild("Head") then
-			THead = TCharacter.Head
+			THead = TCharacter:FindFirstChild("Head")
 		end
 		if TCharacter:FindFirstChildOfClass("Accessory") then
 			Accessory = TCharacter:FindFirstChildOfClass("Accessory")
@@ -8418,7 +8419,7 @@ cmd.add({"bubblechat"},{"bubblechat <player>","fake chat as your target"},functi
 	getRoot(character).CanCollide=false
 	while task.wait() do
 		if victim~=nil then
-			getRoot(character).CFrame=CFrame.new(victim.Head.CFrame.Position)
+			getRoot(character).CFrame=CFrame.new(victim:FindFirstChild("Head").CFrame.Position)
 		end
 	end	
 end)
@@ -8552,7 +8553,7 @@ cmd.add({"loopfling"},{"loopfling <player>","Loop voids a player"},function(plr)
 				TRootPart=THumanoid.RootPart
 			end
 			if TCharacter:FindFirstChild("Head") then
-				THead=TCharacter.Head
+				THead=TCharacter:FindFirstChild("Head")
 			end
 			if TCharacter:FindFirstChildOfClass("Accessory") then
 				Accessory=TCharacter:FindFirstChildOfClass("Accessory")
@@ -9014,7 +9015,7 @@ cmd.add({"headbang","mouthbang","hb","mb"},{"headbang <player> (mouthbang,hb,mb)
 	local bangOffet=CFrame.new(0,1,-1.1)
 	bangLoop=RunService.Stepped:Connect(function()
 		pcall(function()
-			local otherRoot=game:GetService("Players")[bangplr].Character.Head
+			local otherRoot=game:GetService("Players")[bangplr].Character:FindFirstChild("Head")
 			getRoot(getChar()).CFrame=otherRoot.CFrame*bangOffet
 			local CharPos=getChar().PrimaryPart.Position
 			local tpos=getRoot(players.Character).Position
@@ -9747,8 +9748,8 @@ cmd.add({"size"},{"size","Makes you big"},function()
 		for i,v in pairs(Character:GetDescendants()) do
 			if v:IsA("BasePart") then
 				if v.Name=="Handle" or v.Name=="Head" then
-					if Character.Head:FindFirstChild("OriginalSize") then
-						Character.Head.OriginalSize:Destroy()
+					if Character:FindFirstChild("Head"):FindFirstChild("OriginalSize") then
+						Character:FindFirstChild("Head").OriginalSize:Destroy()
 					end
 				else
 					for i,cav in pairs(v:GetDescendants()) do
@@ -9947,7 +9948,7 @@ cmd.add({"scriptviewer","viewscripts"},{"scriptviewer (viewscripts)","Can view s
 end)
 
 cmd.add({"hidename","hname"},{"hidename","Hides your name only works on billboard uis"},function()
-	for _,item in pairs(workspace[game:GetService("Players").LocalPlayer.Name].Head:GetChildren()) do
+	for _,item in pairs(workspace[game:GetService("Players").LocalPlayer.Name]:FindFirstChild("Head"):GetChildren()) do
 		if item:IsA('BillboardGui') then
 			item:Remove()
 		end
@@ -12223,7 +12224,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 					game:GetService("Players").LocalPlayer.CameraMinZoomDistance=0.5
 					game:GetService("Players").LocalPlayer.CameraMaxZoomDistance=400
 					game:GetService("Players").LocalPlayer.CameraMode="Classic"
-					getChar().Head.Anchored=false
+					getChar():FindFirstChild("Head").Anchored=false
 					getChar().Animate.Disabled=true
 					getChar().Animate.Disabled=false
 				elseif IsInvis==true then
@@ -12300,7 +12301,7 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 					game:GetService("Players").LocalPlayer.CameraMinZoomDistance=0.5
 					game:GetService("Players").LocalPlayer.CameraMaxZoomDistance=400
 					game:GetService("Players").LocalPlayer.CameraMode="Classic"
-					getChar().Head.Anchored=false
+					getChar():FindFirstChild("Head").Anchored=false
 					getChar().Animate.Disabled=true
 					getChar().Animate.Disabled=false
 					TextButton.Text="Visible"
@@ -12579,7 +12580,7 @@ cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored p
 	function execute(name)
 		for index,part in pairs(game:GetDescendants()) do
 			if part:IsA("BasePart" or "UnionOperation" or "Model") and part.Anchored==false and part:IsDescendantOf(getChar())==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false then--// Checks Part Properties
-				part.CFrame=CFrame.new(game:GetService("Workspace")[name].Head.Position)--TP Part To User
+				part.CFrame=CFrame.new(game:GetService("Workspace")[name]:FindFirstChild("Head").Position)--TP Part To User
 				if spam==true and part:FindFirstChild("BodyGyro")==nil then
 					local bodyPos=Instance.new("BodyPosition")
 					bodyPos.Position=part.Position
