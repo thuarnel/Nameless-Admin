@@ -978,21 +978,100 @@ end
 
 -- fetchScripts function
 function fetchScripts(query, page)
-	page = page or 1
-	query = HttpService:UrlEncode(query)
-	local url = _if(query == "", "https://www.scriptblox.com/api/script/fetch?page="..tostring(page), "https://scriptblox.com/api/script/search?q="..query.."&max=100&mode=free&page=".. tostring(page))
-	local req = HttpService:JSONDecode(game:HttpGetAsync(url)).result
-	return req.scripts
+    page = page or 1
+    query = HttpService:UrlEncode(query)
+    local url = _if(query == "", "https://www.scriptblox.com/api/script/fetch?page="..tostring(page), "https://scriptblox.com/api/script/search?q="..query.."&max=100&mode=free&page=".. tostring(page))
+    
+    -- Add error handling for the HTTP request
+    local success, response = pcall(function()
+        return game:HttpGetAsync(url)
+    end)
+    
+    if not success then
+        warn("HTTP request failed: " .. tostring(response))
+        return {}
+    end
+    
+    -- Add error handling for JSON parsing
+    local success, result = pcall(function()
+        return HttpService:JSONDecode(response)
+    end)
+    
+    if not success then
+        warn("Failed to parse JSON: " .. tostring(result))
+        return {}
+    end
+    
+    -- Check if result and result.result and result.result.scripts exist
+    if not result or not result.result or not result.result.scripts then
+        warn("Invalid response structure")
+        return {}
+    end
+    
+    return result.result.scripts
 end
 
 function fetchComments(scriptId, page)
-	page = page or 1	
-
-	local url = "https://scriptblox.com/api/comment/" ..scriptId.. "?page=" ..tostring(page).. "&max=20"
-	local req = HttpService:JSONDecode(game:HttpGetAsync(url)).result
-
-	return req.comments
+    page = page or 1    
+    local url = "https://scriptblox.com/api/comment/" ..scriptId.. "?page=" ..tostring(page).. "&max=20"
+    
+    local success, response = pcall(function()
+        return game:HttpGetAsync(url)
+    end)
+    
+    if not success then
+        warn("HTTP request failed: " .. tostring(response))
+        return {}
+    end
+    
+    local success, result = pcall(function()
+        return HttpService:JSONDecode(response)
+    end)
+    
+    if not success then
+        warn("Failed to parse JSON: " .. tostring(result))
+        return {}
+    end
+    
+    if not result or not result.result or not result.result.comments then
+        warn("Invalid response structure")
+        return {}
+    end
+    
+    return result.result.comments
 end
+
+function fetchComments(scriptId, page)
+    page = page or 1    
+    local url = "https://scriptblox.com/api/comment/" ..scriptId.. "?page=" ..tostring(page).. "&max=20"
+    
+    -- Add error handling for the HTTP request
+    local success, response = pcall(function()
+        return game:HttpGetAsync(url)
+    end)
+    
+    if not success then
+        warn("HTTP request failed: " .. tostring(response))
+        return {}
+    end
+    
+    local success, result = pcall(function()
+        return HttpService:JSONDecode(response)
+    end)
+    
+    if not success then
+        warn("Failed to parse JSON: " .. tostring(result))
+        return {}
+    end
+    
+    if not result or not result.result or not result.result.comments then
+        warn("Invalid response structure")
+        return {}
+    end
+    
+    return result.result.comments
+end
+
 
 function loadImage(url, id, ispfp)
 	ispfp = _if(type(ispfp) == "boolean", ispfp, false)
