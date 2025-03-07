@@ -247,30 +247,55 @@ local bringc={}
 
 --[[ Welcome Messages ]]--
 local msg={
-	"Hey";
-	"Hello";
-	"Hi";
-	"Hi There";
-	"Hola";
+    "Hey";
+    "Hello";
+    "Hi";
+    "Hi There";
+    "Hola";
+    "Welcome";
+    "Greetings";
+    "Good day";
+    "Howdy";
+    "Salutations";
+    "Hey there";
+    "What's up";
+    "G'day";
+    "Bonjour";
+    "Ciao";
 }
 
 --[[ Goofy Text ]]--
 local Goofer={
-	"Egg";
-	"i am a goofy goober";
-	"mmmm lasagna";
-	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
-	"i am wondering if i even have a life";
-	"[REDACTED]";
-	"hey guys welcome to another video";
-	"⚠️⚠️⚠️";
-	":-(";
-	"(╯°□°)╯︵ ┻━┻";
-	"freaky";
-	"unreal";
-	"💀💀💀";
-	"X_X";
-	"not bothered to add a message here";
+    "Egg";
+    "i am a goofy goober";
+    "mmmm lasagna";
+    "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+    "i am wondering if i even have a life";
+    "[REDACTED]";
+    "hey guys welcome to another video";
+    "⚠️⚠️⚠️";
+    ":-(";
+    "(╯°□°)╯︵ ┻━┻";
+    "freaky";
+    "unreal";
+    "💀💀💀";
+    "X_X";
+    "not bothered to add a message here";
+    "bruh moment";
+    "yeet";
+    "no cap fr fr";
+    "sus";
+    "vibing in the ritz car";
+    "keyboard go brrrrr";
+    "404: brain not found";
+    "loading personality.exe";
+    "oof size large";
+    "this ain't it chief";
+    "weird flex but ok";
+    "poggers";
+    "sheeeesh";
+    "i forgor 💀";
+    "touch grass";
 }
 
 --[[ Prediction ]]--
@@ -328,20 +353,45 @@ function isRelAdmin(Player)
 end
 
 function loadedResults(res)
-	if res==nil then res=0 end
-	local sec=tonumber(res)
-	local hr=math.floor(sec / 3600)
-	local min=math.floor((sec % 3600) / 60)
-	local remain=sec % 60
-	local format=''
-	if hr > 0 then
-		format=string.format("%d:%02d:%05.2f | Hours,Minutes,Seconds",hr,min,remain)
-	elseif min > 0 then
-		format=string.format("%d:%05.2f | Minutes,Seconds",min,remain)
-	else
-		format=string.format("%.2f | Seconds",remain)
-	end
-	return format
+    if res == nil or type(res) ~= "number" then 
+        res = 0 
+    end
+    
+    local sec = tonumber(res)
+    local isNegative = sec < 0
+    
+    if isNegative then
+        sec = math.abs(sec)
+    end
+    
+    local days = math.floor(sec / 86400)
+    local hr = math.floor((sec % 86400) / 3600)
+    local min = math.floor((sec % 3600) / 60)
+    local remain = sec % 60
+    local ms = math.floor((remain % 1) * 1000)
+    remain = math.floor(remain)
+    
+    local format = ''
+    
+    if days > 0 then
+        format = string.format("%d:%02d:%02d:%02d.%03d | Days,Hours,Minutes,Seconds.Milliseconds", 
+                              days, hr, min, remain, ms)
+    elseif hr > 0 then
+        format = string.format("%d:%02d:%02d.%03d | Hours,Minutes,Seconds.Milliseconds", 
+                              hr, min, remain, ms)
+    elseif min > 0 then
+        format = string.format("%d:%02d.%03d | Minutes,Seconds.Milliseconds", 
+                              min, remain, ms)
+    else
+        format = string.format("%d.%03d | Seconds.Milliseconds", 
+                              remain, ms)
+    end
+    
+    if isNegative then
+        format = "-" .. format
+    end
+    
+    return format
 end
 
 
@@ -1439,7 +1489,7 @@ cmd.add({"updatelog","updlog","updates"},{"updatelog (updlog,updates)","show the
 	gui.updateLogs()
 end)
 
-cmd.add({"discord"},{"discord","Copy an invite link to the official Nameless Admin V2 discord server"},function()
+cmd.add({"discord"},{"discord","Copy an invite link to the official Nameless Admin discord server"},function()
 	if setclipboard then 
 		setclipboard('https://discord.gg/zS7TpV3p64')
 		DoNotif('Copied the discord invite link!',4)
@@ -1746,10 +1796,16 @@ cmd.add({"fps"},{"fps","Shows your fps"},function()
 
 	UIAspectRatioConstraint.Parent=Fpstext
 	UIAspectRatioConstraint.AspectRatio=5.743
+	
+	local lastUpdate = 0
+	local updateInterval = 0.5
 
-	local RunService=game:GetService("RunService")
 	RunService.RenderStepped:Connect(function(frame) 
-		Fpstext.Text=("FPS: "..math.round(1/frame)) 
+		local currentTime = tick()
+		if currentTime - lastUpdate >= updateInterval then
+			Fpstext.Text=("FPS: "..math.round(1/frame))
+			lastUpdate = currentTime
+		end
 	end)
 	gui.draggable(Fpstext)
 end)
@@ -1953,21 +2009,39 @@ cmd.add({"rjre","rejoinrefresh"},{"rjre (rejoinrefresh)","Rejoins and teleports 
 end)
 
 cmd.add({"rejoin","rj"},{"rejoin (rj)","Rejoin the game"},function()
-	if #game:GetService("Players"):GetPlayers() <=1 then
-		game:GetService("Players").LocalPlayer:Kick("Rejoining...")
-		wait()
-		game:GetService("TeleportService"):TeleportCancel()
-		game:GetService("TeleportService"):Teleport(PlaceId)
-	else
-		game:GetService("TeleportService"):TeleportCancel()
-		game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceId,JobId,game:GetService("Players").LocalPlayer)
+	local players = game:GetService("Players")
+	local teleportService = game:GetService("TeleportService")
+	local localPlayer = players.LocalPlayer
+
+	local function onTeleportError(errorMessage)
+		warn("Teleport failed: " .. errorMessage)
+		DoNotif("Teleport failed: " .. errorMessage, 5)
 	end
 
+	teleportService.TeleportInitFailed:Connect(onTeleportError)
 
+	if #players:GetPlayers() <= 1 then
+		localPlayer:Kick("Rejoining...")
+		wait()
+		teleportService:TeleportCancel()
+		local success, errorMessage = pcall(function()
+			teleportService:Teleport(PlaceId)
+		end)
+		if not success then
+			onTeleportError(errorMessage)
+		end
+	else
+		teleportService:TeleportCancel()
+		local success, errorMessage = pcall(function()
+			teleportService:TeleportToPlaceInstance(PlaceId, JobId, localPlayer)
+		end)
+		if not success then
+			onTeleportError(errorMessage)
+		end
+	end
 
-	wait();
-
-	DoNotif("Rejoining...",5)
+	wait()
+	DoNotif("Rejoining...", 5)
 end)
 
 cmd.add({"teleporttoplace","toplace","ttp"},{"teleporttoplace (PlaceId) (toplace,ttp)","Teleports you using PlaceId"},function(...)
@@ -1998,7 +2072,7 @@ for index, value in getgc(true) do
             hook = hookfunction(DetectedMeth, function(methodName, methodFunc, methodInfo)
                 if methodName ~= "_" then
                     if IsDebug then
-                        warn("Adonis Detected\nMethod: " .. tostring(methodName) .. "\nInfo: " .. tostring(methodFunc))
+                        DoNotif("Adonis Detected\nMethod: " .. tostring(methodName) .. "\nInfo: " .. tostring(methodFunc))
                     end
                 end
                 
@@ -2013,7 +2087,7 @@ for index, value in getgc(true) do
             local hook
             hook = hookfunction(KillMeth, function(killFunc)
                 if IsDebug then
-                    warn("Adonis tried to detect: " .. tostring(killFunc))
+                    DoNotif("Adonis tried to detect: " .. tostring(killFunc))
                 end
             end)
 
@@ -2028,7 +2102,7 @@ hook = hookfunction(getrenv().debug.info, newcclosure(function(...)
 
     if DetectedMeth and functionName == DetectedMeth then
         if IsDebug or not IsDebug then
-            --print("Adonis was bypassed by the_king.78")
+            DoNotif("Adonis was bypassed by the_king.78")
         end
 
         return coroutine.yield(coroutine.running())
@@ -2162,7 +2236,7 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 end)
 
 cmd.add({"notoolscripts","nts"},{"notoolscripts (nts)","Destroy all scripts in backpack"},function()
-	print("test")
+	--print("test")
 	local bp=player:FindFirstChildWhichIsA("Backpack")
 	for _,item in pairs(bp:GetChildren()) do
 		for _,obj in pairs(item:GetDescendants()) do
