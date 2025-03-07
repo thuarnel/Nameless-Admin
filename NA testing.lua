@@ -4607,7 +4607,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 				if type(tbl) ~= "table" then return tostring(tbl) end
 
 				depth = depth or 0
-				if depth > 5 then return "..." end -- Prevent infinite recursion
+				if depth > 5 then return "..." end
 
 				local indent = string.rep("    ", depth)
 				local indent_inner = string.rep("    ", depth + 1)
@@ -4639,8 +4639,52 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 				result = result .. indent .. "}"
 				return result
 			end
-
 		end
+		
+		local function GetFunctionInfo(func)
+			if type(func) ~= "function" then return tostring(func) end
+
+			local info = debug.getinfo(func)
+			local result = "function"
+
+			if info.name and info.name ~= "" then
+				result = result .. " " .. info.name
+			end
+
+			result = result .. " " .. tostring(func) .. " {\n"
+			result = result .. "    source: " .. (info.source or "unknown") .. ",\n"
+			result = result .. "    line: " .. (info.linedefined or "?") .. " to " .. (info.lastlinedefined or "?") .. ",\n"
+			result = result .. "    params: " .. (info.nparams or "?") .. (info.isvararg and " + vararg" or "") .. ",\n"
+
+			local upvalues = ""
+			local i = 1
+			while true do
+				local name, value = debug.getupvalue(func, i)
+				if not name then break end
+
+				local value_str
+				if type(value) == "table" then
+					value_str = "table: " .. tostring(value)
+				elseif type(value) == "function" then
+					value_str = "function: " .. tostring(value)
+				elseif type(value) == "string" then
+					value_str = '"' .. value .. '"'
+				else
+					value_str = tostring(value)
+				end
+
+				upvalues = upvalues .. "        " .. name .. " = " .. value_str .. ",\n"
+				i = i + 1
+			end
+
+			if upvalues ~= "" then
+				result = result .. "    upvalues: {\n" .. upvalues .. "    },\n"
+			end
+
+			result = result .. "}"
+			return result
+		end
+
 
 		for i,v in next,toLog do
 			if type(v)=="string" then
@@ -4655,7 +4699,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 									out=out..(v..",Args-> {")..("\n"):format()
 									for l,k in pairs(args) do
 										if type(k)=="function" then
-											out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Name-> "..getinfo(k).name)..("\n"):format()
+											out = out..("    ["..tostring(l).."] Type-> "..type(k)..",Info->\n        "..GetFunctionInfo(k))..("\n"):format()
 										elseif type(k)=="table" then
 											out = out..("    ["..tostring(l).."] Type-> "..type(k)..",Data->\n"..Seralize(k))..("\n"):format()
 										elseif type(k)=="boolean" then
