@@ -4002,7 +4002,7 @@ cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
 		Buttons = {
 			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end};
 			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end};
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))(); end};
 			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end};
 			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end};
 			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end};
@@ -4512,6 +4512,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	output.Text=""
 	output.TextColor3=Color3.fromRGB(255,255,255)
 	output.TextSize=14.000
+	output.TextScaled = true
 	output.TextXAlignment=Enum.TextXAlignment.Left
 	output.TextYAlignment=Enum.TextYAlignment.Top
 

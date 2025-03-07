@@ -3986,7 +3986,7 @@ cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
 		Buttons = {
 			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end};
 			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end};
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))(); end};
 			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end};
 			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end};
 			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end};
@@ -4264,25 +4264,29 @@ end)
 cmd.add({"pingserverhop","pshop"},{"pingserverhop (pshop)","serverhop to a server with the best ping"},function()
 	wait();
 
-	DoNotif("Searching")
+	DoNotif("Searching for server with best ping")
 
-	local Servers=JSONDecode(HttpService,game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
-	local Ping=math.huge
-	local Jobid=nil
+	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local BestPing = math.huge
+	local BestJobId = nil
 
-	if Servers and #Servers>1 then
-		for Index,Server in next,Servers do
-			local ping=Server.ping
-			if (ping<Ping) then
-				Ping=ping
-				Jobid=Server.id
+	if Servers and #Servers > 0 then
+		for _, Server in next, Servers do
+			if type(Server) == "table" and Server.id ~= JobId then
+				local ping = Server.ping
+				if ping and ping < BestPing then
+					BestPing = ping
+					BestJobId = Server.id
+				end
 			end
 		end
 	end
 
-	if Jobid then
-		DoNotif(string.format("Serverhopping,ping: %s",tostring(Ping)))
-		TeleportService:TeleportToPlaceInstance(PlaceId,Jobid)
+	if BestJobId then
+		DoNotif(string.format("Serverhopping to server with ping: %s ms", tostring(BestPing)))
+		TeleportService:TeleportToPlaceInstance(PlaceId, BestJobId)
+	else
+		DoNotif("No better server found")
 	end
 end)
 
@@ -4492,6 +4496,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 	output.Text=""
 	output.TextColor3=Color3.fromRGB(255,255,255)
 	output.TextSize=14.000
+	output.TextScaled = true
 	output.TextXAlignment=Enum.TextXAlignment.Left
 	output.TextYAlignment=Enum.TextYAlignment.Top
 
@@ -4582,23 +4587,89 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 		if success then
 			Seralize = result
 		else
-			Seralize = function(tbl)
-				local result = "{"
+			Seralize = function(tbl, depth)
+				if not tbl then return "nil" end
+				if type(tbl) ~= "table" then return tostring(tbl) end
+
+				depth = depth or 0
+				if depth > 5 then return "..." end
+
+				local indent = string.rep("    ", depth)
+				local indent_inner = string.rep("    ", depth + 1)
+				local result = "{\n"
+
 				for k, v in pairs(tbl) do
-					local key = type(k) == "string" and '["'..k..'"]' or "["..tostring(k).."]"
-					local value
-					if type(v) == "table" then
-						value = "table"
-					elseif type(v) == "string" then
-						value = '"'..v..'"'
+					local key_str
+					if type(k) == "string" then
+						key_str = '["'..k..'"]'
 					else
-						value = tostring(v)
+						key_str = "["..tostring(k).."]"
 					end
-					result = result..key.."="..value..","
+
+					local value_str
+					if type(v) == "table" then
+						value_str = Seralize(v, depth + 1)
+					elseif type(v) == "string" then
+						value_str = '"'..v..'"'
+					elseif type(v) == "function" then
+						local info = debug.getinfo(v)
+						value_str = "function " .. (info.name or "") .. " " .. tostring(v)
+					else
+						value_str = tostring(v)
+					end
+
+					result = result .. indent_inner .. key_str .. " = " .. value_str .. ",\n"
 				end
-				return result.."}"
+
+				result = result .. indent .. "}"
+				return result
 			end
 		end
+		
+		local function GetFunctionInfo(func)
+			if type(func) ~= "function" then return tostring(func) end
+
+			local info = debug.getinfo(func)
+			local result = "function"
+
+			if info.name and info.name ~= "" then
+				result = result .. " " .. info.name
+			end
+
+			result = result .. " " .. tostring(func) .. " {\n"
+			result = result .. "    source: " .. (info.source or "unknown") .. ",\n"
+			result = result .. "    line: " .. (info.linedefined or "?") .. " to " .. (info.lastlinedefined or "?") .. ",\n"
+			result = result .. "    params: " .. (info.nparams or "?") .. (info.isvararg and " + vararg" or "") .. ",\n"
+
+			local upvalues = ""
+			local i = 1
+			while true do
+				local name, value = debug.getupvalue(func, i)
+				if not name then break end
+
+				local value_str
+				if type(value) == "table" then
+					value_str = "table: " .. tostring(value)
+				elseif type(value) == "function" then
+					value_str = "function: " .. tostring(value)
+				elseif type(value) == "string" then
+					value_str = '"' .. value .. '"'
+				else
+					value_str = tostring(value)
+				end
+
+				upvalues = upvalues .. "        " .. name .. " = " .. value_str .. ",\n"
+				i = i + 1
+			end
+
+			if upvalues ~= "" then
+				result = result .. "    upvalues: {\n" .. upvalues .. "    },\n"
+			end
+
+			result = result .. "}"
+			return result
+		end
+
 
 		for i,v in next,toLog do
 			if type(v)=="string" then
@@ -4613,9 +4684,9 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 									out=out..(v..",Args-> {")..("\n"):format()
 									for l,k in pairs(args) do
 										if type(k)=="function" then
-											out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Name-> "..getinfo(k).name)..("\n"):format()
+											out = out..("    ["..tostring(l).."] Type-> "..type(k)..",Info->\n        "..GetFunctionInfo(k))..("\n"):format()
 										elseif type(k)=="table" then
-											out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Data-> "..Seralize(k))..("\n"):format()
+											out = out..("    ["..tostring(l).."] Type-> "..type(k)..",Data->\n"..Seralize(k))..("\n"):format()
 										elseif type(k)=="boolean" then
 											out=out..("    ["..tostring(l).."] Value-> "..tostring(k).."-> "..type(k))..("\n"):format()
 										elseif type(k)=="nil" then
@@ -5241,7 +5312,7 @@ end)
 
 cmd.add({"aimbot","aimbotui","aimbotgui"},{"aimbot (aimbotui,aimbotgui)","aimbot and yeah"},function()
 	--loadstring(game:HttpGet('https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua'))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
 end)
 
 cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools script"},function()
@@ -8948,7 +9019,7 @@ cmd.add({"infjump","infinitejump"},{"infjump (infinitejump)","Makes you be able 
 
 	function fix()
 		if infJump then infJump:Disconnect() infJump = nil end
-		
+
 		local humanoid = getHum()
 		if not humanoid then
 			local char = plr.Character or plr.CharacterAdded:Wait()
