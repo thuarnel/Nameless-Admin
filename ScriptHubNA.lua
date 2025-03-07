@@ -139,6 +139,8 @@ local Comment = Instance.new("Frame")
 local Content = Instance.new("TextLabel")
 local NoScriptsFound = Instance.new("TextLabel")
 
+local httpRequest = request or http_request or (syn and syn.request) or function() end
+
 --Properties:
 
 ScreenGui.Parent = (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
@@ -976,15 +978,22 @@ function fastmodeExec(func)
 	end
 end
 
--- fetchScripts function
 function fetchScripts(query, page)
     page = page or 1
     query = HttpService:UrlEncode(query)
     local url = _if(query == "", "https://www.scriptblox.com/api/script/fetch?page="..tostring(page), "https://scriptblox.com/api/script/search?q="..query.."&max=100&mode=free&page=".. tostring(page))
     
-    -- Add error handling for the HTTP request
     local success, response = pcall(function()
-        return game:HttpGetAsync(url)
+        local result = httpRequest({
+            Url = url,
+            Method = "GET"
+        })
+        
+        if not result or not result.Body then
+            error("Invalid response")
+        end
+        
+        return result.Body
     end)
     
     if not success then
@@ -992,7 +1001,6 @@ function fetchScripts(query, page)
         return {}
     end
     
-    -- Add error handling for JSON parsing
     local success, result = pcall(function()
         return HttpService:JSONDecode(response)
     end)
@@ -1002,7 +1010,6 @@ function fetchScripts(query, page)
         return {}
     end
     
-    -- Check if result and result.result and result.result.scripts exist
     if not result or not result.result or not result.result.scripts then
         warn("Invalid response structure")
         return {}
@@ -1016,7 +1023,16 @@ function fetchComments(scriptId, page)
     local url = "https://scriptblox.com/api/comment/" ..scriptId.. "?page=" ..tostring(page).. "&max=20"
     
     local success, response = pcall(function()
-        return game:HttpGetAsync(url)
+        local result = httpRequest({
+            Url = url,
+            Method = "GET"
+        })
+        
+        if not result or not result.Body then
+            error("Invalid response")
+        end
+        
+        return result.Body
     end)
     
     if not success then
@@ -1040,75 +1056,76 @@ function fetchComments(scriptId, page)
     
     return result.result.comments
 end
-
-function fetchComments(scriptId, page)
-    page = page or 1    
-    local url = "https://scriptblox.com/api/comment/" ..scriptId.. "?page=" ..tostring(page).. "&max=20"
-    
-    -- Add error handling for the HTTP request
-    local success, response = pcall(function()
-        return game:HttpGetAsync(url)
-    end)
-    
-    if not success then
-        warn("HTTP request failed: " .. tostring(response))
-        return {}
-    end
-    
-    local success, result = pcall(function()
-        return HttpService:JSONDecode(response)
-    end)
-    
-    if not success then
-        warn("Failed to parse JSON: " .. tostring(result))
-        return {}
-    end
-    
-    if not result or not result.result or not result.result.comments then
-        warn("Invalid response structure")
-        return {}
-    end
-    
-    return result.result.comments
-end
-
 
 function loadImage(url, id, ispfp)
-	ispfp = _if(type(ispfp) == "boolean", ispfp, false)
+    ispfp = _if(type(ispfp) == "boolean", ispfp, false)
 
-	local path = "ScriptBlox/Searcher/ImageCache/" .._if(ispfp, "ProfilePictures/", "Scripts/")..id..".png"
+    local path = "ScriptBlox/Searcher/ImageCache/" .._if(ispfp, "ProfilePictures/", "Scripts/")..id..".png"
 
-	if table.find(string.split(url, "/"), "user-default.png") then
-		path = "ScriptBlox/Searcher/ImageCache/ProfilePictures/user-default.png"
-	end
+    if table.find(string.split(url, "/"), "user-default.png") then
+        path = "ScriptBlox/Searcher/ImageCache/ProfilePictures/user-default.png"
+    end
 
-	if isfile(path) then
-		return getfakeasset(path)
-	else
-		local img = game:HttpGetAsync(url)
-		writefile(path, img)
-
-		return getfakeasset(path)
-	end
+    if isfile(path) then
+        return getfakeasset(path)
+    else
+        local success, img = pcall(function()
+            local result = httpRequest({
+                Url = url,
+                Method = "GET"
+            })
+            
+            if not result or not result.Body then
+                error("Invalid response")
+            end
+            
+            return result.Body
+        end)
+        
+        if not success then
+            warn("Failed to load image: " .. tostring(img))
+            return ""
+        end
+        
+        writefile(path, img)
+        return getfakeasset(path)
+    end
 end
 
 function fixScript(scriptObj)
-	if not scriptObj["script"] or not scriptObj["owner"] or not scriptObj["features"] then
-		local cacheObj = cache[scriptObj["_id"]]
-		if cacheObj then
-			scriptObj["script"] = _if(scriptObj["script"], scriptObj["script"], cacheObj.script)
-			scriptObj["features"] = _if(scriptObj["features"], scriptObj["features"], cacheObj.features)
-			scriptObj["owner"] = _if(scriptObj["owner"], scriptObj["owner"], cacheObj.owner)
-		else
-			local req = HttpService:JSONDecode(game:HttpGetAsync("https://www.scriptblox.com/api/script/".. scriptObj.slug)).script
-			scriptObj["script"] = _if(scriptObj["script"], scriptObj["script"], req.script)
-			scriptObj["features"] = _if(scriptObj["features"], scriptObj["features"], req.features)
-			scriptObj["owner"] = _if(scriptObj["owner"], scriptObj["owner"], req.owner)
+    if not scriptObj["script"] or not scriptObj["owner"] or not scriptObj["features"] then
+        local cacheObj = cache[scriptObj["_id"]]
+        if cacheObj then
+            scriptObj["script"] = _if(scriptObj["script"], scriptObj["script"], cacheObj.script)
+            scriptObj["features"] = _if(scriptObj["features"], scriptObj["features"], cacheObj.features)
+            scriptObj["owner"] = _if(scriptObj["owner"], scriptObj["owner"], cacheObj.owner)
+        else
+            local success, req = pcall(function()
+                local result = httpRequest({
+                    Url = "https://www.scriptblox.com/api/script/".. scriptObj.slug,
+                    Method = "GET"
+                })
+                
+                if not result or not result.Body then
+                    error("Invalid response")
+                end
+                
+                return HttpService:JSONDecode(result.Body).script
+            end)
+            
+            if not success then
+                warn("Failed to fetch script details: " .. tostring(req))
+                return scriptObj
+            end
+            
+            scriptObj["script"] = _if(scriptObj["script"], scriptObj["script"], req.script)
+            scriptObj["features"] = _if(scriptObj["features"], scriptObj["features"], req.features)
+            scriptObj["owner"] = _if(scriptObj["owner"], scriptObj["owner"], req.owner)
 
-			cache[scriptObj["_id"]] = req
-		end
-	end
-	return scriptObj
+            cache[scriptObj["_id"]] = req
+        end
+    end
+    return scriptObj
 end
 
 function updateCache(newCache)
@@ -1165,12 +1182,11 @@ function updateInfoBox(scriptObj)
         end)
         
         if not success or not comments then
-            warn("Failed to fetch comments: " .. tostring(comments))
             return
         end
         
         for _, v in pairs(comments) do
-            if v and v.text and v.commentBy and v.commentBy.username and v.commentBy.profilePicture and v.commentBy["_id"] then
+            if v and v.text and v.commentBy and v.commentBy.username then
                 local newComment = Comment:Clone()
                 newComment.Parent = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments
                 newComment.Content.Text = v.text
@@ -1188,7 +1204,7 @@ function updateInfoBox(scriptObj)
     if scriptObj.features and scriptObj.features.description then
         ScreenGui.MainFrame.InfoBox.InfoBoxDescription.Text = scriptObj.features.description
     else
-        ScreenGui.MainFrame.InfoBox.InfoBoxDescription.Text = "No description available."
+        ScreenGui.MainFrame.InfoBox.InfoBoxDescription.Text = ""
     end
 end
 
