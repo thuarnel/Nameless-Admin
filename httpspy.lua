@@ -1,8 +1,3 @@
--- Gui to Lua
--- Version: 3.2
-
--- Instances:
-
 local HttpSpy = Instance.new("ScreenGui")
 local Background = Instance.new("Frame")
 local Topbar = Instance.new("Frame")
@@ -20,8 +15,6 @@ local MainContainer = Instance.new("ScrollingFrame")
 local UIListLayout = Instance.new("UIListLayout")
 local UICorner_2 = Instance.new("UICorner")
 local TemplateText = Instance.new("TextButton")
-
---Properties:
 
 HttpSpy.Name = "HttpSpy"
 HttpSpy.Parent = gethui() or (game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"))
@@ -66,7 +59,7 @@ Exit.Text = "X"
 Exit.TextColor3 = Color3.fromRGB(255, 255, 255)
 Exit.TextSize = 13.000
 Exit.MouseButton1Click:Connect(function()
-HttpSpy:Destroy()
+    HttpSpy:Destroy()
 end)
 
 ImageLabel.Parent = Exit
@@ -182,67 +175,75 @@ TemplateText.TextYAlignment = Enum.TextYAlignment.Center
 local Template = MainContainer.TemplateText
 
 local function registerDynamicScrollingFrame(frame)
-local layout = frame:FindFirstChildWhichIsA("UIListLayout")
-local absoluteContentSize = layout.AbsoluteContentSize
-frame.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y)
-layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
-local absoluteContentSize = layout.AbsoluteContentSize
-frame.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y)
-end)
+    local layout = frame:FindFirstChildWhichIsA("UIListLayout")
+    local absoluteContentSize = layout.AbsoluteContentSize
+    frame.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y)
+    layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        local absoluteContentSize = layout.AbsoluteContentSize
+        frame.CanvasSize = UDim2.new(0, 0, 0, absoluteContentSize.Y)
+    end)
 end
 
-local function Log(text,headers)
-local Label = Template:Clone()
-if headers and type(headers) == "table" then 
-text = text .. " (HEADERS:"
-for Index, Value in next, headers do 
-text = text.. tostring(Index).. ": "..tostring(Value)
+local function Log(text, headers)
+    local Label = Template:Clone()
+    if headers and type(headers) == "table" then 
+        text = text .. " (HEADERS:"
+        for Index, Value in next, headers do 
+            text = text.. tostring(Index).. ": "..tostring(Value)..", "
+        end
+        text = text .. ")"
+    end
+    Label.Text = text 
+    Label.Parent = MainContainer
+    Label.MouseButton1Click:Connect(function()
+        setclipboard(text)
+    end)
+end
 
-end
-text = text .. ")"
-end
-Label.Text = text 
-Label.Parent = MainContainer
-Label.MouseButton1Click:Connect(function()
-setclipboard(text)
-end)
-end
 registerDynamicScrollingFrame(MainContainer)
+
+-- Hook HttpGet
 local HttpGet
-
 HttpGet = hookfunction(game.HttpGet, function(self, url, ...)
-Log("Http Get Request from: "..url)
-
-return HttpGet(self, url, ...)
+    Log("Http Get Request from: "..url)
+    return HttpGet(self, url, ...)
 end)
 
+-- Hook HttpPost
 local HttpPost
-
 HttpPost = hookfunction(game.HttpPost, function(self, url, ...)
-Log("Http Post Request from: "..url)
-
-return HttpPost(self, url, ...)
+    Log("Http Post Request from: "..url)
+    return HttpPost(self, url, ...)
 end)
 
-
-local RequestLog
-
-if syn.request then 
-
-RequestLog = hookfunction(syn.request, function(dat)
-Log("syn.request from: "..dat.Url.." ("..dat.Method..")",dat.Headers)
-
-return RequestLog(dat)
+local success, result = pcall(function()
+    if syn and syn.request then 
+        local RequestLog
+        RequestLog = hookfunction(syn.request, function(dat)
+            Log("syn.request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    elseif request then
+        local RequestLog
+        RequestLog = hookfunction(request, function(dat)
+            Log("request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    elseif http_request then
+        local RequestLog
+        RequestLog = hookfunction(http_request, function(dat)
+            Log("http_request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    end
+    return false
 end)
 
-elseif request then
-
-RequestLog = hookfunction(request, function(dat)
-Log("syn.request from: "..dat.Url.." ("..dat.Method..")",dat.Headers)
-
-return RequestLog(dat)
-end)
-
-else
-error("YOUR EXPLOIT IS NOT SUPPORTED!")
+if not success or not result then
+    Log("WARNING: Could not hook request function. Your exploit might not be fully supported.")
 end
+
+Log("HTTP Spy initialized successfully. Click on any request to copy it.")
