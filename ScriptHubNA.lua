@@ -1117,62 +1117,79 @@ function updateCache(newCache)
 end
 
 function updateInfoBox(scriptObj)
-	scriptObj = fixScript(scriptObj)
+    scriptObj = fixScript(scriptObj)
 
-	ScreenGui.MainFrame.InfoBox.Info.Author.InfoBoxAuthor.Text = scriptObj.owner.username
-	ScreenGui.MainFrame.InfoBox.Info.Title.InfoBoxTitle.Text = scriptObj.title
-	ScreenGui.MainFrame.InfoBox.Info.Game.Text = scriptObj.game.name
+    ScreenGui.MainFrame.InfoBox.Info.Author.InfoBoxAuthor.Text = scriptObj.owner.username
+    ScreenGui.MainFrame.InfoBox.Info.Title.InfoBoxTitle.Text = scriptObj.title
+    ScreenGui.MainFrame.InfoBox.Info.Game.Text = scriptObj.game.name
 
-	task.spawn(function()
-		ScreenGui.MainFrame.InfoBox.Info.Author.ProfilePicture.Image = loadImage("https://scriptblox.com"..scriptObj.owner.profilePicture, scriptObj["owner"]["_id"], true)
-	end)
-	task.spawn(function()
-		ScreenGui.MainFrame.InfoBox.Info.PreviewImage.Image = loadImage(_if(string.find(scriptObj.game.imageUrl, "rbxcdn.com"), scriptObj.game.imageUrl, "https://scriptblox.com"..scriptObj.game.imageUrl), scriptObj["_id"], false)
-	end)
+    task.spawn(function()
+        ScreenGui.MainFrame.InfoBox.Info.Author.ProfilePicture.Image = loadImage("https://scriptblox.com"..scriptObj.owner.profilePicture, scriptObj["owner"]["_id"], true)
+    end)
+    task.spawn(function()
+        ScreenGui.MainFrame.InfoBox.Info.PreviewImage.Image = loadImage(_if(string.find(scriptObj.game.imageUrl, "rbxcdn.com"), scriptObj.game.imageUrl, "https://scriptblox.com"..scriptObj.game.imageUrl), scriptObj["_id"], false)
+    end)
 
-	local ExecuteConnection
-	local CopyLinkConnection
-	local CopyScriptConnection
+    local ExecuteConnection
+    local CopyLinkConnection
+    local CopyScriptConnection
 
-	ExecuteConnection = ScreenGui.MainFrame.InfoBox.Buttons.ExecuteButton.MouseButton1Click:Connect(function()
-		loadstring(scriptObj.script)()
-	end)
+    ExecuteConnection = ScreenGui.MainFrame.InfoBox.Buttons.ExecuteButton.MouseButton1Click:Connect(function()
+        loadstring(scriptObj.script)()
+    end)
 
-	CopyLinkConnection = ScreenGui.MainFrame.InfoBox.Buttons.CopyScriptBloxLink.MouseButton1Click:Connect(function()
-		setclipboard("https://scriptblox.com/script/".. scriptObj.slug)
-	end)
+    CopyLinkConnection = ScreenGui.MainFrame.InfoBox.Buttons.CopyScriptBloxLink.MouseButton1Click:Connect(function()
+        setclipboard("https://scriptblox.com/script/".. scriptObj.slug)
+    end)
 
-	CopyScriptConnection = ScreenGui.MainFrame.InfoBox.Buttons.CopyScriptButton.MouseButton1Click:Connect(function()
-		toClipboard(scriptObj.script)
-	end)
+    CopyScriptConnection = ScreenGui.MainFrame.InfoBox.Buttons.CopyScriptButton.MouseButton1Click:Connect(function()
+        toClipboard(scriptObj.script)
+    end)
 
-	ScreenGui.MainFrame.InfoBox.Buttons.Close.MouseButton1Click:Connect(function()
-		ExecuteConnection:Disconnect()
-		CopyLinkConnection:Disconnect()
-		CopyScriptConnection:Disconnect()
+    ScreenGui.MainFrame.InfoBox.Buttons.Close.MouseButton1Click:Connect(function()
+        ExecuteConnection:Disconnect()
+        CopyLinkConnection:Disconnect()
+        CopyScriptConnection:Disconnect()
 
-		ScreenGui.MainFrame.InfoBox.Visible = false
-		ScreenGui.MainFrame.ScriptListFrame.Visible = true
-	end)
+        ScreenGui.MainFrame.InfoBox.Visible = false
+        ScreenGui.MainFrame.ScriptListFrame.Visible = true
+    end)
 
-	local commentsUIListLayout = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments.UIListLayout:Clone()
-	ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments:ClearAllChildren()
-	commentsUIListLayout.Parent = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments
+    local commentsUIListLayout = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments.UIListLayout:Clone()
+    ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments:ClearAllChildren()
+    commentsUIListLayout.Parent = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments
 
-	task.spawn(function()
-		for _, v in pairs(fetchComments(scriptObj["_id"])) do
+    task.spawn(function()
+        local success, comments = pcall(function()
+            return fetchComments(scriptObj["_id"])
+        end)
+        
+        if not success or not comments then
+            warn("Failed to fetch comments: " .. tostring(comments))
+            return
+        end
+        
+        for _, v in pairs(comments) do
+            if v and v.text and v.commentBy and v.commentBy.username and v.commentBy.profilePicture and v.commentBy["_id"] then
+                local newComment = Comment:Clone()
+                newComment.Parent = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments
+                newComment.Content.Text = v.text
+                newComment.Author.Text = v.commentBy.username
 
-			local newComment = Comment:Clone()
-			newComment.Parent = ScreenGui.MainFrame.InfoBox.Comments.Inner.Comments
-			newComment.Content.Text = v.text
-			newComment.Author.Text = v.commentBy.username
-
-			task.spawn(function()
-				newComment.ProfilePicture.Image = loadImage("https://scriptblox.com"..v.commentBy.profilePicture, v.commentBy["_id"], true)
-			end)
-
-		end
-	end)
+                task.spawn(function()
+                    pcall(function()
+                        newComment.ProfilePicture.Image = loadImage("https://scriptblox.com"..v.commentBy.profilePicture, v.commentBy["_id"], true)
+                    end)
+                end)
+            end
+        end
+    end)
+    
+    if scriptObj.features and scriptObj.features.description then
+        ScreenGui.MainFrame.InfoBox.InfoBoxDescription.Text = scriptObj.features.description
+    else
+        ScreenGui.MainFrame.InfoBox.InfoBoxDescription.Text = "No description available."
+    end
 end
 
 -- Refresh Scripts Browser with new scripts
