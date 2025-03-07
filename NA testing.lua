@@ -2094,183 +2094,66 @@ end)
 
 --made by the_king.78
 cmd.add({"adonisbypass","bypassadonis","badonis","adonisb"},{"adonisbypass (bypassadonis,badonis,adonisb)","bypasses adonis admin detection"},function()
-	local DebugFunc = getinfo or debug.getinfo or debug.info
+	local DebugFunc = getinfo or debug.getinfo
 	local IsDebug = false
 	local hooks = {}
-	local success = true
 
-	local function safeCall(func, ...)
-		local success, result = pcall(func, ...)
-		return success and result or nil
-	end
+	local DetectedMeth, KillMeth
 
-	local function elevatePrivileges()
-		local success = pcall(function()
-			setthreadidentity(2)
-		end)
-		return success
-	end
+	setthreadidentity(2)
 
-	local function restorePrivileges()
-		pcall(function()
-			setthreadidentity(7)
-		end)
-	end
-
-	if not elevatePrivileges() then
-		DoNotif("Failed to elevate privileges, bypass may be less effective")
-		success = false
-	end
-
-	local hookedFunctions = {}
-
-	local function createHook(originalFunc, hookFunc)
-		if hookedFunctions[originalFunc] then return hookedFunctions[originalFunc] end
-
-		local hook
-		local success, result = pcall(function()
-			hook = hookfunction(originalFunc, hookFunc)
-			return hook
-		end)
-
-		if success then
-			hookedFunctions[originalFunc] = hook
-			table.insert(hooks, originalFunc)
-			return hook
-		else
-			DoNotif("Failed to hook function: " .. tostring(originalFunc))
-			return originalFunc
-		end
-	end
-
-	local DetectedMeth, KillMeth, CheckMeth, ScanMeth
-
-	for index, value in pairs(getgc(true)) do
+	for index, value in getgc(true) do
 		if typeof(value) == "table" then
 			local detected = rawget(value, "Detected")
+			local kill = rawget(value, "Kill")
+
 			if typeof(detected) == "function" and not DetectedMeth then
 				DetectedMeth = detected
 
-				createHook(DetectedMeth, function(methodName, methodFunc, methodInfo)
+				local hook
+				hook = hookfunction(DetectedMeth, function(methodName, methodFunc, methodInfo)
 					if methodName ~= "_" then
 						if IsDebug then
-							DoNotif("Blocked Adonis Detection: " .. tostring(methodName))
+							DoNotif("Adonis Detected\nMethod: " .. tostring(methodName) .. "\nInfo: " .. tostring(methodFunc))
 						end
 					end
+
 					return true
 				end)
+
+				table.insert(hooks, DetectedMeth)
 			end
 
-			local kill = rawget(value, "Kill")
 			if rawget(value, "Variables") and rawget(value, "Process") and typeof(kill) == "function" and not KillMeth then
 				KillMeth = kill
-
-				createHook(KillMeth, function(killFunc)
+				local hook
+				hook = hookfunction(KillMeth, function(killFunc)
 					if IsDebug then
-						DoNotif("Blocked Adonis Kill: " .. tostring(killFunc))
+						DoNotif("Adonis tried to detect: " .. tostring(killFunc))
 					end
-					return nil
 				end)
-			end
 
-			if typeof(value) == "table" then
-				for k, v in pairs(value) do
-					if typeof(v) == "function" and (k:lower():find("check") or k:lower():find("detect") or k:lower():find("scan")) then
-						createHook(v, function(...)
-							if IsDebug then
-								DoNotif("Blocked Adonis Check: " .. tostring(k))
-							end
-							return nil
-						end)
-					end
-				end
+				table.insert(hooks, KillMeth)
 			end
 		end
 	end
 
-	local debugHooks = {
-		["info"] = true,
-		["getinfo"] = true,
-		["traceback"] = true,
-		["profilebegin"] = true,
-		["profileend"] = true
-	}
+	local hook
+	hook = hookfunction(getrenv().debug.info, newcclosure(function(...)
+		local functionName, functionDetails = ...
 
-	for name, _ in pairs(debugHooks) do
-		if getrenv().debug[name] then
-			createHook(getrenv().debug[name], newcclosure(function(...)
-				local args = {...}
+		if DetectedMeth and functionName == DetectedMeth then
+			if IsDebug or not IsDebug then
+				DoNotif("Adonis was bypassed by the_king.78")
+			end
 
-				if DetectedMeth and (args[1] == DetectedMeth or tostring(args[1]):find("bypass")) then
-					if IsDebug then
-						DoNotif("Blocked debug inspection")
-					end
-					return coroutine.yield(coroutine.running())
-				end
-
-				for _, hook in pairs(hooks) do
-					if args[1] == hook then
-						return nil
-					end
-				end
-
-				return hookedFunctions[getrenv().debug[name]](...)
-			end))
+			return coroutine.yield(coroutine.running())
 		end
-	end
 
-	if getrenv().getfenv then
-		createHook(getrenv().getfenv, newcclosure(function(...)
-			local args = {...}
-			local result = hookedFunctions[getrenv().getfenv](...)
+		return hook(...)
+	end))
 
-			for _, hook in pairs(hooks) do
-				if args[1] == hook or args[1] == 0 then
-					return setmetatable({}, {
-						__index = function(_, key)
-							if key:lower():find("exploit") or key:lower():find("hack") then
-								return nil
-							end
-							return result[key]
-						end
-					})
-				end
-			end
-
-			return result
-		end))
-	end
-
-	local metaHooks = {
-		getmetatable = getrenv().getmetatable,
-		setmetatable = getrenv().setmetatable,
-		rawget = getrenv().rawget,
-		rawset = getrenv().rawset
-	}
-
-	for name, func in pairs(metaHooks) do
-		createHook(func, newcclosure(function(...)
-			local args = {...}
-
-			for _, hook in pairs(hooks) do
-				if args[1] == hook then
-					if name == "getmetatable" then
-						return nil
-					end
-				end
-			end
-
-			return hookedFunctions[func](...)
-		end))
-	end
-
-	restorePrivileges()
-
-	if success then
-		DoNotif("Enhanced Adonis bypass activated successfully")
-	else
-		DoNotif("Adonis bypass activated with limited functionality")
-	end
+	setthreadidentity(7)
 end)
 
 --[ LOCALPLAYER ]--
