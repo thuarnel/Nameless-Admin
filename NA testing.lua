@@ -4602,22 +4602,39 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 		if success then
 			Seralize = result
 		else
-			Seralize = function(tbl)
-				local result = "{"
+			local Seralize = function(tbl, depth)
+				if not tbl then return "nil" end
+				if type(tbl) ~= "table" then return tostring(tbl) end
+				
+				depth = depth or 0
+				if depth > 5 then return "..." end -- Prevent infinite recursion
+				
+				local indent = string.rep("    ", depth)
+				local indent_inner = string.rep("    ", depth + 1)
+				local result = "{\n"
+				
 				for k, v in pairs(tbl) do
-					local key = type(k) == "string" and '["'..k..'"]' or "["..tostring(k).."]"
-					local value
-					if type(v) == "table" then
-						value = "table"
-					elseif type(v) == "string" then
-						value = '"'..v..'"'
+					local key_str
+					if type(k) == "string" then
+						key_str = '["'..k..'"]'
 					else
-						value = tostring(v)
+						key_str = "["..tostring(k).."]"
 					end
-					result = result..key.."="..value..","
-				end
-				return result.."}"
-			end
+					
+					local value_str
+					if type(v) == "table" then
+						value_str = Seralize(v, depth + 1)
+					elseif type(v) == "string" then
+						value_str = '"'..v..'"'
+					elseif type(v) == "function" then
+						local info = debug.getinfo(v)
+						value_str = "function " .. (info.name or "") .. " " .. tostring(v)
+					else
+						value_str = tostring(v)
+					end
+					
+					result = result .. indent_inner .. key_str .. " = " .. value_str .. ",\n"
+				end			
 		end
 
 		for i,v in next,toLog do
