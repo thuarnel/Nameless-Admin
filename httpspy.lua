@@ -218,22 +218,33 @@ HttpPost = hookfunction(game.HttpPost, function(self, url, ...)
     return HttpPost(self, url, ...)
 end)
 
-local req = request or http_request or (syn and syn.request) or function() end
+local success, result = pcall(function()
+    if syn and syn.request then 
+        local RequestLog
+        RequestLog = hookfunction(syn.request, function(dat)
+            Log("syn.request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    elseif request then
+        local RequestLog
+        RequestLog = hookfunction(request, function(dat)
+            Log("request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    elseif http_request then
+        local RequestLog
+        RequestLog = hookfunction(http_request, function(dat)
+            Log("http_request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
+            return RequestLog(dat)
+        end)
+        return true
+    end
+    return false
+end)
 
-if req ~= function() end then
-    local RequestLog
-    RequestLog = hookfunction(req, function(dat)
-        if type(dat) == "table" then
-            local url = tostring(dat.Url or "unknown")
-            local method = tostring(dat.Method or "GET")
-            Log("Request from: "..url.." ("..method..")", dat.Headers)
-        else
-            Log("Request called with non-table data")
-        end
-        return RequestLog(dat)
-    end)
-    Log("HTTP Spy initialized successfully. Request function hooked.")
-else
+if not success or not result then
     Log("WARNING: Could not hook request function. Your exploit might not be fully supported.")
 end
 
