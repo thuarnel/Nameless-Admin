@@ -421,7 +421,7 @@ cmd.run=function(args)
 		else
 			local closest=didYouMean(caller:lower())
 			if closest then
-				DoNotif("Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?",4)
+				DoNotif("Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?")
 			else
 			end
 		end
