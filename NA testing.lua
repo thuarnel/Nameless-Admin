@@ -4278,28 +4278,32 @@ cmd.add({"smallserverhop","sshop"},{"smallserverhop (sshop)","serverhop to a sma
 end)
 
 cmd.add({"pingserverhop","pshop"},{"pingserverhop (pshop)","serverhop to a server with the best ping"},function()
-	wait();
+    wait();
 
-	DoNotif("Searching")
+    DoNotif("Searching for server with best ping")
 
-	local Servers=JSONDecode(HttpService,game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
-	local Ping=math.huge
-	local Jobid=nil
+    local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+    local BestPing = math.huge
+    local BestJobId = nil
 
-	if Servers and #Servers>1 then
-		for Index,Server in next,Servers do
-			local ping=Server.ping
-			if (ping<Ping) then
-				Ping=ping
-				Jobid=Server.id
-			end
-		end
-	end
+    if Servers and #Servers > 0 then
+        for _, Server in next, Servers do
+            if type(Server) == "table" and Server.id ~= JobId then
+                local ping = Server.ping
+                if ping and ping < BestPing then
+                    BestPing = ping
+                    BestJobId = Server.id
+                end
+            end
+        end
+    end
 
-	if Jobid then
-		DoNotif(string.format("Serverhopping,ping: %s",tostring(Ping)))
-		TeleportService:TeleportToPlaceInstance(PlaceId,Jobid)
-	end
+    if BestJobId then
+        DoNotif(string.format("Serverhopping to server with ping: %s ms", tostring(BestPing)))
+        TeleportService:TeleportToPlaceInstance(PlaceId, BestJobId)
+    else
+        DoNotif("No better server found")
+    end
 end)
 
 local autorjthingy=nil
