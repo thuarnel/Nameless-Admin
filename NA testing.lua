@@ -4278,32 +4278,32 @@ cmd.add({"smallserverhop","sshop"},{"smallserverhop (sshop)","serverhop to a sma
 end)
 
 cmd.add({"pingserverhop","pshop"},{"pingserverhop (pshop)","serverhop to a server with the best ping"},function()
-    wait();
+	wait();
 
-    DoNotif("Searching for server with best ping")
+	DoNotif("Searching for server with best ping")
 
-    local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
-    local BestPing = math.huge
-    local BestJobId = nil
+	local Servers = JSONDecode(HttpService, game:HttpGetAsync("https://games.roblox.com/v1/games/".. PlaceId .."/servers/Public?sortOrder=Asc&limit=100")).data
+	local BestPing = math.huge
+	local BestJobId = nil
 
-    if Servers and #Servers > 0 then
-        for _, Server in next, Servers do
-            if type(Server) == "table" and Server.id ~= JobId then
-                local ping = Server.ping
-                if ping and ping < BestPing then
-                    BestPing = ping
-                    BestJobId = Server.id
-                end
-            end
-        end
-    end
+	if Servers and #Servers > 0 then
+		for _, Server in next, Servers do
+			if type(Server) == "table" and Server.id ~= JobId then
+				local ping = Server.ping
+				if ping and ping < BestPing then
+					BestPing = ping
+					BestJobId = Server.id
+				end
+			end
+		end
+	end
 
-    if BestJobId then
-        DoNotif(string.format("Serverhopping to server with ping: %s ms", tostring(BestPing)))
-        TeleportService:TeleportToPlaceInstance(PlaceId, BestJobId)
-    else
-        DoNotif("No better server found")
-    end
+	if BestJobId then
+		DoNotif(string.format("Serverhopping to server with ping: %s ms", tostring(BestPing)))
+		TeleportService:TeleportToPlaceInstance(PlaceId, BestJobId)
+	else
+		DoNotif("No better server found")
+	end
 end)
 
 local autorjthingy=nil
@@ -4602,17 +4602,17 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 		if success then
 			Seralize = result
 		else
-			local Seralize = function(tbl, depth)
+			Seralize = function(tbl, depth)
 				if not tbl then return "nil" end
 				if type(tbl) ~= "table" then return tostring(tbl) end
-				
+
 				depth = depth or 0
 				if depth > 5 then return "..." end -- Prevent infinite recursion
-				
+
 				local indent = string.rep("    ", depth)
 				local indent_inner = string.rep("    ", depth + 1)
 				local result = "{\n"
-				
+
 				for k, v in pairs(tbl) do
 					local key_str
 					if type(k) == "string" then
@@ -4620,7 +4620,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 					else
 						key_str = "["..tostring(k).."]"
 					end
-					
+
 					local value_str
 					if type(v) == "table" then
 						value_str = Seralize(v, depth + 1)
@@ -4632,9 +4632,14 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 					else
 						value_str = tostring(v)
 					end
-					
+
 					result = result .. indent_inner .. key_str .. " = " .. value_str .. ",\n"
-				end			
+				end
+
+				result = result .. indent .. "}"
+				return result
+			end
+
 		end
 
 		for i,v in next,toLog do
@@ -4652,7 +4657,7 @@ cmd.add({"functionspy"},{"functionspy","Check console"},function()
 										if type(k)=="function" then
 											out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Name-> "..getinfo(k).name)..("\n"):format()
 										elseif type(k)=="table" then
-											out=out..("    ["..tostring(l).."] "..tostring(k)..",Type-> "..type(k)..",Data-> "..Seralize(k))..("\n"):format()
+											out = out..("    ["..tostring(l).."] Type-> "..type(k)..",Data->\n"..Seralize(k))..("\n"):format()
 										elseif type(k)=="boolean" then
 											out=out..("    ["..tostring(l).."] Value-> "..tostring(k).."-> "..type(k))..("\n"):format()
 										elseif type(k)=="nil" then
@@ -5278,7 +5283,7 @@ end)
 
 cmd.add({"aimbot","aimbotui","aimbotgui"},{"aimbot (aimbotui,aimbotgui)","aimbot and yeah"},function()
 	--loadstring(game:HttpGet('https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua'))()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
 end)
 
 cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools script"},function()
@@ -8985,7 +8990,7 @@ cmd.add({"infjump","infinitejump"},{"infjump (infinitejump)","Makes you be able 
 
 	function fix()
 		if infJump then infJump:Disconnect() infJump = nil end
-		
+
 		local humanoid = getHum()
 		if not humanoid then
 			local char = plr.Character or plr.CharacterAdded:Wait()
