@@ -53,7 +53,7 @@ end
 
 local GetService=game.GetService
 local iamcore=gethui()
-local NA_storage=Instance.new("ScreenGui")--Stupid Ahh script removing folders
+NA_storage=Instance.new("ScreenGui")--Stupid Ahh script removing folders
 if not game:IsLoaded() then
 	local waiting=Instance.new("Message")
 	waiting.Parent=iamcore
@@ -1313,89 +1313,10 @@ cmd.add({"scripthub","hub"},{"scripthub (hub)","Thanks to scriptblox api"},funct
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/ScriptHubNA.lua"))()
 end)
 
-cmd.add({"valk"},{"valk","Only works on dollhouse"},function()
-	repeat game:GetService("RunService").Stepped:wait()
-	until game:IsLoaded() and game:GetService("Players").LocalPlayer
-
-	pcall(function()
-		local plr=game:GetService("Players").LocalPlayer
-		local giver=game:GetService("Workspace"):WaitForChild("Valkyrie Helm giver")
-
-		local head=plr.Character:WaitForChild("Head")
-		firetouchinterest(head,giver,0)
-
-		plr.CharacterAdded:Connect(function(char)
-			head=char:WaitForChild("Head")
-			firetouchinterest(head,giver,0)
-		end)
-	end)
-end)
-
 cmd.add({"resizechat","rc"},{"resizechat (rc)","Makes chat resizable and draggable"},function()
 	require(game:GetService("Chat").ClientChatModules.ChatSettings).WindowResizable=true
 	require(game:GetService("Chat").ClientChatModules.ChatSettings).WindowDraggable=true
 end)
-
-local alreadyantilag=false
-cmd.add({"lag"},{"lag <player>","Chat lag"},function()
-
-	local Message="a" 
-	local Unicode=" "
-	Message=Message..Unicode:rep(200-#Message)
-
-	local SayMessageRequest=game:GetService("ReplicatedStorage"):FindFirstChild("SayMessageRequest",true)
-
-	for i=1,7 do
-		SayMessageRequest:FireServer(Message,"All")
-	end
-
-	if alreadyantilag==false then
-		local Players=game:GetService("Players")
-
-		local Player=Players.LocalPlayer
-		local PlayerGui=Player.PlayerGui
-
-		local Chat=PlayerGui:FindFirstChild("Chat") 
-		local MessageDisplay=Chat and Chat:FindFirstChild("Frame_MessageLogDisplay",true)
-		local Scroller=MessageDisplay and MessageDisplay:FindFirstChild("Scroller")
-
-		local Gsub=string.gsub
-		local Lower=string.lower
-
-		if not Scroller then return end
-
-		for _,x in next,Scroller:GetChildren() do
-			local MessageTextLabel=x:FindFirstChildWhichIsA("TextLabel")
-
-			if MessageTextLabel then
-				local Message=Gsub(MessageTextLabel.Text,"^%s+","")
-
-				if Message:match(" ") then
-					x:Destroy()
-				end
-			end
-		end
-
-		local ChatAdded=Scroller.ChildAdded:Connect(function(x)
-			local MessageTextLabel=x:FindFirstChildWhichIsA("TextLabel")
-			local SenderTextButton=MessageTextLabel and MessageTextLabel:FindFirstChildWhichIsA("TextButton")
-			if MessageTextLabel and SenderTextButton then
-				repeat task.wait() until not MessageTextLabel.Text:match("__+")
-				local Message=Gsub(MessageTextLabel.Text,"^%s+","")
-
-				if Message:match(" ") then
-					x:Destroy()
-				end
-			end
-		end)
-		alreadyantilag=true
-	else
-	end
-end)
-
-	--[[cmd.add({"plugins"},{"plugins","Check what kind of plugins you have,add plugins using a gui,delete a plugin."},function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminPlugin"))();
-	end)]]
 
 cmd.add({"prefix"},{"prefix <prefix>","Changes the admin prefix"},function(...)
 	local PrefixChange = (...)
@@ -1449,14 +1370,6 @@ cmd.add({"gotocampos","tocampos","tcp"},{"gotocampos (tocampos,tcp)","Teleports 
 	repeat wait() until camera.CFrame~=CFrame.new()
 
 	teleportPlayer()
-end)
-
-cmd.add({"kanye"},{"kanye","Random kanye quote"},function()
-	local check="https://api.kanye.rest/"
-	local final=game:HttpGet(check)
-	local final2=string.gsub(final,'"quote"',"")
-	local final3=string.gsub(final2,"[%{%:%}]","")
-	lib.LocalPlayerChat(final3.."-Kanye West",'All')
 end)
 
 cmd.add({"teleportgui","tpui","universeviewer","uviewer"},{"teleportgui (tpui,universeviewer,uviewer)","Gives an UI that grabs all places and teleports you by clicking a simple button"},function()
@@ -1867,104 +1780,6 @@ cmd.add({"unwalkfling","unwfling"},{"unwalkfling (unwfling)","stop the walkfling
 	hiddenfling=false
 end)
 
-cmd.add({"fling3"},{"fling3 <player>","another variant of fling"},function(...)
-	oldcframe=getRoot(Players.LocalPlayer.Character).CFrame
-
-	User=(...)
-	Target=getPlr(User)
-
-	hiddenfling=true
-
-	if NA_storage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
-		hiddenfling=true
-	else
-		detection=Instance.new("Decal")
-		detection.Name="juisdfj0i32i0eidsuf0iok"
-		detection.Parent=NA_storage
-		function fling()
-			local hrp,c,vel,movel=nil,nil,nil,0.1
-			while true do
-				RunService.Heartbeat:Wait()
-				if hiddenfling then
-					local lp=game:GetService("Players").LocalPlayer
-					while hiddenfling and not (c and c.Parent and hrp and hrp.Parent) do
-						RunService.Heartbeat:Wait()
-						c=lp.Character
-						hrp=c:FindFirstChild("HumanoidRootPart") or c:FindFirstChild("Torso") or c:FindFirstChild("UpperTorso")
-					end
-					if hiddenfling then
-						vel=hrp.Velocity
-						hrp.Velocity=vel*10000+Vector3.new(0,10000,0)
-						RunService.RenderStepped:Wait()
-						if c and c.Parent and hrp and hrp.Parent then
-							hrp.Velocity=vel
-						end
-						game:GetService("RunService").Stepped:Wait()
-						if c and c.Parent and hrp and hrp.Parent then
-							hrp.Velocity=vel+Vector3.new(0,movel,0)
-							movel=movel*-1
-						end
-					end
-				end
-			end
-		end
-		fling()
-	end
-	Player.Character.Humanoid:SetStateEnabled("Seated",false)
-	Player.Character.Humanoid.Sit=true
-	if User=="all" or User=="others" then
-		for _,x in next,game:GetService("Players"):GetPlayers() do
-			for i=1,10 do
-				wait(0.017)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,4)
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-2)
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-3)
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,2)
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-1)
-				wait(0.01)
-				getRoot(getChar()).CFrame=getRoot(x.Character).CFrame*CFrame.new(0,0,-1)
-			end
-		end
-	else
-		for i=1,10 do
-			wait(0.017)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,4)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-2)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-3)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,2)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-1)
-			wait(0.01)
-			getRoot(Players.LocalPlayer.Character).CFrame=getRoot(Target.Character).CFrame*CFrame.new(0,0,-1)
-		end
-	end
-	sFLY(true)
-	speedofthevfly=1
-	wait(0.3)
-	getRoot(Players.LocalPlayer.Character).CFrame=oldcframe
-	wait(0.13)
-	Player.Character.Humanoid:SetStateEnabled("Seated",true)
-	Player.Character.Humanoid.Sit=false
-	FLYING=false
-	getChar().Humanoid.PlatformStand=false
-	hiddenfling=false
-end)
-
 cmd.add({"rjre", "rejoinrefresh"}, {"rjre (rejoinrefresh)", "Rejoins and teleports you to your previous position"}, function()
 	if not DONE then
 		DONE = true
@@ -2155,12 +1970,12 @@ function refresh()
 	character:WaitForChild("HumanoidRootPart").CFrame=cf
 end
 
-local abort=0
+abort=0
 function getTools(amt)
 	if not amt then amt=1 end
-	local toolAmount,grabbed=0,{}
-	local lastCF=character.PrimaryPart.CFrame
-	local ab=abort
+	toolAmount,grabbed=0,{}
+	lastCF=character.PrimaryPart.CFrame
+	ab=abort
 
 	for i,v in pairs(localPlayer:FindFirstChildWhichIsA("Backpack"):GetChildren()) do
 		if v:IsA("BackpackItem") then
@@ -2192,8 +2007,8 @@ function getTools(amt)
 	repeat wait() until localPlayer.Character and tostring(localPlayer.Character)~="respawn_" and localPlayer.Character==character
 	wait(.2)
 
-	repeat wait() until localPlayer:FindFirstChildWhichIsA("Backpack") or ab~=abort
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
+	repeat wait() until getBp() or ab~=abort
+	backpack=getBp()
 	for _,tool in pairs(grabbed) do
 		if tool:IsA("BackpackItem") then
 			tool.Parent=backpack
@@ -2208,47 +2023,6 @@ function getTools(amt)
 	return grabbed
 end
 
-
-
-cmd.add({"joke"},{"joke","Random joke generator"},function()
-	coroutine.wrap(function()
-		local HttpService=game:GetService('HttpService')
-		local check="https://official-joke-api.appspot.com/jokes/programming/random"
-		local final1=game:HttpGet(check)
-		local final=string.gsub(final1,"[%[%]]","")
-		local decoded=HttpService:JSONDecode(final)
-		lib.LocalPlayerChat(decoded.setup,'All')
-		wait(2)
-		lib.LocalPlayerChat(decoded.punchline,'All')
-	end)()
-
-end)
-cmd.add({"idiot"},{"idiot <player>","Tell someone that they are an idiot"},function(...)
-	local old=getRoot(getChar()).CFrame
-
-	Username=(...)
-
-	Players=game:GetService("Players")
-	HRP=getRoot(getChar()).Anchored
-
-
-	target=getPlr(Username)
-
-	getRoot(getChar()).CFrame=target.Character.Humanoid.RootPart.CFrame*CFrame.new(0,1,4)
-	local message="Hey "..target.Name..""
-	lib.LocalPlayerChat(message,'All')
-	wait(1)
-	lib.LocalPlayerChat('Sorry to tell you this,but..','All')
-	wait(1)
-	lib.LocalPlayerChat('You are an idiot!','All')
-	wait(1)
-	lib.LocalPlayerChat('HAHAHA!','All')
-	wait(1)
-	getChar():WaitForChild("HumanoidRootPart").CFrame=old
-
-
-end)
-
 cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the account age of a player in the server"},function(...)
 	Username=(...)
 
@@ -2259,447 +2033,6 @@ cmd.add({"accountage","accage"},{"accountage <player> (accage)","Tells the accou
 	wait();
 
 	DoNotif(accountage)
-end)
-
-cmd.add({"notoolscripts","nts"},{"notoolscripts (nts)","Destroy all scripts in backpack"},function()
-	--print("test")
-	local bp=player:FindFirstChildWhichIsA("Backpack")
-	for _,item in pairs(bp:GetChildren()) do
-		for _,obj in pairs(item:GetDescendants()) do
-			if obj:IsA("LocalScript") or obj:IsA("Script") then
-				obj.Disabled=true
-				obj:Destroy()
-			end
-		end
-	end
-end)
-
-cmd.add({"spblockspam","starterblockscam"},{"spblockspam (starterblockspam)","Spam blocks in any game that has the starter place"},function()
-	anniblockspam=true
-end)
-
-cmd.add({"febtools"},{"febtools","Move parts that are your hats"},function()
-	--[[ THANKS TO ROUXHAVER FOR THIS ]]--
-	--check out his github-https://github.com/rouxhaver
-	local Players=game:GetService("Players")
-	local RunService=game:GetService("RunService")
-	local LocalPlayer=Players.LocalPlayer
-
-	if not getgenv().Network then
-		getgenv().Network={
-			BaseParts={};
-			FakeConnections={};
-			Connections={};
-			Output={
-				Enabled=true;
-				Prefix="[NETWORK] ";
-				Send=function(Type,Output,BypassOutput)
-					if typeof(Type)=="function" and (Type==print or Type==warn or Type==error) and typeof(Output)=="string" and (typeof(BypassOutput)=="nil" or typeof(BypassOutput)=="boolean") then
-						if Network["Output"].Enabled==true or BypassOutput==true then
-							Type(Network["Output"].Prefix..Output);
-						end;
-					elseif Network["Output"].Enabled==true then
-						error(Network["Output"].Prefix.."Output Send Error : Invalid syntax.");
-					end;
-				end;
-			};
-			CharacterRelative=false;
-		}
-
-		Network["Output"].Send(print,": Loading.")
-		Network["Velocity"]=Vector3.new(14.46262424,14.46262424,14.46262424);--exactly 25.1 magnitude
-		Network["RetainPart"]=function(Part,ReturnFakePart)--function for retaining ownership of unanchored parts
-			assert(typeof(Part)=="Instance" and Part:IsA("BasePart") and Part:IsDescendantOf(workspace),Network["Output"].Prefix.."RetainPart Error : Invalid syntax: Arg1 (Part) must be a BasePart which is a descendant of workspace.")
-			assert(typeof(ReturnFakePart)=="boolean" or typeof(ReturnFakePart)=="nil",Network["Output"].Prefix.."RetainPart Error : Invalid syntax: Arg2 (ReturnFakePart) must be a boolean or nil.")
-			if not table.find(Network["BaseParts"],Part) then
-				if Network.CharacterRelative==true then
-					local Character=LocalPlayer.Character
-					if Character and Character.PrimaryPart then
-						local Distance=(Character.PrimaryPart.Position-Part.Position).Magnitude
-						if Distance>1000 then
-							Network["Output"].Send(warn,"RetainPart Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as it is more than "..gethiddenproperty(LocalPlayer,"MaximumSimulationRadius").." studs away.")
-							return false
-						end
-					else
-						Network["Output"].Send(warn,"RetainPart Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as the LocalPlayer Character's PrimaryPart does not exist.")
-						return false
-					end
-				end
-				table.insert(Network["BaseParts"],Part)
-				Part.CustomPhysicalProperties=PhysicalProperties.new(0,0,0,0,0)
-				Network["Output"].Send(print,"PartOwnership Output : PartOwnership applied to BasePart "..Part:GetFullName()..".")
-				if ReturnFakePart==true then
-					return FakePart
-				end
-			else
-				Network["Output"].Send(warn,"RetainPart Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as it already active.")
-				return false
-			end
-		end
-
-		Network["RemovePart"]=function(Part)--function for removing ownership of unanchored part
-			assert(typeof(Part)=="Instance" and Part:IsA("BasePart"),Network["Output"].Prefix.."RemovePart Error : Invalid syntax: Arg1 (Part) must be a BasePart.")
-			local Index=table.find(Network["BaseParts"],Part)
-			if Index then
-				table.remove(Network["BaseParts"],Index)
-				Network["Output"].Send(print,"RemovePart Output: PartOwnership removed from BasePart "..Part:GetFullName()..".")
-			else
-				Network["Output"].Send(warn,"RemovePart Warning : BasePart "..Part:GetFullName().." not found in BaseParts table.")
-			end
-		end
-
-		Network["SuperStepper"]=Instance.new("BindableEvent")--make super fast event to connect to
-		for _,Event in pairs({RunService.Stepped,RunService.Heartbeat}) do
-			Event:Connect(function()
-				return Network["SuperStepper"]:Fire(Network["SuperStepper"],tick())
-			end)
-		end
-
-		Network["PartOwnership"]={};
-		Network["PartOwnership"]["PreMethodSettings"]={};
-		Network["PartOwnership"]["Enabled"]=false;
-		Network["PartOwnership"]["Enable"]=coroutine.create(function()--creating a thread for network stuff
-			if Network["PartOwnership"]["Enabled"]==false then
-				Network["PartOwnership"]["Enabled"]=true--do cool network stuff before doing more cool network stuff
-				Network["PartOwnership"]["PreMethodSettings"].ReplicationFocus=LocalPlayer.ReplicationFocus
-				LocalPlayer.ReplicationFocus=game:GetService("Workspace")
-				Network["PartOwnership"]["PreMethodSettings"].SimulationRadius=gethiddenproperty(LocalPlayer,"SimulationRadius")
-				Network["PartOwnership"]["Connection"]=Network["SuperStepper"].Event:Connect(function()--super fast asynchronous loop
-					sethiddenproperty(LocalPlayer,"SimulationRadius",1/0)
-					for _,Part in pairs(Network["BaseParts"]) do--loop through parts and do network stuff
-						coroutine.wrap(function()
-							if Part:IsDescendantOf(workspace) then
-								if Network.CharacterRelative==true then
-									local Character=LocalPlayer.Character;
-									if Character and Character.PrimaryPart then
-										local Distance=(Character.PrimaryPart.Position-Part.Position).Magnitude
-										if Distance>1000 then
-											Network["Output"].Send(warn,"PartOwnership Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as it is more than "..gethiddenproperty(LocalPlayer,"MaximumSimulationRadius").." studs away.")
-											Lost=true;
-											Network["RemovePart"](Part)
-										end
-									else
-										Network["Output"].Send(warn,"PartOwnership Warning : PartOwnership not applied to BasePart "..Part:GetFullName()..",as the LocalPlayer Character's PrimaryPart does not exist.")
-									end
-								end
-								Part.Velocity=Network["Velocity"]+Vector3.new(0,math.cos(tick()*10)/100,0)--keep network by sending physics packets of 30 magnitude+an everchanging addition in the y level so roblox doesnt get triggered and fuck your ownership
-							else
-								Network["RemovePart"](Part)
-							end
-						end)()
-					end
-				end)
-				Network["Output"].Send(print,"PartOwnership Output : PartOwnership enabled.")
-			else
-				Network["Output"].Send(warn,"PartOwnership Output : PartOwnership already enabled.")
-			end
-		end)
-		Network["PartOwnership"]["Disable"]=coroutine.create(function()
-			if Network["PartOwnership"]["Connection"] then
-				Network["PartOwnership"]["Connection"]:Disconnect()
-				LocalPlayer.ReplicationFocus=Network["PartOwnership"]["PreMethodSettings"].ReplicationFocus
-				sethiddenproperty(LocalPlayer,"SimulationRadius",Network["PartOwnership"]["PreMethodSettings"].SimulationRadius)
-				Network["PartOwnership"]["PreMethodSettings"]={}
-				for _,Part in pairs(Network["BaseParts"]) do
-					Network["RemovePart"](Part)
-				end
-				Network["PartOwnership"]["Enabled"]=false
-				Network["Output"].Send(print,"PartOwnership Output : PartOwnership disabled.")
-			else
-				Network["Output"].Send(warn,"PartOwnership Output : PartOwnership already disabled.")
-			end
-		end)
-		Network["Output"].Send(print,": Loaded.")
-	end
-
-	coroutine.resume(Network["PartOwnership"]["Enable"])
-
-
-
-	local lp=game:GetService("Players").LocalPlayer--local player var
-	local char=lp.Character--char var
-
-	lp.Character=nil--nil character for pdeath
-	lp.Character=char--newvar
-
-	local hrp=char:FindFirstChild("HumanoidRootPart")--hrp check
-	if hrp==nil then return end--return if no hrp
-
-	wait(game:GetService("Players").RespawnTime+.3)--nil wait
-
-	hrp:Destroy()--rip hrp
-	char.Torso:Destroy()--rip torso
-	local clone=char["Body Colors"]:Clone()--body colors clone
-	char["Body Colors"]:Destroy()--delete any instances from char that replicates deletion
-	clone.Parent=char--parent back in clone in case some script uses it
-
-
-
-
-	player=game:GetService("Players").LocalPlayer
-	Gui=player.PlayerGui
-	Backpack=player.Backpack
-	Mouse=player:GetMouse()
-
-	Parts_Folder=Instance.new("Folder",game:GetService("Workspace"))
-
-	for i,v in pairs(player.Character:GetChildren()) do
-		if v:IsA("Accessory") then
-			local Part=Instance.new("Part",Parts_Folder)
-			Part.Name=v.Name
-			Part.Anchored=true
-			Part.Size=v.Handle.Size-Vector3.new(0.001,0.001,0.001)
-			Part.Position=player.Character:FindFirstChild("Head").Position+Vector3.new(math.random(-5,5),math.random(-1,1),math.random(-5,5))
-			Part:SetAttribute("Moveable",true)
-			Part.Material=Enum.Material.SmoothPlastic
-			Part.CanCollide=false
-			Part.Color=Color3.new(1,0,0)
-
-			local Hat=v.Handle
-			local vbreak=false
-			Network.RetainPart(Hat)
-			Hat.CustomPhysicalProperties=PhysicalProperties.new(0,0,0,0,0)
-			coroutine.wrap(function()
-				while task.wait() do
-					if vbreak==true then break end
-					Hat.CFrame=Part.CFrame
-				end
-			end)()
-			Hat:FindFirstChildWhichIsA("SpecialMesh"):Destroy()
-		end
-	end
-
-
-	Move_Tool=Instance.new("Tool",Backpack)
-	Rotate_Tool=Instance.new("Tool",Backpack)
-	MHandle=Instance.new("Part",Move_Tool)
-	RHandle=Instance.new("Part",Rotate_Tool)
-	Mgrabs=Instance.new("Handles",Gui)
-	Rgrabs=Instance.new("ArcHandles",Gui)
-	Outline=Instance.new("Highlight")
-
-	Move_Tool.Name="Move"
-	Move_Tool.CanBeDropped=false
-
-	Rotate_Tool.Name="Rotate"
-	Rotate_Tool.CanBeDropped=false
-
-	MHandle.Name="Handle"
-	MHandle.Transparency=1
-
-	RHandle.Name="Handle"
-	RHandle.Transparency=1
-
-	Mgrabs.Visible=false
-	Mgrabs.Color3=Color3.new(1,0.8,0)
-	Mgrabs.Style="Movement"
-
-	Rgrabs.Visible=false
-
-	Outline.FillTransparency=1
-	Outline.OutlineTransparency=0
-	Outline.OutlineColor=Color3.new(1,0.8,0)
-
-	Active_Part=nil
-
-	Move_Tool.AncestryChanged:Connect(function()
-		if Move_Tool.Parent==char and Active_Part~=nil then
-			Mgrabs.Visible=true
-			Mgrabs.Adornee=Active_Part
-		end
-	end)
-
-	Move_Tool.AncestryChanged:Connect(function()
-		if Move_Tool.Parent~=char then
-			Mgrabs.Visible=false
-			Mgrabs.Adornee=nil
-		end
-	end)
-
-	Mouse.Button1Down:Connect(function()
-		if Move_Tool.Parent==char and Mouse.Target:GetAttribute("Moveable") then
-			Active_Part=Mouse.Target
-			Mgrabs.Visible=true
-			Mgrabs.Adornee=Active_Part
-			Outline.Parent=Active_Part
-		end
-		if Rotate_Tool.Parent==char and Mouse.Target:GetAttribute("Moveable") then
-			Active_Part=Mouse.Target
-			Rgrabs.Visible=true
-			Rgrabs.Adornee=Active_Part
-			Outline.Parent=Active_Part
-		end
-	end)
-
-	Rotate_Tool.AncestryChanged:Connect(function()
-		if Rotate_Tool.Parent==char and Active_Part~=nil then
-			Rgrabs.Visible=true
-			Rgrabs.Adornee=Active_Part
-		end
-	end)
-
-	Rotate_Tool.AncestryChanged:Connect(function()
-		if Rotate_Tool.Parent~=char then
-			Rgrabs.Visible=false
-			Rgrabs.Adornee=nil
-		end
-	end)
-
-	MOGCFrame=CFrame.new()
-
-	Mgrabs.MouseButton1Down:Connect(function()
-		MOGCFrame=Active_Part.CFrame
-	end)
-
-	Mgrabs.MouseDrag:Connect(function(knob,pos)
-		if knob==Enum.NormalId.Front then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector*pos
-		end
-		if knob==Enum.NormalId.Back then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.LookVector*-pos
-		end
-		if knob==Enum.NormalId.Top then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector*pos
-		end
-		if knob==Enum.NormalId.Bottom then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.UpVector*-pos
-		end
-		if knob==Enum.NormalId.Left then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector*-pos
-		end
-		if knob==Enum.NormalId.Right then
-			Active_Part.CFrame=MOGCFrame+MOGCFrame.RightVector*pos
-		end
-	end)
-
-	ROGCFrame=CFrame.new()
-
-	Rgrabs.MouseButton1Down:Connect(function()
-		ROGCFrame=Active_Part.CFrame
-	end)
-
-	Rgrabs.MouseDrag:Connect(function(knob,angle)
-		if knob==Enum.Axis.Y then
-			Active_Part.CFrame=ROGCFrame*CFrame.Angles(0,angle,0)
-		end
-		if knob==Enum.Axis.X then
-			Active_Part.CFrame=ROGCFrame*CFrame.Angles(angle,0,0)
-		end
-		if knob==Enum.Axis.Z then
-			Active_Part.CFrame=ROGCFrame*CFrame.Angles(0,0,angle)
-		end
-	end)
-
-
-
-	Mouse.TargetFilter=player.Character
-
-
-
-	camera=game:GetService("Workspace").CurrentCamera
-	input=game:GetService("UserInputService")
-
-	Camera_Part=Instance.new("Part",game:GetService("Workspace"))
-	Camera_Part.Anchored=true
-	Camera_Part.Transparency=0.85
-	Camera_Part.Shape=Enum.PartType.Ball
-	Camera_Part.Size=Vector3.new(0.5,0.5,0.5)
-	Camera_Part.Material=Enum.Material.SmoothPlastic
-
-	current_position=char:FindFirstChild("Head").Position
-
-	camera.CameraSubject=Camera_Part
-
-
-
-	for i,v in pairs(char:GetDescendants()) do
-		if v:IsA("BasePart") and v.Parent:IsA("Accessory")==false then
-			v:Destroy()
-		end
-	end
-
-
-	while wait() do
-		if vbreak==true then
-			break
-		end
-		if input:IsKeyDown(Enum.KeyCode.D) then
-			current_position+=camera.CFrame.RightVector*speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.A) then
-			current_position+=camera.CFrame.RightVector*-speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.W) then
-			current_position+=camera.CFrame.LookVector*speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.S) then
-			current_position+=camera.CFrame.LookVector*-speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.E) then
-			current_position+=camera.CFrame.UpVector*speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.Q) then
-			current_position+=camera.CFrame.UpVector*-speed
-		end
-		if input:IsKeyDown(Enum.KeyCode.LeftShift) then do
-				speed=1.5
-			end else
-			speed=0.75
-		end
-		Camera_Part.Position=current_position
-	end
-end)
-
-cmd.add({"unspblockspam","unstarterblockscam"},{"unspblockspam (unstarterblockspam)","Stops the starterblockspam command"},function()
-	anniblockspam=false
-end)
-
-cmd.add({"blockspam"},{"blockspam [amount]","Spawn blocks by the given amount"},function(amt)
-	amt=tonumber(amt) or 1
-	local hatAmount,grabbed=0,{}
-	local lastCF=character.PrimaryPart.CFrame
-	character:ClearAllChildren()
-	respawn()
-	repeat
-		if character.Name~="respawn_" then
-			local c=character
-			repeat wait() until c:FindFirstChildWhichIsA("Accoutrement")
-			c:MoveTo(lastCF.p)
-			wait(1)
-			for i,v in pairs(c:GetChildren()) do
-				if v:IsA("Accoutrement") then
-					v:WaitForChild("Handle")
-					v.Handle.CanCollide=true
-					if v:FindFirstChildWhichIsA("DataModelMesh",true) then
-						v:FindFirstChildWhichIsA("DataModelMesh",true):Destroy()
-					end
-					v.Parent=game:GetService("Workspace")
-					table.insert(grabbed,v)
-				end
-			end
-			hatAmount=hatAmount+1
-		end
-		character:ClearAllChildren()
-		respawn()
-		wait()
-	until
-	hatAmount >=amt
-
-	repeat wait() until tostring(localPlayer.Character)~="respawn_" and localPlayer.Character
-	wait(0.5)
-
-	spawn(function()
-		repeat wait() until character.PrimaryPart
-		wait(0.2)
-		character:SetPrimaryPartCFrame(lastCF)
-
-		for _,item in pairs(grabbed) do
-			if item:IsA("Accoutrement") and item:FindFirstChild("Handle") then
-				item.Parent=game:GetService("Workspace")
-				wait()
-			end
-		end
-	end)
 end)
 
 cmd.add({"hitboxes"},{"hitboxes","shows all the hitboxes"},function()
@@ -2744,41 +2077,6 @@ cmd.add({"unvfly","unvehiclefly"},{"unvehiclefly (unvfly)","disable vehicle fly"
 	DoNotif("Vehicle fly disabled")
 	FLYING=false
 	cmdlp.Character.Humanoid.PlatformStand=false
-end)
-
-cmd.add({"toolblockspam"},{"toolblockspam [amount]","Spawn blocks by the given amount"},function(amt)
-	if not amt then amt=1 end
-	amt=tonumber(amt)
-	local tools=getTools(amt)
-	for i,tool in pairs(tools) do
-		wait()
-		spawn(function()
-			wait(0.1)
-			tool.Parent=character
-			tool.CanBeDropped=true
-			wait(0.1)
-			for _,mesh in pairs(tool:GetDescendants()) do
-				if mesh:IsA("DataModelMesh") then
-					mesh:Destroy()
-				end
-			end
-			for _,weld in pairs(character:GetDescendants()) do
-				if weld.Name=="RightGrip" then
-					weld:Destroy()
-				end
-			end
-			wait(0.1)
-			tool.Parent=game:GetService("Workspace")
-			wait(0.1)
-			local cf,p=CFrame.new(),character:FindFirstChild("HumanoidRootPart") or character:FindFirstChild("Head")
-			if p then
-				cf=p.CFrame
-			end
-			respawn()
-			player.CharacterAdded:wait(1); wait(0.2);
-			character:WaitForChild("HumanoidRootPart").CFrame=cf
-		end)
-	end
 end)
 
 cmd.add({"equiptools","equipall"},{"equiptools","Equip all of your tools"},function()
@@ -2868,7 +2166,7 @@ cmd.add({"unantivoid"},{"unantivoid","Disables antivoid"},function(reachsize)
 end)
 
 cmd.add({"droptools"},{"dropalltools","Drop all of your tools"},function()
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
+	backpack=getBp()
 	if backpack then
 		for _,tool in pairs(backpack:GetChildren()) do
 			if tool:IsA("Tool") then
@@ -2911,9 +2209,9 @@ cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches y
 		game:GetService("Workspace").Gravity=oldgrav
 		swimming=false
 	end
-	local Humanoid=char:FindFirstChildWhichIsA("Humanoid")
+	Humanoid=char:FindFirstChildWhichIsA("Humanoid")
 	gravReset=Humanoid.Died:Connect(swimDied)
-	local enums=Enum.HumanoidStateType:GetEnumItems()
+	enums=Enum.HumanoidStateType:GetEnumItems()
 	table.remove(enums,table.find(enums,Enum.HumanoidStateType.None))
 	for i,v in pairs(enums) do
 		Humanoid:SetStateEnabled(v,false)
@@ -2925,7 +2223,7 @@ cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches y
 		end)
 	end)
 	swimming=true
-	local Clip=false
+	Clip=false
 	wait(0.1)
 	function NoclipLoop()
 		if Clip==false and char~=nil then
@@ -3016,11 +2314,6 @@ cmd.add({"fpsbooster","lowgraphics","boostfps","lowg"},{"fpsbooster (lowgraphics
 	end)
 end)
 
-	--[[cmd.add({"vr","clovr","vrscript","fevr"},{"vr (clovr,vrscript,fevr)","FE VR SCRIPT AKA CLOVR"},function()
-		--should be patched--
-	 loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/CloVR"))();
-	 end)]]
-
 cmd.add({"antilag","boostfps"},{"antilag (boostfps)","Low Graphics"},function()
 	_G.Settings={
 		Players={
@@ -3055,7 +2348,7 @@ cmd.add({"annoy"},{"annoy <player>","Annoys the given player"},function(...)
 	annoyloop=true
 	User=(...)
 	Target=getPlr(User)
-	local SaveCFrame=getRoot(getChar()).CFrame
+	SaveCFrame=getRoot(getChar()).CFrame
 	repeat wait()
 		getRoot(getChar()).CFrame=getRoot(Target.Character).CFrame+Vector3.new(math.random(-2,2),math.random(0,2),math.random(-2,2))
 		game:GetService('RunService').RenderStepped:Wait()
@@ -3180,28 +2473,6 @@ cmd.add({"seat"},{"seat","Finds a seat and automatically sits on it"},function()
 	end
 end)
 
-local massplay=false
-cmd.add({"sync"},{"sync","Syncs all in-game audios"},function()
-	massplay=true
-	if game:GetService("SoundService").RespectFilteringEnabled==false then
-		repeat wait() do 
-				for _,sound in next,game:GetService("Workspace"):GetDescendants() do
-					if sound:IsA("Sound") then
-						sound.Volume=10
-						sound:Play()
-					end
-				end
-			end
-		until massplay==false
-	else
-		DoNotif("Sorry,wont replicate for this game,try another game.")
-	end
-end)
-
-cmd.add({"unsync"},{"unsync","Unsyncs all in-game audios"},function()
-	massplay=false
-end)
-
 cmd.add({"copytools","ctools"},{"copytools <player> (ctools)","Copies the tools the given player has"},function(...)
 	PLAYERNAMEHERE=(...)
 	Target=getPlr(PLAYERNAMEHERE)
@@ -3315,9 +2586,9 @@ cmd.add({"cartornado","ctornado"},{"cartornado (ctornado)","Tornados a car just 
 			hit:Sit(getChar().Humanoid)
 			SPart:Destroy()
 			wait(0.3)
-			local speaker=game:GetService("Players").LocalPlayer
-			local seat=speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart
-			local vehicleModel=seat.Parent
+			speaker=game:GetService("Players").LocalPlayer
+			seat=speaker.Character:FindFirstChildOfClass('Humanoid').SeatPart
+			vehicleModel=seat.Parent
 			repeat
 				if vehicleModel.ClassName~="Model" then
 					vehicleModel=vehicleModel.Parent
@@ -3358,7 +2629,7 @@ cmd.add({"vulnerabilitytest","vulntest"},{"vulnerabilitytest (vulntest)","Test i
 end)
 
 cmd.add({"respawn","re"},{"respawn","Respawn your character"},function()
-	local old=getRoot(getChar()).CFrame
+	old=getRoot(getChar()).CFrame
 	respawn()
 	wait()
 	plr.CharacterAdded:Wait()
@@ -3519,7 +2790,7 @@ cmd.add({"antikick","nokick","bypasskick","bk"},{"antikick (nokick,bypasskick,bk
 		end
 	)
 
-	local player = game:GetService("Players").LocalPlayer
+	player = game:GetService("Players").LocalPlayer
 	local meta = getrawmt(game)
 	local oldNamecall = meta.__namecall
 
@@ -3556,7 +2827,7 @@ cmd.add({"bypassteleport","btp"},{"bypassteleport (btp)","Bypass Teleportation o
 				end
 			end
 		)
-	local lp = game:GetService("Players").LocalPlayer
+	lp = game:GetService("Players").LocalPlayer
 	local meta = getrawmt(game)
 	local caller = checkcaller or is_protosmasher_caller
 	local index = meta.__index
@@ -3714,12 +2985,12 @@ cmd.add({"harked","comet"},{"harked (comet)","Executes Comet which is like harke
 end)
 
 cmd.add({"triggerbot","tbot"},{"triggerbot (tbot)","Executes a script that automatically clicks the mouse when the mouse is on a player"},function()
-	local ToggleKey=Enum.KeyCode.Q
+	ToggleKey=Enum.KeyCode.Q
 
 
-	local Player=game:GetService("Players").LocalPlayer
-	local Char=Player.Character or player.CharacterAdded:wait(1)
-	local Root=getRoot(Char) or Char:WaitForChild("HumanoidRootPart")
+	Player=game:GetService("Players").LocalPlayer
+	Char=Player.Character or player.CharacterAdded:wait(1)
+	Root=getRoot(Char) or Char:WaitForChild("HumanoidRootPart")
 	local Camera=game:GetService("Workspace").CurrentCamera
 	local Mouse=Player:GetMouse()
 	local PlayerTeam=Player.Team
@@ -4025,13 +3296,6 @@ cmd.add({"unantiafk","unnoafk"},{"unantiafk (unnoafk)","Makes you able to be kic
 	end
 end)
 
-cmd.add({"toolgui"},{"toolgui","cool tool ui aka replication ui made by 0866"},function()
-	loadstring(game:HttpGet("https://pastebin.com/raw/vr2YVyF6"))();
-	wait();
-
-	DoNotif("For a better experience,use R6 if you want tools do ;dupetools 5")
-end)
-
 cmd.add({"clicktp","tptool"},{"clicktp (tptool)","Teleport where your mouse is"},function()
 	mouse=game:GetService("Players").LocalPlayer:GetMouse()
 	tool=Instance.new("Tool")
@@ -4219,22 +3483,6 @@ cmd.add({"synapsedex","sdex"},{"synapsedex (sdex)","Loads SynapseX's dex explore
 	end
 
 	Load(Dex)
-end)
-
-cmd.add({"gayrate"},{"gayrate <player>","Gay scale of a player"},function(...)
-	Username=(...)
-	target=getPlr(Username)
-	local coolPercentage=math.random(1,100)
-	rate=target.Name..' is '..coolPercentage..'% gay'
-	lib.LocalPlayerChat(rate,'All')
-end)
-
-cmd.add({"coolrate"},{"coolrate <player>","Cool scale of a player"},function(...)
-	Username=(...)
-	target=getPlr(Username)
-	local coolPercentage=math.random(1,100)
-	rate=target.Name..' is '..coolPercentage..'% cool'
-	lib.LocalPlayerChat(rate,'All')
 end)
 
 cmd.add({"unantikill"},{"unantikill","Makes exploiters to be able to kill you"},function()
@@ -4627,119 +3875,6 @@ cmd.add({"controlnpcs","cnpcs"},{"controlnpcs (cnpcs)","Mobile: Touch and hold o
 	end
 end)
 
-cmd.add({"attachpart"},{"attachpart","Keybind: CTRL+LEFTCLICK"},function()
-
-	wait();
-
-	DoNotif("AttachPart executed,CTRL+Click on a part")
-	--made by joshclark756#7155
-	--Variables
-	local mouse=game:GetService("Players").LocalPlayer:GetMouse()
-	local uis=game:GetService("UserInputService")
-
-	--Connect
-	mouse.Button1Down:Connect(function()
-		--Check for Target & Left Shift
-		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
-			local npc=mouse.target
-			local npcparts=mouse.target.Parent
-			local PlayerCharacter=getChar()
-			local PlayerRootPart=getRoot(character)
-			local A0=Instance.new("Attachment")
-			local AP=Instance.new("AlignPosition")
-			local AO=Instance.new("AlignOrientation")
-			local A1=Instance.new("Attachment")
-			for _,v in pairs(npcparts:GetDescendants()) do
-				if v:IsA("BasePart") or v:IsA("Part") and v.Name~="HumanoidRootPart" then
-					do
-						v.CanCollide=false
-
-					end
-				end
-			end
-			--Variables
-			local mouse=game:GetService("Players").LocalPlayer:GetMouse()
-			local uis=game:GetService("UserInputService")
-
-			--Connect
-			mouse.Button1Down:Connect(function()
-				if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
-					local npc=mouse.target
-					local npcparts=mouse.target.Parent
-					local PlayerCharacter=getChar()
-					local PlayerRootPart=getRoot(character)
-					local A0=Instance.new("Attachment")
-					local AP=Instance.new("AlignPosition")
-					local AO=Instance.new("AlignOrientation")
-					local A1=Instance.new("Attachment")
-					for _,v in pairs(npcparts:GetDescendants()) do
-						if v:IsA("BasePart") or v:IsA("Part") and v.Name~="HumanoidRootPart" then
-							do
-								v.CanCollide=false
-
-								wait(0)
-								local player=game:GetService("Players").LocalPlayer
-								local mouse=player:GetMouse()
-								bind="e"--has to be lowercase
-								mouse.KeyDown:connect(function(key)
-									if key==bind then do
-											v.CanCollide=true
-										end
-									end
-								end)
-							end
-						end
-					end
-					for _,v in pairs(PlayerCharacter:GetDescendants()) do
-						if v:IsA("BasePart") then
-							if v.Name=="HumanoidRootPart" or v.Name=="UpperTorso" or v.Name=="Head" then
-
-							end
-						end
-					end
-					PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(0,0,0)
-					PlayerCharacter:FindFirstChild("Head").Anchored=false
-					PlayerCharacter.Torso.Anchored=false
-					A0.Parent=npc
-					AP.Parent=npc
-					AO.Parent=npc
-					AP.Responsiveness=200
-					AP.MaxForce=math.huge
-					AO.MaxTorque=math.huge
-					AO.Responsiveness=200
-					AP.Attachment0=A0
-					AP.Attachment1=A1
-					AO.Attachment1=A1
-					AO.Attachment0=A0
-					A1.Parent=PlayerRootPart
-				end
-			end)
-			for _,v in pairs(PlayerCharacter:GetDescendants()) do
-				if v:IsA("BasePart") then
-					if v.Name=="HumanoidRootPart" or v.Name=="UpperTorso" or v.Name=="Head" then
-
-					end
-				end
-			end
-			PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(0,0,0)
-			PlayerCharacter.Head.Anchored=false
-			PlayerCharacter.Torso.Anchored=false
-			A0.Parent=npc
-			AP.Parent=npc
-			AO.Parent=npc
-			AP.Responsiveness=200
-			AP.MaxForce=math.huge
-			AO.MaxTorque=math.huge
-			AO.Responsiveness=200
-			AP.Attachment0=A0
-			AP.Attachment1=A1
-			AO.Attachment1=A1
-			AO.Attachment0=A0
-			A1.Parent=PlayerRootPart
-		end
-	end)
-end)
-
 local active=false
 local MobileCameraFramework={}
 local players=game:GetService("Players")
@@ -5021,11 +4156,6 @@ cmd.add({"unadmin"},{"unadmin <player>","removes someone from being admin"},func
 	else
 		DoNotif("Player not found",15)
 	end
-end)
-
-cmd.add({"2016"},{"2016","2016 CORE GUI"},function()
-	--[[ PLAYERBOARD IS BUGGED BUT WILL TRY TO FIX. ]]--
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/2016%20mode"))()
 end)
 
 cmd.add({"removedn","nodn","nodpn"},{"removedn (nodn,nodpn)","Removes all display names"},function()
@@ -6008,91 +5138,6 @@ cmd.add({"drophats"},{"drophats","Drop all of your hats"},function()
 	end
 end)
 
-cmd.add({"hatspin"},{"hatspin <height>","Make your hats spin"},function(h)
-	local head=character:FindFirstChild("Head")
-	if not head then return end
-	for _,hat in pairs(character:GetChildren()) do
-		if hat:IsA("Accoutrement") and hat:FindFirstChild("Handle") then
-			local handle=hat.Handle
-			handle:BreakJoints()
-
-			local align=Instance.new("AlignPosition")
-			local a0,a1=Instance.new("Attachment"),Instance.new("Attachment")
-			align.Attachment0,align.Attachment1=a0,a1
-			align.RigidityEnabled=true
-			a1.Position=Vector3.new(0,tonumber(h) or 0.5,0)
-			lock(align,handle); lock(a0,handle); lock(a1,head);
-
-			local angular=Instance.new("BodyAngularVelocity")
-			angular.AngularVelocity=Vector3.new(0,math.random(100,160)/16,0)
-			angular.MaxTorque=Vector3.new(0,400000,0)
-			lock(angular,handle);
-		end
-	end
-end)
-
-
-
-cmd.add({"limbbounce"},{"limbbounce [height] [distance]","Make your limbs bounce around your head"},function(h,d)
-	local head=character:FindFirstChild("Head")
-	if not head then return end
-	local i=2
-	for _,part in pairs(character:GetDescendants()) do
-		local name=part.Name:lower()
-		if part:IsA("BasePart") and not part.Parent:IsA("Accoutrement") and not name:find("torso") and not name:find("head") and not name:find("root") then
-			i=i+math.random(15,50)/100
-			part:BreakJoints()
-			local n=tonumber(d) or i
-
-			local align=Instance.new("AlignPosition")
-			local a0,a1=Instance.new("Attachment"),Instance.new("Attachment")
-			align.Attachment0,align.Attachment1=a0,a1
-			align.RigidityEnabled=true
-			lock(align,part); lock(a0,part); lock(a1,head);
-
-			wrap(function()
-				local rotX=0
-				local speed=math.random(350,750)/10000
-				while part and part.Parent do
-					rotX=rotX+speed
-					a1.Position=Vector3.new(0,(tonumber(h) or 0)+math.sin(rotX)*n,0)
-					RunService.RenderStepped:Wait(0)
-				end
-			end)
-		end
-	end
-end)
-
-cmd.add({"limborbit"},{"limborbit [height] [distance]","Make your limbs orbit around your head"},function(h,d)
-	local head=character:FindFirstChild("Head")
-	if not head then return end
-	local i=2
-	for _,part in pairs(character:GetDescendants()) do
-		local name=part.Name:lower()
-		if part:IsA("BasePart") and not part.Parent:IsA("Accoutrement") and not name:find("torso") and not name:find("head") and not name:find("root") then
-			i=i+math.random(15,50)/100
-			part:BreakJoints()
-			local n=tonumber(d) or i
-
-			local align=Instance.new("AlignPosition")
-			local a0,a1=Instance.new("Attachment"),Instance.new("Attachment")
-			align.Attachment0,align.Attachment1=a0,a1
-			align.RigidityEnabled=true
-			lock(align,part); lock(a0,part); lock(a1,head);
-
-			wrap(function()
-				local rotX,rotY=0,math.pi/2
-				local speed=math.random(35,75)/1000
-				while part and part.Parent do
-					rotX,rotY=rotX+speed,rotY+speed
-					a1.Position=Vector3.new(math.sin(rotX)*(n),tonumber(h) or 0,math.sin(rotY)*(n))
-					RunService.RenderStepped:Wait(0)
-				end
-			end)
-		end
-	end
-end)
-
 function getAllTools()
 	local tools={}
 	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
@@ -6128,177 +5173,6 @@ end)
 
 local r=math.rad
 local center=CFrame.new(1.5,0.5,-1.5)
-
-cmd.add({"toolanimate"},{"toolanimate <mode> <int>","Make your tools epic\nModes: ufo/ring/shutter/saturn/portal/wtf/ball/tor"},function(mode,int)
-	lib.disconnect("tooldance")
-	local int=tonumber(int) or 5
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
-	local primary=character:FindFirstChild("HumanoidRootPart")
-	if backpack and primary then
-		local tools=getAllTools()
-		for i,tool in pairs(tools) do
-			if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-				local circ=(i/#tools)*(math.pi*2)
-
-				function editGrip(tool,cframe,offset)
-					local origin=CFrame.new(cframe.p):inverse()
-					local x,y,z=cframe:toEulerAnglesXYZ()
-					local new=CFrame.Angles(x,y,z)
-					local grip=(origin*new):inverse()
-					tool.Parent=backpack
-					tool.Grip=offset*grip
-					tool.Parent=character
-
-					for i,v in pairs(tool:GetDescendants()) do
-						if v:IsA("Sound") then
-							v:Stop()
-						end
-					end
-				end
-				tool.Handle.Massless=true
-
-				if mode=="ufo" then
-					local s={}
-					local x,y=i,i+math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1,y+0.1
-
-						local cframe=
-							center*
-							CFrame.new()*
-							CFrame.Angles(r(s.y*10),circ+r(s.y*8),r(s.x*10))
-						local offset=
-							CFrame.new(int,0,0)*
-							CFrame.Angles(0,0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="ring" then
-					local s={}
-					local x,y=i,i+math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.04,y+0.04
-
-						local cframe=
-							center*
-							CFrame.new(0,3,0)*
-							CFrame.Angles(0,circ,x)
-						local offset=
-							CFrame.new(0,0,int)*
-							CFrame.Angles(0,0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="shutter" then
-					local s={}
-					local x,y=0,math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1,y+0.1
-
-						local cframe=
-							center*
-							CFrame.new(0,0,0)*
-							CFrame.Angles(0,0,circ+0)
-						local offset=
-							CFrame.new(s.y*6,0,int)*
-							CFrame.Angles(r(-90),0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="saturn" then
-					local s={}
-					local x,y=0,math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1,y+0.1
-						local cframe=
-							center*
-							CFrame.new(0,0,0)*
-							CFrame.Angles(0,circ,0)
-						local offset=
-							CFrame.new(s.y*6,0,int)*
-							CFrame.Angles(0,0,r(0))
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="portal" then
-					local s={}
-					local x,y=0,math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1,y+0.1
-
-						local cframe=
-							center*
-							CFrame.new(0,0,0)*
-							CFrame.Angles(0,0,circ+r(x*45))
-						local offset=
-							CFrame.new(3,0,int)*
-							CFrame.Angles(r(-90),0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="ball" then
-					local s={}
-					local n=math.random()*#tools
-					local x,y=n,n+math.pi / 2
-					local random=math.random()
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1,y+0.1
-						local cframe=
-							center*
-							CFrame.new(0,0,0)*
-							CFrame.Angles(r(y*25),circ,r(y*25))
-						local offset=
-							CFrame.new(0,int+random*2,0)*
-							CFrame.Angles(r(x*15),0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="wtf" then
-					local s={}
-					local x,y=math.random()^3,math.random()^3+math.pi / 2
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+0.1+math.random()/10,y+0.1+math.random()/10
-						local cframe=
-							center*
-							CFrame.new(0,0,0)*
-							CFrame.Angles(r(y*100)+math.random(),circ,r(y*100)+math.random())
-						local offset=
-							CFrame.new(0,int+math.random()*4,0)*
-							CFrame.Angles(r(x*100),0,0)
-						editGrip(tool,cframe,offset)
-					end))
-				elseif mode=="tor" then
-					local s={}
-					local x,y=i*1,i*1+math.pi / 2
-					local random=math.random()
-					lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-						s.x=math.sin(x)
-						s.y=math.sin(y)
-						x,y=x+(int/75),y+0.1
-						local cframe=
-							center*
-							CFrame.new(1.5,2,0)*
-							CFrame.Angles(r(-90-25),0,0)
-						local offset=
-							CFrame.new(0,s.x*3,-int+math.sin(y/5)*-int)*
-							CFrame.Angles(r(int),s.x,-x)
-						editGrip(tool,cframe,offset)
-					end))
-				end
-			else
-				table.remove(tools,i)
-			end
-		end
-	end
-end)
 
 cmd.add({"hide","unshow"},{"hide <player> (unshow)","places the selected player to lighting"},function(...)
 	wait();
@@ -6366,7 +5240,8 @@ cmd.add({"unhide","show"},{"show <player> (unhide)","places the selected player 
 end)
 
 cmd.add({"aimbot","aimbotui","aimbotgui"},{"aimbot (aimbotui,aimbotgui)","aimbot and yeah"},function()
-	loadstring(game:HttpGet('https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua'))()
+	--loadstring(game:HttpGet('https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua'))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
 end)
 
 cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools script"},function()
@@ -6492,152 +5367,6 @@ cmd.add({"unanimationspeed", "unanimspeed"}, {"unanimationspeed (unanimspeed)", 
 	end
 end)
 
-cmd.add({"tooldance","td"},{"tooldance <mode> <size>","Make your tools dance\nModes: tor/sph/inf/rng/whl/wht/voi"},function(mode,size)
-	local size=tonumber(size) or 5
-	lib.disconnect("tooldance")
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
-	local primary=getRoot(character)
-	if backpack and primary then
-		local i,tools=0,getAllTools()
-		for _,tool in pairs(tools) do
-			if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-				i=i+1
-				tool.Parent=character
-				local n=i
-				local grip=character:FindFirstChild("RightGrip",true)
-				local arm=grip.Parent
-
-				function editGrip(cf)
-					tool.Parent=backpack
-					tool.Grip=cf
-					tool.Parent=character
-
-					for i,v in pairs(tool:GetDescendants()) do
-						if v:IsA("Sound") and v.Name:find("sheath") then
-							v:Destroy()
-						end
-					end
-				end
-				tool.Handle.Massless=true
-
-				if mode=="tor" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+(size/75),y+0.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(0,math.sin(x*0.5),size+3+math.sin(y / 5)*size)
-							)*
-								CFrame.Angles(
-									math.rad(size),
-									math.sin(x),
-									-x
-								)
-						)
-					end))
-				elseif mode=="sph" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+.1,y+.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(0,size,0)
-							)*
-								CFrame.Angles(
-									math.deg(x/150),
-									x+rad(90),
-									0
-								)
-						)
-					end))
-				elseif mode=="inf" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+.1,y+.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(0,size,0)
-							)*
-								CFrame.Angles(
-									x,
-									x+rad(90),
-									0
-								)
-						)
-					end))
-				elseif mode=="wht" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+.1,y+.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(0,size,0)
-							)*
-								CFrame.Angles(
-									(y+math.sin(x)*10)/10,
-									x+rad(90),
-									0
-								)
-						)
-					end))
-				elseif mode=="rng" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+0.1,y+0.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								0,0,size
-							)*
-								CFrame.Angles(
-									0,
-									x,
-									0
-								)
-						)
-					end))
-				elseif mode=="whl" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+0.1,y+0.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(0,0,size)
-							)*
-								CFrame.Angles(
-									x,
-									0,
-									0
-								)
-						)
-					end))
-				elseif mode=="voi" then
-					local x,y=n,n+math.pi/2
-					lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-						x,y=x+0.1,y+0.1
-						local sx,sy=math.sin(x),math.sin(y)
-						editGrip(
-							CFrame.new(
-								Vector3.new(size,0,0)
-							)*
-								CFrame.Angles(
-									0,
-									.6+sy/3,
-									(n)+sx+x
-								)
-						)
-					end))
-				end
-			end
-		end
-	end
-end)
-
 cmd.add({"placeid","pid"},{"placeid (pid)","Copies the PlaceId of the game you're in"},function()
 	setclipboard(tostring(PlaceId))
 
@@ -6660,21 +5389,6 @@ cmd.add({"placename","pname"},{"placename (pname)","Copies the game's place name
 	wait();
 
 	DoNotif("Copied the game's place name: "..placeName())
-end)
-
-cmd.add({"lowhold"},{"lowhold","Boombox low hold"},function()
-	game:GetService("Players").LocalPlayer.Backpack.BoomBox.GripForward=Vector3.new(-0,-1,0)
-	game:GetService("Players").LocalPlayer.Backpack.BoomBox.GripPos=Vector3.new(-0.064,0.835,-0)
-	game:GetService("Players").LocalPlayer.Backpack.BoomBox.GripRight=Vector3.new(-0,-0,-1)
-	game:GetService("Players").LocalPlayer.Backpack.BoomBox.GripUp=Vector3.new(-1,0,0)
-	wait(0.2)
-	game:GetService("Players").LocalPlayer:findFirstChildOfClass('Backpack')['BoomBox'].Parent=getChar()
-	wait(0.2)
-	h=getChar().Humanoid
-	tracks=h:GetPlayingAnimationTracks()
-	for _,x in pairs(tracks)
-	do x:Stop()
-	end
 end)
 
 cmd.add({"copyname","cname"},{"copyname <player> (cname)","Copies the username of the target"},function(...)
@@ -6718,10 +5432,6 @@ cmd.add({"copyid","id"},{"copyid <player> (id)","Copies the UserId of the target
 	wait();
 
 	DoNotif("Copied the UserId of "..target.name)
-end)
-
-cmd.add({"nodance","untooldance"},{"nodance","Stop making tools dance"},function()
-	lib.disconnect("tooldance")
 end)
 
 cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio visualizer"},function(size)
@@ -6793,111 +5503,6 @@ cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio 
 					)
 				end))
 			end
-		end
-	end
-end)
-
-cmd.add({"rarm"},{"rarm","Removes your right arm"},function()
-	if getChar():FindFirstChild("RightHand") then
-		getChar().RightHand:Destroy()
-	elseif getChar():FindFirstChild("Right Arm") then
-		getChar()["Right Arm"]:Destroy()
-	end
-end)
-
-cmd.add({"toolspin"},{"toolspin [height] [amount]","Make your tools spin on your head"},function(h,amt)
-	if not amt then amt=1000 end
-	local head=character:FindFirstChild("Head")
-	if not head then return end
-	for i,tool in pairs(localPlayer.Backpack:GetChildren()) do
-		if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-			if i >=(tonumber(amt) or 1000) then break end
-			if tool:FindFirstChildWhichIsA("LocalScript") then
-				tool:FindFirstChildWhichIsA("LocalScript").Disabled=true
-			end
-			tool.Parent=character
-		end
-	end
-	wait(0.5)
-	for _,tool in pairs(character:GetChildren()) do
-		if tool:IsA("Tool") then
-			wrap(function()
-				tool:WaitForChild("Handle")
-				for i,part in pairs(tool:GetDescendants()) do
-					if part:IsA("BasePart") then
-						part:BreakJoints()
-
-						local align=Instance.new("AlignPosition")
-						local a0,a1=Instance.new("Attachment"),Instance.new("Attachment")
-						align.Attachment0,align.Attachment1=a0,a1
-						align.RigidityEnabled=true
-						a1.Position=Vector3.new(0,tonumber(h) or 0,0)
-						lock(align,part); lock(a0,part); lock(a1,head);
-
-						local angular=Instance.new("BodyAngularVelocity")
-						angular.AngularVelocity=Vector3.new(0,math.random(100,160)/16,0)
-						angular.MaxTorque=Vector3.new(0,400000,0)
-						lock(angular,part);
-
-						spawn(function()
-							repeat wait() until tool.Parent~=character
-							angular:Destroy()
-							align:Destroy()
-						end)
-					end
-				end
-			end)
-		end
-	end
-end)
-
-cmd.add({"toolorbit"},{"toolorbit [height] [distance] [amount]","Make your tools orbit around your head"},function(h,d,amt)
-	if not amt then amt=1000 end
-	local head=character:FindFirstChild("Head")
-	if not head then return end
-	for i,tool in pairs(localPlayer.Backpack:GetChildren()) do
-		if tool:IsA("Tool") and tool:FindFirstChild("Handle") then
-			if i >=(tonumber(amt) or 1000) then break end
-			if tool:FindFirstChildWhichIsA("LocalScript") then
-				tool:FindFirstChildWhichIsA("LocalScript").Disabled=true
-			end
-			tool.Parent=character
-		end
-	end
-	wait(0.5)
-	for _,tool in pairs(character:GetChildren()) do
-		if tool:IsA("Tool") then
-			wrap(function()
-				tool:WaitForChild("Handle")
-				for i,part in pairs(tool:GetDescendants()) do
-					if part:IsA("BasePart") then
-						part:BreakJoints()
-
-						local align=Instance.new("AlignPosition")
-						local a0,a1=Instance.new("Attachment"),Instance.new("Attachment")
-						align.Attachment0,align.Attachment1=a0,a1
-						align.RigidityEnabled=true
-						lock(align,part); lock(a0,part); lock(a1,head);
-						wrap(function()
-							local rotX,rotY=0,math.pi/2
-							local speed=math.random(25,100)/1000
-							local n=tonumber(d) or math.random(300,700)/100
-							local y=tonumber(h) or math.random(-100,100)/100/2
-							rotY,rotX=rotY+n,rotX+n
-
-							part.CollisionGroupId=math.random(1000000,9999999)
-							part.Anchored=false
-							part.CFrame=head.CFrame*CFrame.new(0,3,0)
-
-							while part and part.Parent and tool.Parent==character do
-								rotX,rotY=rotX+speed,rotY+speed
-								a1.Position=Vector3.new(math.sin(rotX)*n,y,math.sin(rotY)*n)
-								RunService.RenderStepped:Wait(0)
-							end
-						end)
-					end
-				end
-			end)
 		end
 	end
 end)
@@ -7002,90 +5607,7 @@ cmd.add({"unspinfling","unsfling"},{"unspinfling (unsfling)","Stop the spinfling
 	end
 end)
 
-cmd.add({"claimua","claimunanchored"},{"claimunanchored (claimua)","Teleports to every single unanchored part meaning that the ownership is yours"},function()
-	local parts = game:GetService("Workspace"):GetDescendants()
-	local targetParts = {}
-
-	for _, child in pairs(parts) do
-		if child:IsA("BasePart") and not child.Anchored then
-			table.insert(targetParts, child)
-		end
-	end
-
-	local index = 1
-	while targetParts[index] do
-		local character = getChar()
-		local rootPart = getRoot(character)
-
-		if character and rootPart then
-			character:MoveTo(targetParts[index].Position)
-			repeat
-				wait(0.04)
-			until (character.Humanoid.MoveDirection.Magnitude == 0) or 
-				((targetParts[index].Position - rootPart.Position).Magnitude < 10)
-		end
-
-		index = index + 1
-	end
-end)
-
 --[ PLAYER ]--
-cmd.add({"orbit"},{"orbit <player> <distance>","Orbit around a player"},function(p,d)
-	lib.disconnect("orbit")
-	local players=argument.getPlayers(p)
-	local target=players[1]
-	if not target then return end
-
-	local tchar,char=target.Character,character
-	local thrp=tchar:FindFirstChild("HumanoidRootPart")
-	local hrp=char:FindFirstChild("HumanoidRootPart")
-	local dist=tonumber(d) or 4
-
-	if tchar and char and thrp and hrp then
-		local sineX,sineZ=0,math.pi/2
-		lib.connect("orbit",RunService.Stepped:Connect(function()
-			sineX,sineZ=sineX+0.05,sineZ+0.05
-			local sinX,sinZ=math.sin(sineX),math.sin(sineZ)
-			if thrp.Parent and hrp.Parent then
-				hrp.Velocity=Vector3.new(0,0,0)
-				hrp.CFrame=CFrame.new(sinX*dist,0,sinZ*dist)*
-					(hrp.CFrame-hrp.CFrame.p)+
-					thrp.CFrame.p
-			end
-		end))
-	end
-end)
-
-cmd.add({"uporbit"},{"uporbit <player> <distance>","Orbit around a player on the Y axis"},function(p,d)
-	lib.disconnect("orbit")
-	local players=argument.getPlayers(p)
-	local target=players[1]
-	if not target then return end
-
-	local tchar,char=target.Character,character
-	local thrp=tchar:FindFirstChild("HumanoidRootPart")
-	local hrp=char:FindFirstChild("HumanoidRootPart")
-	local dist=tonumber(d) or 4
-
-	if tchar and char and thrp and hrp then
-		local sineX,sineY=0,math.pi/2
-		lib.connect("orbit",RunService.Stepped:Connect(function()
-			sineX,sineY=sineX+0.05,sineY+0.05
-			local sinX,sinY=math.sin(sineX),math.sin(sineY)
-			if thrp.Parent and hrp.Parent then
-				hrp.Velocity=Vector3.new(0,0,0)
-				hrp.CFrame=CFrame.new(sinX*dist,sinY*dist,0)*
-					(hrp.CFrame-hrp.CFrame.p)+
-					thrp.CFrame.p
-			end
-		end))
-	end
-end)
-
-cmd.add({"unorbit"},{"unorbit","Stop orbiting a player"},function()
-	lib.disconnect("orbit")
-end)
-
 cmd.add({"antikillbrick","antikb"},{"antikillbrick (antikb)","Makes it so kill bricks cant kill you"},function()
 	local player=game:GetService("Players").LocalPlayer
 	local UIS=game:GetService("UserInputService")
@@ -7121,75 +5643,6 @@ end)
 
 cmd.add({"height","hipheight","hh"},{"height <number> (hipheight,hh)","Changes your hipheight"},function(...)
 	getHum().HipHeight=(...)
-end)
-
-cmd.add({"uadelete","unanchoreddelete"},{"unanchoreddelete (uadelete)","Gives you btools to delete unanchored parts"},function()
-
-
-
-	wait();
-
-	DoNotif("Btools loading,wait 2 seconds")
-	local fenv=getfenv()
-	local shp=fenv.sethiddenproperty or fenv.set_hidden_property or fenv.sethiddenprop or fenv.set_hidden_prop
-	local ssr=fenv.setsimulationradius or fenv.setsimradius or fenv.set_simulation_radius
-
-	net=shp and function(Radius) 
-		shp(lp,"SimulationRadius",Radius) 
-	end
-	net=net or ssr
-	wait(1)
-	loadstring(game:HttpGet(('https://pastefy.ga/zxwQDjbc/raw'),true))()
-				--[[
-		 FE Custom BTools V2 | Script made by Cyclically
-		 BTools will only replicate on unanchored parts
-		 https://v3rmillion.net/member.php?action=profile&uid=785986
-		 Don't edit script unless you know what you're doing. If you wanna add this into a script,please give credits and message me on discord that you added it in a script at Cyclically#4905
-	 ]]
-
-	local LocalPlayer=game:GetService("Players").LocalPlayer
-	local mouse=LocalPlayer:GetMouse()
-	local movetool=Instance.new("Tool",LocalPlayer.Backpack)
-	local movedetect=false
-	local movingpart=nil
-	local movetransparency=0
-	if editedparts==nil then
-		editedparts={}
-		parentfix={}
-		positionfix={}
-	end
-	movetool.Name="Move"
-	movetool.CanBeDropped=false
-	movetool.RequiresHandle=false
-	function createnotification(title,text)
-		print(title)
-		print(text)
-	end
-	movetool.Activated:Connect(function()
-		createnotification("Move Tool","You are moving: "..mouse.Target.Name)
-		movingpart=mouse.Target
-		movedetect=true
-		movingpart.CanCollide=false
-		movetransparency=movingpart.Transparency
-		movingpart.Transparency=0.5
-		mouse.TargetFilter=movingpart
-		table.insert(editedparts,movingpart)
-		table.insert(parentfix,movingpart.Parent)
-		table.insert(positionfix,movingpart.CFrame)
-		movingpart.Transparency=movingpart.Transparency / 2
-		repeat
-			mouse.Move:Wait()
-			movingpart.CFrame=CFrame.new(mouse.Hit.p)
-		until movedetect==false
-	end)
-	movetool.Deactivated:Connect(function()
-		createnotification("Move Tool","You have stopped moving: "..mouse.Target.Name)
-		movingpart.CanCollide=true
-		movedetect=false
-		mouse.TargetFilter=nil
-		movingpart.Transparency=movetransparenc
-	end)
-
 end)
 
 cmd.add({"netbypass","netb"},{"netbypass (netb)","Net bypass"},function()
@@ -7872,21 +6325,6 @@ cmd.add({"fling2"},{"fling2 <player>","Fling the given player 2"},function(...)
 	getRoot(getChar()).CFrame=oldpos
 end)
 
-cmd.add({"toolfling","push"},{"toolfling (push)","Tool fling"},function(plr)
-	wait();
-
-	DoNotif("Equip one of your tools")
-	Tool=game:GetService("Players").LocalPlayer.Backpack:FindFirstChildWhichIsA("Tool")
-	if not Tool then
-		repeat
-			task.wait()
-			Tool=game:GetService("Players").LocalPlayer.Backpack:FindFirstChildWhichIsA("Tool")
-		until Tool
-	end
-	Tool.Handle.Massless=true
-	Tool.GripPos=Vector3.new(0,-10000,0)
-end)
-
 cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 	local player = game:GetService("Players").LocalPlayer
 	local mouse = player:GetMouse()
@@ -8222,10 +6660,6 @@ cmd.add({"unwatch","unview"}, {"unview","Stop spectating"}, function()
 	game:GetService("Workspace").CurrentCamera.CameraSubject = getHum()
 end)
 
-cmd.add({"pp","penis"},{"penis (pp)","benis :flushed:"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/p3n1s"))()
-end)
-
 cmd.add({"stealaudio","getaudio","steal","logaudio"},{"stealaudio <player> (getaudio,logaudio,steal)","Save all sounds a player is playing to a file -Cyrus"},function(p)
 	wait();
 	local players=argument.getPlayers(p)
@@ -8313,48 +6747,6 @@ cmd.add({"pathfind"},{"pathfind <player>","Follow a player using the pathfinder 
 		end
 		debounce=false
 	end))
-end)
-
-cmd.add({"bubblechat"},{"bubblechat <player>","fake chat as your target"},function(...)	
-	for i,lplr in pairs(game:GetService("Players"):GetPlayers()) do
-		lplr.Character.Humanoid.DisplayName=lplr.DisplayName.."\n\@"..lplr.Name
-		lplr.Character.Humanoid.NameDisplayDistance=math.huge
-		lplr.CharacterAdded:Connect(function()
-			lplr.Humanoid.Character:WaitForChild("Humanoid").DisplayName=lplr.DisplayName.."\n\@"..lplr.Name
-			lplr.Character.Humanoid.NameDisplayDistance=math.huge
-		end)
-	end
-
-	game:GetService("Players").PlayerAdded:Connect(function(lplr)
-		repeat
-			wait()
-		until lplr.Character~=nil
-		lplr.Character:WaitForChild("Humanoid").DisplayName=lplr.DisplayName.."\n\@"..lplr.Name
-		lplr.Character.Humanoid.NameDisplayDistance=math.huge
-		lplr.CharacterAdded:Connect(function()
-			lplr.Character:WaitForChild("Humanoid").DisplayName=lplr.DisplayName.."\n\@"..lplr.Name
-			lplr.Character.Humanoid.NameDisplayDistance=math.huge
-		end)
-	end)
-
-	players=game:GetService("Players")
-	local_player=players.LocalPlayer
-	character=local_player.Character
-
-	character.LowerTorso.Root:Destroy()
-
-	victim=nil
-
-
-	Username=(...)
-	Target=getPlr(Username)
-	victim=Target.Character
-	getRoot(character).CanCollide=false
-	while task.wait() do
-		if victim~=nil then
-			getRoot(character).CFrame=CFrame.new(victim:FindFirstChild("Head").CFrame.Position)
-		end
-	end	
 end)
 
 cmd.add({"freeze","thaw","anchor","fr"},{"freeze (thaw,anchor,fr)","Freezes your character"},function()
@@ -9572,71 +7964,14 @@ cmd.add({"unequiptools"},{"unequiptools","Unequips every tool you are currently 
 	Player.Character:FindFirstChildOfClass('Humanoid'):UnequipTools()
 end)
 
-cmd.add({"loopbanish","looppunish","loopjail"},{"loopbanish <player> (loopbanish,loopjail)","Banishes a player endlessly"},function(...)
-	Username=(...)
-	Loopbanish=true
-	repeat wait()
-		user=getPlr(Username)
-		plr=user.name
-		Target=plr
-		Player.Character.Humanoid.Name=1
-		local l=Player.Character["1"]:Clone()
-		l.Parent=Player.Character
-		l.Name="Humanoid"
-		task.wait()
-		Player.Character["1"]:Destroy()
-		game:GetService("Workspace").CurrentCamera.CameraSubject=Player.Character
-		Player.Character.Animate.Disabled=true
-		task.wait()
-		Player.Character.Animate.Disabled=false
-		for i,v in pairs(game:GetService "Players".LocalPlayer.Backpack:GetChildren()) do
-			Player.Character.Humanoid:EquipTool(v)
-		end
-		task.wait()
-		getRoot(character).CFrame=getRoot(Players[Target].Character).CFrame
-		task.wait()
-		getRoot(character).CFrame=getRoot(Players[Target].Character).CFrame
-		task.wait(0.7)
-		getRoot(character).CFrame=CFrame.new(Vector3.new(-100000,1000000000000000000000,-100000))
-		task.wait()
-		task.wait(4)
-		getChar().Humanoid.Health=0
-	until Loopbanish==false
-end)
-
-cmd.add({"unloopbanish","unloopjail","unlooppunish"},{"unloopbanish (unloopjail,unlooppunish)","Stops loopingly punishing a player"},function()
-	Loopbanish=false
-end)
-
 cmd.add({"unloopfling"},{"unloopfling","Stops loop flinging a player"},function(...)
 	Loopvoid=false
 end)
 
-cmd.add({"inspect"},{"examine","Stops loop killing a player"},function(args)
+cmd.add({"inspect"},{"examine","checks a user's items"},function(args)
 	for _,v in ipairs(getPlayer((args[1] or speaker))) do
 		GuiService:CloseInspectMenu()
 		GuiService:InspectPlayerFromUserId(Players[v].UserId)
-	end
-end)
-
-local netlagtab={}
-
-cmd.add({"netlag"},{"netlag <player>","If the person is using netless,or any reanimation it glitches them"},function(...)
-	Username=(...)
-	target=getPlr(Username)
-
-	table.insert(netlagtab,RunService.Heartbeat:Connect(function()
-		for i,v in pairs(target.Character:GetDescendants()) do
-			if v:IsA("BasePart") then
-				sethiddenproperty(v,"NetworkIsSleeping",true)
-			end
-		end
-	end))
-end)
-
-cmd.add({"unnetlag"},{"unnetlag","Stops netlegging"},function()
-	for i,v in pairs(netlagtab) do
-		v:Disconnect()
 	end
 end)
 
@@ -9656,161 +7991,8 @@ cmd.add({"prompt","purchaseprompts","showprompts","showpurchaseprompts"},{"promp
 	DoNotif("Purchase prompts have been enabled")
 end)
 
-cmd.add({"nameless"},{"nameless","Makes your hats visible but not your name or your body"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/namelesss"))()
-end)
-
-
 cmd.add({"wallwalk"},{"wallwalk","Makes you walk on walls"},function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/main/WallWalk.lua"))() -- backup cause i don't trust pastebin
-end)
-
-cmd.add({"size"},{"size","Makes you big"},function()
-	local LocalPlayer=game:GetService("Players").LocalPlayer
-	local Character=LocalPlayer.Character
-	local Humanoid=Character:FindFirstChildOfClass("Humanoid")
-
-	function rm()
-		for i,v in pairs(Character:GetDescendants()) do
-			if v:IsA("BasePart") then
-				if v.Name=="Handle" or v.Name=="Head" then
-					if Character:FindFirstChild("Head"):FindFirstChild("OriginalSize") then
-						Character:FindFirstChild("Head").OriginalSize:Destroy()
-					end
-				else
-					for i,cav in pairs(v:GetDescendants()) do
-						if cav:IsA("Attachment") then
-							if cav:FindFirstChild("OriginalPosition") then
-								cav.OriginalPosition:Destroy()  
-							end
-						end
-					end
-					v:FindFirstChild("OriginalSize"):Destroy()
-					if v:FindFirstChild("AvatarPartScaleType") then
-						v:FindFirstChild("AvatarPartScaleType"):Destroy()
-					end
-				end
-			end
-		end
-	end
-	rm()
-	wait(0.5)
-	Humanoid:FindFirstChild("BodyProportionScale"):Destroy()
-	wait(1)
-
-	rm()
-	wait(0.5)
-	Humanoid:FindFirstChild("BodyHeightScale"):Destroy()
-	wait(1)
-
-	rm()
-	wait(0.5)
-	Humanoid:FindFirstChild("BodyWidthScale"):Destroy()
-	wait(1)
-
-	rm()
-	wait(0.5)
-	Humanoid:FindFirstChild("BodyDepthScale"):Destroy()
-	wait(1)
-
-	rm()
-	wait(0.5)
-	Humanoid:FindFirstChild("HeadScale"):Destroy()
-	wait(1)
-end)
-
-cmd.add({"holdparts","hp","grabparts"},{"holdparts (hpr,grabparts)","Holds any unanchored part press ctrl+click"},function()
-	wait();
-
-	DoNotif("Hold parts loaded,ctrl+click on a part")
-	--made by joshclark756#7155
-	local mouse=game:GetService("Players").LocalPlayer:GetMouse()
-	local uis=game:GetService("UserInputService")
-
-	--Connect
-	mouse.Button1Down:Connect(function()
-		--Check for Target & Left Shift
-		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
-			local npc=mouse.target
-			local PlayerCharacter=getChar()
-			local PlayerRootPart=getRoot(character)
-			local A0=Instance.new("Attachment")
-			local AP=Instance.new("AlignPosition")
-			local AO=Instance.new("AlignOrientation")
-			local A1=Instance.new("Attachment")
-			for _,v in pairs(npc:GetDescendants()) do
-				if v:IsA("BasePart") and v.Name~="HumanoidRootPart" then
-					game:GetService("RunService").Stepped:Connect(function()
-						v.CanCollide=false
-					end)
-				end
-			end
-
-			for _,v in pairs(PlayerCharacter:GetDescendants()) do
-				if v:IsA("BasePart") then
-					if v.Name=="HumanoidRootPart" or v.Name=="UpperTorso" or v.Name=="Head" then
-					end
-				end
-			end
-			PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(0,0,0)
-			A0.Parent=npc
-			AP.Parent=npc
-			AO.Parent=npc
-			AP.Responsiveness=200
-			AP.MaxForce=math.huge
-			AO.MaxTorque=math.huge
-			AO.Responsiveness=200
-			AP.Attachment0=A0
-			AP.Attachment1=A1
-			AO.Attachment1=A1
-			AO.Attachment0=A0
-			A1.Parent=PlayerCharacter:FindFirstChild("Right Arm")
-		end
-	end)
-	wait(0.2)
-	--made by joshclark756#7155
-	local mouse=game:GetService("Players").LocalPlayer:GetMouse()
-	local uis=game:GetService("UserInputService")
-
-	--Connect
-	mouse.Button1Down:Connect(function()
-		--Check for Target & Left Shift
-		if mouse.Target and uis:IsKeyDown(Enum.KeyCode.LeftControl) then
-			local npc=mouse.target
-			local PlayerCharacter=getChar()
-			local PlayerRootPart=getRoot(character)
-			local A0=Instance.new("Attachment")
-			local AP=Instance.new("AlignPosition")
-			local AO=Instance.new("AlignOrientation")
-			local A1=Instance.new("Attachment")
-			for _,v in pairs(npc:GetDescendants()) do
-				if v:IsA("BasePart") and v.Name~="HumanoidRootPart" then
-					game:GetService("RunService").Stepped:Connect(function()
-						v.CanCollide=false
-					end)
-				end
-			end
-			for _,v in pairs(PlayerCharacter:GetDescendants()) do
-				if v:IsA("BasePart") then
-					if v.Name=="HumanoidRootPart" or v.Name=="UpperTorso" or v.Name=="Head" then
-					end
-				end
-			end
-			PlayerRootPart.Position=PlayerRootPart.Position+Vector3.new(0,0,0)
-			A0.Parent=npc
-			AP.Parent=npc
-			AO.Parent=npc
-			AP.Responsiveness=200
-			AP.MaxForce=math.huge
-			AO.MaxTorque=math.huge
-			AO.Responsiveness=200
-			AP.Attachment0=A0
-			AP.Attachment1=A1
-			AO.Attachment1=A1
-			AO.Attachment0=A0
-			A1.Parent=PlayerCharacter.RightHand
-		end
-	end)
 end)
 
 local hiddenGUIS={}
@@ -10857,91 +9039,6 @@ cmd.add({"pastebinscraper","pastebinscrape"},{"pastebinscraper (pastebinscrape)"
 	DoNotif("Pastebin scraper loaded")
 end)
 
-cmd.add({"amongus","amogus"},{"amongus (amogus)","among us in real life,sus sus."},function()
-
-	wait();
-
-	DoNotif("Amog us...")
-	loadstring(game:HttpGet(('https://pastefy.ga/aMY1wxRS/raw'),true))()
-end)
-
-cmd.add({"blackhole"},{"blackhole","Makes unanchored parts teleport to the black hole"},function()
-	local UserInputService=game:GetService("UserInputService")
-	local Mouse=game:GetService("Players").LocalPlayer:GetMouse()
-	local Folder=Instance.new("Folder",game:GetService("Workspace"))
-	local Part=Instance.new("Part",Folder)
-	local Attachment1=Instance.new("Attachment",Part)
-	Part.Anchored=true
-	Part.CanCollide=false
-	Part.Transparency=1
-	local Updated=Mouse.Hit+Vector3.new(0,5,0)
-	local NetworkAccess=coroutine.create(function()
-		settings().Physics.AllowSleep=false
-		while RunService.RenderStepped:Wait() do
-			for _,Players in next,game:GetService("Players"):GetPlayers() do
-				if Players~=game:GetService("Players").LocalPlayer then
-					Players.MaximumSimulationRadius=0 
-					sethiddenproperty(Players,"SimulationRadius",0) 
-				end 
-			end
-			game:GetService("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)
-		end 
-	end) 
-	coroutine.resume(NetworkAccess)
-	function ForcePart(v)
-		if v:IsA("Part") and v.Anchored==false and v.Parent:FindFirstChild("Humanoid")==nil and v.Parent:FindFirstChild("Head")==nil and v.Name~="Handle" then
-			Mouse.TargetFilter=v
-			for _,x in next,v:GetChildren() do
-				if x:IsA("BodyAngularVelocity") or x:IsA("BodyForce") or x:IsA("BodyGyro") or x:IsA("BodyPosition") or x:IsA("BodyThrust") or x:IsA("BodyVelocity") or x:IsA("RocketPropulsion") then
-					x:Destroy()
-				end
-			end
-			if v:FindFirstChild("Attachment") then
-				v:FindFirstChild("Attachment"):Destroy()
-			end
-			if v:FindFirstChild("AlignPosition") then
-				v:FindFirstChild("AlignPosition"):Destroy()
-			end
-			if v:FindFirstChild("Torque") then
-				v:FindFirstChild("Torque"):Destroy()
-			end
-			v.CanCollide=false
-			local Torque=Instance.new("Torque",v)
-			Torque.Torque=Vector3.new(100000,100000,100000)
-			local AlignPosition=Instance.new("AlignPosition",v)
-			local Attachment2=Instance.new("Attachment",v)
-			Torque.Attachment0=Attachment2
-			AlignPosition.MaxForce=9999999999999999
-			AlignPosition.MaxVelocity=math.huge
-			AlignPosition.Responsiveness=200
-			AlignPosition.Attachment0=Attachment2 
-			AlignPosition.Attachment1=Attachment1
-		end
-	end
-	for _,v in next,game:GetService("Workspace"):GetDescendants() do
-		ForcePart(v)
-	end
-	game:GetService("Workspace").DescendantAdded:Connect(function(v)
-		ForcePart(v)
-	end)
-	UserInputService.InputBegan:Connect(function(Key,Chat)
-		if Key.KeyCode==Enum.KeyCode.E and not Chat then
-			Updated=Mouse.Hit+Vector3.new(0,5,0)
-		end
-	end)
-	spawn(function()
-		while RunService.RenderStepped:Wait() do
-			Attachment1.WorldCFrame=Updated
-		end
-	end)
-
-
-
-	wait();
-
-	DoNotif("Blackhole has been loaded,press e to change the position to where your mouse is")
-end)
-
 cmd.add({"fullbright","fullb","fb"},{"fullbright (fullb,fb)","Makes games that are really dark to have no darkness and be really light"},function()
 	if not _G.FullBrightExecuted then
 
@@ -11237,10 +9334,6 @@ end)
 
 cmd.add({"unglobalshadows","nogshadows","ungshadows","noglobalshadows"},{"unglobalshadows (nogshadows,ungshadows,noglobalshadows)","Disables global shadows"},function()
 	Lighting.GlobalShadows=false
-end)
-
-cmd.add({"givehat","givehatui"},{"givehat (givehatui)","Executes a hat giver gui check in console for hat names"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Gimme%20That%20Hat"))()
 end)
 
 cmd.add({"fireproximityprompts","fpp","firepp"},{"fireproximityprompts (fpp,firepp)","Fires every Proximity Prompt that's in workspace"},function(...)
@@ -11794,10 +9887,6 @@ cmd.add({"uncameranoclip","uncamnoclip","uncnoclip","unnccam"},{"uncameranoclip 
 	end	
 end)
 
-cmd.add({"2016anims"},{"2016anims","2016 animations"},function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/2016%20anims"))()
-end)
-
 cmd.add({"oganims"},{"oganims","Old animations from 2007"},function()
 
 
@@ -11814,91 +9903,6 @@ end)
 
 cmd.add({"fpscap"},{"fpscap <number>","Sets the fps cap to whatever you want"},function(...)
 	setfpscap(...)
-end)
-
-cmd.add({"holdhat"},{"holdhat","Can make you hold your hats execute the command and you will have them in your inventory"},function(...)
-	--made by Nightmare#0930
-	local lp=game:GetService("Players").LocalPlayer
-	local char=lp.Character
-
-	for i,v in pairs(char:GetChildren()) do
-		if v:IsA("BallSocketConstraint") then
-			v:Destroy()
-		end
-	end
-
-	for i,v in pairs(char:GetChildren()) do
-		if v:IsA("HingeConstraint") then
-			v:Destroy()
-		end
-	end
-
-	for i,v in pairs(char.Humanoid:GetAccessories()) do
-		local hat=v.Name
-
-		char[hat].Archivable=true
-		local fake=char[hat]:Clone()
-		fake.Parent=char
-		fake.Handle.Transparency=1
-
-		local hold=false
-		local enabled=false
-
-		char[hat].Handle.AccessoryWeld:Destroy()
-
-		local tool=Instance.new("Tool",lp.Backpack)
-		tool.RequiresHandle=true
-		tool.CanBeDropped=false
-		tool.Name=hat
-
-		local handle=Instance.new("Part",tool)
-		handle.Name="Handle"
-		handle.Size=Vector3.new(1,1,1)
-		handle.Massless=true
-		handle.Transparency=1
-
-		local positions={
-			forward=tool.GripForward,
-			pos=tool.GripPos,
-			right=tool.GripRight,
-			up=tool.GripUp
-		}
-
-		tool.Equipped:connect(function()
-			hold=true
-		end)
-
-		tool.Unequipped:connect(function()
-			hold=false
-		end)
-
-		tool.Activated:connect(function()
-			if enabled==false then
-				enabled=true
-				tool.GripForward=Vector3.new(-0.976,0,-0.217)
-				tool.GripPos=Vector3.new(.95,-0.76,1.4)
-				tool.GripRight=Vector3.new(0.217,0,0.976)
-				tool.GripUp=Vector3.new(0,1,0)
-				wait(.8)
-				tool.GripForward=positions.forward
-				tool.GripPos=positions.pos
-				tool.GripRight=positions.right
-				tool.GripUp=positions.up
-				enabled=false
-			end
-		end)
-
-		RunService.Heartbeat:connect(function()
-			pcall(function()
-				char[hat].Handle.Velocity=Vector3.new(30,0,0)
-				if hold==false then
-					char[hat].Handle.CFrame=fake.Handle.CFrame
-				elseif hold==true then
-					char[hat].Handle.CFrame=handle.CFrame
-				end
-			end)
-		end)
-	end
 end)
 
 cmd.add({"toolinvisible","tinvis"},{"toolinvisible (tinvis)","Be invisible while still be able to use tools"},function()
@@ -12352,40 +10356,6 @@ cmd.add({"fireremotes"},{"fireremotes","Fires every remote"},function()
 
 end)
 
-
-cmd.add({"uafollow","unanchoredfollow"},{"uafollow (unanchoredfollow)","Makes unanchored parts follow you"},function() 
-	wait();
-
-	DoNotif("Unanchored follow executed")
-	local LocalPlayer=game:GetService("Players").LocalPlayer
-	local unanchoredparts={}
-	local movers={}
-	for index,part in pairs(game:GetService("Workspace"):GetDescendants()) do
-		if part:IsA("Part") and part.Anchored==false and part:IsDescendantOf(LocalPlayer.Character)==false then
-			table.insert(unanchoredparts,part)
-			part.Massless=true
-			part.CanCollide=false
-			if part:FindFirstChildOfClass("BodyPosition")~=nil then
-				part:FindFirstChildOfClass("BodyPosition"):Destroy()
-			end
-		end
-	end
-	for index,part in pairs(unanchoredparts) do
-		local mover=Instance.new("BodyPosition",part)
-		table.insert(movers,mover)
-		mover.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
-	end
-	repeat
-		for index,mover in pairs(movers) do
-			mover.Position=LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame:PointToWorldSpace(Vector3.new(0,0,5))
-		end
-		wait(0.5)
-	until LocalPlayer.Character:FindFirstChild("Humanoid").Health <=0
-	for _,mover in pairs(movers) do
-		mover:Destroy()
-	end
-end)
-
 --tween works better for some reason
 
 cmd.add({"fov"},{"fov <number>","Makes your FOV to something custom you want (1-120 FOV)"},function(num)
@@ -12502,164 +10472,6 @@ cmd.add({"oofspam"},{"oofspam","Spams oof"},function()
 	end
 end)
 
-
-cmd.add({"tpua","bringua"},{"tpua <player> (bringua)","brings every unanchored part on the map"},function(...)
-	local heartbeat=RunService.Heartbeat
-	task.spawn(function()
-		while true do heartbeat:Wait()
-			game:GetService("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)*math.huge
-			sethiddenproperty(game:GetService("Players").LocalPlayer,"SimulationRadius",math.pow(math.huge,math.huge)*math.huge)
-			game:GetService("RunService").Stepped:wait()
-		end
-	end)
-
-	function execute(name)
-		for index,part in pairs(game:GetDescendants()) do
-			if part:IsA("BasePart" or "UnionOperation" or "Model") and part.Anchored==false and part:IsDescendantOf(getChar())==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false then--// Checks Part Properties
-				part.CFrame=CFrame.new(game:GetService("Workspace")[name]:FindFirstChild("Head").Position)--TP Part To User
-				if spam==true and part:FindFirstChild("BodyGyro")==nil then
-					local bodyPos=Instance.new("BodyPosition")
-					bodyPos.Position=part.Position
-					bodyPos.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
-					bodyPos.P=1e6
-					bodyPos.Parent=part
-				end
-			end
-		end
-	end
-	User=(...)
-	Target=getPlr(User)
-	TargetName=Target.Name
-	execute(TargetName)
-	wait();
-
-	DoNotif("Unanchored parts have been teleported to "..TargetName)
-end)
-
-cmd.add({"freezeua","thawua"},{"freezeua (thawua)","freezes every unanchored part on the map"},function()
-	frozenParts={}
-	if sethidden then
-		local badnames={
-			"Head",
-			"UpperTorso",
-			"LowerTorso",
-			"RightUpperArm",
-			"LeftUpperArm",
-			"RightLowerArm",
-			"LeftLowerArm",
-			"RightHand",
-			"LeftHand",
-			"RightUpperLeg",
-			"LeftUpperLeg",
-			"RightLowerLeg",
-			"LeftLowerLeg",
-			"RightFoot",
-			"LeftFoot",
-			"Torso",
-			"Right Arm",
-			"Left Arm",
-			"Right Leg",
-			"Left Leg",
-			"HumanoidRootPart"
-		}
-		function FREEZENOOB(v)
-			if v:IsA("BasePart" or "UnionOperation") and v.Anchored==false then
-				local BADD=false
-				for i=1,#badnames do
-					if v.Name==badnames[i] then
-						BADD=true
-					end
-				end
-				if getChar() and v:IsDescendantOf(getChar()) then
-					BADD=true
-				end
-				if BADD==false then
-					for i,c in pairs(v:GetChildren()) do
-						if c:IsA("BodyPosition") or c:IsA("BodyGyro") then
-							c:Destroy()
-						end
-					end
-					local bodypos=Instance.new("BodyPosition")
-					bodypos.Parent=v
-					bodypos.Position=v.Position
-					bodypos.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
-					local bodygyro=Instance.new("BodyGyro")
-					bodygyro.Parent=v
-					bodygyro.CFrame=v.CFrame
-					bodygyro.MaxTorque=Vector3.new(math.huge,math.huge,math.huge)
-					if not table.find(frozenParts,v) then
-						table.insert(frozenParts,v)
-					end
-				end
-			end
-		end
-		for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
-			FREEZENOOB(v)
-		end
-		freezingua=game:GetService("Workspace").DescendantAdded:Connect(FREEZENOOB)
-	end
-end)
-
-cmd.add({"unfreezeua","unthawua"},{"unfreezeua (unthawua)","unfreezes every unanchored part on the map"},function()
-	wait();
-
-	DoNotif("Unfroze unanchored parts")
-	if sethidden then
-		if freezingua then
-			freezingua:Disconnect()
-		end
-		for i,v in pairs(frozenParts) do
-			for i,c in pairs(v:GetChildren()) do
-				if c:IsA("BodyPosition") or c:IsA("BodyGyro") then
-					c:Destroy()
-				end
-			end
-		end
-		frozenParts={}
-	end
-end)
-
-cmd.add({"highlightua","highlightunanchored"},{"highlightua (hightlightunanchored)","Highlights all unanchored parts"},function()
-	wait();
-
-	DoNotif("Highlighted all unanchored parts")
-	for _,part in pairs(game:GetService("Workspace"):GetDescendants()) do
-		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(getChar())==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
-			local selectionBox=Instance.new("SelectionBox")
-			selectionBox.Adornee=part
-			selectionBox.Color3=Color3.new(1,0,0)
-			selectionBox.Parent=part
-		end
-	end
-end)
-
-cmd.add({"unhighlightua","unhighlightunanchored"},{"unhighlightua (unhightlightunanchored)","Unhighlights all unanchored parts"},function()
-
-	wait();
-
-	DoNotif("Unhighlighted unanchored parts")
-
-	for _,part in pairs(game:GetService("Workspace"):GetDescendants()) do
-		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(getChar())==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
-			if part:FindFirstChild("SelectionBox") then
-				part.SelectionBox:Destroy()
-			end
-		end
-	end
-end)
-
-cmd.add({"countua","countunanchoreed"},{"countua (countunanchored)","Counts all unanchored parts in the console"},function()
-	b=0
-	for index,part in pairs(game:GetService("Workspace"):GetDescendants()) do
-		if part:IsA("BasePart") and part.Anchored==false and part:IsDescendantOf(getChar())==false and part.Name=="Torso"==false and part.Name=="Head"==false and part.Name=="Right Arm"==false and part.Name=="Left Arm"==false and part.Name=="Right Leg"==false and part.Name=="Left Leg"==false and part.Name=="HumanoidRootPart"==false and part:FindFirstChild("Weld")==nil then
-			b=b+1
-		end
-	end	 
-	wait();
-
-	DoNotif("Parts have been counted,the amount is "..b)
-end)
-
 cmd.add({"httpspy"},{"httspy","HTTP Spy"},function()
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/httpspy.lua'))()
 end)
@@ -12669,8 +10481,8 @@ cmd.add({"keystroke"},{"keystroke","Executes a keystroke ui script"},function()
 end)
 
 cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give special things"},function()
-	local ownId="unknown"
-	local ownUser="unknown"
+	ownId="unknown"
+	ownUser="unknown"
 	NACaller(function()
 		if game.CreatorType==Enum.CreatorType.User then
 			Player.UserId=game.CreatorId
@@ -12681,9 +10493,9 @@ cmd.add({"ownerid"},{"ownerid","Changes the client id to the owner's. Can give s
 	end)
 	NACaller(function()
 		if game.CreatorType==Enum.CreatorType.Group then
-			local groupId=game.CreatorId
-			local groupInfo=game:GetService("GroupService"):GetGroupInfoAsync(groupId)
-			local owner=groupInfo.Owner
+			groupId=game.CreatorId
+			groupInfo=game:GetService("GroupService"):GetGroupInfoAsync(groupId)
+			owner=groupInfo.Owner
 			Player.Name=owner.Name
 			Player.UserId=owner.Id
 			ownId=owner.Id
@@ -13357,7 +11169,7 @@ function bindToChat(plr,msg)
 	chatMsg.Parent=chatLogs
 	chatMsg.Text=("%s [@%s]: %s"):format(plr.DisplayName,plr.Name,msg)
 
-	local txtSize=gui.txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
+	txtSize=gui.txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
 	chatMsg.Size=UDim2.new(1,-5,0,txtSize.Y)
 end
 
@@ -13374,7 +11186,7 @@ end)
 
 mouse.Move:Connect(function()
 	description.Position=UDim2.new(0,mouse.X,0,mouse.Y)
-	local size=gui.txtSize(description,200,100)
+	size=gui.txtSize(description,200,100)
 	description.Size=UDim2.new(0,size.X,0,size.Y)
 end)
 
@@ -13408,8 +11220,8 @@ NACaller(function()
 end)
 
 NACaller(function()
-	local template=UpdLogsLabel
-	local list=UpdLogsList
+	template=UpdLogsLabel
+	list=UpdLogsList
 
 	UpdLogsTitle.Text=UpdLogsTitle.Text.." "..updDate
 
@@ -13472,12 +11284,12 @@ function Swoosh()
 	gui.draggable(imagebutton)
 end
 function mainNameless()
-	local txtlabel=TextLabelLabel
+	txtlabel=TextLabelLabel
 	txtlabel.Size=UDim2.new(0,2,0,33)
 	txtlabel.BackgroundTransparency=0.14
 
-	local textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
-	local newSize=UDim2.new(0,textWidth+69,0,33)
+	textWidth=game:GetService("TextService"):GetTextSize(txtlabel.Text,txtlabel.TextSize,txtlabel.Font,Vector2.new(math.huge,math.huge)).X
+	newSize=UDim2.new(0,textWidth+69,0,33)
 
 	txtlabel:TweenSize(newSize,"Out","Quint",1,true)
 	if IsOnMobile then
@@ -13487,7 +11299,7 @@ function mainNameless()
 	end
 	wait(2)
 	game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{BackgroundTransparency=1}):Play()
-	local h=game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{TextTransparency=1})
+	h=game:GetService("TweenService"):Create(txtlabel,TweenInfo.new(.7,Enum.EasingStyle.Sine),{TextTransparency=1})
 	h:Play()
 	h.Completed:Connect(function()
 		--[[if IsOnMobile then

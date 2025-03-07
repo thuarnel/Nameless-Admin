@@ -1,5 +1,20 @@
-local AkaliNotif = loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/notifications"))();
-local Notify = AkaliNotif.Notify;
+--Notification library
+local Notification=nil
+
+repeat 
+	local s,r=pcall(function()
+		return loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NamelessAdminNotifications.lua"))()
+	end);
+
+	if s then
+		Notification=r;
+	else
+		warn("Couldn't load notification module, retrying...");
+		task.wait();
+	end
+until Notification~=nil --waits for the module to load (cause loadstring takes ages)
+
+local Notify=Notification.Notify;
 
 function toClipboard(String)
 	local clipBoard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
