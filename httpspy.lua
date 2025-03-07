@@ -164,13 +164,14 @@ TemplateText.BorderSizePixel = 0
 TemplateText.Position = UDim2.new(3.75832236e-08, 0, 0, 0)
 TemplateText.Size = UDim2.new(1.00000012, 0, 0, 20)
 TemplateText.Font = Enum.Font.SourceSansSemibold
-TemplateText.Text = "ur mom"
+TemplateText.Text = "template"
 TemplateText.TextColor3 = Color3.fromRGB(255, 255, 255)
 TemplateText.TextScaled = true
 TemplateText.TextSize = 14.000
 TemplateText.TextWrapped = true
 TemplateText.TextXAlignment = Enum.TextXAlignment.Center
 TemplateText.TextYAlignment = Enum.TextYAlignment.Center
+TemplateText.Visible = false
 
 local Template = MainContainer.TemplateText
 
@@ -195,6 +196,7 @@ local function Log(text, headers)
     end
     Label.Text = text 
     Label.Parent = MainContainer
+    Label.Visible = true
     Label.MouseButton1Click:Connect(function()
         setclipboard(text)
     end)
@@ -216,34 +218,23 @@ HttpPost = hookfunction(game.HttpPost, function(self, url, ...)
     return HttpPost(self, url, ...)
 end)
 
-local success, result = pcall(function()
-    if syn and syn.request then 
-        local RequestLog
-        RequestLog = hookfunction(syn.request, function(dat)
-            Log("syn.request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
-            return RequestLog(dat)
-        end)
-        return true
-    elseif request then
-        local RequestLog
-        RequestLog = hookfunction(request, function(dat)
-            Log("request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
-            return RequestLog(dat)
-        end)
-        return true
-    elseif http_request then
-        local RequestLog
-        RequestLog = hookfunction(http_request, function(dat)
-            Log("http_request from: "..tostring(dat.Url).." ("..(dat.Method or "GET")..")", dat.Headers)
-            return RequestLog(dat)
-        end)
-        return true
-    end
-    return false
-end)
+local req = request or http_request or (syn and syn.request) or function() end
 
-if not success or not result then
+if req ~= function() end then
+    local RequestLog
+    RequestLog = hookfunction(req, function(dat)
+        if type(dat) == "table" then
+            local url = tostring(dat.Url or "unknown")
+            local method = tostring(dat.Method or "GET")
+            Log("Request from: "..url.." ("..method..")", dat.Headers)
+        else
+            Log("Request called with non-table data")
+        end
+        return RequestLog(dat)
+    end)
+    Log("HTTP Spy initialized successfully. Request function hooked.")
+else
     Log("WARNING: Could not hook request function. Your exploit might not be fully supported.")
 end
 
-Log("HTTP Spy initialized successfully. Click on any request to copy it.")
+Log("HTTP Spy initialized. Click on any request to copy it.")
