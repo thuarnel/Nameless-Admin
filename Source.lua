@@ -121,11 +121,11 @@ if FileSupport then
 	if prefixCheck:match("[a-zA-Z0-9]") then
 		prefixCheck=";"
 		writefile("Nameless-Admin/Prefix.txt",';')
-		DoNotif("Your prefix has been reset to the default (;) because it contained letters or numbers",5)
+		DoNotif("Your prefix has been reset to the default (;) because it contained letters or numbers")
 	end
 else
 	prefixCheck=";"
-	DoNotif("Your exploit does not support read/write file",5)
+	DoNotif("Your exploit does not support read/write file")
 end
 --[[ PREFIX AND OTHER STUFF. ]]--
 local opt={
@@ -138,7 +138,7 @@ local opt={
 --[[ Update Logs ]]--
 local updLogs={}
 
-local updDate="3/07/2025" --month,day,year
+local updDate="3/08/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
@@ -1302,14 +1302,14 @@ cmd.add({"prefix"},{"prefix <prefix>","Changes the admin prefix"},function(...)
 	local PrefixChange = (...)
 
 	if PrefixChange == nil then
-		DoNotif("Please enter a valid prefix", 5)
+		DoNotif("Please enter a valid prefix")
 	elseif PrefixChange:match("[a-zA-Z0-9]") then
-		DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.", 5)
+		DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.")
 	elseif PrefixChange == "[" then
-		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?", 5)
+		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?")
 	else
 		opt.prefix = PrefixChange
-		DoNotif("Prefix set to: " .. PrefixChange, 5)
+		DoNotif("Prefix set to: " .. PrefixChange)
 	end
 end)
 
@@ -1319,15 +1319,15 @@ cmd.add({"saveprefix"},{"saveprefix <prefix>","Saves the prefix to what u want"}
 	local PrefixChange=(...)
 
 	if PrefixChange==nil then
-		DoNotif("Please enter a valid prefix",5)
+		DoNotif("Please enter a valid prefix")
 	elseif PrefixChange:match("[a-zA-Z0-9]") then
-		DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.", 5)
+		DoNotif("Prefix cannot contain letters or numbers. Please choose a different prefix.")
 	elseif PrefixChange=="["then
-		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?",5)
+		DoNotif("idk why but this prefix breaks changing the prefix so pick smthing else alr?")
 	else
 		writefile("Nameless-Admin/Prefix.txt",PrefixChange)
 		opt.prefix=PrefixChange
-		DoNotif("Prefix saved to: "..PrefixChange,5)
+		DoNotif("Prefix saved to: "..PrefixChange)
 	end
 end)
 
@@ -1694,28 +1694,28 @@ end)
 --Mobile Commands for the screen
 if IsOnMobile then
 	cmd.add({"SensorRotationScreen","SensorScreen","SenScreen"},{"SensorRotaionScreen (SensorScreen or SenScreen)","Changes ScreenOrientation to Sensor"},function()
-		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=Enum.ScreenOrientation.Sensor
+		PlrGui.ScreenOrientation=Enum.ScreenOrientation.Sensor
 	end)
 
 	cmd.add({"LandscapeRotationScreen","LandscapeScreen","LandScreen"},{"LandscapeRotaionScreen (LandscapeScreen or LandScreen)","Changes ScreenOrientation to Landscape Sensor"},function()
-		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=Enum.ScreenOrientation.LandscapeSensor
+		PlrGui.ScreenOrientation=Enum.ScreenOrientation.LandscapeSensor
 	end)
 
 	cmd.add({"PortraitRotationScreen","PortraitScreen","Portscreen"},{"PortraitRotaionScreen (PortraitScreen or Portscreen)","Changes ScreenOrientation to Portrait"},function()
-		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=Enum.ScreenOrientation.Portrait
+		PlrGui.ScreenOrientation=Enum.ScreenOrientation.Portrait
 	end)
 
 	cmd.add({"DefaultRotaionScreen","DefaultScreen","Defscreen"},{"DefaultRotaionScreen (DefaultScreen or Defscreen)","Changes ScreenOrientation to Portrait"},function()
-		game:GetService("Players").LocalPlayer.PlayerGui.ScreenOrientation=game:GetService("StarterGui").ScreenOrientation 
+		PlrGui.ScreenOrientation=game:GetService("StarterGui").ScreenOrientation 
 	end)
 end
 cmd.add({"commandcount","cc"},{"commandcount (cc)","Counds how many commands NA has"},function()
-	DoNotif(adminName.." currently has ".. commandcount.." commands",5)
+	DoNotif(adminName.." currently has ".. commandcount.." commands")
 end)
 
 local hiddenfling=false
 cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the best fling lol"},function()
-	DoNotif("Walkfling enabled",5)
+	DoNotif("Walkfling enabled")
 	if NA_storage:FindFirstChild("juisdfj0i32i0eidsuf0iok") then
 		hiddenfling=true
 	else
@@ -1756,7 +1756,7 @@ cmd.add({"walkfling","wfling"},{"walkfling (wfling) [THANKS TO X]","probably the
 end)
 
 cmd.add({"unwalkfling","unwfling"},{"unwalkfling (unwfling)","stop the walkfling command"},function()
-	DoNotif("Walkfling disabled",5)
+	DoNotif("Walkfling disabled")
 	hiddenfling=false
 end)
 
@@ -6217,18 +6217,11 @@ cmd.add({"saw"},{"saw <challenge>","shush"},function(...)
 	local imgLabel=Instance.new("ImageLabel")
 	local con=nil
 
-	if not gethui then
-		getgenv().gethui=function()
-			local h=(game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") or game:GetService("CoreGui") or game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui"))
-			return h
-		end
-	end
-
 	local function doSound(id,vol)
 		if not id then id=0 end
 		if not vol then vol=1 end
 		local sfx=Instance.new("Sound")
-		sfx.Parent=game:GetService("Players").LocalPlayer.PlayerGui
+		sfx.Parent=PlrGui
 		sfx:Play()
 		sfx.SoundId="rbxassetid://"..id
 		sfx.Volume=vol
@@ -8040,7 +8033,7 @@ end)
 
 local hiddenGUIS={}
 cmd.add({"hideguis"},{"hideguis","Hides guis"},function()
-	for i,v in pairs(game:GetService("Players").LocalPlayer:FindFirstChildWhichIsA("PlayerGui"):GetDescendants()) do
+	for i,v in pairs(PlrGui:GetDescendants()) do
 		if (v:IsA("Frame") or v:IsA("ImageLabel") or v:IsA("ScrollingFrame")) and v.Visible then
 			v.Visible=false
 			if not FindInTable(hiddenGUIS,v) then
@@ -10225,76 +10218,6 @@ cmd.add({"invisible","invis"},{"invisible (invis)","Sets invisibility to scare p
 		coroutine.wrap(FEPVI_fake_script)()
 	else
 	end
-end)
-
-cmd.add({"unchatspy"},{"unchat","Unspies on chat,enables chat,spies whispers etc."},function()
-
-	wait();
-
-	DoNotif("Chat spy disabled")
-	--This script reveals ALL hidden messages in the default chat
-	--chat "/spy" to toggle!
-	enabled=false
-	--if true will check your messages too
-	spyOnMyself=true
-	--if true will chat the logs publicly (fun,risky)
-	public=false
-	--if true will use /me to stand out
-	publicItalics=true
-	--customize private logs
-	privateProperties={
-		Color=Color3.fromRGB(0,255,255); 
-		Font=Enum.Font.SourceSansBold;
-		TextSize=18;
-	}
-	--////////////////////////////////////////////////////////////////
-	local StarterGui=game:GetService("StarterGui")
-	local Players=game:GetService("Players")
-	local player=Players.LocalPlayer
-	local saymsg=game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
-	local getmsg=game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
-	local instance=(_G.chatSpyInstance or 0)+1
-	_G.chatSpyInstance=instance
-
-	function onChatted(p,msg)
-		if _G.chatSpyInstance==instance then
-			if p==player and msg:lower():sub(1,4)=="/spy" then
-				enabled=not enabled
-				wait(0.3)
-				print("XD")
-				StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-			elseif enabled and (spyOnMyself==true or p~=player) then
-				msg=msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
-				local hidden=true
-				local conn=getmsg.OnClientEvent:Connect(function(packet,channel)
-					if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
-						hidden=false
-					end
-				end)
-				wait(1)
-				conn:Disconnect()
-				if hidden and enabled then
-					if public then
-						saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
-					else
-						privateProperties.Text="{SPY} [".. p.Name .."]: "..msg
-						StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-					end
-				end
-			end
-		end
-	end
-
-	for _,p in ipairs(Players:GetPlayers()) do
-		p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-	end
-	Players.PlayerAdded:Connect(function(p)
-		p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-	end)
-	StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-	local chatFrame=player.PlayerGui.Chat.Frame
-	chatFrame.ChatChannelParentFrame.Visible=true
-	chatFrame.ChatBarParentFrame.Position=chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
 end)
 
 cmd.add({"fireremotes"},{"fireremotes","Fires every remote"},function()
