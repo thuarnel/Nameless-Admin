@@ -3932,11 +3932,11 @@ cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
 		Buttons = {
 			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end};
 			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end};
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))() end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/EnableChat.lua"))() end};
 			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end};
 			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end};
 			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end};
-			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))() end};
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/EnableChat.lua"))() end};
 			{Text = "Cancel", Callback = function() end};
 		}
 	})
