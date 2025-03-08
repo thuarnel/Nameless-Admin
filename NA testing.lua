@@ -10948,25 +10948,27 @@ gui.resizeable = function(ui, min, max)
         ui.Position = newPos
     end
 
-    local connection = game:GetService("RunService").RenderStepped:Connect(function()
+    local connection = RunService.RenderStepped:Connect(function()
         if dragging then
-            updateResize(Vector2.new(mouse.X, mouse.Y))
+            local currentPos = UserInputService:GetMouseLocation()
+            updateResize(Vector2.new(currentPos.X, currentPos.Y))
         end
     end)
     
     for _, button in pairs(rgui:GetChildren()) do
         button.InputBegan:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
                 mode = button
                 dragging = true
-                lastPos = Vector2.new(mouse.X, mouse.Y)
+                local currentPos = UserInputService:GetMouseLocation()
+                lastPos = Vector2.new(currentPos.X, currentPos.Y)
                 lastSize = ui.AbsoluteSize
                 UIPos = ui.Position
             end
         end)
         
         button.InputEnded:Connect(function(input)
-            if input.UserInputType == Enum.UserInputType.MouseButton1 and mode == button then
+            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and mode == button then
                 dragging = false
                 mode = nil
                 if mouse.Icon == resizeXY[button.Name][3] then
@@ -10988,9 +10990,8 @@ gui.resizeable = function(ui, min, max)
         end)
     end
     
-    local UIS = game:GetService("UserInputService")
-    UIS.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and dragging then
+    UserInputService.InputEnded:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then
             dragging = false
             mode = nil
             mouse.Icon = ""
@@ -11256,12 +11257,10 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 --[[ GUI RESIZE FUNCTION ]]--
 
 --table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
-if not IsOnMobile then 
-	gui.resizeable(chatLogsFrame)
-	gui.resizeable(commandsFrame)
-	gui.resizeable(UniverseViewerFrame)
-	gui.resizeable(UpdLogsFrame)
-end
+gui.resizeable(chatLogsFrame)
+gui.resizeable(commandsFrame)
+gui.resizeable(UniverseViewerFrame)
+gui.resizeable(UpdLogsFrame)
 
 --[[ CMDS COMMANDS SEARCH FUNCTION ]]--
 commandsFilter.Changed:Connect(function(p)
