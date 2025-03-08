@@ -3895,71 +3895,37 @@ end
 function GetUpdatedCameraCFrame(ROOT,CAMERA)
 	return CFrame.new(root.Position,Vector3.new(CAMERA.CFrame.LookVector.X*MAX_LENGTH,root.Position.Y,CAMERA.CFrame.LookVector.Z*MAX_LENGTH))
 end
+
+local NA=false
+local gg=nil
+local gameSettings=UserSettings():GetService("UserGameSettings")
+local JJ=nil
+
 function EnableShiftlock()
-	local players = game:GetService("Players")
-	local player = players.LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
-	local root = character:WaitForChild("HumanoidRootPart")
-	local humanoid = character:WaitForChild("Humanoid")
-	local camera = workspace.CurrentCamera
-
-	local ENABLED_OFFSET = CFrame.new(1.75, 0, 0)
-
-	local function UpdateAutoRotate(state)
-		if humanoid then
-			humanoid.AutoRotate = state
-		end
-	end
-
-	local function GetUpdatedCameraCFrame(rootPart, cam)
-		local camCF = cam.CFrame
-		return CFrame.new(rootPart.Position) * CFrame.Angles(0, math.atan2(-camCF.LookVector.X, -camCF.LookVector.Z), 0)
-	end
-
-	UpdateAutoRotate(false)
-	root.CFrame = GetUpdatedCameraCFrame(root, camera)
-	camera.CFrame = camera.CFrame * ENABLED_OFFSET
-end
-function DisableShiftlock()
-	local players = game:GetService("Players")
-	local player = players.LocalPlayer
-	local character = player.Character or player.CharacterAdded:Wait()
-	local root = character:WaitForChild("HumanoidRootPart")
-	local humanoid = character:WaitForChild("Humanoid")
-	local camera = workspace.CurrentCamera
-
-	local DISABLED_OFFSET = CFrame.new(-1.75, 0, 0)
-
-	local function UpdateAutoRotate(state)
-		if humanoid then
-			humanoid.AutoRotate = state
-		end
-	end
-
-	UpdateAutoRotate(true)
-	camera.CFrame = camera.CFrame * DISABLED_OFFSET
-
-	if active then
+	local i,k=pcall(function()
+		return gameSettings.RotationType
+	end)
+	_=i
+	gg=k
+	if JJ then JJ:Disconnect() end
+	JJ=game:GetService("RunService").RenderStepped:Connect(function()
 		pcall(function()
-			active:Disconnect()
-			active = nil
+			gameSettings.RotationType=Enum.RotationType.CameraRelative
 		end)
-	end
+	end)
+	DoNotif("ShiftLock Enabled",2,"ShiftLock")
 end
-active=false
-function ShiftLock()
-	local player=players.LocalPlayer
-	local character=player.Character or player.CharacterAdded:Wait()
-	local root=character:WaitForChild("HumanoidRootPart")
-	local humanoid=character.Humanoid
-	if not active then
-		active=runservice.RenderStepped:Connect(function()
-			EnableShiftlock()
+
+function DisableShiftlock()
+	if JJ then
+		pcall(function()
+			gameSettings.RotationType=gg or Enum.RotationType.MovementRelative
 		end)
-	else
-		DisableShiftlock()
+		JJ:Disconnect()
 	end
+	DoNotif("ShiftLock Disabled",2,"ShiftLock")
 end
+
 cmd.add({"shiftlock","sl"},{"shiftlock (sl)","Enables shiftlock"},function()
 	if IsOnMobile then
 		gui.ShiftlockVis()
@@ -3986,11 +3952,11 @@ cmd.add({"enable"}, {"enable", "Enables a specific CoreGui"}, function()
 		Buttons = {
 			{Text = "Reset Button", Callback = function() StarterGui:SetCore("ResetButtonCallback", true) end};
 			{Text = "Backpack", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, true) end};
-			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))(); end};
+			{Text = "Chat", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))() end};
 			{Text = "Health", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Health, true) end};
 			{Text = "PlayerList (Leaderboard)", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, true) end};
 			{Text = "Emotes Menu", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, true) end};
-			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) end};
+			{Text = "All CoreGui", Callback = function() StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true) loadstring(game:HttpGet("https://raw.githubusercontent.com/Cosmella-v/Roblox-mobile-script/refs/heads/main/Fluxus/SaveInstanceFix.lua"))() end};
 			{Text = "Cancel", Callback = function() end};
 		}
 	})
@@ -10734,15 +10700,15 @@ local UpdLogsLabel=UpdLogsList:FindFirstChildOfClass("TextLabel");
 local ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
 local resizeFrame=ScreenGui:FindFirstChild("Resizeable");
 local resizeXY={
-	Top		={Vector2.new(0,-1),	Vector2.new(0,-1),	"rbxassetid://2911850935"},
-	Bottom	={Vector2.new(0,1),	Vector2.new(0,0),	"rbxassetid://2911850935"},
-	Left	={Vector2.new(-1,0),	Vector2.new(1,0),	"rbxassetid://2911851464"},
-	Right	={Vector2.new(1,0),	Vector2.new(0,0),	"rbxassetid://2911851464"},
+    Top        ={Vector2.new(0,-1),    Vector2.new(0,-1),    "rbxassetid://2911850935"},
+    Bottom    ={Vector2.new(0,1),    Vector2.new(0,0),    "rbxassetid://2911850935"},
+    Left    ={Vector2.new(-1,0),    Vector2.new(1,0),    "rbxassetid://2911851464"},
+    Right    ={Vector2.new(1,0),    Vector2.new(0,0),    "rbxassetid://2911851464"},
 
-	TopLeft		={Vector2.new(-1,-1),	Vector2.new(1,-1),	"rbxassetid://2911852219"},
-	TopRight	={Vector2.new(1,-1),	Vector2.new(0,-1),	"rbxassetid://2911851859"},
-	BottomLeft	={Vector2.new(-1,1),	Vector2.new(1,0),	"rbxassetid://2911851859"},
-	BottomRight	={Vector2.new(1,1),	Vector2.new(0,0),	"rbxassetid://2911852219"},
+    TopLeft        ={Vector2.new(-1,-1),    Vector2.new(1,-1),    "rbxassetid://2911852219"},
+    TopRight    ={Vector2.new(1,-1),    Vector2.new(0,-1),    "rbxassetid://2911851859"},
+    BottomLeft    ={Vector2.new(-1,1),    Vector2.new(1,0),    "rbxassetid://2911851859"},
+    BottomRight    ={Vector2.new(1,1),    Vector2.new(0,0),    "rbxassetid://2911852219"},
 }
 
 cmdExample.Parent=nil
@@ -10858,70 +10824,130 @@ gui.tween=function(obj,style,direction,duration,goal)
 	tween:Play()
 	return tween
 end
-gui.mouseIn=function(guiObject,range)
-	local pos1,pos2=guiObject.AbsolutePosition,guiObject.AbsolutePosition+guiObject.AbsoluteSize
-	local mX,mY=mouse.X,mouse.Y
-	if mX>pos1.X-range and mX<pos2.X+range and mY>pos1.Y-range and mY<pos2.Y+range then
-		return true
-	end
-	return false
+
+gui.resizeable = function(ui, min, max)
+    min = min or Vector2.new(ui.AbsoluteSize.X, ui.AbsoluteSize.Y)
+    max = max or Vector2.new(5000, 5000)
+    
+    local rgui = resizeFrame:Clone()
+    rgui.Parent = ui
+
+    local mode
+    local UIPos
+    local lastSize
+    local lastPos = Vector2.new()
+    local dragging = false
+
+    local function updateResize(currentPos)
+        if not dragging or not mode then return end
+        
+        local xy = resizeXY[mode.Name]
+        if not xy then return end
+        
+        local delta = currentPos - lastPos
+        
+        local resizeDelta = Vector2.new(
+            delta.X * xy[1].X,
+            delta.Y * xy[1].Y
+        )
+        
+        local newSize = Vector2.new(
+            lastSize.X + resizeDelta.X,
+            lastSize.Y + resizeDelta.Y
+        )
+        
+        newSize = Vector2.new(
+            math.clamp(newSize.X, min.X, max.X),
+            math.clamp(newSize.Y, min.Y, max.Y)
+        )
+        
+        ui.Size = UDim2.new(0, newSize.X, 0, newSize.Y)
+        
+        local newPos = UDim2.new(
+            UIPos.X.Scale,
+            UIPos.X.Offset,
+            UIPos.Y.Scale,
+            UIPos.Y.Offset
+        )
+        
+        if xy[1].X < 0 then
+            newPos = UDim2.new(
+                newPos.X.Scale,
+                UIPos.X.Offset + (lastSize.X - newSize.X),
+                newPos.Y.Scale,
+                newPos.Y.Offset
+            )
+        end
+        
+        if xy[1].Y < 0 then
+            newPos = UDim2.new(
+                newPos.X.Scale,
+                newPos.X.Offset,
+                newPos.Y.Scale,
+                UIPos.Y.Offset + (lastSize.Y - newSize.Y)
+            )
+        end
+        
+        ui.Position = newPos
+    end
+
+    local connection = RunService.RenderStepped:Connect(function()
+        if dragging then
+            local currentPos = UserInputService:GetMouseLocation()
+            updateResize(Vector2.new(currentPos.X, currentPos.Y))
+        end
+    end)
+    
+    for _, button in pairs(rgui:GetChildren()) do
+        button.InputBegan:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+                mode = button
+                dragging = true
+                local currentPos = UserInputService:GetMouseLocation()
+                lastPos = Vector2.new(currentPos.X, currentPos.Y)
+                lastSize = ui.AbsoluteSize
+                UIPos = ui.Position
+            end
+        end)
+        
+        button.InputEnded:Connect(function(input)
+            if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and mode == button then
+                dragging = false
+                mode = nil
+                if mouse.Icon == resizeXY[button.Name][3] then
+                    mouse.Icon = ""
+                end
+            end
+        end)
+        
+        button.MouseEnter:Connect(function()
+            if resizeXY[button.Name] then
+                mouse.Icon = resizeXY[button.Name][3]
+            end
+        end)
+        
+        button.MouseLeave:Connect(function()
+            if not dragging and mouse.Icon == resizeXY[button.Name][3] then
+                mouse.Icon = ""
+            end
+        end)
+    end
+    
+    UserInputService.InputEnded:Connect(function(input)
+        if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then
+            dragging = false
+            mode = nil
+            mouse.Icon = ""
+        end
+    end)
+    
+    return function()
+        if connection then
+            connection:Disconnect()
+        end
+    end
 end
-gui.resizeable=function(ui,min,max)
-	local rgui=resizeFrame:Clone()
-	rgui.Parent=ui
 
-	local mode
-	local UIPos
-	local lastSize
-	local lastPos=Vector2.new()
-
-	function update(delta)
-		local xy=resizeXY[(mode and mode.Name) or '']
-		if not mode or not xy then return end
-		local delta=(delta*xy[1]) or Vector2.new()
-		local newSize=Vector2.new(lastSize.X+delta.X,lastSize.Y+delta.Y)
-		newSize=Vector2.new(
-			math.clamp(newSize.X,min.X,max.X),
-			math.clamp(newSize.Y,min.Y,max.Y)
-		)
-		ui.Size=UDim2.new(0,newSize.X,0,newSize.Y)
-		ui.Position=UDim2.new(
-			UIPos.X.Scale,
-			UIPos.X.Offset+(-(newSize.X-lastSize.X)*xy[2]).X,
-			UIPos.Y.Scale,
-			UIPos.Y.Offset+(delta*xy[2]).Y
-		)
-	end
-
-	mouse.Move:Connect(function()
-		update(Vector2.new(mouse.X,mouse.Y)-lastPos)
-	end)
-
-	for _,button in pairs(rgui:GetChildren()) do
-		local isIn=false
-		button.InputBegan:Connect(function(input)
-			if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-				mode=button
-				lastPos=Vector2.new(mouse.X,mouse.Y)
-				lastSize=ui.AbsoluteSize
-				UIPos=ui.Position
-			end
-		end)
-		button.InputEnded:Connect(function(input)
-			if input.UserInputType==Enum.UserInputType.MouseButton1 or input.UserInputType==Enum.UserInputType.Touch then
-				mode=nil
-			end
-		end)
-		button.MouseEnter:Connect(function()
-			mouse.Icon=resizeXY[button.Name][3]
-		end)
-		button.MouseLeave:Connect(function()
-			if mouse.Icon==resizeXY[button.Name][3] then
-				mouse.Icon=""
-			end
-		end)
-	end
-end
 gui.draggable=function(ui, dragui)
 	if not dragui then dragui = ui end
 	local UserInputService = game:GetService("UserInputService")
@@ -10963,23 +10989,34 @@ gui.draggable=function(ui, dragui)
 	end)
 	ui.Active=true
 end
+
 gui.draggablev2=function(floght)
 	floght.Active=true
 	floght.Draggable=true
 end
+
 gui.menuify=function(menu)
 	local exit=menu:FindFirstChild("Exit",true)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local minimized=false
+	local isAnimating = false
 	local sizeX,sizeY=Instance.new("IntValue",menu),Instance.new("IntValue",menu)
 	mini.MouseButton1Click:Connect(function()
-		minimized=not minimized
+		if isAnimating then return end
+	
+		minimized = not minimized
+		isAnimating = true
+	
 		if minimized then
-			sizeX.Value=menu.Size.X.Offset
-			sizeY.Value=menu.Size.Y.Offset
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			sizeX.Value = menu.Size.X.Offset
+			sizeY.Value = menu.Size.Y.Offset
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, 25)}).Completed:Connect(function()
+				isAnimating = false
+			end)
 		else
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)}).Completed:Connect(function()
+				isAnimating = false
+			end)
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
@@ -10993,15 +11030,24 @@ gui.menuifyv2=function(menu)
 	local mini=menu:FindFirstChild("Minimize",true)
 	local clear=menu:FindFirstChild("Clear",true);
 	local minimized=false
+	local isAnimating = false
 	local sizeX,sizeY=Instance.new("IntValue",menu),Instance.new("IntValue",menu)
 	mini.MouseButton1Click:Connect(function()
-		minimized=not minimized
+		if isAnimating then return end
+	
+		minimized = not minimized
+		isAnimating = true
+	
 		if minimized then
-			sizeX.Value=menu.Size.X.Offset
-			sizeY.Value=menu.Size.Y.Offset
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,283,0,25)})
+			sizeX.Value = menu.Size.X.Offset
+			sizeY.Value = menu.Size.Y.Offset
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, 25)}).Completed:Connect(function()
+				isAnimating = false
+			end)
 		else
-			gui.tween(menu,"Quart","Out",0.5,{Size=UDim2.new(0,sizeX.Value,0,sizeY.Value)})
+			gui.tween(menu, "Quart", "Out", 0.5, {Size = UDim2.new(0, sizeX.Value, 0, sizeY.Value)}).Completed:Connect(function()
+				isAnimating = false
+			end)
 		end
 	end)
 	exit.MouseButton1Click:Connect(function()
@@ -11061,7 +11107,6 @@ gui.shiftlock=function(sLock,lockImg)
 	end)
 	gui.draggable(sLock)
 end
-
 
 gui.loadCommands=function()
 	for i,v in pairs(cmdAutofill:GetChildren()) do
@@ -11175,25 +11220,10 @@ gui.shiftlock(ShiftlockUi,ShiftlockUi.btnIcon)
 --[[ GUI RESIZE FUNCTION ]]--
 
 --table.find({Enum.Platform.IOS,Enum.Platform.Android},game:GetService("UserInputService"):GetPlatform()) | searches if the player is on mobile.
-function autoResizeable(ui)
-	local initialSize=ui.AbsoluteSize
-	local minSize=Vector2.new(
-		math.max(100,initialSize.X*0.5),
-		math.max(100,initialSize.Y*0.5)
-	)
-	local maxSize=Vector2.new(
-		initialSize.X*3,
-		initialSize.Y*3
-	)
-
-	gui.resizeable(ui,minSize,maxSize)
-end
-if not IsOnMobile then 
-	autoResizeable(chatLogsFrame)
-	autoResizeable(commandsFrame)
-	autoResizeable(UniverseViewerFrame)
-	autoResizeable(UpdLogsFrame)
-end
+gui.resizeable(chatLogsFrame)
+gui.resizeable(commandsFrame)
+gui.resizeable(UniverseViewerFrame)
+gui.resizeable(UpdLogsFrame)
 
 --[[ CMDS COMMANDS SEARCH FUNCTION ]]--
 commandsFilter.Changed:Connect(function(p)
