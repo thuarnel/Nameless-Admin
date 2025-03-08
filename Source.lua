@@ -196,7 +196,6 @@ local Admin={}
 _G.NAadminsLol={
 	530829101;--Viper
 	229501685;--legshot
-	3470956640;--Bart3kk
 	817571515;--Aimlock
 	144324719;--Cosmic
 	1844177730;--glexinator
@@ -515,7 +514,7 @@ end
 
 function getPlrHum(plr)
 	if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
-		return getChar():FindFirstChildOfClass("Humanoid")
+		return plr.Character:FindFirstChildOfClass("Humanoid")
 	else
 		return false
 	end
@@ -550,7 +549,7 @@ local getPlr=function(Name)
 		return Players:GetPlayers()[math.random(#Players:GetPlayers())]
 	elseif Name:lower()=="me" then
 		return game:GetService("Players").LocalPlayer
-	elseif not Name then
+	elseif not Name or Name=='' then
 		return game:GetService("Players").LocalPlayer
 	elseif Name:lower()=="friends" then
 		local friends={}
@@ -643,25 +642,6 @@ local ESPenabled=false
 function round(num,numDecimalPlaces)
 	local mult=10^(numDecimalPlaces or 0)
 	return math.floor(num*mult+0.5) / mult
-end
-
-function getIdentity()--returns the number of the identity
-	local LogService=game:GetService("LogService")
-	local output=""
-	local con=nil
-	con=LogService.MessageOut:Connect(function(msg,msgType)
-		if msgType==Enum.MessageType.MessageOutput then
-			local identityNum=msg:lower():match("current identity is (%d+)")
-			if identityNum then
-				output=identityNum
-				con:Disconnect()
-			end
-		end
-	end)
-	printidentity()
-	task.wait();
-
-	return output
 end
 
 local function placeName()
@@ -6180,6 +6160,32 @@ cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre m
 	lib.LocalPlayerChat(A_1,A_2)
 end)
 
+cmd.add({"privatemessage", "pm"}, {"privatemessage <player> <text> (pm)", "Sends a private message to a player"}, function(...)
+    local args = {...}
+    local Player = getPlr(args[1])
+    
+    if not Player then return end
+    
+    local message = ""
+    
+    for i = 2, #args do
+        if i == 2 then
+            message = tostring(args[i])
+        else
+            message = message.." "..tostring(args[i])
+        end
+    end
+    
+    if message == "" then return end
+    
+    local result = lib.LocalPlayerChat(message, Player.Name)
+    
+    if result == "Hooking" then
+        task.wait(.3)
+        lib.LocalPlayerChat(message, Player.Name)
+    end
+end)
+
 cmd.add({"fixcam","fix"},{"fixcam","Fix your camera"},function()
 	local workspace=game:GetService("Workspace")
 	Players=game:GetService("Players")
@@ -9428,79 +9434,6 @@ cmd.add({"iy"},{"iy {command}","Executes infinite yield scripts"},function(...)
 	execCmd((...))
 end)
 
-cmd.add({"chatspy"},{"chatspy","Spies on chat,enables chat,spies whispers etc."},function()
-
-
-
-	wait();
-
-	DoNotif("Chat spy enabled")
-	--This script reveals ALL hidden messages in the default chat
-	--chat "/spy" to toggle!
-	enabled=true
-	--if true will check your messages too
-	spyOnMyself=false
-	--if true will chat the logs publicly (fun,risky)
-	public=false
-	--if true will use /me to stand out
-	publicItalics=true
-	--customize private logs
-	privateProperties={
-		Color=Color3.fromRGB(0,255,255); 
-		Font=Enum.Font.SourceSansBold;
-		TextSize=18;
-	}
-	--////////////////////////////////////////////////////////////////
-	local StarterGui=game:GetService("StarterGui")
-	local Players=game:GetService("Players")
-	local player=Players.LocalPlayer
-	local saymsg=game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
-	local getmsg=game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
-	local instance=(_G.chatSpyInstance or 0)+1
-	_G.chatSpyInstance=instance
-
-	function onChatted(p,msg)
-		if _G.chatSpyInstance==instance then
-			if p==player and msg:lower():sub(1,4)=="/spy" then
-				enabled=not enabled
-				wait(0.3)
-				print("XD")
-				StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-			elseif enabled and (spyOnMyself==true or p~=player) then
-				msg=msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
-				local hidden=true
-				local conn=getmsg.OnClientEvent:Connect(function(packet,channel)
-					if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and Players[packet.FromSpeaker].Team==player.Team)) then
-						hidden=false
-					end
-				end)
-				wait(1)
-				conn:Disconnect()
-				if hidden and enabled then
-					if public then
-						saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
-					else
-						privateProperties.Text="{SPY} [".. p.Name .."]: "..msg
-						StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-					end
-				end
-			end
-		end
-	end
-
-	for _,p in ipairs(Players:GetPlayers()) do
-		p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-	end
-	Players.PlayerAdded:Connect(function(p)
-		p.Chatted:Connect(function(msg) onChatted(p,msg) end)
-	end)
-	print("XD")
-	StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
-	local chatFrame=player.PlayerGui.Chat.Frame
-	chatFrame.ChatChannelParentFrame.Visible=true
-	chatFrame.ChatBarParentFrame.Position=chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
-end)
-
 -- this seriously looks ridiculous
 --[[cmd.add({"bhop"},{"bhop","bhop bhop bhop bhop bhop bhop bhop bla bla bla idk what im saying"},function()
 	--[[ bhop functions
@@ -11157,31 +11090,144 @@ gui.barDeselect=function(speed)
 end
 
 --[[ AUTOFILL SEARCHER ]]--
-gui.searchCommands=function()
-	local searchTerm=cmdInput.Text:gsub(";",""):lower()
-	local index=0
-	local lastFramePos
-	for _,frame in ipairs(cmdAutofill:GetChildren()) do
-		if frame:IsA("Frame") and index < 5 then
-			local cmdName=frame.Name
-			local command=Commands[cmdName]
-			local displayName=command and command[2][1] or ""
-			local isMatching=searchTerm=="" or cmdName:find(searchTerm,1,true)~=nil
-			frame.Input.Text=searchTerm~="" and (cmdName:find(searchTerm,1,true)==1 and cmdName or displayName) or displayName
-			frame.Visible=isMatching
-			if isMatching then
-				index=index+1
-				local newSize=UDim2.new(0.5,math.sqrt(index)*125,0,25)
-				local newYPos=(index - 1)*28
-				local newPosition=UDim2.new(0.5,0,0,newYPos)
-				gui.tween(frame,"Quint","Out",0.3,{
-					Size=newSize,
-					Position=lastFramePos and newPosition or UDim2.new(0.5,0,0,newYPos),
-				})
-				lastFramePos=newPosition
-			end
-		end
-	end
+gui.searchCommands = function()
+    local searchTerm = cmdInput.Text:gsub(";", ""):lower()
+    local index = 0
+    local lastFramePos
+    local results = {}
+    
+    for _, frame in ipairs(cmdAutofill:GetChildren()) do
+        if frame:IsA("Frame") then
+            local cmdName = frame.Name:lower()
+            local command = Commands[cmdName]
+            local displayName = command and command[2][1] or ""
+            local displayNameLower = displayName:lower()
+            
+            local aliases = {}
+            local aliasText = displayName:match("%(([^%)]+)%)")
+            if aliasText then
+                for alias in aliasText:gmatch("[^,%s]+") do
+                    table.insert(aliases, alias:lower())
+                end
+            end
+            
+            local score = 999
+            local matchText = displayName
+            
+            if cmdName == searchTerm or displayNameLower == searchTerm then
+                score = 1
+                matchText = cmdName
+            else
+                for _, alias in ipairs(aliases) do
+                    if alias == searchTerm then
+                        score = 1
+                        matchText = alias
+                        break
+                    end
+                end
+            end
+            
+            if score == 999 then
+                if cmdName:sub(1, #searchTerm) == searchTerm then
+                    score = 2
+                    matchText = cmdName
+                elseif displayNameLower:sub(1, #searchTerm) == searchTerm then
+                    score = 3
+                    matchText = displayName
+                else
+                    for _, alias in ipairs(aliases) do
+                        if alias:sub(1, #searchTerm) == searchTerm then
+                            score = 3
+                            matchText = alias
+                            break
+                        end
+                    end
+                end
+            end
+            
+            if score == 999 and #searchTerm >= 2 then
+                if cmdName:find(searchTerm, 1, true) ~= nil then
+                    score = 4
+                    matchText = cmdName
+                elseif displayNameLower:find(searchTerm, 1, true) ~= nil then
+                    score = 5
+                    matchText = displayName
+                else
+                    for _, alias in ipairs(aliases) do
+                        if alias:find(searchTerm, 1, true) ~= nil then
+                            score = 5
+                            matchText = alias
+                            break
+                        end
+                    end
+                end
+            end
+            
+            if score == 999 and #searchTerm >= 2 then
+                local cmdDistance = levenshtein(searchTerm, cmdName)
+                local displayDistance = levenshtein(searchTerm, displayNameLower)
+                
+                local bestAliasDistance = math.huge
+                for _, alias in ipairs(aliases) do
+                    local aliasDistance = levenshtein(searchTerm, alias)
+                    bestAliasDistance = math.min(bestAliasDistance, aliasDistance)
+                end
+                
+                if cmdDistance <= math.min(2, #searchTerm - 1) then
+                    score = 6 + cmdDistance
+                    matchText = cmdName
+                elseif bestAliasDistance <= math.min(2, #searchTerm - 1) then
+                    score = 6 + bestAliasDistance
+                    matchText = alias
+                elseif displayDistance <= math.min(2, #searchTerm - 1) then
+                    score = 9 + displayDistance
+                    matchText = displayName
+                end
+            end
+            
+            if score < 999 then
+                table.insert(results, {
+                    frame = frame,
+                    score = score,
+                    text = matchText,
+                    name = cmdName
+                })
+            end
+        end
+    end
+    
+    table.sort(results, function(a, b)
+        if a.score == b.score then
+            return a.name < b.name
+        end
+        return a.score < b.score
+    end)
+    
+    for _, frame in ipairs(cmdAutofill:GetChildren()) do
+        if frame:IsA("Frame") then
+            frame.Visible = false
+        end
+    end
+    
+    for i, result in ipairs(results) do
+        if i <= 5 then
+            local frame = result.frame
+            frame.Input.Text = searchTerm ~= "" and result.text or result.text
+            frame.Visible = true
+            
+            local newSize = UDim2.new(0.5, math.sqrt(i) * 125, 0, 25)
+            local newYPos = (i - 1) * 28
+            local newPosition = UDim2.new(0.5, 0, 0, newYPos)
+            
+            gui.tween(frame, "Quint", "Out", 0.3, {
+                Size = newSize,
+                Position = lastFramePos and newPosition or UDim2.new(0.5, 0, 0, newYPos),
+            })
+            
+            lastFramePos = newPosition
+            index = i
+        end
+    end
 end
 
 --[[ OPEN THE COMMAND BAR ]]--
@@ -11227,51 +11273,148 @@ gui.resizeable(UpdLogsFrame)
 
 --[[ CMDS COMMANDS SEARCH FUNCTION ]]--
 commandsFilter.Changed:Connect(function(p)
-	if p ~= "Text" then return end
+    if p ~= "Text" then return end
 
-	local searchQuery = commandsFilter.Text:lower():gsub("%s+", "")
-	local results = {}
+    local searchQuery = commandsFilter.Text:lower():gsub("%s+", "")
+    if searchQuery == "" then
+        for _, v in pairs(commandsList:GetChildren()) do
+            if v:IsA("TextLabel") then
+                v.Visible = true
+            end
+        end
+        return
+    end
+    
+    local results = {}
 
-	for _, v in pairs(commandsList:GetChildren()) do
-		if v:IsA("TextLabel") then
-			local commandName = v.Name:lower()
-			local startMatch = commandName:sub(1, #searchQuery) == searchQuery
-			local containsMatch = commandName:find(searchQuery) ~= nil
+    for _, v in pairs(commandsList:GetChildren()) do
+        if v:IsA("TextLabel") then
+            local commandName = v.Name:lower()
+            local command = Commands[commandName]
+            local displayName = command and command[2][1] or ""
+            local displayNameLower = displayName:lower()
+            
+            local aliases = {}
+            local aliasText = displayName:match("%(([^%)]+)%)")
+            if aliasText then
+                for alias in aliasText:gmatch("[^,%s]+") do
+                    table.insert(aliases, alias:lower())
+                end
+            end
+            
+            local score = 999
+            
+            if commandName == searchQuery or displayNameLower == searchQuery then
+                score = 1
+            else
+                for _, alias in ipairs(aliases) do
+                    if alias == searchQuery then
+                        score = 1
+                        break
+                    end
+                end
+            end
+            
+            if score == 999 then
+                if commandName:sub(1, #searchQuery) == searchQuery then
+                    score = 2
+                elseif displayNameLower:sub(1, #searchQuery) == searchQuery then
+                    score = 3
+                else
+                    for _, alias in ipairs(aliases) do
+                        if alias:sub(1, #searchQuery) == searchQuery then
+                            score = 3
+                            break
+                        end
+                    end
+                end
+            end
+            
+            if score == 999 and #searchQuery >= 2 then
+                if commandName:find(searchQuery, 1, true) ~= nil then
+                    score = 4
+                elseif displayNameLower:find(searchQuery, 1, true) ~= nil then
+                    score = 5
+                else
+                    for _, alias in ipairs(aliases) do
+                        if alias:find(searchQuery, 1, true) ~= nil then
+                            score = 5
+                            break
+                        end
+                    end
+                end
+            end
+            
+            if score == 999 and #searchQuery >= 2 then
+                local cmdDistance = levenshtein(searchQuery, commandName)
+                local displayDistance = levenshtein(searchQuery, displayNameLower)
+                
+                local bestAliasDistance = math.huge
+                for _, alias in ipairs(aliases) do
+                    local aliasDistance = levenshtein(searchQuery, alias)
+                    bestAliasDistance = math.min(bestAliasDistance, aliasDistance)
+                end
+                
+                if cmdDistance <= math.min(2, #searchQuery - 1) then
+                    score = 6 + cmdDistance
+                elseif bestAliasDistance <= math.min(2, #searchQuery - 1) then
+                    score = 6 + bestAliasDistance
+                elseif displayDistance <= math.min(2, #searchQuery - 1) then
+                    score = 9 + displayDistance
+                end
+            end
+            
+            if score < 999 then
+                table.insert(results, {
+                    label = v, 
+                    score = score,
+                    name = commandName
+                })
+            end
+        end
+    end
 
-			if startMatch or containsMatch then
-				table.insert(results, {label = v, priority = startMatch and 1 or 2})
-			end
-		end
-	end
+    table.sort(results, function(a, b)
+        if a.score == b.score then
+            return a.name < b.name
+        end
+        return a.score < b.score
+    end)
 
-	table.sort(results, function(a, b)
-		return a.priority < b.priority
-	end)
+    for _, v in pairs(commandsList:GetChildren()) do
+        if v:IsA("TextLabel") then
+            v.Visible = false
+        end
+    end
 
-	for _, v in pairs(commandsList:GetChildren()) do
-		if v:IsA("TextLabel") then
-			v.Visible = false
-		end
-	end
-
-	for _, result in ipairs(results) do
-		result.label.Visible = true
-	end
+    for _, result in ipairs(results) do
+        result.label.Visible = true
+    end
 end)
 
 --[[ CHAT TO USE COMMANDS ]]--
-function bindToChat(plr,msg)
-	local chatMsg=chatExample:Clone()
-	for i,v in pairs(chatLogs:GetChildren()) do
-		if v:IsA("TextLabel") then
-			v.LayoutOrder=v.LayoutOrder+1
-		end
-	end
-	chatMsg.Parent=chatLogs
-	chatMsg.Text=("%s [@%s]: %s"):format(plr.DisplayName,plr.Name,msg)
-
-	txtSize=gui.txtSize(chatMsg,chatMsg.AbsoluteSize.X,100)
-	chatMsg.Size=UDim2.new(1,-5,0,txtSize.Y)
+function bindToChat(plr, msg)
+    local chatMsg = chatExample:Clone()
+    
+    for i, v in pairs(chatLogs:GetChildren()) do
+        if v:IsA("TextLabel") then
+            v.LayoutOrder = v.LayoutOrder + 1
+        end
+    end
+    
+    chatMsg.Parent = chatLogs
+    
+    local displayName = plr.DisplayName or "Unknown"
+    local userName = plr.Name or "Unknown"
+    
+    if displayName == userName then
+        chatMsg.Text = ("@%s: %s"):format(userName, msg)
+    else
+        chatMsg.Text = ("%s [@%s]: %s"):format(displayName, userName, msg)
+    end
+    
+    local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
+    chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
 end
 
 for i,plr in pairs(Players:GetPlayers()) do
