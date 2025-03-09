@@ -2234,7 +2234,6 @@ cmd.add({"breaklayeredclothing","blc"},{"breaklayeredclothing (blc)","Streches y
 	loadstring(game:HttpGet('https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/leg%20resize'))()
 end)
 
-
 cmd.add({"fpsbooster","lowgraphics","boostfps","lowg"},{"fpsbooster (lowgraphics,boostfps,lowg)","Low graphics mode if the game is laggy"},function()
 	local decalsyeeted=true
 	local g=game
@@ -2632,126 +2631,6 @@ cmd.add({"respawn","re"},{"respawn","Respawn your character"},function()
 	getChar():WaitForChild("HumanoidRootPart").CFrame=old
 end)
 
-cmd.add({"seizure"},{"seizure","Gives you a seizure"},function()
-
-	spawn(function()
-		local Anim=Instance.new("Animation")
-		if getChar():FindFirstChild("UpperTorso") then
-			Anim.AnimationId="rbxassetid://507767968"
-		else
-			Anim.AnimationId="rbxassetid://180436148"
-		end
-		local k=getChar().Humanoid:LoadAnimation(Anim)
-		getgenv().ssss=game:GetService("Players").LocalPlayer:GetMouse()
-		getgenv().Lzzz=false
-
-		if Lzzz==false then
-			getgenv().Lzzz=true
-			if getChar():FindFirstChild("UpperTorso") then
-				Anim.AnimationId="rbxassetid://507767968"
-			else
-				Anim.AnimationId="rbxassetid://180436148"
-			end
-			getgenv().currentnormal=game:GetService("Workspace").Gravity
-			game:GetService("Workspace").Gravity=196.2
-			getChar():PivotTo(getChar():GetPivot()*CFrame.Angles(2,0,0))
-			wait(0.5)
-			getChar().Humanoid.PlatformStand=true
-			getChar().Animate.Disabled=true
-
-			k:Play()
-			k:AdjustSpeed(10)
-
-			getChar().Animate.Disabled=true
-		else
-			getgenv().Lzzz=false
-			if getChar():FindFirstChild("UpperTorso") then
-				Anim.AnimationId="rbxassetid://507767968"
-			else
-				Anim.AnimationId="rbxassetid://180436148"
-			end
-			game:GetService("Workspace").Gravity=currentnormal
-			getChar().Humanoid.PlatformStand=false
-			getChar().Humanoid.Jump=true
-			k:Stop()
-
-			getChar().Animate.Disabled=false
-			game:GetService'RunService'.Heartbeat:Wait()
-			for i=1,10 do
-
-				getRoot(getChar()).AssemblyLinearVelocity=Vector3.new(0,0,0)
-				wait(0.1)
-			end
-		end
-		RunService.RenderStepped:Connect(function()
-			if Lzzz==true then
-				getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick()))--angle*math.sin(velocity*tick())
-			end
-		end)
-	end)
-
-end)
-
-cmd.add({"unseizure"},{"unseizure","Stops you from having a seizure not in real life noob"},function(n)
-
-	spawn(function()
-		local Anim=Instance.new("Animation")
-		if getChar():FindFirstChild("UpperTorso") then
-			Anim.AnimationId="rbxassetid://507767968"
-		else
-			Anim.AnimationId="rbxassetid://180436148"
-		end
-		local k=getChar().Humanoid:LoadAnimation(Anim)
-		getgenv().ssss=game:GetService("Players").LocalPlayer:GetMouse()
-		getgenv().Lzzz=true
-
-		if Lzzz==false then
-			getgenv().Lzzz=true
-			if getChar():FindFirstChild("UpperTorso") then
-				Anim.AnimationId="rbxassetid://507767968"
-			else
-				Anim.AnimationId="rbxassetid://180436148"
-			end
-			getgenv().currentnormal=game:GetService("Workspace").Gravity
-			game:GetService("Workspace").Gravity=196.2
-			getChar():PivotTo(getChar():GetPivot()*CFrame.Angles(2,0,0))
-			wait(0.5)
-			getChar().Humanoid.PlatformStand=true
-			getChar().Animate.Disabled=true
-
-			k:Play()
-			k:AdjustSpeed(10)
-
-			getChar().Animate.Disabled=true
-		else
-			getgenv().Lzzz=false
-			if getChar():FindFirstChild("UpperTorso") then
-				Anim.AnimationId="rbxassetid://507767968"
-			else
-				Anim.AnimationId="rbxassetid://180436148"
-			end
-			game:GetService("Workspace").Gravity=currentnormal
-			getChar().Humanoid.PlatformStand=false
-			getChar().Humanoid.Jump=true
-			k:Stop()
-
-			getChar().Animate.Disabled=false
-			game:GetService'RunService'.Heartbeat:Wait()
-			for i=1,10 do
-
-				getRoot(getChar()).AssemblyLinearVelocity=Vector3.new(0,0,0)
-				wait(0.1)
-			end
-		end
-		RunService.RenderStepped:Connect(function()
-			if Lzzz==true then
-				getRoot(getChar()).CFrame=getRoot(getChar()).CFrame*CFrame.new(.075*math.sin(45*tick()),.075*math.sin(45*tick()),.075*math.sin(45*tick()))--angle*math.sin(velocity*tick())
-			end
-		end)
-	end)
-
-end)
-
 cmd.add({"antisit"},{"antisit","Antisit"},function()
 	Player.Character.Humanoid:SetStateEnabled("Seated",false)
 	Player.Character.Humanoid.Sit=true
@@ -2968,13 +2847,6 @@ cmd.add({"f3x","fex"},{"f3x","F3X for client"},function()
 	loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
 end)
 
-cmd.add({"dupetools"},{"dupetools [amount]","Probably the fastest tool duping method"},function(...)
-	_G.ammount=(...)
-	for i=1,_G.ammount do
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/dupe%20tools",true))()
-	end
-end)
-
 cmd.add({"harked","comet"},{"harked (comet)","Executes Comet which is like harked"},function()
 	DoNotif("Join the discord to see supported games! Use the discord command to get the invite",7)
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/comet"))();
@@ -3126,52 +2998,6 @@ cmd.add({"antiafk","noafk"},{"antiafk (noafk)","Makes you not be kicked for bein
 		DoNotif("Anti AFK has been enabled")
 	else
 		DoNotif("Anti AFK is already enabled")
-	end
-end)
-
-
-cmd.add({"antiattach","noattach"},{"antiattach (noattach)","Makes you not be able to be attached by using a item"},function()
-	local Tools={}
-	for i,v in pairs(getChar():GetChildren()) do
-		if v:IsA("Tool") then
-			table.insert(Tools,v:GetDebugId())
-		end
-	end
-	for i,v in pairs(game:GetService("Players").LocalPlayer.Backpack:GetChildren()) do
-		if v:IsA("Tool") then
-			table.insert(Tools,v:GetDebugId())
-		end
-	end
-	AAttach=getChar().ChildAdded:Connect(function(instance)
-		if instance:IsA("Tool") and not table.find(Tools,instance:GetDebugId()) then
-			task.wait()
-			instance.Parent=nil
-		end
-	end)
-
-
-
-	wait();
-
-	DoNotif("Anti attach enabled")
-end)
-
-cmd.add({"unantiattach","unnoattach"},{"unantiattach (unnoattach)","Makes you to be able for others to attach you"},function()
-	if AAttach then
-		AAttach:Disconnect()
-
-
-
-		wait();
-
-		DoNotif("Anti attach disabled")
-	else
-
-
-
-		wait();
-
-		DoNotif("Anti attach already disabled")
 	end
 end)
 
@@ -3572,76 +3398,6 @@ cmd.add({"gravitygun"},{"gravitygun","Probably the best gravity gun script thats
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/gravity%20gun"))()
 end)
 
-cmd.add({"flingnpcs"},{"flingnpcs","Flings NPCs"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			hum.HipHeight=1024
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
-end)
-
-cmd.add({"voidnpcs"},{"voidnpcs","Voids NPCs"},function()
-
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			hum.HipHeight=-1024
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
-end)
-
-cmd.add({"npcfollow"},{"npcfollow","Makes NPCS follow you"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-			local targetPos=getChar():FindFirstChild("HumanoidRootPart").Position
-			hum:MoveTo(targetPos)
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
-end)
-
-local npcfollowloop=false
-cmd.add({"loopnpcfollow"},{"loopnpcfollow","Makes NPCS follow you in a loop"},function()
-	npcfollowloop=true
-
-	repeat wait(0.1)
-		local npcs={}
-
-		function disappear(hum)
-			if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-				table.insert(npcs,{hum,hum.HipHeight})
-				local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-				local targetPos=getChar():FindFirstChild("HumanoidRootPart").Position
-				hum:MoveTo(targetPos)
-			end
-		end
-		for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-			disappear(hum)
-		end
-	until npcfollowloop==false
-end)
-
-cmd.add({"unloopnpcfollow"},{"unloopnpcfollow","Makes NPCS not follow you in a loop"},function()
-	npcfollowloop=false
-end)
-
 cmd.add({"lockws","lockworkspace"},{"lockws (lockworkspace)","Locks the whole workspace"},function()
 	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		v.Locked=true
@@ -3651,40 +3407,6 @@ end)
 cmd.add({"unlockws","unlockworkspace"},{"unlockws (unlockworkspace)","Unlocks the whole workspace"},function()
 	for i,v in pairs(game:GetService("Workspace"):GetDescendants()) do
 		v.Locked=false
-	end
-end)
-
-cmd.add({"sitnpcs"},{"sitnpcs","Makes NPCS sit"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-			if rootPart then
-				hum.Sit=true
-			end      
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
-end)
-
-cmd.add({"unsitnpcs"},{"unsitnpcs","Makes NPCS unsit"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-			if rootPart then
-				hum.Sit=false
-			end      
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
 	end
 end)
 
@@ -3710,40 +3432,6 @@ end)
 
 cmd.add({"unvehiclespeed","unvspeed"},{"unvehiclespeed (unvspeed)","Stops the vehiclespeed command"},function()
 	vehicleloopspeed=vehicleloopspeed:Disconnect()
-end)
-
-cmd.add({"killnpcs"},{"killnpcs","Kills NPCs"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-			if rootPart then
-				hum.Health=0
-			end      
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
-end)
-
-cmd.add({"bringnpcs"},{"bringnpcs","Brings NPCs"},function()
-	local npcs={}
-
-	function disappear(hum)
-		if hum:IsA("Humanoid") and not game:GetService("Players"):GetPlayerFromCharacter(hum.Parent) then
-			table.insert(npcs,{hum,hum.HipHeight})
-			local rootPart=hum.Parent:FindFirstChild("HumanoidRootPart")
-			if rootPart then
-				rootPart.CFrame=getRoot(getChar()).CFrame
-			end      
-		end
-	end
-	for _,hum in pairs(game:GetService("Workspace"):GetDescendants()) do
-		disappear(hum)
-	end
 end)
 
 cmd.add({"controlnpcs","cnpcs"},{"controlnpcs (cnpcs)","Mobile: Touch and hold on an NPC, PC: CTRL+LEFTCLICK"},function()
@@ -3974,10 +3662,6 @@ cmd.add({"disable"}, {"disable", "Disables a specific CoreGui"}, function()
 			{Text = "Cancel", Callback = function() end};
 		}
 	})
-end)
-
-cmd.add({"ctrlshiftlock","ctrlsl"},{"ctrlshiftlock (ctrlsl)","Enables shift lock if you press Control"},function()
-	game:GetService("Players").LocalPlayer.PlayerScripts.PlayerModule.CameraModule.MouseLockController.BoundKeys.Value="LeftControl,RightControl"
 end)
 
 cmd.add({"esp"},{"esp","locate where the players are"},function()
@@ -5033,34 +4717,6 @@ cmd.add({"freezewalk"},{"freezewalk","Freezes your character on the server but l
 	DoNotif("freezewalk is activated,reset to stop it")
 end)
 
-cmd.add({"r15"},{"r15","Prompts a message asking to make you R15"},function()
-	local avs=game:GetService("AvatarEditorService")
-	avs:PromptSaveAvatar(getChar().Humanoid.HumanoidDescription,Enum.HumanoidRigType.R15)
-	DoNotif("Press allow",3)
-	local result=avs.PromptSaveAvatarCompleted:Wait()
-	if result==Enum.AvatarPromptResult.Success
-	then
-		DoNotif("You are now R15",3)
-		respawn()
-	else
-		DoNotif("An error has occured",3)
-	end
-end)
-
-cmd.add({"r6"},{"r6","Prompts a message asking to make you R6"},function()
-	local avs=game:GetService("AvatarEditorService")
-	avs:PromptSaveAvatar(getChar().Humanoid.HumanoidDescription,Enum.HumanoidRigType.R6)
-	DoNotif("Press allow",3)
-	local result=avs.PromptSaveAvatarCompleted:Wait()
-	if result==Enum.AvatarPromptResult.Success
-	then
-		DoNotif("You are now R6",3)
-		respawn()
-	else
-		DoNotif("An error has occured",3)
-	end
-end)
-
 local fcpro=nil
 
 cmd.add({"freecam","fc","fcam"},{"freecam [speed] (fc,fcam)","Enable free camera"},function(speed)
@@ -5277,29 +4933,6 @@ cmd.add({"aimbot","aimbotui","aimbotgui"},{"aimbot (aimbotui,aimbotgui)","aimbot
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/Aimbot.lua",true))()
 end)
 
-cmd.add({"checkgrabber"},{"checkgrabber","Checks if anyone is using a grab tools script"},function()
-	local oldpos=getRoot(getChar()).CFrame
-	local boombox=getChar():FindFirstChildOfClass'Tool' or game:GetService("Players").LocalPlayer.Backpack:FindFirstChildOfClass'Tool'
-	getChar():SetPrimaryPartCFrame(getRoot(LocalPlayer.Character).CFrame+Vector3.new(1000))
-	boombox.Parent=getChar()
-	wait(.3)
-	boombox.Parent=game:GetService("Workspace")
-	getChar():SetPrimaryPartCFrame(oldpos)
-	wait(.5)
-	if boombox.Parent==game:GetService("Workspace") then
-		getChar().Humanoid:EquipTool(boombox)
-		wait(.3)
-		getChar().Humanoid:UnequipTools()
-	else
-		wait(.2)
-		local grabber=game:GetService("Players"):GetPlayerFromCharacter(boombox.Parent) or boombox.Parent.Parent
-		getChar():SetPrimaryPartCFrame(grabber.Character:FindFirstChild("Head").CFrame+Vector3.new(0,3,0))
-		DoNotif("Player: "..grabber.DisplayName.." [@"..grabber.Name.."] is grabbing")
-	end
-end)
-
-
-
 cmd.add({"loopgrabtools"},{"loopgrabtools","Loop grabs dropped tools"},function()
 	loopgrab=true
 	repeat wait(1)
@@ -5467,179 +5100,6 @@ cmd.add({"copyid","id"},{"copyid <player> (id)","Copies the UserId of the target
 	DoNotif("Copied the UserId of "..target.name)
 end)
 
-cmd.add({"toolvis","audiovis"},{"toolvis <size>","Turn your tools into an audio visualizer"},function(size)
-	lib.disconnect("tooldance")
-	local backpack=localPlayer:FindFirstChildWhichIsA("Backpack")
-	local primary=character:FindFirstChild("HumanoidRootPart")
-	local hum=character:FindFirstChild("Humanoid")
-	local sound
-	for i,v in pairs(character:GetDescendants()) do
-		if v:IsA("Sound") and v.Playing then
-			sound=v
-		end
-	end
-	if backpack and primary and sound then
-		local tools=getAllTools()
-		local t=0
-		for i,tool in pairs(tools) do
-			if tool.Parent==character and tool:IsA("BackpackItem") and tool:FindFirstChildWhichIsA("BasePart") and tool.Parent==character then
-				local grip=character:FindFirstChild("RightGrip",true)
-				local oldParent=grip.Parent
-				lib.connect("tooldance",RunService.RenderStepped:Connect(function()
-					if not sound then lib.disconnect("tooldance") end
-					tool.Parent=character
-					grip.Parent=oldParent
-				end))
-			end
-		end
-		wait()
-		for i,tool in pairs(tools) do
-			if tool.Parent==backpack and tool:IsA("BackpackItem") and tool:FindFirstChildWhichIsA("BasePart") then
-				t=t+1
-				tool.Parent=character
-				local n=i
-				local grip=character:FindFirstChild("RightGrip",true)
-				local arm=grip.Parent
-
-				function editGrip(cf)
-					tool.Parent=backpack
-					tool.Grip=tool.Grip:lerp(cf,0.2)
-					tool.Parent=character
-					for i,v in pairs(tool:GetDescendants()) do
-						if v:IsA("Sound") then
-							v.Parent=nil
-						end
-					end
-				end
-				tool.Handle.Massless=true
-
-				local x,y,z,a=n,n+math.pi/2,n,0
-				lib.connect("tooldance",RunService.Heartbeat:Connect(function()
-					if not sound then lib.disconnect("tooldance") end
-
-					local mt,loudness=sound.PlaybackLoudness/100,sound.PlaybackLoudness
-					local sx,sy,sz,sa=math.sin(x),math.sin(y),math.sin(z),math.sin(a)
-					x,y,z,a=x+0.22+mt / 100,y+sx+mt,z+sx/10,a+mt/100+math.sin(x-n)/100
-					editGrip(
-						CFrame.new(
-							Vector3.new(
-								0,
-								2+((sx/2)*(mt^3/15))/3-((sx+0.5)/1.5*((loudness/10)^2/400)),
-								tonumber(size) or 7
-							)
-						)*
-							CFrame.Angles(
-								math.rad((sz+1)/2)*5,
-								((math.pi*2)*(n/t))-(a),
-								math.rad(sx)*5
-							)
-					)
-				end))
-			end
-		end
-	end
-end)
-
-cmd.add({"nodecals","nodecal","notextures"},{"nodecals","Remove all character images"},function()
-	for _,img in pairs(character:GetDescendants()) do
-		if img:IsA("Decal") or img:IsA("Texture") then
-			img:Destroy()
-		end
-	end
-end)
-
-cmd.add({"spinfling","sfling"},{"spinfling (sfling)","Fling by spinning"},function()
-
-	local Noclipping=nil
-	Clip=false
-	wait(0.1)
-	function NoclipLoop()
-		if Clip==false and getChar()~=nil then
-			for _,child in pairs(getChar():GetDescendants()) do
-				if child:IsA("BasePart") and child.CanCollide==true and child.Name~=floatName then
-					child.CanCollide=false
-				end
-			end
-		end
-	end
-	Noclipping=game:GetService("RunService").Stepped:Connect(NoclipLoop)
-
-	flinging=false
-	for _,child in pairs(getChar():GetDescendants()) do
-		if child:IsA("BasePart") then
-			child.CustomPhysicalProperties=PhysicalProperties.new(math.huge,0.3,0.5)
-		end
-	end
-	wait(.1)
-	wait(.1)
-	local bambam=Instance.new("BodyAngularVelocity")
-	bambam.Name="0"
-	bambam.Parent=getRoot(getChar())
-	bambam.AngularVelocity=Vector3.new(0,99999,0)
-	bambam.MaxTorque=Vector3.new(0,math.huge,0)
-	bambam.P=math.huge
-	local Char=getChar():GetChildren()
-	for i,v in next,Char do
-		if v:IsA("BasePart") then
-			v.CanCollide=false
-			v.Massless=true
-			v.Velocity=Vector3.new(0,0,0)
-		end
-	end
-	flinging=true
-	function flingDiedF()
-		if flingDied then
-			flingDied:Disconnect()
-		end
-		flinging=false
-		wait(.1)
-		local speakerChar=getChar()
-		if not speakerChar or not getRoot(speakerChar) then return end
-		for i,v in pairs(getRoot(speakerChar):GetChildren()) do
-			if v.ClassName=='BodyAngularVelocity' then
-				v:Destroy()
-			end
-		end
-		for _,child in pairs(speakerChar:GetDescendants()) do
-			if child.ClassName=="Part" or child.ClassName=="MeshPart" then
-				child.CustomPhysicalProperties=PhysicalProperties.new(0.7,0.3,0.5)
-			end
-		end
-	end
-	flingDied=getChar():FindFirstChildOfClass('Humanoid').Died:Connect(flingDiedF)
-	repeat
-		bambam.AngularVelocity=Vector3.new(0,99999,0)
-		wait(.2)
-		bambam.AngularVelocity=Vector3.new(0,0,0)
-		wait(.1)
-	until flinging==false
-end)
-
-cmd.add({"unspinfling","unsfling"},{"unspinfling (unsfling)","Stop the spinfling command"},function()
-	if Noclipping then
-		Noclipping:Disconnect()
-	end
-	Clip=true
-
-	if flingDied then
-		flingDied:Disconnect()
-	end
-	flinging=false
-	wait(.1)
-	local speakerChar=getChar()
-	if not speakerChar or not getRoot(speakerChar) then return end
-	for i,v in pairs(getRoot(speakerChar):GetChildren()) do
-		if v.ClassName=='BodyAngularVelocity' then
-			v:Destroy()
-		end
-	end
-	for _,child in pairs(speakerChar:GetDescendants()) do
-		if child.ClassName=="Part" or child.ClassName=="MeshPart" then
-			child.CustomPhysicalProperties=PhysicalProperties.new(0.7,0.3,0.5)
-		end
-	end
-end)
-
 --[ PLAYER ]--
 cmd.add({"antikillbrick","antikb"},{"antikillbrick (antikb)","Makes it so kill bricks cant kill you"},function()
 	local player=game:GetService("Players").LocalPlayer
@@ -5701,465 +5161,6 @@ end)
 
 cmd.add({"night"},{"night","Makes it night"},function()
 	game:GetService("Lighting").ClockTime=0
-end)
-
-cmd.add({"antichatlogger","acl"},{"antichatlogger (acl)","Anti chat logger"},function()
-
-	local ScreenGui=Instance.new("ScreenGui")
-	local Frame=Instance.new("Frame")
-	local UICorner=Instance.new("UICorner")
-	local UIGradient=Instance.new("UIGradient")
-	local TextLabel=Instance.new("TextLabel")
-	local UICorner_2=Instance.new("UICorner")
-	local TextLabel_2=Instance.new("TextLabel")
-	local UICorner_3=Instance.new("UICorner")
-	local TextButton=Instance.new("TextButton")
-	local UICorner_4=Instance.new("UICorner")
-	local TextButton_2=Instance.new("TextButton")
-	local UICorner_5=Instance.new("UICorner")
-
-	--Properties:
-
-	ScreenGui.Parent=gethui()
-	ScreenGui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
-
-	Frame.Parent=ScreenGui
-	Frame.BackgroundColor3=Color3.fromRGB(255,255,255)
-	Frame.BackgroundTransparency=0.120
-	Frame.Position=UDim2.new(0.354000002,0,0.316000015,0)
-	Frame.Size=UDim2.new(0,445,0,252)
-
-	UICorner.Parent=Frame
-
-	UIGradient.Color=ColorSequence.new{ColorSequenceKeypoint.new(0.00,Color3.fromRGB(4,4,4)),ColorSequenceKeypoint.new(0.49,Color3.fromRGB(12,4,20)),ColorSequenceKeypoint.new(1.00,Color3.fromRGB(12,4,20))}
-	UIGradient.Parent=Frame
-
-	TextLabel.Parent=Frame
-	TextLabel.BackgroundColor3=Color3.fromRGB(0,0,0)
-	TextLabel.BackgroundTransparency=0.600
-	TextLabel.Position=UDim2.new(0.00224719103,0,0,0)
-	TextLabel.Size=UDim2.new(0,443,0,27)
-	TextLabel.Font=Enum.Font.SourceSans
-	TextLabel.Text="Warning"
-	TextLabel.TextColor3=Color3.fromRGB(255,255,255)
-	TextLabel.TextScaled=true
-	TextLabel.TextSize=14.000
-	TextLabel.TextWrapped=true
-
-	UICorner_2.Parent=TextLabel
-
-	TextLabel_2.Parent=Frame
-	TextLabel_2.BackgroundColor3=Color3.fromRGB(0,0,0)
-	TextLabel_2.BackgroundTransparency=0.600
-	TextLabel_2.Position=UDim2.new(0.0269662924,0,0.162698418,0)
-	TextLabel_2.Size=UDim2.new(0,421,0,115)
-	TextLabel_2.Font=Enum.Font.SourceSans
-	TextLabel_2.Text="You are executing an anti-chat-log script meaning that Nameless Admin wouldnt be able to detect when you have chatted meaning if you are on mobile and use the chat to execute commands it wont work. Are you sure you want to execute this?"
-	TextLabel_2.TextColor3=Color3.fromRGB(255,255,255)
-	TextLabel_2.TextScaled=true
-	TextLabel_2.TextSize=14.000
-	TextLabel_2.TextWrapped=true
-
-	UICorner_3.Parent=TextLabel_2
-
-	TextButton.Parent=Frame
-	TextButton.BackgroundColor3=Color3.fromRGB(0,0,0)
-	TextButton.BackgroundTransparency=0.600
-	TextButton.BorderColor3=Color3.fromRGB(27,42,53)
-	TextButton.Position=UDim2.new(0.287640452,0,0.658730209,0)
-	TextButton.Size=UDim2.new(0,189,0,34)
-	TextButton.Font=Enum.Font.SourceSans
-	TextButton.Text="Yes"
-	TextButton.TextColor3=Color3.fromRGB(0,194,45)
-	TextButton.TextSize=14.000
-
-	UICorner_4.Parent=TextButton
-
-	TextButton_2.Parent=Frame
-	TextButton_2.BackgroundColor3=Color3.fromRGB(0,0,0)
-	TextButton_2.BackgroundTransparency=0.600
-	TextButton_2.BorderColor3=Color3.fromRGB(27,42,53)
-	TextButton_2.Position=UDim2.new(0.280898869,0,0.821428478,0)
-	TextButton_2.Size=UDim2.new(0,194,0,32)
-	TextButton_2.Font=Enum.Font.SourceSans
-	TextButton_2.Text="No"
-	TextButton_2.TextColor3=Color3.fromRGB(203,0,0)
-	TextButton_2.TextSize=14.000
-
-	UICorner_5.Parent=TextButton_2
-
-	function CPNQ_fake_script()
-		TextButton.MouseButton1Click:Connect(function()
-
-		--[[
-			 Change-logs:
-			 8/22/2022-Fixed Chat gui glitching on some games such as Prison Life.
-			 9/30/2022-Fixed chat gui glitching AGAIN... (added better checks too)
-			 10/10/2022-Added gethui() function and fix for Synapse v3.
-			 11/11/2022-Idk what happened but it stopped working... I fixed it though.
-		 ]]--
-
-			local ACL_LoadTime=tick()
-
-			local ChatChanged=false
-			local OldSetting=nil
-			local WhitelistedCoreTypes={
-				"Chat",
-				"All",
-				Enum.CoreGuiType.Chat,
-				Enum.CoreGuiType.All
-			}
-
-			local StarterGui=game:GetService("StarterGui")
-
-			local FixCore=function(x)
-				local CoreHook; CoreHook=hookmetamethod(x,"__namecall",function(self,...)
-					local Method=getnamecallmethod()
-					local Arguments={...}
-
-					if self==x and Method=="SetCoreGuiEnabled" and not checkcaller() then
-						local CoreType=Arguments[1]
-						local Enabled=Arguments[2]
-
-						if table.find(WhitelistedCoreTypes,CoreType) and not Enabled then
-							if CoreType==("Chat" or Enum.CoreGuiType.Chat) then
-								OldSetting=Enabled
-							end
-							ChatChanged=true
-						end
-					end
-
-					return CoreHook(self,...)
-				end)
-
-				x.CoreGuiChangedSignal:Connect(function(Type)
-					if table.find(WhitelistedCoreTypes,Type) and ChatChanged then
-						task.wait()
-						if not StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat) then
-							x:SetCoreGuiEnabled(Enum.CoreGuiType.Chat,true)
-						end
-						wait(1)
-						if StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat) then
-							x:SetCoreGuiEnabled(Enum.CoreGuiType.Chat,OldSetting)--probably defaults to false i am too tired for the making of this lol
-						end
-						ChatChanged=false
-					end
-				end)
-			end
-
-			if StarterGui then
-				FixCore(StarterGui)
-				if not StarterGui:GetCoreGuiEnabled(Enum.CoreGuiType.Chat) then
-					StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat,true)
-				end
-			else
-				local Connection; Connection=game.ChildAdded:Connect(function(x)
-					if x:IsA("StarterGui") then
-						FixCore(x)
-						Connection:Disconnect()
-					end
-				end)
-			end
-
-			if not game:IsLoaded() then
-				game.Loaded:wait()
-			end
-
-			local CoreGui=game:GetService("CoreGui")
-			local TweenService=game:GetService("TweenService")
-			local Players=game:GetService("Players")
-
-			local Player=Players.LocalPlayer
-
-			local PlayerGui=Player:FindFirstChildWhichIsA("PlayerGui") do
-				if not PlayerGui then
-					repeat task.wait() until Player:FindFirstChildWhichIsA("PlayerGui")
-					PlayerGui=Player:FindFirstChildWhichIsA("PlayerGui")
-				end
-			end
-
-			local Notify=function(_Title,_Text,Time)
-				print(_Title)
-				print(_Text)
-				print(Time)
-			end
-
-			local Tween=function(Object,Time,Style,Direction,Property)
-				return TweenService:Create(Object,TweenInfo.new(Time,Enum.EasingStyle[Style],Enum.EasingDirection[Direction]),Property)
-			end
-
-			local ACLWarning=Instance.new("ScreenGui")
-			local Background=Instance.new("Frame")
-			local Top=Instance.new("Frame")
-			local Exit=Instance.new("TextButton")
-			local UICorner=Instance.new("UICorner")
-			local WarningLbl=Instance.new("TextLabel")
-			local Loading=Instance.new("Frame")
-			local Bar=Instance.new("Frame")
-			local WarningBackground=Instance.new("Frame")
-			local WarningFrame=Instance.new("Frame")
-			local Despair=Instance.new("TextLabel")
-			local UIListLayout=Instance.new("UIListLayout")
-			local Reason_1=Instance.new("TextLabel")
-			local Reason_2=Instance.new("TextLabel")
-			local Trollge=Instance.new("ImageLabel")
-			local UIPadding=Instance.new("UIPadding")
-
-			local MakeGuiThread=coroutine.wrap(function()
-				if syn then
-					if gethui then
-						gethui(ACLwarning)
-					else
-						syn.protect_gui(ACLWarning)
-					end
-				end
-
-				ACLWarning.Name="ACL Warning"
-				ACLWarning.Parent=COREGUI
-				ACLWarning.Enabled=false
-				ACLWarning.DisplayOrder=-2147483648
-
-				Background.Name="Background"
-				Background.Parent=ACLWarning
-				Background.AnchorPoint=Vector2.new(0.5,0.5)
-				Background.BackgroundColor3=Color3.fromRGB(21,0,0)
-				Background.BorderSizePixel=0
-				Background.Position=UDim2.new(0.5,0,0.5,0)
-				Background.Size=UDim2.new(0.300000012,0,0.5,0)
-
-				Top.Name="Top"
-				Top.Parent=Background
-				Top.AnchorPoint=Vector2.new(0.5,0.5)
-				Top.BackgroundColor3=Color3.fromRGB(18,18,18)
-				Top.BorderSizePixel=0
-				Top.Position=UDim2.new(0.5,0,0.100000001,0)
-				Top.Size=UDim2.new(0.899999976,0,0.100000001,0)
-
-				Exit.Name="Exit"
-				Exit.Parent=Top
-				Exit.AnchorPoint=Vector2.new(0.5,0.5)
-				Exit.BackgroundColor3=Color3.fromRGB(38,0,0)
-				Exit.Position=UDim2.new(0.949999988,0,0.5,0)
-				Exit.Size=UDim2.new(0.100000001,-6,1,-9)
-				Exit.Visible=false
-				Exit.Font=Enum.Font.Arcade
-				Exit.Text="X"
-				Exit.TextColor3=Color3.fromRGB(255,255,255)
-				Exit.TextScaled=true
-				Exit.TextSize=14.000
-				Exit.TextWrapped=true
-
-				UICorner.CornerRadius=UDim.new(0.200000003,0)
-				UICorner.Parent=Exit
-
-				WarningLbl.Name="WarningLbl"
-				WarningLbl.Parent=Top
-				WarningLbl.BackgroundColor3=Color3.fromRGB(255,255,255)
-				WarningLbl.BackgroundTransparency=1.000
-				WarningLbl.Position=UDim2.new(0,17,0,0)
-				WarningLbl.Size=UDim2.new(0.5,0,1,0)
-				WarningLbl.Font=Enum.Font.Arcade
-				WarningLbl.Text="Warning!"
-				WarningLbl.TextColor3=Color3.fromRGB(255,255,255)
-				WarningLbl.TextScaled=true
-				WarningLbl.TextSize=14.000
-				WarningLbl.TextWrapped=true
-				WarningLbl.TextXAlignment=Enum.TextXAlignment.Left
-
-				Loading.Name="Loading"
-				Loading.Parent=Top
-				Loading.AnchorPoint=Vector2.new(0.5,0.5)
-				Loading.BackgroundColor3=Color3.fromRGB(18,18,18)
-				Loading.BorderSizePixel=0
-				Loading.Position=UDim2.new(0.699999988,0,0.5,0)
-				Loading.Size=UDim2.new(0.349999994,0,0.0199999996,0)
-
-				Bar.Name="Bar"
-				Bar.Parent=Loading
-				Bar.BackgroundColor3=Color3.fromRGB(255,255,255)
-				Bar.BorderSizePixel=0
-				Bar.Size=UDim2.new(0,0,1,0)
-
-				WarningBackground.Name="WarningBackground"
-				WarningBackground.Parent=Background
-				WarningBackground.AnchorPoint=Vector2.new(0.5,0.5)
-				WarningBackground.BackgroundColor3=Color3.fromRGB(9,9,9)
-				WarningBackground.BorderSizePixel=0
-				WarningBackground.Position=UDim2.new(0.5,0,0.550000012,0)
-				WarningBackground.Size=UDim2.new(0.899999976,0,0.800000012,0)
-
-				WarningFrame.Name="WarningFrame"
-				WarningFrame.Parent=WarningBackground
-				WarningFrame.AnchorPoint=Vector2.new(0.5,0.5)
-				WarningFrame.BackgroundColor3=Color3.fromRGB(17,17,17)
-				WarningFrame.BorderSizePixel=0
-				WarningFrame.Position=UDim2.new(0.5,0,0.5,0)
-				WarningFrame.Size=UDim2.new(0.899999976,0,0.899999976,0)
-
-				Despair.Name="Despair"
-				Despair.Parent=WarningFrame
-				Despair.AnchorPoint=Vector2.new(0.5,0.5)
-				Despair.BackgroundColor3=Color3.fromRGB(17,17,17)
-				Despair.BackgroundTransparency=1.000
-				Despair.BorderColor3=Color3.fromRGB(27,42,53)
-				Despair.BorderSizePixel=0
-				Despair.Position=UDim2.new(0.5,0,0.100000001,0)
-				Despair.Size=UDim2.new(0.949999988,0,0.119999997,0)
-				Despair.Font=Enum.Font.Oswald
-				Despair.Text="Anti Chat Logger will not work here!"
-				Despair.TextColor3=Color3.fromRGB(255,255,255)
-				Despair.TextScaled=true
-				Despair.TextSize=50.000
-				Despair.TextWrapped=true
-				Despair.TextYAlignment=Enum.TextYAlignment.Top
-
-				UIListLayout.Parent=WarningFrame
-				UIListLayout.HorizontalAlignment=Enum.HorizontalAlignment.Center
-				UIListLayout.SortOrder=Enum.SortOrder.LayoutOrder
-				UIListLayout.Padding=UDim.new(0,15)
-
-				Reason_1.Name="Reason_1"
-				Reason_1.Parent=WarningFrame
-				Reason_1.AnchorPoint=Vector2.new(0.5,0.5)
-				Reason_1.BackgroundColor3=Color3.fromRGB(17,17,17)
-				Reason_1.BackgroundTransparency=1.000
-				Reason_1.BorderColor3=Color3.fromRGB(27,42,53)
-				Reason_1.BorderSizePixel=0
-				Reason_1.Position=UDim2.new(0.5,0,0.100000001,0)
-				Reason_1.Size=UDim2.new(0.949999988,0,0.100000001,0)
-				Reason_1.Visible=false
-				Reason_1.Font=Enum.Font.Oswald
-				Reason_1.Text="-Chat Module was not found."
-				Reason_1.TextColor3=Color3.fromRGB(255,0,0)
-				Reason_1.TextScaled=true
-				Reason_1.TextSize=50.000
-				Reason_1.TextWrapped=true
-				Reason_1.TextYAlignment=Enum.TextYAlignment.Top
-
-				Reason_2.Name="Reason_2"
-				Reason_2.Parent=WarningFrame
-				Reason_2.AnchorPoint=Vector2.new(0.5,0.5)
-				Reason_2.BackgroundColor3=Color3.fromRGB(17,17,17)
-				Reason_2.BackgroundTransparency=1.000
-				Reason_2.BorderColor3=Color3.fromRGB(27,42,53)
-				Reason_2.BorderSizePixel=0
-				Reason_2.Position=UDim2.new(0.5,0,0.100000001,0)
-				Reason_2.Size=UDim2.new(0.949999988,0,0.100000001,0)
-				Reason_2.Visible=false
-				Reason_2.Font=Enum.Font.Oswald
-				Reason_2.Text="-MessagePosted function is invalid."
-				Reason_2.TextColor3=Color3.fromRGB(255,0,0)
-				Reason_2.TextScaled=true
-				Reason_2.TextSize=50.000
-				Reason_2.TextWrapped=true
-				Reason_2.TextYAlignment=Enum.TextYAlignment.Top
-
-				Trollge.Name="Trollge"
-				Trollge.Parent=WarningFrame
-				Trollge.AnchorPoint=Vector2.new(0.5,0.5)
-				Trollge.BackgroundColor3=Color3.fromRGB(255,255,255)
-				Trollge.BackgroundTransparency=1.000
-				Trollge.Position=UDim2.new(0.5,0,0.670000017,0)
-				Trollge.Size=UDim2.new(0.449999988,0,0.5,0)
-				Trollge.Image="rbxassetid://10104834800"
-
-				UIPadding.Parent=WarningFrame
-				UIPadding.PaddingTop=UDim.new(0,10)
-
-				Exit.MouseButton1Click:Connect(function()
-					local UpTween=Tween(Background,.2,"Quint","Out",{Position=UDim2.new(0.5,0,0.45,0)})
-					local DownTween=Tween(Background,1,"Quad","Out",{Position=UDim2.new(0.5,0,2,0)})
-					UpTween:Play()
-					UpTween.Completed:wait()
-					DownTween:Play()
-					DownTween.Completed:wait()
-					ACLWarning:Destroy()
-				end)
-			end)()
-
-			local ExitCooldown=function()
-				wait(.5)
-				local Tween=Tween(Bar,3,"Quad","InOut",{Size=UDim2.new(1,0,1,0)})
-				Tween:Play()
-				Tween.Completed:wait()
-				Loading:Destroy()
-				Exit.Visible=true
-			end
-
-			local PlayerScripts=Player:WaitForChild("PlayerScripts")
-			local ChatMain=PlayerScripts:FindFirstChild("ChatMain",true) or false
-
-			if not ChatMain then
-				local Timer=tick()
-				repeat
-					task.wait()
-				until PlayerScripts:FindFirstChild("ChatMain",true) or tick()>(Timer+3)
-				ChatMain=PlayerScripts:FindFirstChild("ChatMain",true)
-				if not ChatMain then
-					ACLWarning.Enabled=true
-					Reason_1.Visible=true
-					ExitCooldown()
-					return
-				end
-			end
-
-			local PostMessage=require(ChatMain).MessagePosted
-
-			if not PostMessage then
-				ACLWarning.Enabled=true
-				Reason_2.Visible=true
-				ExitCooldown()
-				return
-			end
-
-			local MessageEvent=Instance.new("BindableEvent")
-			local OldFunctionHook
-			OldFunctionHook=hookfunction(PostMessage.fire,function(self,Message)
-				if not checkcaller() and self==PostMessage then
-					MessageEvent:Fire(Message)
-					return
-				end
-				return OldFunctionHook(self,Message)
-			end)
-
-			if setfflag then
-				setfflag("AbuseReportScreenshot","False")
-				setfflag("AbuseReportScreenshotPercentage","0")
-			end
-
-			ChatFixToggle=false
-			task.spawn(function()
-				wait(1)
-				ACLWarning:Destroy()
-			end)
-			if OldSetting then
-				StarterGui:SetCoreGuiEnabled(CoreGuiSettings[1],CoreGuiSettings[2])
-			end
-			Notify("🔹Anthony's ACL🔹","Anti Chat and Screenshot Logger Loaded!",15)
-			print(string.format("Anti Chat-Logger has loaded in %s seconds.",tostring(tick()-ACL_LoadTime):sub(1,4)))
-			wait(0.3)
-			TextButton.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
-			wait(0.9)
-			DoNotif("Anti chat log has been ran")
-		end)
-	end
-	coroutine.wrap(CPNQ_fake_script)()
-	function OZEERJ_fake_script()
-		TextButton_2.MouseButton1Click:Connect(function()
-			TextButton_2.Parent:TweenPosition(UDim2.new(0.355,0,1.291,0),"Out","Quint",1,true)
-			wait(0.9)
-			TextButton_2.Parent.Parent:Destroy()
-		end)
-	end
-	coroutine.wrap(OZEERJ_fake_script)()
-	function ELJBIKO_fake_script()
-		Frame.Position=UDim2.new(0.355,0,-1.291,0)
-
-		Frame:TweenPosition(UDim2.new(0.354,0,0.316,0),"Out","Quint",1,true)
-
-
-	end
-	coroutine.wrap(ELJBIKO_fake_script)()
 end)
 
 cmd.add({"chat","message"},{"chat <text> (message)","Chats you,useful if youre muted"},function(...)
@@ -6601,7 +5602,7 @@ cmd.add({"fling"},{"fling <player>", "Fling the given player"},function(plr)
 	end
 end)
 
-cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSELF SCRIPT this will be bad when taken out of context"},function()
+--[[cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSELF SCRIPT this will be bad when taken out of context"},function()
 	local A_1="Okay.. i will do it."
 	local A_2="All"
 	lib.LocalPlayerChat(A_1,A_2)
@@ -6619,7 +5620,7 @@ cmd.add({"commitoof","suicide","kys"},{"commitoof (suicide,kys)","FE KILL YOURSE
 	getChar().Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 	wait(0.5)
 	getChar().Humanoid.Health=0
-end)
+end)]]
 
 cmd.add({"volume","vol"},{"volume <1-10> (vol)","Changes your volume"},function(vol)
 	amount=vol/10
@@ -6752,53 +5753,56 @@ cmd.add({"unfollow","unstalk","unwalk","unpathfind"},{"unfollow","Stop all attem
 	lib.disconnect("follow")
 end)
 
-cmd.add({"pathfind"},{"pathfind <player>","Follow a player using the pathfinder API wherever they go"},function(p)
-	lib.disconnect("follow")
-	local players=argument.getPlayers(p)
-	local targetPlayer=players[1]
-	local debounce=false
-	lib.connect("follow",RunService.Stepped:Connect(function()
-		if debounce then return end
-		debounce=true
-		local target=targetPlayer.Character
-		if target and character then
-			local hum=character:FindFirstChildWhichIsA("Humanoid")
-			local main=target:FindFirstChild("HumanoidRootPart")
-			if hum then
-				local targetPart=target:FindFirstChild("HumanoidRootPart") or target:FindFirstChild("Head")
-				local targetPos=(targetPart.CFrame*CFrame.new(0,0,-0.5)).p
-				local PathService=game:GetService("PathfindingService")
-				local path=PathService:CreatePath({
-					AgentRadius=2,
-					AgentHeight=5,
-					AgentCanJump=true
-				})
-				local points=path:ComputeAsync(main.Position,targetPos)
+cmd.add({"pathfind"}, {"pathfind <player>", "Follow a player using the pathfinder API wherever they go"}, function(...)
+    local Username = (...)
+    local targetPlayer = getPlr(Username)
+    if not targetPlayer then return end
 
-				if path.Status then
-					local waypoints=path:GetWaypoints()
-					for i,waypoint in pairs(waypoints) do
-						if i>2 then break end
-						if waypoint.Action==Enum.PathWaypointAction.Jump then
-							hum.Jump=true
-						end
-						hum:MoveTo(waypoint.Position)
-						local distance=5
-						repeat
-							wait()
-							distance=(waypoint.Position-main.Position).magnitude
-						until
-						(targetPos-targetPart.Position).magnitude>2 or distance<1
+    lib.disconnect("follow")
+    local debounce = false
 
-						if (targetPos-targetPart.Position).magnitude>2 then
-							break
-						end
-					end
-				end
-			end
-		end
-		debounce=false
-	end))
+    lib.connect("follow", RunService.Stepped:Connect(function()
+        if debounce then return end
+        debounce = true
+
+        local target = targetPlayer.Character
+        local character = getChar()
+        if not target or not character then
+            debounce = false
+            return
+        end
+
+        local hum = character:FindFirstChildWhichIsA("Humanoid")
+        local main = target:FindFirstChild("HumanoidRootPart")
+        if hum and main then
+            local targetPart = main or target:FindFirstChild("Head")
+            local targetPos = (targetPart.CFrame * CFrame.new(0, 0, -0.5)).p
+            local PathService = game:GetService("PathfindingService")
+            local path = PathService:CreatePath({
+                AgentRadius = 2,
+                AgentHeight = 5,
+                AgentCanJump = true
+            })
+            path:ComputeAsync(hum.RootPart.Position, targetPos)
+
+            if path.Status ~= Enum.PathStatus.NoPath then
+                local waypoints = path:GetWaypoints()
+                for i, waypoint in pairs(waypoints) do
+                    if waypoint.Action == Enum.PathWaypointAction.Jump then
+                        hum:ChangeState(Enum.HumanoidStateType.Jumping)
+                        hum:MoveTo(waypoint.Position)
+                        hum.MoveToFinished:Wait()
+                    else
+                        hum:MoveTo(waypoint.Position)
+                        hum.MoveToFinished:Wait()
+                    end
+                end
+            else
+                --print("No valid path found.")
+            end
+        end
+        debounce = false
+    end))
 end)
 
 cmd.add({"freeze","thaw","anchor","fr"},{"freeze (thaw,anchor,fr)","Freezes your character"},function()
@@ -7407,6 +6411,10 @@ end)
 
 cmd.add({"serverlist","serverlister","slist"},{"serverlist (serverlister,slist)","list of servers to join in"},function(h,d)
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/ServerLister.lua"))();
+end)
+
+cmd.add({"keyboard"},{"keyboard","provides a keyboard gui for mobile users"},function(h,d)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/uuuuuuu/refs/heads/main/VirtualKeyboard.lua"))();
 end)
 
 local HumanModCons={}
@@ -8156,41 +7164,6 @@ end)
 
 cmd.add({"gravity","grav"},{"gravity <amount> (grav)","sets game gravity to whatever u want"},function(...)
 	game:GetService("Workspace").Gravity=(...)
-end)
-
-cmd.add({"uanograv","unanchorednograv","unanchorednogravity"},{"uanograv (unanchorednograv)","Makes unanchored parts have 0 gravity"},function()
-	wait();
-
-	DoNotif("Made unanchored parts have no gravity",3)
-	spawn(function()
-		while true do
-			game:GetService("Players").LocalPlayer.MaximumSimulationRadius=math.pow(math.huge,math.huge)*math.huge
-			game:GetService("Players").LocalPlayer.SimulationRadius=math.pow(math.huge,math.huge)*math.huge
-			game:GetService("RunService").Stepped:wait()
-		end
-	end)
-	function zeroGrav(part)
-		if part:FindFirstChild("BodyForce") then return end
-		local temp=Instance.new("BodyForce")
-		temp.Force=part:GetMass()*Vector3.new(0,game:GetService("Workspace").Gravity,0)
-		temp.Parent=part
-	end
-
-	for i,v in ipairs(game:GetService("Workspace"):GetDescendants()) do
-		if v:IsA("Part") and v.Anchored==false then
-			if not (v:IsDescendantOf(getChar())) then
-				zeroGrav(v)
-			end
-		end
-	end
-
-	game:GetService("Workspace").DescendantAdded:Connect(function(part)
-		if part:IsA("Part") and part.Anchored==false then
-			if not (part:IsDescendantOf(getChar())) then
-				zeroGrav(part)
-			end
-		end
-	end)
 end)
 
 cmd.add({"fireclickdetectors","fcd","firecd"},{"fireclickdetectors (fcd,firecd)","Fires every click detector that's in workspace"},function(...)
@@ -11034,14 +10007,14 @@ gui.searchCommands = function()
     local index = 0
     local lastFramePos
     local results = {}
-    
+
     for _, frame in ipairs(cmdAutofill:GetChildren()) do
         if frame:IsA("Frame") then
             local cmdName = frame.Name:lower()
             local command = Commands[cmdName]
             local displayName = command and command[2][1] or ""
             local displayNameLower = displayName:lower()
-            
+
             local aliases = {}
             local aliasText = displayName:match("%(([^%)]+)%)")
             if aliasText then
@@ -11049,10 +10022,10 @@ gui.searchCommands = function()
                     table.insert(aliases, alias:lower())
                 end
             end
-            
+
             local score = 999
             local matchText = displayName
-            
+
             if cmdName == searchTerm or displayNameLower == searchTerm then
                 score = 1
                 matchText = cmdName
@@ -11065,7 +10038,7 @@ gui.searchCommands = function()
                     end
                 end
             end
-            
+
             if score == 999 then
                 if cmdName:sub(1, #searchTerm) == searchTerm then
                     score = 2
@@ -11083,7 +10056,7 @@ gui.searchCommands = function()
                     end
                 end
             end
-            
+
             if score == 999 and #searchTerm >= 2 then
                 if cmdName:find(searchTerm, 1, true) ~= nil then
                     score = 4
@@ -11101,17 +10074,17 @@ gui.searchCommands = function()
                     end
                 end
             end
-            
+
             if score == 999 and #searchTerm >= 2 then
                 local cmdDistance = levenshtein(searchTerm, cmdName)
                 local displayDistance = levenshtein(searchTerm, displayNameLower)
-                
+
                 local bestAliasDistance = math.huge
                 for _, alias in ipairs(aliases) do
                     local aliasDistance = levenshtein(searchTerm, alias)
                     bestAliasDistance = math.min(bestAliasDistance, aliasDistance)
                 end
-                
+
                 if cmdDistance <= math.min(2, #searchTerm - 1) then
                     score = 6 + cmdDistance
                     matchText = cmdName
@@ -11123,7 +10096,7 @@ gui.searchCommands = function()
                     matchText = displayName
                 end
             end
-            
+
             if score < 999 then
                 table.insert(results, {
                     frame = frame,
@@ -11134,37 +10107,41 @@ gui.searchCommands = function()
             end
         end
     end
-    
+
     table.sort(results, function(a, b)
         if a.score == b.score then
             return a.name < b.name
         end
         return a.score < b.score
     end)
-    
+
     for _, frame in ipairs(cmdAutofill:GetChildren()) do
         if frame:IsA("Frame") then
             frame.Visible = false
         end
     end
-    
+
     for i, result in ipairs(results) do
         if i <= 5 then
             local frame = result.frame
-            frame.Input.Text = searchTerm ~= "" and result.text or result.text
-            frame.Visible = true
-            
-            local newSize = UDim2.new(0.5, math.sqrt(i) * 125, 0, 25)
-            local newYPos = (i - 1) * 28
-            local newPosition = UDim2.new(0.5, 0, 0, newYPos)
-            
-            gui.tween(frame, "Quint", "Out", 0.3, {
-                Size = newSize,
-                Position = lastFramePos and newPosition or UDim2.new(0.5, 0, 0, newYPos),
-            })
-            
-            lastFramePos = newPosition
-            index = i
+            if result.text and result.text ~= "" then
+                frame.Input.Text = result.text
+                frame.Visible = true
+
+                local newSize = UDim2.new(0.5, math.sqrt(i) * 125, 0, 25)
+                local newYPos = (i - 1) * 28
+                local newPosition = UDim2.new(0.5, 0, 0, newYPos)
+
+                gui.tween(frame, "Quint", "Out", 0.3, {
+                    Size = newSize,
+                    Position = lastFramePos and newPosition or UDim2.new(0.5, 0, 0, newYPos),
+                })
+
+                lastFramePos = newPosition
+                index = i
+            else
+                frame.Visible = false
+            end
         end
     end
 end
