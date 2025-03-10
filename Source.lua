@@ -138,7 +138,7 @@ local opt={
 --[[ Update Logs ]]--
 local updLogs={}
 
-local updDate="3/08/2025" --month,day,year
+local updDate="3/10/2025" --month,day,year
 
 --[[ VARIABLES ]]--
 
@@ -158,9 +158,9 @@ local SoundService=game:GetService("SoundService");
 local Lighting=game:GetService("Lighting");
 local ReplicatedStorage=game:GetService("ReplicatedStorage");
 local GuiService=game:GetService("GuiService");
-local COREGUI=gethui();
-local CoreGui=gethui();
-local coregui=gethui();
+local COREGUI=game:GetService("CoreGui");
+local CoreGui=game:GetService("CoreGui");
+local coregui=game:GetService("CoreGui");
 local IsOnMobile=false--table.find({Enum.Platform.IOS,Enum.Platform.Android},UserInputService:GetPlatform());
 local IsOnPC=false--table.find({Enum.Platform.Windows,Enum.Platform.UWP,Enum.Platform.Linux,Enum.Platform.SteamOS,Enum.Platform.OSX,Enum.Platform.Chromecast,Enum.Platform.WebOS},UserInputService:GetPlatform());
 local sethidden=sethiddenproperty or set_hidden_property or set_hidden_prop
