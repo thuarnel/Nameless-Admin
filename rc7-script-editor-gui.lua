@@ -45,24 +45,26 @@ local exit_button = Instance.new("TextButton")
 local line_label = Instance.new("TextLabel")
 local main_scrolling = Instance.new("ScrollingFrame")
 
-open_button.Name = "open_button"
-open_button.Parent = ui
-open_button.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+open_button.BackgroundColor3 = Color3.new()
 open_button.BorderSizePixel = 0
-open_button.Position = UDim2.new(0, 0, 0.976239681, 0)
-open_button.Size = UDim2.new(0, 24, 0, 14)
+open_button.AnchorPoint = Vector2.new(0, 0)
+open_button.Position = UDim2.new(0, 0, 0.9, 0)
+open_button.Size = UDim2.fromScale(0.1, 0.05)
 open_button.Visible = false
 open_button.Font = Enum.Font.SourceSans
-open_button.Text = ""
-open_button.TextColor3 = Color3.fromRGB(0, 0, 0)
-open_button.TextSize = 14.000
+open_button.Text = 'Open RC7se'
+open_button.TextScaled = true
+open_button.TextColor3 = Color3.new(1, 1, 1)
+open_button.TextSize = 14
+open_button.Parent = ui
 
 main_image.Name = "main_image"
 main_image.Parent = ui
 main_image.Active = true
 main_image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 main_image.BorderSizePixel = 0
-main_image.Position = UDim2.new(0.649910629, 0, 0.389118433, 0)
+main_image.AnchorPoint = Vector2.new(0.5, 0.5)
+main_image.Position = UDim2.fromScale(0.5, 0.5)
 main_image.Size = UDim2.new(0, 337, 0, 341)
 main_image.Image = "http://www.roblox.com/asset/?id=12263991723"
 
