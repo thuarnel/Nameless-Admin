@@ -155,7 +155,11 @@ local coregui = game:GetService('CoreGui')
 local runservice = game:GetService('RunService')
 local httpservice = game:GetService('HttpService')
 local tweenservice = game:GetService('TweenService')
+local teleportservice = game:GetService('TeleportService')
 local userinputservice = game:GetService('UserInputService')
+
+local placeid = game.PlaceId
+local jobid = game.JobId
 
 --[[ VARIABLES ]]--
 
@@ -236,41 +240,6 @@ pcall(function()
 	control_module = require(player:FindFirstChildOfClass("PlayerScripts"):WaitForChild('PlayerModule', 5):WaitForChild("ControlModule", 5))
 end)
 
-local bringc = {}
-local msg = { 'Hey', 'Hello', 'Hi', 'Greetings', 'Good day', 'What\'s up' }
-local goof_msgs = {
-	"Egg",
-	"i am a goofy goober",
-	"mmmm lasagna",
-	"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-	"i am wondering if i even have a life",
-	"[REDACTED]",
-	"hey guys welcome to another video",
-	"⚠️⚠️⚠️",
-	":-(",
-	"(╯°□°)╯︵ ┻━┻",
-	"freaky",
-	"unreal",
-	"💀💀💀",
-	"X_X",
-	"not bothered to add a message here",
-	"bruh moment",
-	"yeet",
-	"no cap fr fr",
-	"sus",
-	"vibing in the ritz car",
-	"keyboard go brrrrr",
-	"404: brain not found",
-	"loading personality.exe",
-	"oof size large",
-	"this ain't it chief",
-	"weird flex but ok",
-	"poggers",
-	"sheeeesh",
-	"i forgor 💀",
-	"touch grass"
-}
-
 --[[ Prediction ]]--
 function levenshtein(s,t)
 	local d={}
@@ -289,29 +258,6 @@ function levenshtein(s,t)
 		end
 	end
 	return d[lenS][lenT]
-end
-
-function correct_argument(arg)
-	local closer=nil
-	local min=math.huge
-
-	for cmd in pairs(commands) do
-		local j=levenshtein(arg,cmd)
-		if j<min then
-			min=j
-			closer=cmd
-		end
-	end
-
-	for alias in pairs(aliases) do
-		local j=levenshtein(arg,alias)
-		if j<min then
-			min=j
-			closer=alias
-		end
-	end
-
-	return closer
 end
 
 function isRelAdmin(Player)
@@ -373,39 +319,118 @@ end
 local commands = {}
 local aliases = {}
 
-local command_count = 0
-local cmd = {}
-
-function cmd.add(...)
-	local aliases, information, callback = unpack({...})
-	for x, command in pairs(aliases) do
-		if type(command) == 'string' then
-			if x == 1 then
-				commands[command:lower()] = { callback, information }
-			else
-				aliases[command:lower()] = { callback, information }
-			end
-		end
+function correct_argument(arg)
+	local closer = nil
+	local min = math.huge
+ 
+	for cmd in pairs(commands) do
+	   local j = levenshtein(arg, cmd)
+	   if j < min then
+		  min = j
+		  closer = cmd
+	   end
 	end
-	command_count += 1
+ 
+	for alias in pairs(aliases) do
+	   local j = levenshtein(arg, alias)
+	   if j < min then
+		  min = j
+		  closer = alias
+	   end
+	end
+ 
+	if closer and closer:lower() == arg:lower() then
+	   return nil
+	end
+ 
+	return closer
 end
 
-function cmd.run(arguments)
-	local caller, arguments = args[1], args
-	table.remove(arguments, 1)
-	local success, response = pcall(function()
-		local command = commands[caller:lower()] or aliases[caller:lower()]
-		if type(command) == 'table' and type(command[1]) == 'function' then
-			command[1](unpack(arguments))
-		else
-			local closest = correct_argument(caller:lower())
-			if type(closest) == 'string' then
-				send_notification("Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?")
+local command_count = 0
+local cmd = {}
+do
+	function cmd.add(...)
+		local aliases, information, callback = unpack({...})
+		for x, command in pairs(aliases) do
+			if type(command) == 'string' then
+				if x == 1 then
+					commands[command:lower()] = { callback, information }
+				else
+					aliases[command:lower()] = aliases[aliases[1]:lower()]
+				end
 			end
 		end
-	end)
-	if success ~= true then
-		warn(admin_name .. ': ' .. msg)
+		command_count += 1
+	end
+	
+	function cmd.run(arguments)
+		local caller, arguments = arguments[1], arguments
+		table.remove(arguments, 1)
+		local success, response = pcall(function()
+			local command = commands[caller:lower()] or aliases[caller:lower()]
+			if type(command) == 'table' and type(command[1]) == 'function' then
+				command[1](unpack(arguments))
+			else
+				local closest = correct_argument(caller:lower())
+				if type(closest) == 'string' then
+					send_notification("Command [ "..caller.." ] doesn't exist\nDid you mean [ "..closest.." ]?")
+				end
+			end
+		end)
+		if success ~= true then
+			warn('[NA]: Command Error: ' .. tostring(response))
+		end
+	end
+end
+
+local lib = { parse_command = nil, parse_text = nil }
+do
+	function lib.wrap(f)
+		return coroutine.wrap(f)()
+	end
+
+	function lib.parse_command(text, rPlr)
+		lib.wrap(function()
+			local commands
+			if rPlr then
+				commands=lib.parse_text(text, options.prefix, rPlr)
+			else
+				commands=lib.parse_text(text, options.prefix)
+			end
+			for _,parsed in pairs(commands) do
+				local args = {}
+				for arg in parsed:gmatch("[^ ]+") do
+					table.insert(args,arg)
+				end
+				cmd.run(args)
+			end
+		end)
+	end
+
+	function lib.parse_text(text,watch,rPlr)
+		local parsed={}
+		if not text then return nil end
+		local prefix
+		if rPlr then
+			prefix=isRelAdmin(rPlr) and ";" or watch
+			watch=prefix
+		else
+			prefix=watch
+		end
+		for arg in text:gmatch("[^"..watch.."]+") do
+			arg=arg:gsub("-","%%-")
+			local pos=text:find(arg)
+			arg=arg:gsub("%%","")
+			if pos then
+				local find=text:sub(pos-prefix:len(),pos-1)
+				if (find==prefix and watch==prefix) or watch~=prefix then
+					table.insert(parsed,arg)
+				end
+			else
+				table.insert(parsed,nil)
+			end
+		end
+		return parsed
 	end
 end
 
@@ -433,13 +458,6 @@ end
 na_storage.Name = random_string()
 na_storage.Parent = iamcore
 
-local lib = {}
-
-function lib.wrap(f)
-	return coroutine.wrap(f)()
-end
-
-local wrap = lib.wrap
 local wait = function(int)
 	if type(int) ~= 'number' then
 		int = 0
@@ -453,585 +471,6 @@ local wait = function(int)
 	return x, t
 end
 
-function getRoot(char)
-	local rootPart=char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-	return rootPart
-end
-
-function getChar()
-	return player.Character
-end
-
-function getPlrChar(plr)
-	local isChar=players[plr].Character
-	if isChar then
-		return isChar
-	else
-		return false
-	end
-end
-
-function getBp()
-	return player:FindFirstChildOfClass("Backpack")
-end
-
-function getHum()
-	if player and getChar() and getChar():FindFirstChildOfClass("Humanoid") then
-		return getChar():FindFirstChildOfClass("Humanoid")
-	else
-		return false
-	end
-end
-
-function getPlrHum(plr)
-	if plr and plr.Character and plr.Character:FindFirstChildOfClass("Humanoid") then
-		return plr.Character:FindFirstChildOfClass("Humanoid")
-	else
-		return false
-	end
-end
-
-function isNumber(str)
-	if tonumber(str)~=nil or str=='inf' then
-		return true
-	end
-end
-
-function FindInTable(tbl,val)
-	if tbl==nil then return false end
-	for _,v in pairs(tbl) do
-		if v==val then return true end
-	end 
-	return false
-end
-
-function GetInTable(Table,Name)
-	for i=1,#Table do
-		if Table[i]==Name then
-			return i
-		end
-	end
-	return false
-end
-
---[[ FUNCTION TO GET A PLAYER ]]--
-local getPlr=function(Name)
-	if Name:lower()=="random" then
-		return players:GetPlayers()[math.random(#players:GetPlayers())]
-	elseif Name:lower()=="me" then
-		return player
-	elseif not Name or Name=='' then
-		return player
-	elseif Name:lower()=="friends" then
-		local friends={}
-		for _,plr in pairs(players:GetPlayers()) do
-			if plr:IsFriendsWith(LocalPlayer.UserId) and plr~=LocalPlayer then
-				table.insert(friends,plr)
-			end
-		end
-		return friends
-	elseif Name:lower()=="nonfriends" then
-		local noFriends={}
-		for _,plr in pairs(players:GetPlayers()) do
-			if not plr:IsFriendsWith(LocalPlayer.UserId) and plr~=LocalPlayer then
-				table.insert(noFriends,plr)
-			end
-		end
-		return noFriends
-	elseif Name:lower()=="enemies" then
-		local nonTeam={}
-		local team=LocalPlayer.Team
-		for _,plr in pairs(players:GetPlayers()) do
-			if plr.Team~=team then
-				table.insert(nonTeam,plr)
-			end
-		end
-		return nonTeam
-	elseif Name:lower()=="allies" then
-		local teamBuddies={}
-		local team=LocalPlayer.Team
-		for _,plr in pairs(players:GetPlayers()) do
-			if plr.Team==team then
-				table.insert(teamBuddies,plr)
-			end
-		end
-		return teamBuddies
-	else
-		Name=Name:lower():gsub("%s","")
-		for _,x in next,players:GetPlayers() do
-			if x.Name:lower():match(Name) then
-				return x
-			elseif x.DisplayName:lower():match("^"..Name) then
-				return x
-			end
-		end
-	end
-end
-
-local ESPenabled=false
-
-
-function round(num,numDecimalPlaces)
-	local mult=10^(numDecimalPlaces or 0)
-	return math.floor(num*mult+0.5) / mult
-end
-
-local function placeName()
-	local page = game:GetService("AssetService"):GetGamePlacesAsync()
-	while true do
-		if break_all_loops then
-			break
-		end
-		for _,place in ipairs(page:GetCurrentPage()) do
-			if place.PlaceId==PlaceId then
-				return place.Name
-			end
-		end
-		if page.IsFinished then
-			break
-		end
-		page:AdvanceToNextPageAsync()
-	end
-	return 'unknown'
-end
-
-function removeESP()
-	for i,c in pairs(COREGUI:GetChildren()) do
-		if string.sub(c.Name,-4)=='_ESP' then
-			c:Destroy()
-		end
-	end
-end
-
-function ESP(plr)
-	task.spawn(function()
-		for i,v in pairs(COREGUI:GetChildren()) do
-			if v.Name==plr.Name..'_ESP' then
-				v:Destroy()
-			end
-		end
-		wait()
-
-		local function makeESP()
-			if plr.Character and plr.Name~=player.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
-				local ESPholder=Instance.new("Folder")
-				ESPholder.Name=plr.Name..'_ESP'
-				ESPholder.Parent=COREGUI
-				repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-
-				local a=Instance.new("Highlight")
-				a.Name=plr.Name
-				a.Parent=ESPholder
-				a.Adornee=plr.Character
-				a.FillTransparency=0.45
-				a.FillColor=Color3.fromRGB(0,255,0)
-
-				if plr.Character and plr.Character:FindFirstChild('Head') then
-					local BillboardGui=Instance.new("BillboardGui")
-					local TextLabel=Instance.new("TextLabel")
-					BillboardGui.Adornee=plr.Character:FindFirstChild("Head")
-					BillboardGui.Name=plr.Name
-					BillboardGui.Parent=ESPholder
-					BillboardGui.Size=UDim2.new(0,100,0,150)
-					BillboardGui.StudsOffset=Vector3.new(0,1,0)
-					BillboardGui.AlwaysOnTop=true
-					TextLabel.Parent=BillboardGui
-					TextLabel.BackgroundTransparency=1
-					TextLabel.Position=UDim2.new(0,0,0,-50)
-					TextLabel.Size=UDim2.new(0,100,0,100)
-					TextLabel.Font=Enum.Font.SourceSansSemibold
-					TextLabel.TextSize=17
-					TextLabel.TextColor3=Color3.new(12,4,20)
-					TextLabel.TextStrokeTransparency=0.3
-					TextLabel.TextYAlignment=Enum.TextYAlignment.Bottom
-					TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName..''
-					TextLabel.ZIndex=10
-
-					local espLoopFunc
-					espLoopFunc = connect(runservice.RenderStepped, function()
-						if COREGUI:FindFirstChild(plr.Name..'_ESP') then
-							if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and player.Character and getRoot(player.Character) and player.Character:FindFirstChildOfClass("Humanoid") then
-								local pos=math.floor((getRoot(player.Character).Position-getRoot(plr.Character).Position).magnitude)
-								TextLabel.Text='@'..plr.Name..' | '..plr.DisplayName ..' | Studs: '..pos
-								a.Adornee=plr.Character
-								BillboardGui.Adornee=plr.Character:FindFirstChild("Head")
-							end
-						else
-							espLoopFunc:Disconnect()
-						end
-					end)
-
-					ESPholder:SetAttribute("LoopConnection", true)
-				end
-			end
-		end
-
-		makeESP()
-
-		local addedConnection
-		addedConnection = connect(plr.CharacterAdded, function()
-			if not ESPenabled then
-				addedConnection:Disconnect()
-				return
-			end
-
-			for i,v in pairs(COREGUI:GetChildren()) do
-				if v.Name==plr.Name..'_ESP' then
-					v:Destroy()
-				end
-			end
-
-			task.wait(1)
-
-			makeESP()
-		end)
-
-		if COREGUI:FindFirstChild(plr.Name..'_ESP') then
-			COREGUI:FindFirstChild(plr.Name..'_ESP'):SetAttribute("AddedConnection", true)
-		end
-	end)
-end
-
-
-
-local Signal1,Signal2=nil,nil
-local flyMobile=nil
-local MobileWeld=nil
-
-function x(v)
-	if v then
-		for _,i in pairs(game:GetService("Workspace"):GetDescendants()) do
-			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
-				i.LocalTransparencyModifier=0.5
-			end
-		end
-	else
-		for _,i in pairs(game:GetService("Workspace"):GetDescendants()) do
-			if i:IsA("BasePart") and not i.Parent:FindFirstChild("Humanoid") and not i.Parent.Parent:FindFirstChild("Humanoid") then
-				i.LocalTransparencyModifier=0
-			end
-		end
-	end
-end
-
-local cmdlp=player
-
-plr=cmdlp
-
-local cmdm=plr:GetMouse()
-local goofyFLY=nil
-function sFLY(vfly)
-	while not cmdlp or not cmdlp.Character or not cmdlp.Character:FindFirstChild('HumanoidRootPart') or not cmdlp.Character:FindFirstChild('Humanoid') or not cmdm do
-		wait()
-	end 
-	if goofyFLY then goofyFLY:Destroy() end
-	goofyFLY=Instance.new("Part",game:GetService("Workspace"))
-	goofyFLY.Name=random_string()
-	goofyFLY.Size, goofyFLY.CanCollide = Vector3.new(0.05, 0.05, 0.05), false
-	local CONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
-	local lCONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
-	local SPEED=0
-	function FLY()
-		FLYING=true
-		local BG=Instance.new('BodyGyro',goofyFLY)
-		local BV=Instance.new('BodyVelocity',goofyFLY)
-		local Weld=Instance.new("Weld",goofyFLY)
-		BG.Name=random_string()
-		BV.Name=random_string()
-		Weld.Name=random_string()
-		Weld.Part0, Weld.Part1, Weld.C0 = goofyFLY, cmdlp.Character:FindFirstChildWhichIsA("Humanoid").RootPart, CFrame.new(0, 0, 0)
-		BG.P=9e4
-		BG.maxTorque=Vector3.new(9e9,9e9,9e9)
-		BG.cframe=goofyFLY.CFrame
-		BV.velocity=Vector3.new(0,0,0)
-		BV.maxForce=Vector3.new(9e9,9e9,9e9)
-		spawn(function()
-			while FLYING do
-				if not vfly then
-					cmdlp.Character:FindFirstChild("Humanoid").PlatformStand=true
-				end
-				if CONTROL.L+CONTROL.R~=0 or CONTROL.F+CONTROL.B~=0 or CONTROL.Q+CONTROL.E~=0 then
-					SPEED=50
-				elseif not (CONTROL.L+CONTROL.R~=0 or CONTROL.F+CONTROL.B~=0 or CONTROL.Q+CONTROL.E~=0) and SPEED~=0 then
-					SPEED=0
-				end
-				if (CONTROL.L+CONTROL.R)~=0 or (CONTROL.F+CONTROL.B)~=0 or (CONTROL.Q+CONTROL.E)~=0 then
-					BV.velocity=((game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector*(CONTROL.F+CONTROL.B))+((game:GetService("Workspace").CurrentCamera.CoordinateFrame*CFrame.new(CONTROL.L+CONTROL.R,(CONTROL.F+CONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-game:GetService("Workspace").CurrentCamera.CoordinateFrame.p))*SPEED
-					lCONTROL={F=CONTROL.F,B=CONTROL.B,L=CONTROL.L,R=CONTROL.R}
-				elseif (CONTROL.L+CONTROL.R)==0 and (CONTROL.F+CONTROL.B)==0 and (CONTROL.Q+CONTROL.E)==0 and SPEED~=0 then
-					BV.velocity=((game:GetService("Workspace").CurrentCamera.CoordinateFrame.lookVector*(lCONTROL.F+lCONTROL.B))+((game:GetService("Workspace").CurrentCamera.CoordinateFrame*CFrame.new(lCONTROL.L+lCONTROL.R,(lCONTROL.F+lCONTROL.B+CONTROL.Q+CONTROL.E)*0.2,0).p)-game:GetService("Workspace").CurrentCamera.CoordinateFrame.p))*SPEED
-				else
-					BV.velocity=Vector3.new(0,0,0)
-				end
-				BG.cframe=game:GetService("Workspace").CurrentCamera.CoordinateFrame
-				wait()
-			end
-			CONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
-			lCONTROL={F=0,B=0,L=0,R=0,Q=0,E=0}
-			SPEED=0
-			BG:destroy()
-			BV:destroy()
-			cmdlp.Character.Humanoid.PlatformStand=false
-		end)
-	end
-	cmdm.KeyDown:connect(function(KEY)
-		if KEY:lower()=='w' then
-			if vfly then
-				CONTROL.F=speedofthevfly
-			else
-				CONTROL.F=speedofthefly
-			end
-		elseif KEY:lower()=='s' then
-			if vfly then
-				CONTROL.B=-speedofthevfly
-			else
-				CONTROL.B=-speedofthefly
-			end
-		elseif KEY:lower()=='a' then
-			if vfly then
-				CONTROL.L=-speedofthevfly
-			else
-				CONTROL.L=-speedofthefly
-			end
-		elseif KEY:lower()=='d' then
-			if vfly then
-				CONTROL.R=speedofthevfly
-			else
-				CONTROL.R=speedofthefly
-			end
-		elseif KEY:lower()=='y' then
-			if vfly then
-				CONTROL.Q=speedofthevfly*2
-			else
-				CONTROL.Q=speedofthefly*2
-			end
-		elseif KEY:lower()=='t' then
-			if vfly then
-				CONTROL.E=-speedofthevfly*2
-			else
-				CONTROL.E=-speedofthefly*2
-			end
-		end
-	end)
-	cmdm.KeyUp:connect(function(KEY)
-		if KEY:lower()=='w' then
-			CONTROL.F=0
-		elseif KEY:lower()=='s' then
-			CONTROL.B=0
-		elseif KEY:lower()=='a' then
-			CONTROL.L=0
-		elseif KEY:lower()=='d' then
-			CONTROL.R=0
-		elseif KEY:lower()=='y' then
-			CONTROL.Q=0
-		elseif KEY:lower()=='t' then
-			CONTROL.E=0
-		end
-	end)
-	FLY()
-end
-
-
-local tool=nil
-spawn(function()
-	repeat wait() until getChar()
-	tool=getBp():FindFirstChildOfClass("Tool") or getChar():FindFirstChildOfClass("Tool") or nil
-end)
-
-function attachTool(tool,cf)
-	for i,v in pairs(tool:GetDescendants()) do
-		if not (v:IsA("BasePart") or v:IsA("Mesh") or v:IsA("SpecialMesh")) then
-			v:Destroy()
-		end
-	end
-	wait()
-	getChar().Humanoid.Name=1
-	local l=getChar()["1"]:Clone()
-	l.Parent=getChar()
-	l.Name="Humanoid"
-
-	getChar()["1"]:Destroy()
-	game:GetService("Workspace").CurrentCamera.CameraSubject=getChar()
-	getChar().Animate.Disabled=true
-	wait();
-	getChar().Humanoid.DisplayDistanceType="None"
-
-	tool.Parent=getChar()
-end
-
-local nc=false
-local ncLoop=nil
-ncLoop=runservice.Stepped:Connect(function()
-	if nc and getChar()~=nil then
-		for _,v in pairs(getChar():GetDescendants()) do
-			if v:IsA("BasePart") and v.CanCollide==true then
-				v.CanCollide=false
-			end
-		end
-	end
-end)
-
-local netsleepTargets={}
-local nsLoop=nil
-nsLoop=runservice.Stepped:Connect(function()
-	if #netsleepTargets==0 then return end
-	for i,v in pairs(netsleepTargets) do
-		if v.Character then
-			for i,v in pairs(v.Character:GetChildren()) do
-				if v:IsA("BasePart")==false and v:IsA("Accessory")==false then continue end
-				if v:IsA("BasePart") then
-					sethiddenproperty(v,"NetworkIsSleeping",true)
-				elseif v:IsA("Accessory") and v:FindFirstChild("Handle") then
-					sethiddenproperty(v.Handle,"NetworkIsSleeping",true)
-				end
-			end
-		end
-	end
-end)
-
-local lp=player
-
-
---[[ LIB FUNCTIONS ]]--
-chatmsgshooks={}
-Playerchats={}
-
-lib.LocalPlayerChat=function(...)
-	local args={...} 
-	if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-		local sendto=game:GetService("TextChatService").TextChannels.RBXGeneral
-		if args[2]~=nil and  args[2]~="All"  then
-			if not Playerchats[args[2]] then
-				for i,v in pairs(game:GetService("TextChatService").TextChannels:GetChildren()) do
-					if string.find(v.Name,"RBXWhisper:") then
-						if v:FindFirstChild(args[2]) and v:FindFirstChild(player.Name) then
-							if v[player.Name].CanSend==false then
-								continue
-							end
-							sendto=v
-							Playerchats[args[2]]=v
-							break
-						end
-					end
-				end
-			else
-				sendto=Playerchats[args[2]]
-			end
-			if sendto==game:GetService("TextChatService").TextChannels.RBXGeneral then
-				chatmsgshooks[args[1]]={args[1],args}
-				task.spawn(function()
-					game:GetService("TextChatService").TextChannels.RBXGeneral:SendAsync("/w @"..args[2])
-				end)
-				return "Hooking"
-			end
-		end
-		sendto:SendAsync(args[1] or "")
-	else
-		if args[2] and args[2]~="All" then
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("/w "..args[2].." "..args[1] or "","All")
-		else
-			game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(args[1] or "","All")
-		end
-	end
-end
-
-if game:GetService("TextChatService"):FindFirstChild("TextChannels") then
-	game:GetService("TextChatService").TextChannels.ChildAdded:Connect(function(v)
-		if string.find(v.Name,"RBXWhisper:") then
-			task.wait(1)
-			for id,va in pairs(chatmsgshooks) do
-				if v:FindFirstChild(va[1]) and v:FindFirstChild(player.Name) then
-					if v[player.Name].CanSend==false then
-						continue
-					end
-					Playerchats[va[1]]=v
-					chatmsgshooks[id]=nil
-					lib.LocalPlayerChat(va[2])
-					break
-				end
-			end
-		end
-	end)
-end
-
-lib.lpchat=lib.LocalPlayerChat
-
-lib.lock=function(instance,par)
-	locks[instance]=true
-	instance.Parent=par or instance.Parent
-	instance.Name="RightGrip"
-end
-local lock=lib.lock
-local locks={}
-
-lib.find=function(t,v)	--mmmmmm
-	for i,e in pairs(t) do
-		if i==v or e==v then
-			return i
-		end
-	end
-	return nil
-end
-
-lib.parseText=function(text,watch,rPlr)
-	local parsed={}
-	if not text then return nil end
-	local prefix
-	if rPlr then
-		prefix=isRelAdmin(rPlr) and ";" or watch
-		watch=prefix
-	else
-		prefix=watch
-	end
-	for arg in text:gmatch("[^"..watch.."]+") do
-		arg=arg:gsub("-","%%-")
-		local pos=text:find(arg)
-		arg=arg:gsub("%%","")
-		if pos then
-			local find=text:sub(pos-prefix:len(),pos-1)
-			if (find==prefix and watch==prefix) or watch~=prefix then
-				table.insert(parsed,arg)
-			end
-		else
-			table.insert(parsed,nil)
-		end
-	end
-	return parsed
-end
-
-lib.parse_command=function(text,rPlr)
-	wrap(function()
-		local commands
-		if rPlr then
-			commands=lib.parseText(text,options.prefix,rPlr)
-		else
-			commands=lib.parseText(text,options.prefix)
-		end
-		for _,parsed in pairs(commands) do
-			local args={}
-			for arg in parsed:gmatch("[^ ]+") do
-				table.insert(args,arg)
-			end
-			cmd.run(args)
-		end
-	end)
-end
-
-local connections={}
-
-lib.connect=function(name,connection)	--no :(
-	connections[name..tostring(math.random(1000000,9999999))]=connection
-	return connection
-end
-
-lib.disconnect=function(name)
-	for title,connection in pairs(connections) do
-		if title:find(name)==1 then
-			connection:Disconnect()
-		end
-	end
-end
-
 local m=math			--prepare for annoying and unnecessary tool grip math
 local rad=m.rad
 local clamp=m.clamp
@@ -1042,7 +481,7 @@ local cos=m.cos
 --[[ PLAYER FUNCTIONS ]]--
 local argument={}
 argument.getPlayers=function(str)
-	local playerNames,players=lib.parseText(str,options.tuple_separator),{}
+	local playerNames,players=lib.parse_text(str,options.tuple_separator),{}
 	for _,arg in pairs(playerNames or {"me"}) do
 		arg=arg:lower()
 		local playerList=players:GetPlayers()
@@ -1085,7 +524,7 @@ end
 
 --[=[ COMMAND LIST ]=]--
 
-cmd.add({ 'resizechat', 'rc' }, { 'resizechat (rc)' }, 'Allows the chat to be resized', function()
+cmd.add({ 'resizechat' }, 'Allows the chat to be resized', function()
 	local legacy_chat_service = game:FindService('Chat')
 
 	if legacy_chat_service then
@@ -1100,7 +539,7 @@ cmd.add({ 'resizechat', 'rc' }, { 'resizechat (rc)' }, 'Allows the chat to be re
 	end
 end)
 
-cmd.add({ 'tppos' }, { 'tppos [x] [y] [z] '}, 'Teleport to the given coordinates', function(x, y, z)
+cmd.add({ 'tppos' }, 'Teleport to the given coordinates', function(x, y, z)
 	if typeof(rootpart) == 'Instance' and rootpart:IsA('BasePart') then
 		local position = rootpart.Position
 
@@ -1108,124 +547,127 @@ cmd.add({ 'tppos' }, { 'tppos [x] [y] [z] '}, 'Teleport to the given coordinates
 		local y = x and tonumber(y) or position.Y
 		local z = y and tonumber(z) or position.Z
 
-		rootpart.Position = Vector3.new(x, y, z)
+		rootpart.CFrame = CFrame.new(Vector3.new(x, y, z))
 	end
 end)
 
---[[ FUNCTIONALITY ]]--
-player.Chatted:Connect(function(str)
+cmd.add({ 'rejoin' }, 'Rejoin the server', function()
+	if #players:GetPlayers() <= 1 then
+		player:Kick("\nRejoining...")
+		wait()
+		teleportservice:Teleport(placeid, player)
+	else
+		teleportservice:TeleportToPlaceInstance(placeid, jobid, player)
+	end
+end)
+
+connect(player.Chatted, function(str)
 	lib.parse_command(str)
 end)
 
---[[ Admin Player]]
-function IsAdminAndRun(Message,Player)
-	if Admin[Player.UserId] or isRelAdmin(Player) then
-		lib.parse_command(Message,Player)
-	end
-end
-
-function CheckPermissions(Player)
-	Player.Chatted:Connect(function(Message)
-		IsAdminAndRun(Message,Player)
-	end)
-end
-
-players.PlayerAdded:Connect(function(plr)
-	CheckPermissions(plr)
-end)
-players.PlayerAdded:Connect(function(plr)
+connect(players.PlayerAdded, function(plr)
 	if ESPenabled then
 		repeat wait(1) until plr.Character
 		ESP(plr)
 	end
 end)
-for i,v in pairs(players:GetPlayers()) do
-	if v~=LocalPlayer then
-		CheckPermissions(v)
-	end
-end
 
---[[ GUI VARIABLES ]]--
-local objects = assert(select(2, pcall(game.GetObjects, game, 'rbxassetid://140418556029404')), 'Failed to get objects.')
-local ScreenGui = type(objects) == 'table' and objects[1]
-local coreGuiProtection={}
+local objects = assert(
+    select(2, pcall(game.GetObjects, game, 'rbxassetid://140418556029404')),
+    'Failed to get objects.'
+)
+local ui = type(objects) == 'table' and objects[1]
+table.insert(instances, ui)
 
-if (get_hidden_gui or gethui) then
-	local hiddenUI=(get_hidden_gui or gethui)
-	local Main=ScreenGui
-	--Main.Name=random_string()
-	na_protection(Main)
-	Main.Parent=hiddenUI()
-elseif (not is_sirhurt_closure) and (syn and syn.protect_gui) then
-	local Main=ScreenGui
-	--Main.Name=random_string()
-	na_protection(Main)
-	syn.protect_gui(Main)
-	Main.Parent=game:GetService("CoreGui")
-elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui") then
-	pcall(function()
-		for i,v in pairs(ScreenGui:GetDescendants()) do
-			coreGuiProtection[v]=player.Name
-		end
-		ScreenGui.DescendantAdded:Connect(function(v)
-			coreGuiProtection[v]=player.Name
-		end)
-		coreGuiProtection[ScreenGui]=player.Name
+local coreGuiProtection = {}
 
-		local meta=getrawmetatable(game)
-		local tostr=meta.__tostring
-		setreadonly(meta,false)
-		meta.__tostring=newcclosure(function(t)
-			if coreGuiProtection[t] and not checkcaller() then
-				return coreGuiProtection[t]
-			end
-			return tostr(t)
-		end)
-	end)
-	if not runservice:IsStudio() then
-		local newGui=game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
-		newGui.DescendantAdded:Connect(function(v)
-			coreGuiProtection[v]=player.Name
-		end)
-		for i,v in pairs(ScreenGui:GetChildren()) do
-			v.Parent=newGui
-		end
-		ScreenGui=newGui
-	end
+if get_hidden_gui or gethui then
+    local hiddenUI = get_hidden_gui or gethui
+    local Main = ui
+    -- Main.Name = random_string()
+    na_protection(Main)
+    Main.Parent = hiddenUI()
+elseif not is_sirhurt_closure and syn and syn.protect_gui then
+    local Main = ui
+    -- Main.Name = random_string()
+    na_protection(Main)
+    syn.protect_gui(Main)
+    Main.Parent = game:GetService("CoreGui")
+elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ui") then
+    pcall(function()
+        for i, v in pairs(ui:GetDescendants()) do
+            coreGuiProtection[v] = player.Name
+        end
+        
+        ui.DescendantAdded:Connect(function(v)
+            coreGuiProtection[v] = player.Name
+        end)
+        
+        coreGuiProtection[ui] = player.Name
+
+        local meta = getrawmetatable(game)
+        local tostr = meta.__tostring
+        
+        setreadonly(meta, false)
+        meta.__tostring = newcclosure(function(t)
+            if coreGuiProtection[t] and not checkcaller() then
+                return coreGuiProtection[t]
+            end
+            return tostr(t)
+        end)
+    end)
+
+    if not runservice:IsStudio() then
+        local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ui")
+        
+        newGui.DescendantAdded:Connect(function(v)
+            coreGuiProtection[v] = player.Name
+        end)
+        
+        for i, v in pairs(ui:GetChildren()) do
+            v.Parent = newGui
+        end
+        
+        ui = newGui
+    end
 elseif COREGUI then
-	local Main=ScreenGui
-	--Main.Name=random_string()
-	na_protection(Main)
-	Main.Parent=COREGUI
+    local Main = ui
+    -- Main.Name = random_string()
+    na_protection(Main)
+    Main.Parent = COREGUI
 else
-	warn'no guis?'
+    warn('no guis?')
 end
-if ScreenGui then ScreenGui.DisplayOrder=9999 ScreenGui.ResetOnSpawn=false end
 
-description=ScreenGui:FindFirstChild("Description");
-cmdBar=ScreenGui:FindFirstChild("CmdBar");
+if ui then 
+    ui.DisplayOrder = 9999
+    ui.ResetOnSpawn = false
+end
+
+description=ui:FindFirstChild("Description");
+cmdBar=ui:FindFirstChild("CmdBar");
 centerBar=cmdBar:FindFirstChild("CenterBar");
 cmdInput=centerBar:FindFirstChild("Input");
 cmdAutofill=cmdBar:FindFirstChild("Autofill");
 cmdExample=cmdAutofill:FindFirstChild("Cmd");
 leftFill=cmdBar:FindFirstChild("LeftFill");
 rightFill=cmdBar:FindFirstChild("RightFill");
-chatLogsFrame=ScreenGui:FindFirstChild("ChatLogs");
+chatLogsFrame=ui:FindFirstChild("ChatLogs");
 chatLogs=chatLogsFrame:FindFirstChild("Container"):FindFirstChild("Logs");
 chatExample=chatLogs:FindFirstChild("TextLabel");
-commandsFrame=ScreenGui:FindFirstChild("Commands");
+commandsFrame=ui:FindFirstChild("Commands");
 commandsFilter=commandsFrame:FindFirstChild("Container"):FindFirstChild("Filter");
 commandsList=commandsFrame:FindFirstChild("Container"):FindFirstChild("List");
 commandExample=commandsList:FindFirstChild("TextLabel");
-UniverseViewerFrame=ScreenGui:FindFirstChild("UniverseViewer");
+UniverseViewerFrame=ui:FindFirstChild("UniverseViewer");
 UniverseList=UniverseViewerFrame:FindFirstChild("Container"):FindFirstChild("List");
 UniverseExample=UniverseList:FindFirstChildOfClass("TextButton");
-UpdLogsFrame=ScreenGui:FindFirstChild("UpdLog");
+UpdLogsFrame=ui:FindFirstChild("UpdLog");
 UpdLogsTitle=UpdLogsFrame:FindFirstChild("Topbar"):FindFirstChild("TopBar"):FindFirstChild("Title");
 UpdLogsList=UpdLogsFrame:FindFirstChild("Container"):FindFirstChild("List");
 UpdLogsLabel=UpdLogsList:FindFirstChildOfClass("TextLabel");
-ShiftlockUi=ScreenGui:FindFirstChild("LockButton");
-resizeFrame=ScreenGui:FindFirstChild("Resizeable");
+ShiftlockUi=ui:FindFirstChild("LockButton");
+resizeFrame=ui:FindFirstChild("Resizeable");
 resizeXY={
     Top        ={Vector2.new(0,-1),    Vector2.new(0,-1),    "rbxassetid://2911850935"},
     Bottom    ={Vector2.new(0,1),    Vector2.new(0,0),    "rbxassetid://2911850935"},
@@ -1245,43 +687,14 @@ UniverseExample.Parent=nil
 UpdLogsLabel.Parent=nil
 resizeFrame.Parent=nil
 
-	--[[pcall(function()
-		for i,v in pairs(ScreenGui:GetDescendants()) do
-			coreGuiProtection[v]=player.Name
-		end
-		ScreenGui.DescendantAdded:Connect(function(v)
-			coreGuiProtection[v]=player.Name
-		end)
-		coreGuiProtection[ScreenGui]=player.Name
-	
-		local meta=getrawmetatable(game)
-		local tostr=meta.__tostring
-		setreadonly(meta,false)
-		meta.__tostring=newcclosure(function(t)
-			if coreGuiProtection[t] and not checkcaller() then
-				return coreGuiProtection[t]
-			end
-			return tostr(t)
-		end)
-	end)
-	if not runservice:IsStudio() then
-		local newGui=game:GetService("CoreGui"):FindFirstChildWhichIsA("ScreenGui")
-		newGui.DescendantAdded:Connect(function(v)
-			coreGuiProtection[v]=player.Name
-		end)
-		for i,v in pairs(ScreenGui:GetChildren()) do
-			v.Parent=newGui
-		end
-		ScreenGui=newGui
-	end]]
+local gui = {}
 
---[[ GUI FUNCTIONS ]]--
-gui={}
-gui.txtSize=function(ui,x,y)
+function gui.txtSize(ui,x,y)
 	local textService=game:GetService("TextService")
 	return textService:GetTextSize(ui.Text,ui.TextSize,ui.Font,Vector2.new(x,y))
 end
-gui.commands=function()
+
+function gui.commands()
 	if not commandsFrame.Visible then
 		commandsFrame.Visible=true
 		commandsList.CanvasSize=UDim2.new(0,0,0,0)
@@ -1312,7 +725,8 @@ gui.commands=function()
 	commandsList.CanvasSize=UDim2.new(0,0,0,i*20+10)
 	commandsFrame.Position=UDim2.new(0.5,-283/2,0.5,-260/2)
 end
-gui.chatlogs=function()
+
+function gui.chatlogs()
 	if not chatLogsFrame.Visible then
 		chatLogsFrame.Visible=true
 	end
@@ -1344,8 +758,6 @@ gui.ShiftlockInvis=function()
 		ShiftlockUi.Visible=false
 	end
 end
-
--- gui.tween(centerBar,"Sine","Out",speed or 0.25,{Size=UDim2.new(0,250,0,0)})
 
 gui.tween=function(obj,style,direction,duration,goal)
 	local tweenInfo=TweenInfo.new(duration,Enum.EasingStyle[style],Enum.EasingDirection[direction])
@@ -1644,16 +1056,14 @@ gui.loadCommands=function()
 	end
 	local last=nil
 	local i=0
-	for name,tbl in pairs(commands) do
-		local info=tbl[2]
-		local btn=cmdExample:Clone()
-		btn.Parent=cmdAutofill
-		btn.Name=name
-		btn.Input.Text=info[1]
+	for name in pairs(commands) do
+		local btn = cmdExample:Clone()
+		btn.Parent = cmdAutofill
+		btn.Name = name
 		i += 1
-		local size=btn.Size
-		btn.Size=UDim2.new(0,0,0,25)
-		btn.Size=size
+		local size = btn.Size
+		btn.Size = UDim2.fromOffset(0, 25)
+		btn.Size = size
 	end
 end
 
@@ -1675,7 +1085,7 @@ gui.barDeselect=function(speed)
 	gui.tween(rightFill,"Sine","In",speed or 0.3,{Position=UDim2.new(1.5,-100,0.5,0)})
 	for i,v in ipairs(cmdAutofill:GetChildren()) do
 		if v:IsA("Frame") then
-			wrap(function()
+			lib.wrap(function()
 				wait(math.random(1,200)/2000)
 				gui.tween(v,"Back","In",0.35,{Size=UDim2.new(0,0,0,25)})
 			end)
@@ -1840,12 +1250,19 @@ connect(mouse.KeyDown, function(name)
 end)
 
 --[[ CLOSE THE COMMAND BAR ]]--
+local last_input_text
+
 connect(cmdInput.FocusLost, function(ep)
-	coroutine.resume(coroutine.create(lib.parse_command), options.prefix .. cmdInput.Text)
-	gui.barDeselect()
+	if type(last_input_text) == 'string' then
+		local input = options.prefix .. last_input_text
+		print('[NA]: Sending input: ' .. tostring(input))
+		lib.parse_command(input)
+		gui.barDeselect()
+	end
 end)
 
 connect(cmdInput:GetPropertyChangedSignal('Text'), function()
+	last_input_text = cmdInput.Text
 	gui.searchCommands()
 end)
 
@@ -1989,27 +1406,29 @@ connect(commandsFilter.Changed, function(p)
 end)
 
 function bindToChat(plr, msg)
-    local chatMsg = chatExample:Clone()
+    if typeof(plr) == 'Instance' and plr:IsA('Player') and type(msg) == 'string' then
+		local chatMsg = chatExample:Clone()
     
-    for i, v in pairs(chatLogs:GetChildren()) do
-        if v:IsA("TextLabel") then
-            v.LayoutOrder = v.LayoutOrder + 1
-        end
-    end
-    
-    chatMsg.Parent = chatLogs
-    
-    local displayName = plr.DisplayName or "Unknown"
-    local userName = plr.Name or "Unknown"
-    
-    if displayName == userName then
-        chatMsg.Text = ("@%s: %s"):format(userName, msg)
-    else
-        chatMsg.Text = ("%s [@%s]: %s"):format(displayName, userName, msg)
-    end
-    
-    local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
-    chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
+		for i, v in pairs(chatLogs:GetChildren()) do
+			if v:IsA("TextLabel") then
+				v.LayoutOrder = v.LayoutOrder + 1
+			end
+		end
+		
+		chatMsg.Parent = chatLogs
+		
+		local displayName = plr.DisplayName or "Unknown"
+		local userName = plr.Name or "Unknown"
+		
+		if displayName == userName then
+			chatMsg.Text = ("@%s: %s"):format(userName, msg)
+		else
+			chatMsg.Text = ("%s [@%s]: %s"):format(displayName, userName, msg)
+		end
+		
+		local txtSize = gui.txtSize(chatMsg, chatMsg.AbsoluteSize.X, 100)
+		chatMsg.Size = UDim2.new(1, -5, 0, txtSize.Y)
+	end
 end
 
 for _, player in pairs(players:GetPlayers()) do
@@ -2030,11 +1449,20 @@ connect(mouse.Move, function()
 	description.Size = UDim2.fromOffset(size.X, size.Y)
 end)
 
+local function updateCanvasSize(instance)
+	if typeof(instance) == "Instance" then
+		local list_layout = instance:FindFirstChildOfClass("UIListLayout")
+		if list_layout then
+			instance.CanvasSize = UDim2.fromOffset(0, list_layout.AbsoluteContentSize.Y)
+		end
+	end
+end
+
 connect(runservice.Stepped, function()
-	chatLogs.CanvasSize = UDim2.fromOffset(0, chatLogs:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
-	commandsList.CanvasSize = UDim2.fromOffset(0, commandsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
-	UniverseList.CanvasSize = UDim2.fromOffset(0, UniverseList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
-	UpdLogsList.CanvasSize = UDim2.fromOffset(0, UpdLogsList:FindFirstChildOfClass("UIListLayout").AbsoluteContentSize.Y)
+	updateCanvasSize(chatLogs)
+	updateCanvasSize(commandsList)
+	updateCanvasSize(UniverseList)
+	updateCanvasSize(UpdLogsList)
 end)
 
 na_caller(function()
@@ -2083,21 +1511,21 @@ ImageButton = Instance.new("ImageButton")
 UICorner2 = Instance.new("UICorner")
 
 na_protection(watermark_label)
-watermark_label.Parent=ScreenGui
+watermark_label.Parent=ui
 watermark_label.BackgroundColor3=Color3.fromRGB(4,4,4)
 watermark_label.BackgroundTransparency=1.000
 watermark_label.AnchorPoint=Vector2.new(0.5,0.5)
 watermark_label.Position=UDim2.new(0.5,0,0.5,0)
 watermark_label.Size=UDim2.new(0,2,0,33)
 watermark_label.Font=Enum.Font.SourceSansBold
-watermark_label.Text = admin_name.." V"..current_version
+watermark_label.Text = 'Nameless Admin'
 watermark_label.TextColor3=Color3.fromRGB(255,255,255)
 watermark_label.TextSize=20.000
 watermark_label.TextWrapped=true
 watermark_label.ZIndex=9999
 
 na_protection(ImageButton)
-ImageButton.Parent = ScreenGui
+ImageButton.Parent = ui
 ImageButton.AnchorPoint = Vector2.new(0.5, 0)
 ImageButton.BackgroundColor3 = Color3.new(1, 1, 1)
 ImageButton.BorderSizePixel = 0
