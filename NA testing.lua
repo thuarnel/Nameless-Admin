@@ -192,15 +192,9 @@ local LegacyChat=game:GetService("TextChatService").ChatVersion==Enum.ChatVersio
 _G.Spam=false
 --[[ FOR LOOP COMMANDS ]]--
 local view=false
-local anniblockspam=false
 local control=false
 local FakeLag=false
 local Loopvoid=false
-local Loopkill=false
-local Loopbring=false
-local Loopbanish=false
-local Loopvoid=false
-local Loopcuff=false
 local loopgrab=false
 local Loopstand=false
 local Looptornado=false
@@ -627,29 +621,6 @@ NACaller(function()
 		Character=c
 		char=c
 	end)
-end)
-
-RunService.Stepped:connect(function()
-	if anniblockspam then
-		game:GetService("Workspace").Tools.Chest_Invisibility_Cloak.Part.CFrame=CFrame.new(getRoot(getChar()).Position)
-
-		if game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("InvisibilityCloak") then
-			getChar().Humanoid:EquipTool(game:GetService("Players").LocalPlayer.Backpack.InvisibilityCloak)
-		end
-
-		for i,v in pairs(getChar():GetChildren()) do
-			if (v:IsA("Tool")) then
-				v.Handle.Mesh:Destroy()
-			end
-		end
-
-		for i,v in pairs(getChar():GetChildren()) do
-			if (v:IsA("Tool")) then
-				v.Parent=game:GetService("Workspace")
-			end
-		end
-
-	end
 end)
 
 local ESPenabled=false
@@ -4700,6 +4671,58 @@ end)
 
 cmd.add({"clip","c"},{"clip","Enable your player's collision"},function()
 	lib.disconnect("noclip")
+end)
+
+cmd.add({"orbit"}, {"orbit <player> <distance>", "Orbit around a player"}, function(p,d)
+	lib.disconnect("orbit")
+	local players = argument.getPlayers(p)
+	local target = players[1]
+	if not target then return end
+	
+	local tchar, char = target.Character, character
+	local thrp = getRoot(tchar)
+	local hrp = getRoot(char)
+	local dist = tonumber(d) or 4
+	
+	if tchar and char and thrp and hrp then
+		local sineX, sineZ = 0, math.pi/2
+		lib.connect("orbit", RunService.Stepped:Connect(function()
+			sineX, sineZ = sineX + 0.05, sineZ + 0.05
+			local sinX, sinZ = math.sin(sineX), math.sin(sineZ)
+			if thrp.Parent and hrp.Parent then
+				hrp.Velocity = Vector3.new(0, 0, 0)
+				hrp.CFrame = CFrame.new(sinX * dist, 0, sinZ * dist) *
+					(hrp.CFrame - hrp.CFrame.p) +
+					thrp.CFrame.p
+			end
+		end))
+	end
+end)
+
+cmd.add({"uporbit"}, {"uporbit <player> <distance>", "Orbit around a player on the Y axis"}, function(p,d)
+	lib.disconnect("orbit")
+	local players = argument.getPlayers(p)
+	local target = players[1]
+	if not target then return end
+	
+	local tchar, char = target.Character, character
+	local thrp = getRoot(tchar)
+	local hrp = getRoot(char)
+	local dist = tonumber(d) or 4
+	
+	if tchar and char and thrp and hrp then
+		local sineX, sineY = 0, math.pi/2
+		lib.connect("orbit", RunService.Stepped:Connect(function()
+			sineX, sineY = sineX + 0.05, sineY + 0.05
+			local sinX, sinY = math.sin(sineX), math.sin(sineY)
+			if thrp.Parent and hrp.Parent then
+				hrp.Velocity = Vector3.new(0, 0, 0)
+				hrp.CFrame = CFrame.new(sinX * dist, sinY * dist, 0) *
+					(hrp.CFrame - hrp.CFrame.p) +
+					thrp.CFrame.p
+			end
+		end))
+	end
 end)
 
 cmd.add({"freezewalk"},{"freezewalk","Freezes your character on the server but lets you walk on the client"},function()
