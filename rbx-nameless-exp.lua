@@ -76,16 +76,17 @@ if not game:IsLoaded() then
 	end
 	waiting:Destroy()
 end
+
 local loader=''
+
 if getgenv().NATestingVer then
 	loader=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/NA%20testing.lua"))();]]
 else
 	loader=[[loadstring(game:HttpGet("https://raw.githubusercontent.com/ltseverydayyou/Nameless-Admin/main/Source.lua"))();]]
 end
-local queueteleport=(syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport) or function() end
 
---Notification library
-local Notification=nil
+local queueteleport=(syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport) or function() end
+local na_notifications=nil
 
 repeat 
 	local s,r=pcall(function()
@@ -93,14 +94,13 @@ repeat
 	end);
 
 	if s then
-		Notification=r;
+		na_notifications=r;
 	else
 		warn("Couldn't load notification module, retrying...");
 		task.wait();
 	end
-until Notification~=nil --waits for the module to load (cause loadstring takes ages)
-
-local Notify=Notification.Notify;
+until na_notifications~=nil --waits for the module to load (cause loadstring takes ages)
+local send_notification = na_notifications.Notify
 
 local function send_notification(txt,dur,naem)
 	if not dur then dur=5 end
@@ -590,6 +590,7 @@ cmd.add({ 'unigui' }, 'Opens the Universe UI', function()
 	end
 end)
 
+--[=[
 local last_position
 local click_connection
 
@@ -766,6 +767,7 @@ cmd.add({ 'unclickfling' }, 'Stop listening for mouse clicks', function()
         click_connection = nil
     end
 end)
+]=]--
 
 connect(player.Chatted, function(str)
 	lib.parse_command(str)
