@@ -13,6 +13,7 @@ if type(env) == 'table' and type(env.stop_nameless_admin) == 'function' then
 end
 
 local insert = table.insert
+local gui = {}
 local instances = {}
 local connections = {}
 local break_all_loops = false
@@ -144,7 +145,7 @@ end
 
 local options = { prefix = ';', tuple_separator = ',', ui = {}, binds = {} }
 local update_logs = {
-	['3/11/2025'] = {'Made some major changes to how the script functions internally.'}
+	['3/11/2025'] = 'Made some major changes to how the script functions internally.'
 }
 local last_updated = '3/11/2025'
 
@@ -183,6 +184,21 @@ local player = players.LocalPlayer
 local mouse = player:GetMouse()
 local player_gui = player:FindFirstChildWhichIsA('PlayerGui')
 local character, humanoid, rootpart
+local camera = workspace.CurrentCamera
+
+workspace:GetPropertyChangedSignal('CurrentCamera'):Connect(function()
+	camera = workspace.CurrentCamera
+end)
+
+local fpdh_changing = false
+
+workspace:GetPropertyChangedSignal('FallenPartsDestroyHeight', function()
+	if not fpdh_changing then
+		fpdh_changing = true
+		workspace.FallenPartsDestroyHeight = 0 / 0
+		fpdh_changing = false
+	end
+end)
 
 function new_character()
 	character = player.Character
@@ -218,7 +234,7 @@ local Loopstand=false
 local Looptornado=false
 local Loopmute=false
 local Loopglitch=false
-local OrgDestroyHeight = game:GetService("Workspace").FallenPartsDestroyHeight
+local OrgDestroyHeight = workspace.FallenPartsDestroyHeight
 local Watch=false
 local Admin={}
 _G.NAadminsLol={
@@ -479,47 +495,54 @@ local tan=m.tan
 local cos=m.cos
 
 --[[ PLAYER FUNCTIONS ]]--
-local argument={}
-argument.getPlayers=function(str)
-	local playerNames,players=lib.parse_text(str,options.tuple_separator),{}
-	for _,arg in pairs(playerNames or {"me"}) do
+local argument = { get_players }
+
+local function get_player()
+	return argument.get_players()[1]
+end
+
+function argument.get_players(str)
+	local playerList = players:GetPlayers()
+	local playerNames, plrs = lib.parse_text(str,options.tuple_separator), {}
+
+	for _, arg in pairs(playerNames or {"me"}) do
 		arg=arg:lower()
-		local playerList=players:GetPlayers()
+		
 		if arg=="me" or arg==nil then
-			table.insert(players,player)
+			table.insert(plrs, player)
 
 		elseif arg=="all" then
 			for _,plr in pairs(playerList) do
-				table.insert(players,plr)
+				table.insert(plrs, plr)
 			end
 
 		elseif arg=="others" then
 			for _,plr in pairs(playerList) do
 				if plr~=player then
-					table.insert(players,plr)
+					table.insert(plrs, plr)
 				end
 			end
 
 		elseif arg=="random" then
-			table.insert(players,playerList[math.random(1,#playerList)])
+			table.insert(plrs, playerList[math.random(1,#playerList)])
 
 		elseif arg:find("%%")==1 then
 			local teamName=arg:sub(2)
 			for _,plr in pairs(playerList) do
 				if tostring(plr.Team):lower():find(teamName)==1 then
-					table.insert(players,plr)
+					table.insert(plrs, plr)
 				end
 			end
 
 		else
 			for _,plr in pairs(playerList) do
 				if plr.Name:lower():find(arg)==1 or (plr.DisplayName and plr.DisplayName:lower():find(arg)==1) or (tostring(plr.UserId):lower():find(arg)==1) then
-					table.insert(players,plr)
+					table.insert(plrs, plr)
 				end
 			end
 		end
 	end
-	return players
+	return plrs
 end
 
 --[=[ COMMAND LIST ]=]--
@@ -561,6 +584,189 @@ cmd.add({ 'rejoin' }, 'Rejoin the server', function()
 	end
 end)
 
+cmd.add({ 'unigui' }, 'Opens the Universe UI', function()
+	if type(gui) == 'table' and type(gui.universeGui) == 'function' then
+		gui.universeGui()
+	end
+end)
+
+local last_position
+local click_connection
+
+cmd.add({ 'clickfling' }, 'Click to fling a player', function()
+    click_connection = connect(mouse.Button1Down, function()
+        local t = mouse.Target
+        local t_character = t and t:FindFirstAncestorWhichIsA('Model')
+        local target_player = t_character and players:GetPlayerFromCharacter(t_character)
+		
+        if target_player then
+            local targets = { target_player }
+            local all_bool = false
+
+            local function skid_fling(target)
+                local target_character = target.Character
+                if not target_character then return end
+                local target_humanoid = target_character:FindFirstChildOfClass("Humanoid")
+                local target_root_part = target_humanoid and target_humanoid.RootPart
+                local target_head = target_character:FindFirstChild("Head")
+                local accessory = target_character:FindFirstChildOfClass("Accessory")
+                local handle = accessory and accessory:FindFirstChild("Handle")
+
+                if typeof(rootpart) == 'Instance' then
+                    if rootpart.AssemblyLinearVelocity.Magnitude < 50 then
+                        last_position = rootpart.CFrame
+                    end
+
+                    if typeof(camera) == 'Instance' then
+                        if target_head then
+                            camera.CameraSubject = target_head
+                        elseif not target_head and handle then
+                            camera.CameraSubject = handle
+                        elseif target_humanoid and target_root_part then
+                            camera.CameraSubject = target_humanoid
+                        end
+                    end
+
+                    if not target_character:FindFirstChildWhichIsA("BasePart") then
+                        return
+                    end
+
+                    local function f_pos(base_part, pos, ang)
+                        rootpart.CFrame = CFrame.new(base_part.Position) * pos * ang
+                        character:SetPrimaryPartCFrame(CFrame.new(base_part.Position) * pos * ang)
+                        rootpart.Velocity = Vector3.new(9e7, 9e7 * 10, 9e7)
+                        rootpart.RotVelocity = Vector3.new(9e8, 9e8, 9e8)
+                    end
+
+                    local function sf_base_part(base_part)
+                        local time_to_wait = 2
+                        local start_time = tick()
+                        local angle = 0
+
+                        repeat
+                            if rootpart and target_humanoid then
+                                if base_part.Velocity.Magnitude < 50 then
+                                    angle = angle + 100
+
+                                    f_pos(base_part, CFrame.new(0, 1.5, 0) + target_humanoid.MoveDirection * base_part.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0) + target_humanoid.MoveDirection * base_part.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(2.25, 1.5, -2.25) + target_humanoid.MoveDirection * base_part.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(-2.25, -1.5, 2.25) + target_humanoid.MoveDirection * base_part.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, 1.5, 0) + target_humanoid.MoveDirection, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0) + target_humanoid.MoveDirection, CFrame.Angles(math.rad(angle), 0, 0))
+                                    task.wait()
+                                else
+                                    f_pos(base_part, CFrame.new(0, 1.5, target_humanoid.WalkSpeed), CFrame.Angles(math.rad(90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, -target_humanoid.WalkSpeed), CFrame.Angles(0, 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, 1.5, target_humanoid.WalkSpeed), CFrame.Angles(math.rad(90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, 1.5, target_root_part.Velocity.Magnitude / 1.25), CFrame.Angles(math.rad(90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, -target_root_part.Velocity.Magnitude / 1.25), CFrame.Angles(0, 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, 1.5, target_root_part.Velocity.Magnitude / 1.25), CFrame.Angles(math.rad(90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0), CFrame.Angles(math.rad(90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0), CFrame.Angles(0, 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0), CFrame.Angles(math.rad(-90), 0, 0))
+                                    task.wait()
+
+                                    f_pos(base_part, CFrame.new(0, -1.5, 0), CFrame.Angles(0, 0, 0))
+                                    task.wait()
+                                end
+                            else
+                                break
+                            end
+                        until base_part.Velocity.Magnitude > 500 
+                            or base_part.Parent ~= target_character 
+                            or target.Parent ~= players 
+                            or target_humanoid.Sit 
+                            or humanoid.Health <= 0 
+                            or tick() > start_time + time_to_wait
+                    end
+
+                    local body_velocity = Instance.new("BodyVelocity")
+                    body_velocity.Name = "epix_vel"
+                    body_velocity.Parent = rootpart
+                    body_velocity.Velocity = Vector3.new(9e8, 9e8, 9e8)
+                    body_velocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
+                    
+                    if target_root_part and target_head then
+                        if (target_root_part.CFrame.p - target_head.CFrame.p).Magnitude > 5 then
+                            sf_base_part(target_head)
+                        else
+                            sf_base_part(target_root_part)
+                        end
+                    elseif target_root_part and not target_head then
+                        sf_base_part(target_root_part)
+                    elseif not target_root_part and target_head then
+                        sf_base_part(target_head)
+                    elseif not target_root_part and not target_head and accessory and handle then
+                        sf_base_part(handle)
+                    end
+
+                    body_velocity:Destroy()
+                    humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
+                    camera.CameraSubject = humanoid
+
+                    repeat
+                        rootpart.CFrame = last_position * CFrame.new(0, 0.5, 0)
+                        character:SetPrimaryPartCFrame(last_position * CFrame.new(0, 0.5, 0))
+                        humanoid:ChangeState(Enum.HumanoidStateType.GettingUp)
+                        for _, part in ipairs(character:GetChildren()) do
+                            if part:IsA("BasePart") then
+                                part.Velocity = Vector3.new()
+                                part.RotVelocity = Vector3.new()
+                            end
+                        end
+                        task.wait()
+                    until (rootpart.Position - last_position.p).Magnitude < 25
+                end
+            end
+
+            if not all_bool then
+                if target_player ~= player then
+                    skid_fling(target_player)
+                end
+            else
+                for _, p in pairs(players:GetPlayers()) do
+                    skid_fling(p)
+                end
+            end
+        end
+    end)
+end)
+
+cmd.add({ 'unclickfling' }, 'Stop listening for mouse clicks', function()
+    if click_connection then
+        click_connection:Disconnect()
+        click_connection = nil
+    end
+end)
+
 connect(player.Chatted, function(str)
 	lib.parse_command(str)
 end)
@@ -576,73 +782,11 @@ local objects = assert(
     select(2, pcall(game.GetObjects, game, 'rbxassetid://140418556029404')),
     'Failed to get objects.'
 )
-local ui = type(objects) == 'table' and objects[1]
+local ui = assert(type(objects) == 'table' and objects[1], 'Missing UI.')
 table.insert(instances, ui)
-
-local coreGuiProtection = {}
-
-if get_hidden_gui or gethui then
-    local hiddenUI = get_hidden_gui or gethui
-    local Main = ui
-    -- Main.Name = random_string()
-    na_protection(Main)
-    Main.Parent = hiddenUI()
-elseif not is_sirhurt_closure and syn and syn.protect_gui then
-    local Main = ui
-    -- Main.Name = random_string()
-    na_protection(Main)
-    syn.protect_gui(Main)
-    Main.Parent = game:GetService("CoreGui")
-elseif game:GetService("CoreGui"):FindFirstChildWhichIsA("ui") then
-    pcall(function()
-        for i, v in pairs(ui:GetDescendants()) do
-            coreGuiProtection[v] = player.Name
-        end
-        
-        ui.DescendantAdded:Connect(function(v)
-            coreGuiProtection[v] = player.Name
-        end)
-        
-        coreGuiProtection[ui] = player.Name
-
-        local meta = getrawmetatable(game)
-        local tostr = meta.__tostring
-        
-        setreadonly(meta, false)
-        meta.__tostring = newcclosure(function(t)
-            if coreGuiProtection[t] and not checkcaller() then
-                return coreGuiProtection[t]
-            end
-            return tostr(t)
-        end)
-    end)
-
-    if not runservice:IsStudio() then
-        local newGui = game:GetService("CoreGui"):FindFirstChildWhichIsA("ui")
-        
-        newGui.DescendantAdded:Connect(function(v)
-            coreGuiProtection[v] = player.Name
-        end)
-        
-        for i, v in pairs(ui:GetChildren()) do
-            v.Parent = newGui
-        end
-        
-        ui = newGui
-    end
-elseif COREGUI then
-    local Main = ui
-    -- Main.Name = random_string()
-    na_protection(Main)
-    Main.Parent = COREGUI
-else
-    warn('no guis?')
-end
-
-if ui then 
-    ui.DisplayOrder = 9999
-    ui.ResetOnSpawn = false
-end
+ui.DisplayOrder = 9999
+ui.ResetOnSpawn = false
+ui.Parent = coregui
 
 description=ui:FindFirstChild("Description");
 cmdBar=ui:FindFirstChild("CmdBar");
@@ -687,8 +831,6 @@ UniverseExample.Parent=nil
 UpdLogsLabel.Parent=nil
 resizeFrame.Parent=nil
 
-local gui = {}
-
 function gui.txtSize(ui,x,y)
 	local textService=game:GetService("TextService")
 	return textService:GetTextSize(ui.Text,ui.TextSize,ui.Font,Vector2.new(x,y))
@@ -710,7 +852,7 @@ function gui.commands()
 		Cmd.Parent=commandsList
 		Cmd.Name=cmdName
 		Cmd.Text=" "..tbl[2][1]
-		Cmd.MouseEnter:Connect(function()
+		connect(Cmd.MouseEnter, function()
 			description.Visible=true
 			description.Text=tbl[2][2]
 		end)
@@ -732,13 +874,15 @@ function gui.chatlogs()
 	end
 	chatLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.universeGui=function()
+
+function gui.universeGui()
 	if not UniverseViewerFrame.Visible then
 		UniverseViewerFrame.Visible=true
 	end
 	UniverseViewerFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
-gui.updateLogs=function()
+
+function gui.updateLogs()
 	if not UpdLogsFrame.Visible and next(updLogs) then
 		UpdLogsFrame.Visible=true
 	elseif not next(updLogs) then
@@ -748,6 +892,7 @@ gui.updateLogs=function()
 	end
 	UpdLogsFrame.Position=UDim2.new(0.5,-283/2+5,0.5,-260/2+5)
 end
+
 gui.ShiftlockVis=function()
 	if not ShiftlockUi.Visible then
 		ShiftlockUi.Visible=true
@@ -1466,17 +1611,15 @@ connect(runservice.Stepped, function()
 end)
 
 na_caller(function()
-	local page=AssetService:GetGamePlacesAsync()
+	local page = game:GetService('AssetService'):GetGamePlacesAsync()
 	while true do
-		local template=UniverseExample
-		local list=UniverseList
 		for _,place in page:GetCurrentPage() do
-			local btn=template:Clone()
-			btn.Parent=list
-			btn.Name=place.Name
-			btn.Text=place.Name.." ("..place.PlaceId..")"
+			local btn = UniverseExample:Clone()
+			btn.Parent = UniverseList
+			btn.Name = place.Name
+			btn.Text = place.Name .. ' (' .. place.PlaceId .. ')'
 			btn.MouseButton1Click:Connect(function()
-				TeleportService:Teleport(place.PlaceId)
+				teleportservice:Teleport(place.PlaceId)
 				send_notification("Teleporting To Place: "..place.Name)
 			end)
 		end
@@ -1488,20 +1631,17 @@ na_caller(function()
 end)
 
 na_caller(function()
-	template=UpdLogsLabel
-	list=UpdLogsList
+	template = UpdLogsLabel
+	list = UpdLogsList
+	UpdLogsTitle.Text ..= ' ' .. last_updated
 
-	UpdLogsTitle.Text=UpdLogsTitle.Text.." "..last_updated
-
-	if next(update_logs) then
-		for name,txt in pairs(update_logs) do
-			local btn=template:Clone()
-			btn.Parent=list
-			btn.Name=name
-			btn.Text="-"..txt
+	for name, txt in pairs(update_logs) do
+		if type(txt) == 'string' then
+			local btn = template:Clone()
+			btn.Parent = list
+			btn.Name = name
+			btn.Text = '- ' .. txt
 		end
-	else
-		-- do something
 	end
 end)
 
